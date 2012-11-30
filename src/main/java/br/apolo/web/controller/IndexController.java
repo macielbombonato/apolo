@@ -12,6 +12,6 @@ public class IndexController extends BaseController {
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String index(Model model) {
-		return redirect(Navigation.INDEX);
+		return Navigation.INDEX.getPath();
 	}
 }

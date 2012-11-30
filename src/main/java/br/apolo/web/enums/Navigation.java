@@ -5,7 +5,13 @@ public enum Navigation {
 	HOME("/"), 
 	INDEX("index"),
 	
-	USER_INDEX("user/index"),
+	USER("user"),
+	USER_INDEX("index"),
+	
+	AUTH("auth"),
+	AUTH_LOGIN("auth/login"),
+	
+//	(),
 	
 	;
 	

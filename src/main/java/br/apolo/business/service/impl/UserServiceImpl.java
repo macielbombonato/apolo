@@ -24,27 +24,29 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	UserRepository userRepository;
 
+	@Override
 	public Collection<User> list() {
 		return userRepository.findAll();
 	}
 
+	@Override
 	public User find(Long id) {
 		return userRepository.find(id);
 	}
 
+	@Override
 	public User findByLogin(String login) {
 		return userRepository.findByLogin(login);
 	}
 
+	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
 		User u = userRepository.findByLogin(username);
-
 		Collection<GrantedAuthority> authorities = loadUserAuthorities(u);
-
 		return new CurrentUser(u.getId(), u.getEmail(), u.getPassword().toLowerCase(), authorities);
 	}
 
+	@Override
 	public User getAuthenticatedUser() {
 
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();

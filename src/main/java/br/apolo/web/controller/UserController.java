@@ -27,7 +27,7 @@ public class UserController extends BaseController {
 	@RequestMapping(value = "user", method = RequestMethod.GET)
 	public String index(UserDetails userDetails, Model model) {
 		LOG.info(userDetails.toString());
-		return redirect(Navigation.USER_INDEX);
+		return Navigation.USER_INDEX.getPath();
 	}
 	
 	@RequestMapping(value = "user.json", method = RequestMethod.GET)

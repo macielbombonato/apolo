@@ -13,15 +13,7 @@ public abstract class BaseController {
 	protected static final Logger LOG = LoggerFactory.getLogger(BaseController.class);
 
 	public String redirect(Navigation nav) {
-		return redirect(nav, false);
-	}
-	
-	public String redirect(Navigation nav, boolean redirect) {
-		String path = "";
-		
-		if (redirect) {
-			path += "redirect:";
-		}
+		String path = "redirect:";
 		
 		if (nav != null) {
 			path += nav.getPath();
@@ -30,20 +22,6 @@ public abstract class BaseController {
 		}
 		
 		return path;
-	}
-
-	protected String extractFileExtension(String fileName) {
-		String extension = ""; //coelho: nao precisa inicializar aqui.
-
-		/*
-		 * Split and replaceAll have problems when we use dot ('.'). To resolve this problems, first we change dot to another
-		 * character and split using this character.
-		 */
-		fileName = fileName.replace(".", "@@");
-		String[] splitedFileName = fileName.split("@@");
-		extension = splitedFileName[splitedFileName.length - 1];
-
-		return "." + extension.toLowerCase();
 	}
 
 	@ExceptionHandler(GenericException.class)
@@ -65,5 +43,4 @@ public abstract class BaseController {
 
 		return mav;
 	}
-
 }
