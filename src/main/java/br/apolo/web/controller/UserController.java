@@ -23,6 +23,11 @@ public class UserController extends BaseController {
 
 	@Autowired
 	private UserService userService;
+
+	@RequestMapping(value = "/", method = RequestMethod.GET)
+	public String index(Model model) {
+		return Navigation.USER_INDEX.getPath();
+	}
 	
 	@RequestMapping(value = "user", method = RequestMethod.GET)
 	public String index(UserDetails userDetails, Model model) {

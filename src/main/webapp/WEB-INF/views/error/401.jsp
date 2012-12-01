@@ -2,11 +2,11 @@
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>    
 
-<div data-message="<s:message code="login.403"/>: <s:message code="login.403.message"/>">
+<div>
 	<h2>
-		<s:message code="login.403" />
+		401
 	</h2>
 	<h3>
-		<s:message code="login.403.message"/>
+		401
 	</h3>
 </div>
