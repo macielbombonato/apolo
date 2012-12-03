@@ -6,7 +6,7 @@ public enum Navigation {
 	INDEX("index"),
 	
 	USER("user"),
-	USER_INDEX("index"),
+	USER_INDEX("user/index"),
 	
 	AUTH("auth"),
 	AUTH_LOGIN("auth/login"),

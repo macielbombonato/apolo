@@ -10,9 +10,14 @@ http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 		<security:form-login login-page="/auth/login" authentication-failure-url="/auth/loginfailed" default-target-url="/" />
 		<security:access-denied-handler error-page="/error/403" />
 		
-		<security:intercept-url access="isAuthenticated()" pattern="/" />
+		<security:intercept-url pattern="/" access="permitAll" />
+		<security:intercept-url pattern="/auth/login" access="permitAll" />
+		<security:intercept-url pattern="/auth/logout" access="permitAll" />
+		<security:intercept-url pattern="/resources/**" access="permitAll" />
+		<security:intercept-url pattern="/error/**" access="permitAll" />
+		<security:intercept-url pattern="/**" access="isAuthenticated()" />
 
-		<security:logout logout-url="/logout" />
+		<security:logout logout-url="/auth/logout" />
 	</security:http>
 
 	<security:authentication-manager alias="authenticationManager">
