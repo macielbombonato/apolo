@@ -11,8 +11,6 @@ public enum Navigation {
 	AUTH("auth"),
 	AUTH_LOGIN("auth/login"),
 	
-//	(),
-	
 	;
 	
 	

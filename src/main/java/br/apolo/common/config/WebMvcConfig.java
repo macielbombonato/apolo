@@ -17,6 +17,7 @@ import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
+import org.springframework.web.servlet.HandlerMapping;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -31,12 +32,17 @@ import org.springframework.web.servlet.view.tiles2.TilesViewResolver;
 @ImportResource("classpath:spring-global-method-security.xml")
 public class WebMvcConfig extends WebMvcConfigurationSupport {
 	
+	public WebMvcConfig() {
+		super();
+	}
+	
 	private static final String MESSAGE_SOURCE = "/WEB-INF/i18n/messages";
 	private static final String TILES = "/WEB-INF/tiles/tiles.xml";
 	private static final String VIEWS = "/WEB-INF/views/**/views.xml";
 	
-	private static final String RESOURCES_HANDLER = "/resources/";
-	private static final String RESOURCES_LOCATION = RESOURCES_HANDLER + "**";
+	private static final String RESOURCES_LOCATION = "/resources/";
+	private static final String RESOURCES_HANDLER = RESOURCES_LOCATION + "**";
+	
 	
 	@Override
 	public RequestMappingHandlerMapping requestMappingHandlerMapping() {
@@ -73,13 +79,19 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
 		return validator;
 	}
 	
+	@Bean
 	@Override
-	public void addResourceHandlers(ResourceHandlerRegistry registry) {
+	public HandlerMapping resourceHandlerMapping() {
+		return super.resourceHandlerMapping();
+	}
+	
+	@Override
+	protected void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry.addResourceHandler(RESOURCES_HANDLER).addResourceLocations(RESOURCES_LOCATION);
 	}
-
+	
 	@Override
-	public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
+	protected void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
 		configurer.enable();
 	}
 	
