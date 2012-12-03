@@ -7,18 +7,28 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="pl" xml:lang="pl">
 	<head>
 		<title>
-			<s:message code="view.index.title" />
+			<s:message code="app.title" />
 		</title>
 		
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<link href="<c:url value="/resources/css/style.css" />" rel="stylesheet" type="text/css" />
+		
+		<link rel="stylesheet" href='<c:url value="/resources/plugin/foundation/stylesheets/foundation.min.css" />' />
+		<link rel="stylesheet" href='<c:url value="/resources/plugin/foundation/stylesheets/app.css" />' />
+
 	</head>
 	
 	<body>
-		<tiles:insertAttribute name="header" defaultValue="" />
-		<!-- Page content -->
-		<tiles:insertAttribute name="body" defaultValue="" />
-		<!-- End of page content -->
-		<tiles:insertAttribute name="footer" defaultValue="" />
+		<div class="twelve columns">
+			<tiles:insertAttribute name="header" defaultValue="" />
+		</div>
+		
+		<div class="twelve columns">
+			<tiles:insertAttribute name="body" defaultValue="" />
+		</div>
+		
+		<div class="twelve columns">
+			<tiles:insertAttribute name="footer" defaultValue="" />
+		</div>
+		
 	</body>
 </html>
