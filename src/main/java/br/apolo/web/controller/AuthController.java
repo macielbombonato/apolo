@@ -6,11 +6,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import br.apolo.common.util.ApoloUtils;
 import br.apolo.web.enums.Navigation;
 
 @Controller
-@RequestMapping(value = "auth")
+@RequestMapping(value = "/auth")
 public class AuthController {
 
 	@RequestMapping(value = "login", method = RequestMethod.GET)
@@ -28,17 +27,10 @@ public class AuthController {
 
 	@RequestMapping(value = "403", method = RequestMethod.GET)
 	public ModelAndView accessDenied() {
-		String message = ApoloUtils.getMessageBundle("login.forbidden");
+		String message = "";// TODO ApoloUtils.getMessageBundle("login.forbidden");
 
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("message", message);
-		return mav;
-	}
-
-	@RequestMapping(value = "home", method = RequestMethod.GET)
-	public ModelAndView home(ModelMap model) {
-		ModelAndView mav = new ModelAndView("../../home", model);
-		mav.addObject("previousPage", "login");
 		return mav;
 	}
 

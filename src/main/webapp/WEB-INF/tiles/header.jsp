@@ -6,34 +6,36 @@
 
 <div class="panel">
 	<div class="row">
-		<div class="six centered columns">
+		<div id="appHeaderlogo" class="three centered columns">
+
+		</div>
+		<div id="appHeaderTitle" class="six centered columns">
 			<h1>
 				<s:message code="app.title" />
 			</h1>
-		</div>	
+		</div>
+		<div id="appHeaderRight" class="three columns">
+
+		</div>
 	</div>
 	
 	<security:authorize access="isAuthenticated()">
-		<div class="twelve columns">
-			<p class="right">
-				<s:message code="user.hello" /> 
-				<security:authentication property="principal.systemUser.name" />
-				[
-				<a href='<s:url value="/auth/logout"></s:url>' >
-					<s:message code="user.logout" />
-				</a>
-				]
-			</p>
-		</div>	
+		<p class="right">
+			<s:message code="user.hello" /> 
+			<security:authentication property="principal.systemUser.name" />
+			[
+			<a href='<s:url value="/auth/logout"></s:url>' >
+				<s:message code="user.logout" />
+			</a>
+			]
+		</p>
 	</security:authorize>
 	
 	<security:authorize access="!isAuthenticated()">
-		<div class="twelve columns">
-			<p class="right">
-				<a href='<s:url value="/auth/login"></s:url>' >
-					<s:message code="user.restricted.area.access" />
-				</a>
-			</p>
-		</div>	
+		<p class="right">
+			<a href='<s:url value="/auth/login"></s:url>' >
+				<s:message code="user.restricted.area.access" />
+			</a>
+		</p>
 	</security:authorize>
 </div>
