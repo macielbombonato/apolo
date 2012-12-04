@@ -14,7 +14,9 @@
 		
 		<link rel="stylesheet" href='<c:url value="/resources/plugin/foundation/stylesheets/foundation.min.css" />' />
 		<link rel="stylesheet" href='<c:url value="/resources/plugin/foundation/stylesheets/app.css" />' />
-
+		
+		<link rel="stylesheet" href='<c:url value="/resources/plugin/bootstrap/css/bootstrap.css" />' />
+		
 	</head>
 	
 	<body>
@@ -29,6 +31,9 @@
 		<div class="twelve columns">
 			<tiles:insertAttribute name="footer" defaultValue="" />
 		</div>
+
+		
+		<script type="text/javascript" src='<c:url value="/resources/plugin/bootstrap/js/bootstrap.js" />'></script>
 		
 	</body>
 </html>
