@@ -43,7 +43,7 @@ public class UserServiceImpl implements UserService {
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		User u = userRepository.findByLogin(username);
 		Collection<GrantedAuthority> authorities = loadUserAuthorities(u);
-		return new CurrentUser(u.getId(), u.getEmail(), u.getPassword().toLowerCase(), authorities);
+		return new CurrentUser(u.getId(), u.getEmail(), u.getPassword().toLowerCase(), u, authorities);
 	}
 
 	@Override
