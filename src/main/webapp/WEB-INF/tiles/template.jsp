@@ -3,37 +3,43 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags"%>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="pl" xml:lang="pl">
+<!DOCTYPE html>
+<html lang="en">
 	<head>
 		<title>
 			<s:message code="app.title" />
 		</title>
 		
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		
-		<link rel="stylesheet" href='<c:url value="/resources/plugin/foundation/stylesheets/foundation.min.css" />' />
-		<link rel="stylesheet" href='<c:url value="/resources/plugin/foundation/stylesheets/app.css" />' />
-		
-		<link rel="stylesheet" href='<c:url value="/resources/plugin/bootstrap/css/bootstrap.css" />' />
+		<link rel="stylesheet" href='<c:url value="/resources/plugin/bootstrap/css/bootstrap.min.css" />' />
+		<link rel="stylesheet" href='<c:url value="/resources/plugin/bootstrap/css/bootstrap-responsive.min.css" />' />
 		
 	</head>
 	
 	<body>
-		<div class="twelve columns">
-			<tiles:insertAttribute name="header" defaultValue="" />
+		<div class="container">
+			<div class="row">
+				<div class="span12">
+					<tiles:insertAttribute name="header" defaultValue="" />
+				</div>
+				
+			</div>
+			<div class="row">
+				<div class="span12">
+					<tiles:insertAttribute name="body" defaultValue="" />
+				</div>
+			</div>
+			<div class="row">
+				<div class="span12">
+					<tiles:insertAttribute name="footer" defaultValue="" />
+				</div>
+			</div>
 		</div>
 		
-		<div class="twelve columns">
-			<tiles:insertAttribute name="body" defaultValue="" />
-		</div>
-		
-		<div class="twelve columns">
-			<tiles:insertAttribute name="footer" defaultValue="" />
-		</div>
-
-		
-		<script type="text/javascript" src='<c:url value="/resources/plugin/bootstrap/js/bootstrap.js" />'></script>
+		<script src="http://code.jquery.com/jquery-latest.js"></script>
+		<script type="text/javascript" src='<c:url value="/resources/plugin/bootstrap/js/bootstrap.min.js" />'></script>
 		
 	</body>
 </html>
