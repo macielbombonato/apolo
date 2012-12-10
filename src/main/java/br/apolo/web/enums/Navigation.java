@@ -8,6 +8,11 @@ public enum Navigation {
 	USER("user"),
 	USER_INDEX("user/index"),
 	USER_NEW("user/new"),
+	USER_EDIT("user/edit"),
+	USER_LIST("user/list"),
+	USER_VIEW("user/view"),
+	USER_CHANGE_PASSWORD("user/change-password"),
+	
 	
 	AUTH("auth"),
 	AUTH_LOGIN("auth/login"),

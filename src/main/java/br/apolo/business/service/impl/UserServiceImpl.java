@@ -2,11 +2,11 @@ package br.apolo.business.service.impl;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -25,7 +25,7 @@ public class UserServiceImpl implements UserService {
 	UserRepository userRepository;
 
 	@Override
-	public Collection<User> list() {
+	public List<User> list() {
 		return userRepository.findAll();
 	}
 
@@ -47,11 +47,8 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public User getAuthenticatedUser() {
-
-		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		return userRepository.findByLogin(username);
-
+	public User save(User user) {
+		return userRepository.saveOrUpdate(user);
 	}
 
 	private Collection<GrantedAuthority> loadUserAuthorities(User u) {

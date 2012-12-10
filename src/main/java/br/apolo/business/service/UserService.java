@@ -1,6 +1,6 @@
 package br.apolo.business.service;
 
-import java.util.Collection;
+import java.util.List;
 
 import org.springframework.security.core.userdetails.UserDetailsService;
 
@@ -8,11 +8,11 @@ import br.apolo.data.model.User;
 
 public interface UserService extends UserDetailsService {
 
-	Collection<User> list();
+	List<User> list();
 
 	User find(Long id);
 
 	User findByLogin(String login);
 
-	User getAuthenticatedUser();
+	User save(User user);
 }

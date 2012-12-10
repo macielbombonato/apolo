@@ -13,22 +13,30 @@
 			</a>
 			
 			<ul class="dropdown-menu">
-				<li class="nav-header">
-					<s:message code="user.header.admin" />
-				</li>
-				<li>
-					<a href='<s:url value="/user/new"></s:url>'>
-						<s:message code="user.new" />
-					</a>
-				</li>
-				
-				<li class="divider" />
+				<security:authorize  access="hasRole('ROLE_ADMIN')">
+					<li class="nav-header">
+						<s:message code="user.header.admin" />
+					</li>
+					<li>
+						<a href='<s:url value="/user/new"></s:url>'>
+							<s:message code="user.new" />
+						</a>
+					</li>
+					
+					<li>
+						<a href='<s:url value="/user/list"></s:url>'>
+							<s:message code="user.list" />
+						</a>
+					</li>
+					
+					<li class="divider" />
+				</security:authorize>
 				
 				<li class="nav-header">
 					<s:message code="user.header.user" />
 				</li>
 				<li>
-					<a href='<s:url value="/user"></s:url>'>
+					<a href='<s:url value="/user/change-password"></s:url>'>
 						<s:message code="user.change.password" />
 					</a>
 				</li>

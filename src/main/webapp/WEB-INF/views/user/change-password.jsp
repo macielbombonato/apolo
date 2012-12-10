@@ -6,10 +6,9 @@
 
 <fieldset>
 	<legend>
-		<s:message code="user.index.title" />
+		<s:message code="user.change-password.title" />
 	</legend>
 	
 	<jsp:include page='_user-form.jsp'></jsp:include>
 
 </fieldset>
-
