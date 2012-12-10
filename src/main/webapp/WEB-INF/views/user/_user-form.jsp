@@ -5,6 +5,9 @@
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 
 <form id="userForm" action="<s:url value="/user/save"></s:url>" method="post">
+
+	<input type="hidden" id="id" name="id" value="${user.id}" />
+
 	<div class="row">
 		<div class="span6">
 			<label for="name">

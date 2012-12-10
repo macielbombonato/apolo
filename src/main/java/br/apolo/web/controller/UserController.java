@@ -82,6 +82,25 @@ public class UserController extends BaseController {
 		return mav;
 	}
 	
+	@SecuredEnum(UserPermission.USER_REMOVE)
+	@RequestMapping(value = "remove/{id}", method = RequestMethod.GET)
+	public ModelAndView remove(@PathVariable Long id) {
+		ModelAndView mav = new ModelAndView(Navigation.USER_LIST.getPath());
+		
+		User user = userService.find(id);
+		
+		if (!user.equals(getAuthenticatedUser())) {
+			userService.remove(user);	
+		} else {
+			mav = list();
+			
+			mav.addObject("error", true);
+			// TODO input message
+		}
+		
+		return mav;
+	}
+	
 	@SecuredEnum({ UserPermission.USER_CREATE, UserPermission.USER_EDIT })
 	@RequestMapping(value = "save", method = RequestMethod.POST)
 	public String save(@ModelAttribute("user") User user) throws IOException {

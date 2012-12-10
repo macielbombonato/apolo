@@ -5,11 +5,13 @@ import java.util.Collection;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import br.apolo.business.service.UserService;
 import br.apolo.data.model.User;
@@ -47,8 +49,19 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
+	@Transactional
 	public User save(User user) {
+		Md5PasswordEncoder encoder = new Md5PasswordEncoder();
+		
+		user.setPassword(encoder.encodePassword(user.getPassword(), null));
+		
 		return userRepository.saveOrUpdate(user);
+	}
+	
+	@Override
+	@Transactional
+	public void remove(User user) {
+		userRepository.remove(user);
 	}
 
 	private Collection<GrantedAuthority> loadUserAuthorities(User u) {

@@ -9,6 +9,62 @@
 		<s:message code="user.list.title" />
 	</legend>
 	
-	Lista
+	<c:if test="${error}">
+		<div class="alert alert-error">
+			<s:message code="user.login.failure" />
+		</div>
+		
+	</c:if>
+	
+	<table class="table table-striped table-hover table-bordered">
+		<thead>
+			<tr>
+				<th>
+					<s:message code="user.username" />
+				</th>
+				<th>
+					<s:message code="user.email" />
+				</th>
+				<th>
+					<s:message code="common.actions" />
+				</th>
+			</tr>
+		</thead>
+		
+		<tbody>
+			<c:forEach items="${userList}" var="user">
+				<tr>
+					<td>
+						${user.name}
+					</td>
+					<td>
+						${user.email}
+					</td>
+					<td>
+						<div class="btn-group">
+							<a href='<s:url value="/user/view"></s:url>/${user.id}' class="btn" tabindex="-1">
+								<s:message code="common.show" />
+							</a>
+							<button class="btn dropdown-toggle" data-toggle="dropdown" tabindex="-1">
+								<span class="caret"></span>
+							</button>
+							<ul class="dropdown-menu">
+								<li>
+									<a href='<s:url value="/user/edit"></s:url>/${user.id}'>
+										<s:message code="common.edit" />
+									</a>
+								</li>
+								<li>
+									<a href='<s:url value="/user/remove"></s:url>/${user.id}'>
+										<s:message code="common.remove" />
+									</a>
+								</li>
+							</ul>
+						</div>
+					</td>
+				</tr>
+			</c:forEach>
+		</tbody>
+	</table>
 
 </fieldset>

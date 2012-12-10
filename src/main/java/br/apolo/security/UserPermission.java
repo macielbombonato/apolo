@@ -7,7 +7,8 @@ public enum UserPermission implements ConfigAttribute {
 	
 	USER, 
 	USER_CREATE, 
-	USER_EDIT, 
+	USER_EDIT,
+	USER_REMOVE,
 	USER_LIST;
 	
 	public String getAttribute() {

@@ -15,4 +15,6 @@ public interface UserService extends UserDetailsService {
 	User findByLogin(String login);
 
 	User save(User user);
+	
+	void remove(User user);
 }
