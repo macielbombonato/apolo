@@ -35,7 +35,7 @@ public class User extends BaseEntity {
 	@Column(name = "password", length = InputLength.MEDIUM, nullable = false)
 	private String password;
 
-	@ManyToMany(fetch = FetchType.LAZY)
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "users_in_groups", joinColumns = { @JoinColumn(name = "user_id", referencedColumnName = "user_id") }, inverseJoinColumns = { @JoinColumn(name = "group_id", referencedColumnName = "user_group_id") })
 	private Set<UserGroup> groups;
 
