@@ -30,7 +30,7 @@ public class UserController extends BaseController {
 		ModelAndView mav = new ModelAndView(Navigation.USER_INDEX.getPath());
 		
 		mav.addObject("user", getAuthenticatedUser());
-		mav.addObject("isEditable", false);
+		mav.addObject("readOnly", true);
 		return mav;
 	}
 	
@@ -40,7 +40,7 @@ public class UserController extends BaseController {
 		ModelAndView mav = new ModelAndView(Navigation.USER_CHANGE_PASSWORD.getPath());
 		
 		mav.addObject("user", getAuthenticatedUser());
-		mav.addObject("isEditable", false);
+		mav.addObject("readOnly", true);
 		mav.addObject("changePassword", true);
 		return mav;
 	}
@@ -51,20 +51,33 @@ public class UserController extends BaseController {
 		ModelAndView mav = new ModelAndView(Navigation.USER_NEW.getPath());
 		
 		mav.addObject("user", new User());
-		mav.addObject("isEditable", true);
+		mav.addObject("readOnly", false);
 		
 		return mav;
 	}
 	
 	@SecuredEnum(UserPermission.USER_EDIT)
-	@RequestMapping(value = "edit/{1}", method = RequestMethod.GET)
+	@RequestMapping(value = "edit/{id}", method = RequestMethod.GET)
 	public ModelAndView edit(@PathVariable Long id) {
 		ModelAndView mav = new ModelAndView(Navigation.USER_NEW.getPath());
 		
 		User user = userService.find(id);
 		
 		mav.addObject("user", user);
-		mav.addObject("isEditable", true);
+		mav.addObject("readOnly", false);
+		
+		return mav;
+	}
+	
+	@SecuredEnum(UserPermission.USER_LIST)
+	@RequestMapping(value = "view/{id}", method = RequestMethod.GET)
+	public ModelAndView view(@PathVariable Long id) {
+		ModelAndView mav = new ModelAndView(Navigation.USER_VIEW.getPath());
+		
+		User user = userService.find(id);
+		
+		mav.addObject("user", user);
+		mav.addObject("readOnly", true);
 		
 		return mav;
 	}

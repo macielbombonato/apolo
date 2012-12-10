@@ -6,9 +6,9 @@
 
 <fieldset>
 	<legend>
-		<s:message code="user.edit.title" />
+		<s:message code="user.list.title" />
 	</legend>
 	
-	<jsp:include page='_user-form.jsp'></jsp:include>
+	Lista
 
 </fieldset>

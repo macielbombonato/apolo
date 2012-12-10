@@ -3,10 +3,13 @@
        "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN"
        "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
 <tiles-definitions>
+	<definition name="*" extends="default">
+		<put-attribute name="body" value="/WEB-INF/views/{1}.jsp"></put-attribute>
+	</definition>
 	<definition name="*/*" extends="default">
 		<put-attribute name="body" value="/WEB-INF/views/{1}/{2}.jsp"></put-attribute>
 	</definition>
-	<definition name="*" extends="default">
-		<put-attribute name="body" value="/WEB-INF/views/{1}.jsp"></put-attribute>
+	<definition name="*/*/*" extends="default">
+		<put-attribute name="body" value="/WEB-INF/views/{1}/{2}/{3}.jsp"></put-attribute>
 	</definition>
 </tiles-definitions>

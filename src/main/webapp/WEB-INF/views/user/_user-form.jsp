@@ -10,17 +10,17 @@
 			<label for="name">
 				<s:message code="user.username" />
 			</label>
-			<input type="text" id="name" name="name" value="${user.name}" readonly="${isEditable}"/>
+			<input type="text" id="name" name="name" value="${user.name}" <c:if test="${readOnly}">readonly="true"</c:if> />
 		</div>
 		<div class="span6">
 			<label for="email">
 				<s:message code="user.email" />
 			</label>
-			<input type="text" id="email" name="email" value="${user.email}" readonly="${isEditable}"/>
+			<input type="text" id="email" name="email" value="${user.email}" <c:if test="${readOnly}">readonly="true"</c:if>/>
 		</div>
 	</div>
 	
-	<c:if test="${isEditable || changePassword}">
+	<c:if test="${not readOnly || changePassword}">
 		<div class="row">
 			<div class="span6">
 				<label for="password">
