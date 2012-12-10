@@ -11,8 +11,7 @@ http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 		<security:access-denied-handler error-page="/auth/403" />
 		
 		<security:intercept-url pattern="/" access="permitAll" />
-		<security:intercept-url pattern="/auth/login" access="permitAll" />
-		<security:intercept-url pattern="/auth/logout" access="permitAll" />
+		<security:intercept-url pattern="/auth/**" access="permitAll" />
 		<security:intercept-url pattern="/resources/**" access="permitAll" />
 		<security:intercept-url pattern="/error/**" access="permitAll" />
 		<security:intercept-url pattern="/**" access="isAuthenticated()" />
@@ -28,10 +27,11 @@ http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 
 	<bean id="userDetailsService" class="br.apolo.business.service.impl.UserServiceImpl" />
 
+    <security:global-method-security secured-annotations="enabled" metadata-source-ref="securedAnnotationMetadataSource" />
+    
 	<bean id="securedAnnotationMetadataSource" class="org.springframework.security.access.annotation.SecuredAnnotationSecurityMetadataSource">
 		<constructor-arg name="annotationMetadataExtractor">
 			<bean class="br.apolo.security.EnumAnnotationMetadataExtractor" />
 		</constructor-arg>
 	</bean>
-
 </beans>

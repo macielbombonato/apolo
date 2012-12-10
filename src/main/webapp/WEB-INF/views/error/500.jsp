@@ -1,12 +1,37 @@
-<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>    
 
-<div>
-	<h2>
-		500
-	</h2>
-	<h3>
-		500
-	</h3>
-</div>
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>
+			<s:message code="app.title" />
+		</title>
+		
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		
+		<link rel="stylesheet" href='<c:url value="/resources/plugin/bootstrap/css/bootstrap.min.css" />' />
+		<link rel="stylesheet" href='<c:url value="/resources/plugin/bootstrap/css/bootstrap-responsive.min.css" />' />
+		
+	</head>
+	
+	<body>
+		<div class="container">
+			<div class="row">
+				<div class="span12">
+					<h2>
+						500
+					</h2>
+					<h3>
+						500
+					</h3>
+				</div>
+			</div>
+		</div>
+		
+		<script src="http://code.jquery.com/jquery-latest.js"></script>
+		<script type="text/javascript" src='<c:url value="/resources/plugin/bootstrap/js/bootstrap.min.js" />'></script>
+		
+	</body>
+</html>
