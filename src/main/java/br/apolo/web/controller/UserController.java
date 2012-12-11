@@ -49,6 +49,21 @@ public class UserController extends BaseController {
 		mav.addObject("changePassword", true);
 		return mav;
 	}
+	
+	@SecuredEnum(UserPermission.USER)
+	@RequestMapping(value = "change-password-save", method = RequestMethod.POST)
+	public String changePasswordSave(@ModelAttribute("user") User user) throws IOException {
+		
+		if (user != null) {
+			User dbuser = userService.find(user.getId());
+			
+			dbuser.setPassword(user.getPassword());
+			
+			userService.save(dbuser);
+		}
+		
+		return redirect(Navigation.HOME);
+	}
 
 	@SecuredEnum(UserPermission.USER_CREATE)
 	@RequestMapping(value = "new", method = RequestMethod.GET)
