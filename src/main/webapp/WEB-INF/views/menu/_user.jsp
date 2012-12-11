@@ -29,6 +29,19 @@
 						</a>
 					</li>
 					
+					<li class="dropdown-submenu">
+						<a tabindex="-1" href="#">
+							<s:message code="user.groups" />
+						</a>
+						<ul class="dropdown-menu">
+							<li>
+								<a href='<s:url value="/user/permission/list"></s:url>'>
+									<s:message code="user.group.list" />
+								</a>
+							</li>
+						</ul>
+					</li>
+					
 					<li class="divider" />
 				</security:authorize>
 				

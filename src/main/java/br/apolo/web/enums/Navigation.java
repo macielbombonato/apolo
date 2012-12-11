@@ -13,6 +13,11 @@ public enum Navigation {
 	USER_VIEW("user/view"),
 	USER_CHANGE_PASSWORD("user/change-password"),
 	
+	USER_PERMISSION_LIST("user/permission/list"),
+	USER_PERMISSION_view("user/permission/view"),
+	USER_PERMISSION_CREATE("user/permission/new"),
+	USER_PERMISSION_EDIT("user/permission/edit"),
+	
 	
 	AUTH("auth"),
 	AUTH_LOGIN("auth/login"),

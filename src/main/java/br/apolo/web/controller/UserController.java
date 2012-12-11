@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import br.apolo.business.service.UserGroupService;
 import br.apolo.business.service.UserService;
 import br.apolo.data.model.User;
+import br.apolo.data.model.UserGroup;
 import br.apolo.security.SecuredEnum;
 import br.apolo.security.UserPermission;
 import br.apolo.web.enums.Navigation;
@@ -23,6 +25,9 @@ public class UserController extends BaseController {
 
 	@Autowired
 	UserService userService;
+	
+	@Autowired
+	UserGroupService userGroupService;
 	
 	@SecuredEnum(UserPermission.USER)
 	@RequestMapping(value = "", method = RequestMethod.GET)
@@ -119,6 +124,18 @@ public class UserController extends BaseController {
 		List<User> userList = userService.list();
 		
 		mav.addObject("userList", userList);
+		
+		return mav;
+	}
+	
+	@SecuredEnum(UserPermission.USER_PERMISSION_LIST)
+	@RequestMapping(value = "permission/list", method = RequestMethod.GET)
+	public ModelAndView permissionList() {
+		ModelAndView mav = new ModelAndView(Navigation.USER_PERMISSION_LIST.getPath());
+		
+		List<UserGroup> userGroupList = userGroupService.list();
+		
+		mav.addObject("userGroupList", userGroupList);
 		
 		return mav;
 	}
