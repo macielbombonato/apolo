@@ -17,16 +17,24 @@
 					<li class="nav-header">
 						<s:message code="user.header.admin" />
 					</li>
-					<li>
-						<a href='<s:url value="/user/new"></s:url>'>
-							<s:message code="user.new" />
-						</a>
-					</li>
 					
-					<li>
-						<a href='<s:url value="/user/list"></s:url>'>
-							<s:message code="user.list" />
+					<li class="dropdown-submenu">
+						<a tabindex="-1" href="#">
+							<s:message code="users" />
 						</a>
+						<ul class="dropdown-menu">
+							<li>
+								<a href='<s:url value="/user/new"></s:url>'>
+									<s:message code="user.new" />
+								</a>
+							</li>
+							
+							<li>
+								<a href='<s:url value="/user/list"></s:url>'>
+									<s:message code="user.list" />
+								</a>
+					</li>
+						</ul>
 					</li>
 					
 					<li class="dropdown-submenu">

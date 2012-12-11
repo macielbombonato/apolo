@@ -4,7 +4,13 @@
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 
-<p>
-	ERRO <br />
-	
-</p>
+<div class="row">
+	<div class="span12 alert alert-error">
+		<h2>
+			${code}
+		</h2>
+		<h3>
+			${message}
+		</h3>
+	</div>
+</div>

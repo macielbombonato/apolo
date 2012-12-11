@@ -11,9 +11,8 @@
 	
 	<c:if test="${error}">
 		<div class="alert alert-error">
-			<s:message code="user.login.failure" />
+			${message}
 		</div>
-		
 	</c:if>
 	
 	<table class="table table-striped table-hover table-bordered">
@@ -52,7 +51,7 @@
 					</td>
 					<td>
 						<div class="btn-group">
-							<a href='<s:url value="/user/view"></s:url>/${user.id}' class="btn" tabindex="-1">
+							<a href='<s:url value="/user/permission/view"></s:url>/${group.id}' class="btn" tabindex="-1">
 								<s:message code="common.show" />
 							</a>
 							<button class="btn dropdown-toggle" data-toggle="dropdown" tabindex="-1">
@@ -60,12 +59,12 @@
 							</button>
 							<ul class="dropdown-menu">
 								<li>
-									<a href='<s:url value="/user/edit"></s:url>/${user.id}'>
+									<a href='<s:url value="/user/permission/edit"></s:url>/${group.id}'>
 										<s:message code="common.edit" />
 									</a>
 								</li>
 								<li>
-									<a href='<s:url value="/user/remove"></s:url>/${user.id}'>
+									<a href='<s:url value="/user/permission/remove"></s:url>/${group.id}'>
 										<s:message code="common.remove" />
 									</a>
 								</li>

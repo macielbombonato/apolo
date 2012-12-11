@@ -11,9 +11,8 @@
 	
 	<c:if test="${error}">
 		<div class="alert alert-error">
-			<s:message code="user.login.failure" />
+			${message}
 		</div>
-		
 	</c:if>
 	
 	<table class="table table-striped table-hover table-bordered">

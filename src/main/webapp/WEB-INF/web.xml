@@ -5,28 +5,8 @@
 	version="3.0">
 
 	<error-page>
-		<error-code>401</error-code>
-		<location>/WEB-INF/view/error/401.jsp</location>
-	</error-page>
-
-	<error-page>
-		<error-code>403</error-code>
-		<location>/WEB-INF/view/auth/403.jsp</location>
-	</error-page>
-	
-	<error-page>
 		<error-code>404</error-code>
-		<location>/WEB-INF/view/auth/403.jsp</location>
-	</error-page>
-	
-	<error-page>
-		<error-code>500</error-code>
-		<location>/WEB-INF/view/error/500.jsp</location>
-	</error-page>
-	
-	<error-page>
-		<error-code>503</error-code>
-		<location>/WEB-INF/view/error/500.jsp</location>
+		<location>/WEB-INF/views/error/fatal-error.jsp</location>
 	</error-page>
 
 </web-app>

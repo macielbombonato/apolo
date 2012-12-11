@@ -23,9 +23,7 @@ public enum Navigation {
 	AUTH_LOGIN("auth/login"),
 	AUTH_LOGOUT("auth/logout"),
 	
-	ERROR_401("error/401"),
-	ERROR_403("auth/403"),
-	ERROR_500("error/500"),
+	ERROR("error/error"),
 	
 	;
 	
