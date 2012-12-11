@@ -1,5 +1,6 @@
 package br.apolo.data.model;
 
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.AttributeOverride;
@@ -9,6 +10,7 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
@@ -27,13 +29,14 @@ public class UserGroup extends BaseEntity {
 	@Column(name = "name", length = InputLength.MEDIUM, nullable = false)
 	private String name;
 
-	@ElementCollection(targetClass = UserPermission.class)
+	@ElementCollection(targetClass = UserPermission.class, fetch = FetchType.EAGER)
 	@Enumerated(EnumType.STRING)
-	@CollectionTable(name = "group_permission", joinColumns = @JoinColumn(name = "group_id", referencedColumnName = "user_group_id"), uniqueConstraints = @UniqueConstraint(columnNames = {
-			"group_id", "permission_name" }, name = "uq_group_permission"))
+	@CollectionTable(name = "group_permission", 
+			joinColumns = @JoinColumn(name = "group_id", referencedColumnName = "user_group_id", insertable = true, updatable = true, nullable = false), 
+			uniqueConstraints = @UniqueConstraint(columnNames = {"group_id", "permission_name" }, name = "uq_group_permission")
+	)
 	@Column(name = "permission_name")
-	// Column name in the table
-	private Set<UserPermission> permissions;
+	private List<UserPermission> permissions;
 
 	@ManyToMany(mappedBy = "groups")
 	private Set<User> users;
@@ -54,11 +57,11 @@ public class UserGroup extends BaseEntity {
 		this.users = users1;
 	}
 
-	public Set<UserPermission> getPermissions() {
+	public List<UserPermission> getPermissions() {
 		return permissions;
 	}
 
-	public void setPermissions(Set<UserPermission> perms) {
+	public void setPermissions(List<UserPermission> perms) {
 		this.permissions = perms;
 	}
 
