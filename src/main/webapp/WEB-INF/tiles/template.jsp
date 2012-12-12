@@ -40,6 +40,7 @@
 		
 		<script src="http://code.jquery.com/jquery-latest.js"></script>
 		<script type="text/javascript" src='<c:url value="/resources/plugin/bootstrap/js/bootstrap.min.js" />'></script>
+		<script type="text/javascript" src='<c:url value="/resources/app/js/item-list-util.js" />'></script>
 		
 	</body>
 </html>

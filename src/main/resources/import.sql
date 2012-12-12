@@ -9,7 +9,6 @@ INSERT INTO group_permission (group_id, permission_name) VALUES (2, 'USER_CREATE
 INSERT INTO group_permission (group_id, permission_name) VALUES (2, 'USER_EDIT');
 INSERT INTO group_permission (group_id, permission_name) VALUES (2, 'USER_REMOVE');
 INSERT INTO group_permission (group_id, permission_name) VALUES (2, 'USER_LIST');
-INSERT INTO group_permission (group_id, permission_name) VALUES (2, 'USER_PERMISSION_VIEW');
 INSERT INTO group_permission (group_id, permission_name) VALUES (2, 'USER_PERMISSION_LIST');
 INSERT INTO group_permission (group_id, permission_name) VALUES (2, 'USER_PERMISSION_CREATE');
 INSERT INTO group_permission (group_id, permission_name) VALUES (2, 'USER_PERMISSION_EDIT');

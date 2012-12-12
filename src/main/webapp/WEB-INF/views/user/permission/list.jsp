@@ -9,11 +9,18 @@
 		<s:message code="user.group.list.title" />
 	</legend>
 	
-	<c:if test="${error}">
-		<div class="alert alert-error">
-			${message}
-		</div>
-	</c:if>
+	<c:choose>
+		<c:when test="${error}">
+			<div class="alert alert-error">
+				${message}
+			</div>		
+		</c:when>
+		<c:when test="${msg}">
+			<div class="alert alert-info">
+				${message}
+			</div>		
+		</c:when>
+	</c:choose>
 	
 	<table class="table table-striped table-hover table-bordered">
 		<thead>
@@ -37,7 +44,7 @@
 						${group.name}
 					</td>
 					<td>
-						<table class="table table-striped table-hover table-bordered">
+						<table class="table table-condensed table-bordered">
 							<tbody>
 								<c:forEach items="${group.permissions}" var="permission">
 									<tr>
@@ -51,18 +58,13 @@
 					</td>
 					<td>
 						<div class="btn-group">
-							<a href='<s:url value="/user/permission/view"></s:url>/${group.id}' class="btn" tabindex="-1">
-								<s:message code="common.show" />
+							<a href='<s:url value="/user/permission/edit"></s:url>/${group.id}' class="btn" tabindex="-1">
+								<s:message code="common.edit" />
 							</a>
 							<button class="btn dropdown-toggle" data-toggle="dropdown" tabindex="-1">
 								<span class="caret"></span>
 							</button>
 							<ul class="dropdown-menu">
-								<li>
-									<a href='<s:url value="/user/permission/edit"></s:url>/${group.id}'>
-										<s:message code="common.edit" />
-									</a>
-								</li>
 								<li>
 									<a href='<s:url value="/user/permission/remove"></s:url>/${group.id}'>
 										<s:message code="common.remove" />
@@ -75,5 +77,4 @@
 			</c:forEach>
 		</tbody>
 	</table>
-
 </fieldset>

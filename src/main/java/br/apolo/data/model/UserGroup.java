@@ -1,9 +1,9 @@
 package br.apolo.data.model;
 
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.AttributeOverride;
+import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -36,9 +36,9 @@ public class UserGroup extends BaseEntity {
 			uniqueConstraints = @UniqueConstraint(columnNames = {"group_id", "permission_name" }, name = "uq_group_permission")
 	)
 	@Column(name = "permission_name")
-	private List<UserPermission> permissions;
+	private Set<UserPermission> permissions;
 
-	@ManyToMany(mappedBy = "groups")
+	@ManyToMany(mappedBy = "groups", cascade = CascadeType.MERGE)
 	private Set<User> users;
 
 	public String getName() {
@@ -57,11 +57,11 @@ public class UserGroup extends BaseEntity {
 		this.users = users1;
 	}
 
-	public List<UserPermission> getPermissions() {
+	public Set<UserPermission> getPermissions() {
 		return permissions;
 	}
 
-	public void setPermissions(List<UserPermission> perms) {
+	public void setPermissions(Set<UserPermission> perms) {
 		this.permissions = perms;
 	}
 

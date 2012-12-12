@@ -9,11 +9,18 @@
 		<s:message code="user.list.title" />
 	</legend>
 	
-	<c:if test="${error}">
-		<div class="alert alert-error">
-			${message}
-		</div>
-	</c:if>
+	<c:choose>
+		<c:when test="${error}">
+			<div class="alert alert-error">
+				${message}
+			</div>		
+		</c:when>
+		<c:when test="${msg}">
+			<div class="alert alert-info">
+				${message}
+			</div>		
+		</c:when>
+	</c:choose>
 	
 	<table class="table table-striped table-hover table-bordered">
 		<thead>
@@ -23,6 +30,9 @@
 				</th>
 				<th>
 					<s:message code="user.email" />
+				</th>
+				<th>
+					<s:message code="user.groups" />
 				</th>
 				<th>
 					<s:message code="common.actions" />
@@ -38,6 +48,19 @@
 					</td>
 					<td>
 						${user.email}
+					</td>
+					<td>
+						<table class="table table-condensed table-bordered">
+							<tbody>
+								<c:forEach items="${user.groups}" var="group">
+									<tr>
+										<td>
+											${group.name}
+										</td>
+									</tr>
+								</c:forEach>
+							</tbody>
+						</table>
 					</td>
 					<td>
 						<div class="btn-group">

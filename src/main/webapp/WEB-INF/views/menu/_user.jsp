@@ -24,16 +24,15 @@
 						</a>
 						<ul class="dropdown-menu">
 							<li>
+								<a href='<s:url value="/user/list"></s:url>'>
+									<s:message code="user.list" />
+								</a>
+							</li>
+							<li>
 								<a href='<s:url value="/user/new"></s:url>'>
 									<s:message code="user.new" />
 								</a>
 							</li>
-							
-							<li>
-								<a href='<s:url value="/user/list"></s:url>'>
-									<s:message code="user.list" />
-								</a>
-					</li>
 						</ul>
 					</li>
 					
@@ -45,6 +44,11 @@
 							<li>
 								<a href='<s:url value="/user/permission/list"></s:url>'>
 									<s:message code="user.group.list" />
+								</a>
+							</li>
+							<li>
+								<a href='<s:url value="/user/permission/new"></s:url>'>
+									<s:message code="user.group.new" />
 								</a>
 							</li>
 						</ul>

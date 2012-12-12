@@ -13,7 +13,8 @@
 		<jsp:include page='_user-form.jsp'></jsp:include>
 		
 		<div class="row">
-			<div class="span4 offset4">
+			<br /> <br />
+			<div class="span12">
 				<button type="submit" class="btn btn-primary">
 					<s:message code="common.save" /> 
 				</button>

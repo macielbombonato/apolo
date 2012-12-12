@@ -14,7 +14,7 @@ public interface UserService extends UserDetailsService {
 
 	User findByLogin(String login);
 
-	User save(User user);
+	User save(User user, boolean changePassword);
 	
 	void remove(User user);
 }

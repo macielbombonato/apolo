@@ -50,10 +50,11 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	@Transactional
-	public User save(User user) {
-		Md5PasswordEncoder encoder = new Md5PasswordEncoder();
-		
-		user.setPassword(encoder.encodePassword(user.getPassword(), null));
+	public User save(User user, boolean changePassword) {
+		if (changePassword) {
+			Md5PasswordEncoder encoder = new Md5PasswordEncoder();
+			user.setPassword(encoder.encodePassword(user.getPassword(), null));			
+		}
 		
 		return userRepository.saveOrUpdate(user);
 	}

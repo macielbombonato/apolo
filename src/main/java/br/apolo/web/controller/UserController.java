@@ -9,10 +9,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import br.apolo.business.service.UserGroupService;
 import br.apolo.business.service.UserService;
+import br.apolo.common.util.ApoloUtils;
 import br.apolo.data.model.User;
 import br.apolo.data.model.UserGroup;
 import br.apolo.security.SecuredEnum;
@@ -59,7 +61,7 @@ public class UserController extends BaseController {
 			
 			dbuser.setPassword(user.getPassword());
 			
-			userService.save(dbuser);
+			userService.save(dbuser, true);
 		}
 		
 		return redirect(Navigation.HOME);
@@ -71,6 +73,7 @@ public class UserController extends BaseController {
 		ModelAndView mav = new ModelAndView(Navigation.USER_NEW.getPath());
 		
 		mav.addObject("user", new User());
+		mav.addObject("groupList", userGroupService.list());
 		mav.addObject("readOnly", false);
 		
 		return mav;
@@ -79,12 +82,14 @@ public class UserController extends BaseController {
 	@SecuredEnum(UserPermission.USER_EDIT)
 	@RequestMapping(value = "edit/{id}", method = RequestMethod.GET)
 	public ModelAndView edit(@PathVariable Long id) {
-		ModelAndView mav = new ModelAndView(Navigation.USER_NEW.getPath());
+		ModelAndView mav = new ModelAndView(Navigation.USER_EDIT.getPath());
 		
 		User user = userService.find(id);
 		
 		mav.addObject("user", user);
+		mav.addObject("groupList", userGroupService.list());
 		mav.addObject("readOnly", false);
+		mav.addObject("editing", true);
 		
 		return mav;
 	}
@@ -115,7 +120,7 @@ public class UserController extends BaseController {
 			mav = list();
 			
 			mav.addObject("error", true);
-			// TODO input message
+			mav.addObject("message", ApoloUtils.getMessageBundle("user.msg.error.remove.yourself"));
 		}
 		
 		return mav;
@@ -123,12 +128,19 @@ public class UserController extends BaseController {
 	
 	@SecuredEnum({ UserPermission.USER_CREATE, UserPermission.USER_EDIT })
 	@RequestMapping(value = "save", method = RequestMethod.POST)
-	public String save(@ModelAttribute("user") User user) throws IOException {
+	public ModelAndView save(@ModelAttribute("user") User user, @RequestParam(defaultValue = "false") boolean changePassword) throws IOException {
+		ModelAndView mav = new ModelAndView();
+		
 		if (user != null) {
-			userService.save(user);
+			userService.save(user, changePassword);
+			
+			mav = list();
+			
+			mav.addObject("msg", true);
+			mav.addObject("message", ApoloUtils.getMessageBundle("common.msg.save.success"));
 		}
 		
-		return redirect(Navigation.HOME);
+		return mav;
 	}
 	
 	@SecuredEnum(UserPermission.USER_LIST)
@@ -143,6 +155,23 @@ public class UserController extends BaseController {
 		return mav;
 	}
 	
+	@SecuredEnum({ UserPermission.USER_PERMISSION_CREATE, UserPermission.USER_PERMISSION_EDIT })
+	@RequestMapping(value = "permission/save", method = RequestMethod.POST)
+	public ModelAndView permissionSave(@ModelAttribute("userGroup") UserGroup userGroup) throws IOException {
+		ModelAndView mav = new ModelAndView();
+		
+		if (userGroup != null) {
+			userGroupService.save(userGroup);
+			
+			mav = permissionList();
+			
+			mav.addObject("msg", true);
+			mav.addObject("message", ApoloUtils.getMessageBundle("common.msg.save.success"));
+		}
+		
+		return mav;
+	}
+	
 	@SecuredEnum(UserPermission.USER_PERMISSION_LIST)
 	@RequestMapping(value = "permission/list", method = RequestMethod.GET)
 	public ModelAndView permissionList() {
@@ -151,6 +180,56 @@ public class UserController extends BaseController {
 		List<UserGroup> userGroupList = userGroupService.list();
 		
 		mav.addObject("userGroupList", userGroupList);
+		mav.addObject("permissionList", UserPermission.values());
+		
+		return mav;
+	}
+	
+	@SecuredEnum(UserPermission.USER_PERMISSION_CREATE)
+	@RequestMapping(value = "permission/new", method = RequestMethod.GET)
+	public ModelAndView permissionCreate() {
+		ModelAndView mav = new ModelAndView(Navigation.USER_PERMISSION_CREATE.getPath());
+		
+		mav.addObject("user", new UserGroup());
+		mav.addObject("permissionList", UserPermission.values());
+		mav.addObject("readOnly", false);
+		
+		return mav;
+	}
+	
+	@SecuredEnum(UserPermission.USER_PERMISSION_EDIT)
+	@RequestMapping(value = "permission/edit/{id}", method = RequestMethod.GET)
+	public ModelAndView permissionEdit(@PathVariable Long id) {
+		ModelAndView mav = new ModelAndView(Navigation.USER_PERMISSION_EDIT.getPath());
+		
+		UserGroup userGroup = userGroupService.find(id);
+		
+		mav.addObject("userGroup", userGroup);
+		mav.addObject("permissionList", UserPermission.values());
+		mav.addObject("readOnly", false);
+		
+		return mav;
+	}
+	
+	@SecuredEnum(UserPermission.USER_PERMISSION_REMOVE)
+	@RequestMapping(value = "permission/remove/{id}", method = RequestMethod.GET)
+	public ModelAndView permissionRemove(@PathVariable Long id) {
+		ModelAndView mav = new ModelAndView();
+		
+		UserGroup userGroup = userGroupService.find(id);
+		
+		if (userGroup != null) {
+			if (userGroup.getUsers() != null && !userGroup.getUsers().isEmpty()) {
+				mav = permissionList();
+				
+				mav.addObject("error", true);
+				mav.addObject("message", ApoloUtils.getMessageBundle("user.group.msg.error.has.associated.users"));
+			} else {
+				userGroupService.remove(userGroup);	
+				
+				mav = permissionList();
+			}
+		}
 		
 		return mav;
 	}
