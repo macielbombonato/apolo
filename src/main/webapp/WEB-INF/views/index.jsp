@@ -56,5 +56,8 @@
 		<p>
 			<s:message code="view.index.tecnologies.explain" htmlEscape="false"/>
 		</p>
+		<p>
+			<s:message code="view.index.tecnologies.ps" htmlEscape="false"/>
+		</p>
 	</div>
 </div>
