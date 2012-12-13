@@ -6,8 +6,10 @@
 <div class="row-fluid">
 	<div class="span12">
 		<hr>
-		<p class="pull-right">
-			<s:message code="footer.message" />
+		<p class="muted">
+			<small>
+				<s:message code="footer.message" htmlEscape="false"/>
+			</small>
 		</p>
 	</div>
 </div>

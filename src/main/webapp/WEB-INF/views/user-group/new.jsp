@@ -9,7 +9,7 @@
 		<s:message code="user.group.new.title" />
 	</legend>
 	
-	<form id="userGroupForm" action="<s:url value="/user/permission/save"></s:url>" method="post" class="form-inline">
+	<form id="userGroupForm" action="<s:url value="/user-group/save"></s:url>" method="post" class="form-inline">
 		<jsp:include page='_permission-form.jsp'></jsp:include>
 		
 		<div class="row">

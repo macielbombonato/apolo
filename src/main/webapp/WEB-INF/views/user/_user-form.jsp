@@ -67,46 +67,80 @@
 </c:choose>
 
 <div class="row">
-	<c:if test="${not readOnly}">
-		<div class="span5">
-			<label for="name">
-				<s:message code="user.group.permissions.available" />
-			</label>
-			<select id="listFrom" size="4" multiple="multiple" class="input-block-level">
-				<c:forEach items="${groupList}" var="group">
-					<option value="${group.id}">
-						${group.name}
-					</option>
-				</c:forEach>
-			</select>
-		</div>
-		
-		<div class="span2">
-			<button id="btnAdd" type="button" class="btn btn-secondary btn-block" >
-				<i class="icon-step-forward"></i>
-			</button>
-			<button id="btnRemove" type="button" class="btn btn-secondary btn-block">
-				<i class="icon-step-backward"></i> 
-			</button>
-			<button id="btnAddAll" type="button" class="btn btn-secondary btn-block">
-				<i class="icon-fast-forward"></i>
-			</button>
-			<button id="btnRemoveAll" type="button" class="btn btn-secondary btn-block">
-				<i class="icon-fast-backward"></i>
-			</button>
-		</div>
-	</c:if>
-	
-	<div class="span5">
-		<label for="name">
-			<s:message code="user.group.permissions.selected" />
-		</label>
-		<select name="groups" id="listTo" size="4" multiple="multiple" class="input-block-level" >
-			<c:forEach items="${user.groups}" var="group">
-				<option value="${group.id}" selected="selected">
-					${group.name}
-				</option>
-			</c:forEach>
-		</select>
-	</div>
+
+</div>
+
+<div class="row">
+	<c:choose>
+		<c:when test="${not readOnly}">
+			<div class="span5">
+				<label for="name">
+					<s:message code="user.group.permissions.available" />
+				</label>
+				<select id="listFrom" size="4" multiple="multiple" class="input-block-level">
+					<c:forEach items="${groupList}" var="group">
+						<option value="${group.id}">
+							${group.name}
+						</option>
+					</c:forEach>
+				</select>
+			</div>
+			
+			<div class="span2">
+				<button id="btnAdd" type="button" class="btn btn-secondary btn-block" >
+					<i class="icon-step-forward"></i>
+				</button>
+				<button id="btnRemove" type="button" class="btn btn-secondary btn-block">
+					<i class="icon-step-backward"></i> 
+				</button>
+				<button id="btnAddAll" type="button" class="btn btn-secondary btn-block">
+					<i class="icon-fast-forward"></i>
+				</button>
+				<button id="btnRemoveAll" type="button" class="btn btn-secondary btn-block">
+					<i class="icon-fast-backward"></i>
+				</button>
+			</div>
+			
+			<div class="span5">
+				<label for="name">
+					<s:message code="user.group.permissions.selected" />
+				</label>
+				<select name="groups" id="listTo" size="4" multiple="multiple" class="input-block-level" >
+					<c:forEach items="${user.groups}" var="group">
+						<option value="${group.id}" selected="selected">
+							${group.name}
+						</option>
+					</c:forEach>
+				</select>
+			</div>
+		</c:when>
+		<c:otherwise>
+			<div class="span5">
+				<table class="table table-striped table-hover table-bordered">
+					<caption>
+						<strong>
+							<s:message code="user.group.permissions.selected" />
+						</strong>
+					</caption>
+					<tbody>
+						<c:forEach items="${user.groups}" var="group">
+							<tr>
+								<td>
+									<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_LIST, ROLE_USER_PERMISSION_LIST, ROLE_USER_PERMISSION_VIEW">
+										<a href='<s:url value="/user-group/view"></s:url>/${group.id}'>
+											${group.name}
+										</a>
+									</security:authorize>
+									
+									<security:authorize  ifNotGranted="ROLE_ADMIN, ROLE_USER_LIST, ROLE_USER_PERMISSION_LIST, ROLE_USER_PERMISSION_VIEW">
+										${group.name}
+									</security:authorize>
+								</td>
+							</tr>
+						</c:forEach>
+					</tbody>
+				</table>
+			</div>
+		</c:otherwise>
+	</c:choose>
 </div>

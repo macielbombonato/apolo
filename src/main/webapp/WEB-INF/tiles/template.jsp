@@ -16,6 +16,8 @@
 		<link rel="stylesheet" href='<c:url value="/resources/plugin/bootstrap/css/bootstrap.min.css" />' />
 		<link rel="stylesheet" href='<c:url value="/resources/plugin/bootstrap/css/bootstrap-responsive.min.css" />' />
 		
+		<link rel="stylesheet" href='<c:url value="/resources/app/css/app.css" />' />
+		
 	</head>
 	
 	<body>

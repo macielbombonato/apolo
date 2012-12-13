@@ -16,6 +16,7 @@ public enum Navigation {
 	USER_PERMISSION_LIST("user-group/list"),
 	USER_PERMISSION_CREATE("user-group/new"),
 	USER_PERMISSION_EDIT("user-group/edit"),
+	USER_PERMISSION_VIEW("user-group/view"),
 	
 	
 	AUTH("auth"),

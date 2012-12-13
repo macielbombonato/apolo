@@ -58,15 +58,20 @@
 					</td>
 					<td>
 						<div class="btn-group">
-							<a href='<s:url value="/user/permission/edit"></s:url>/${group.id}' class="btn" tabindex="-1">
-								<s:message code="common.edit" />
+							<a href='<s:url value="/user-group/view"></s:url>/${group.id}' class="btn" tabindex="-1">
+								<s:message code="common.show" />
 							</a>
 							<button class="btn dropdown-toggle" data-toggle="dropdown" tabindex="-1">
 								<span class="caret"></span>
 							</button>
 							<ul class="dropdown-menu">
 								<li>
-									<a href='<s:url value="/user/permission/remove"></s:url>/${group.id}'>
+									<a href='<s:url value="/user-group/edit"></s:url>/${group.id}'>
+										<s:message code="common.edit" />
+									</a>
+								</li>
+								<li>
+									<a href='<s:url value="/user-group/remove"></s:url>/${group.id}'>
 										<s:message code="common.remove" />
 									</a>
 								</li>

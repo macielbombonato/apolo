@@ -97,8 +97,24 @@ public class UserGroupController extends BaseController<UserGroup> {
 				userGroupService.remove(userGroup);	
 				
 				mav = list();
+				
+				mav.addObject("msg", true);
+				mav.addObject("message", ApoloUtils.getMessageBundle("common.msg.remove.success"));
 			}
 		}
+		
+		return mav;
+	}
+	
+	@SecuredEnum({UserPermission.USER_PERMISSION_VIEW, UserPermission.USER_PERMISSION_LIST, UserPermission.USER_LIST})
+	@RequestMapping(value = "view/{id}", method = RequestMethod.GET)
+	public ModelAndView view(@PathVariable Long id) {
+		ModelAndView mav = new ModelAndView(Navigation.USER_PERMISSION_VIEW.getPath());
+		
+		UserGroup userGroup = userGroupService.find(id);
+		
+		mav.addObject("userGroup", userGroup);
+		mav.addObject("readOnly", true);
 		
 		return mav;
 	}

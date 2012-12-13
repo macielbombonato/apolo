@@ -55,7 +55,9 @@
 								<c:forEach items="${user.groups}" var="group">
 									<tr>
 										<td>
-											${group.name}
+											<a href='<s:url value="/user-group/view"></s:url>/${group.id}'>
+												${group.name}
+											</a>
 										</td>
 									</tr>
 								</c:forEach>
