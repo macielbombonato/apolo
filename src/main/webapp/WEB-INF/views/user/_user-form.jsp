@@ -28,7 +28,7 @@
 		<c:choose>
 			<c:when test="${editing}">
 				<div class="row">
-					<div class="span12">
+					<div class="span12 inline">
 						<label for="changePassword">
 							<s:message code="user.change-password.title" />
 						</label>
@@ -74,7 +74,7 @@
 			</label>
 			<select id="listFrom" size="4" multiple="multiple" class="input-block-level">
 				<c:forEach items="${groupList}" var="group">
-					<option value="${group}">
+					<option value="${group.id}">
 						${group.name}
 					</option>
 				</c:forEach>
@@ -103,7 +103,7 @@
 		</label>
 		<select name="groups" id="listTo" size="4" multiple="multiple" class="input-block-level" >
 			<c:forEach items="${user.groups}" var="group">
-				<option value="${group}" selected="selected">
+				<option value="${group.id}" selected="selected">
 					${group.name}
 				</option>
 			</c:forEach>

@@ -4,17 +4,64 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.ModelAndView;
 
 import br.apolo.common.exception.GenericException;
+import br.apolo.data.model.BaseEntity;
 import br.apolo.data.model.User;
 import br.apolo.security.CurrentUser;
 import br.apolo.web.enums.Navigation;
 
-public abstract class BaseController { 
+public abstract class BaseController<E extends BaseEntity> { 
 	
-	protected static final Logger LOG = LoggerFactory.getLogger(BaseController.class);
+	protected static final Logger log = LoggerFactory.getLogger(BaseController.class);
+	
+	/**
+	 * In implementation use annotation like this example:
+	 * @SecuredEnum(UserPermission.permission_name) 
+	 * @RequestMapping(value = "path", method = RequestMethod.GET)
+	 * @return ModelAndView
+	 */
+	public abstract ModelAndView list();
+	
+	/**
+	 * In implementation use annotation like this example:
+	 * @SecuredEnum({ UserPermission.permission_name }) 
+	 * @RequestMapping(value = "path", method = RequestMethod.POST)
+	 * @param entity
+	 * @return ModelAndView
+	 */
+	public abstract ModelAndView save(@ModelAttribute("entity") E entity);
+	
+	/**
+	 * In implementation use annotation like this example:
+	 * @SecuredEnum(UserPermission.permission_name) 
+	 * @RequestMapping(value = "path", method = RequestMethod.GET)
+	 * @return ModelAndView
+	 */
+	public abstract ModelAndView create();
+	
+	/**
+	 * In implementation use annotation like this example:
+	 * @SecuredEnum(UserPermission.permission_name) 
+	 * @RequestMapping(value = "path/{id}", method = RequestMethod.GET)
+	 * @param id
+	 * @return ModelAndView
+	 */
+	public abstract ModelAndView edit(@PathVariable Long id);
+	
+	/**
+	 * In implementation use annotation like this example:
+	 * @SecuredEnum(UserPermission.permission_name) 
+	 * @RequestMapping(value = "path/{id}", method = RequestMethod.GET)
+	 * @param id
+	 * @return ModelAndView
+	 */
+	public abstract ModelAndView remove(@PathVariable Long id);
 
+	
 	public String redirect(Navigation nav) {
 		String path = "redirect:";
 		

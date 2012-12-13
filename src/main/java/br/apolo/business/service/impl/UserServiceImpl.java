@@ -47,6 +47,12 @@ public class UserServiceImpl implements UserService {
 		Collection<GrantedAuthority> authorities = loadUserAuthorities(u);
 		return new CurrentUser(u.getId(), u.getEmail(), u.getPassword().toLowerCase(), u, authorities);
 	}
+	
+	@Override
+	@Transactional
+	public User save(User entity) {
+		return save(entity, false);
+	}
 
 	@Override
 	@Transactional

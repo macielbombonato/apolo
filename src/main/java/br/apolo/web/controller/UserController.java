@@ -2,9 +2,13 @@ package br.apolo.web.controller;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomCollectionEditor;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,14 +20,13 @@ import br.apolo.business.service.UserGroupService;
 import br.apolo.business.service.UserService;
 import br.apolo.common.util.ApoloUtils;
 import br.apolo.data.model.User;
-import br.apolo.data.model.UserGroup;
 import br.apolo.security.SecuredEnum;
 import br.apolo.security.UserPermission;
 import br.apolo.web.enums.Navigation;
 
 @Controller
 @RequestMapping(value = "/user")
-public class UserController extends BaseController {
+public class UserController extends BaseController<User> {
 
 	@Autowired
 	UserService userService;
@@ -115,7 +118,12 @@ public class UserController extends BaseController {
 		User user = userService.find(id);
 		
 		if (!user.equals(getAuthenticatedUser())) {
-			userService.remove(user);	
+			userService.remove(user);
+			
+			mav = list();
+			
+			mav.addObject("msg", true);
+			mav.addObject("message", ApoloUtils.getMessageBundle("common.msg.remove.success"));
 		} else {
 			mav = list();
 			
@@ -126,9 +134,18 @@ public class UserController extends BaseController {
 		return mav;
 	}
 	
+	
+	/**
+	 * Use public ModelAndView save(@ModelAttribute("user") User user, @RequestParam(defaultValue = "false") boolean changePassword)
+	 */
+	@Override
+	public ModelAndView save(User entity) {
+		return null;
+	}
+	
 	@SecuredEnum({ UserPermission.USER_CREATE, UserPermission.USER_EDIT })
 	@RequestMapping(value = "save", method = RequestMethod.POST)
-	public ModelAndView save(@ModelAttribute("user") User user, @RequestParam(defaultValue = "false") boolean changePassword) throws IOException {
+	public ModelAndView save(@ModelAttribute("user") User user, @RequestParam(defaultValue = "false") boolean changePassword) {
 		ModelAndView mav = new ModelAndView();
 		
 		if (user != null) {
@@ -155,83 +172,28 @@ public class UserController extends BaseController {
 		return mav;
 	}
 	
-	@SecuredEnum({ UserPermission.USER_PERMISSION_CREATE, UserPermission.USER_PERMISSION_EDIT })
-	@RequestMapping(value = "permission/save", method = RequestMethod.POST)
-	public ModelAndView permissionSave(@ModelAttribute("userGroup") UserGroup userGroup) throws IOException {
-		ModelAndView mav = new ModelAndView();
-		
-		if (userGroup != null) {
-			userGroupService.save(userGroup);
-			
-			mav = permissionList();
-			
-			mav.addObject("msg", true);
-			mav.addObject("message", ApoloUtils.getMessageBundle("common.msg.save.success"));
-		}
-		
-		return mav;
-	}
-	
-	@SecuredEnum(UserPermission.USER_PERMISSION_LIST)
-	@RequestMapping(value = "permission/list", method = RequestMethod.GET)
-	public ModelAndView permissionList() {
-		ModelAndView mav = new ModelAndView(Navigation.USER_PERMISSION_LIST.getPath());
-		
-		List<UserGroup> userGroupList = userGroupService.list();
-		
-		mav.addObject("userGroupList", userGroupList);
-		mav.addObject("permissionList", UserPermission.values());
-		
-		return mav;
-	}
-	
-	@SecuredEnum(UserPermission.USER_PERMISSION_CREATE)
-	@RequestMapping(value = "permission/new", method = RequestMethod.GET)
-	public ModelAndView permissionCreate() {
-		ModelAndView mav = new ModelAndView(Navigation.USER_PERMISSION_CREATE.getPath());
-		
-		mav.addObject("user", new UserGroup());
-		mav.addObject("permissionList", UserPermission.values());
-		mav.addObject("readOnly", false);
-		
-		return mav;
-	}
-	
-	@SecuredEnum(UserPermission.USER_PERMISSION_EDIT)
-	@RequestMapping(value = "permission/edit/{id}", method = RequestMethod.GET)
-	public ModelAndView permissionEdit(@PathVariable Long id) {
-		ModelAndView mav = new ModelAndView(Navigation.USER_PERMISSION_EDIT.getPath());
-		
-		UserGroup userGroup = userGroupService.find(id);
-		
-		mav.addObject("userGroup", userGroup);
-		mav.addObject("permissionList", UserPermission.values());
-		mav.addObject("readOnly", false);
-		
-		return mav;
-	}
-	
-	@SecuredEnum(UserPermission.USER_PERMISSION_REMOVE)
-	@RequestMapping(value = "permission/remove/{id}", method = RequestMethod.GET)
-	public ModelAndView permissionRemove(@PathVariable Long id) {
-		ModelAndView mav = new ModelAndView();
-		
-		UserGroup userGroup = userGroupService.find(id);
-		
-		if (userGroup != null) {
-			if (userGroup.getUsers() != null && !userGroup.getUsers().isEmpty()) {
-				mav = permissionList();
-				
-				mav.addObject("error", true);
-				mav.addObject("message", ApoloUtils.getMessageBundle("user.group.msg.error.has.associated.users"));
-			} else {
-				userGroupService.remove(userGroup);	
-				
-				mav = permissionList();
-			}
-		}
-		
-		return mav;
-	}
-	
+    @InitBinder
+    protected void initBinder(WebDataBinder binder) {
+        binder.registerCustomEditor(Set.class, "groups", new CustomCollectionEditor(Set.class) {
+            @Override
+            protected Object convertElement(Object element) {
+                Long id = null;
+
+                if(element instanceof String && !((String)element).equals("")){
+                    //From the JSP 'element' will be a String
+                    try{
+                        id = Long.parseLong((String) element);
+                    } catch (NumberFormatException e) {
+                        log.error("Element was " + ((String) element), e);
+                    }
+                } else if(element instanceof Long) {
+                    //From the database 'element' will be a Long
+                    id = (Long) element;
+                }
+
+                return id != null ? userGroupService.find(id) : null;
+            }
+          });
+    }
+
 }

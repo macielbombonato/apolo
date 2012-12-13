@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import br.apolo.web.enums.Navigation;
 
 @Controller
-public class IndexController extends BaseController {
+public class IndexController {
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String index(Model model) {

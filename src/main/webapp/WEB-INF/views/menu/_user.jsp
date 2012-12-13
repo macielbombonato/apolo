@@ -13,7 +13,7 @@
 			</a>
 			
 			<ul class="dropdown-menu">
-				<security:authorize  access="hasRole('ROLE_ADMIN')">
+				<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_CREATE, ROLE_USER_LIST, ROLE_USER_PERMISSION_LIST, ROLE_USER_PERMISSION_CREATE">
 					<li class="nav-header">
 						<s:message code="user.header.admin" />
 					</li>
@@ -23,16 +23,20 @@
 							<s:message code="users" />
 						</a>
 						<ul class="dropdown-menu">
-							<li>
-								<a href='<s:url value="/user/list"></s:url>'>
-									<s:message code="user.list" />
-								</a>
-							</li>
-							<li>
-								<a href='<s:url value="/user/new"></s:url>'>
-									<s:message code="user.new" />
-								</a>
-							</li>
+							<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_LIST">
+								<li>
+									<a href='<s:url value="/user/list"></s:url>'>
+										<s:message code="user.list" />
+									</a>
+								</li>
+							</security:authorize>
+							<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_CREATE">
+								<li>
+									<a href='<s:url value="/user/new"></s:url>'>
+										<s:message code="user.new" />
+									</a>
+								</li>
+							</security:authorize>
 						</ul>
 					</li>
 					
@@ -41,16 +45,20 @@
 							<s:message code="user.groups" />
 						</a>
 						<ul class="dropdown-menu">
-							<li>
-								<a href='<s:url value="/user/permission/list"></s:url>'>
-									<s:message code="user.group.list" />
-								</a>
-							</li>
-							<li>
-								<a href='<s:url value="/user/permission/new"></s:url>'>
-									<s:message code="user.group.new" />
-								</a>
-							</li>
+							<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_PERMISSION_LIST">
+								<li>
+									<a href='<s:url value="/user-group/list"></s:url>'>
+										<s:message code="user.group.list" />
+									</a>
+								</li>
+							</security:authorize>
+							<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_PERMISSION_CREATE">
+								<li>
+									<a href='<s:url value="/user-group/new"></s:url>'>
+										<s:message code="user.group.new" />
+									</a>
+								</li>
+							</security:authorize>
 						</ul>
 					</li>
 					
