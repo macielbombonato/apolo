@@ -13,22 +13,44 @@
 		</p>
 		<ul>
 			<li>
-				Spring;
+				<a href="http://www.springsource.org/" target="_blank">
+					Spring
+				</a>
 			</li>
 			<li>
-				Spring MVC;
+				<a href="http://static.springsource.org/spring/docs/current/spring-framework-reference/html/mvc.html" target="_blank">
+					Spring MVC
+				</a>
 			</li>
 			<li>
-				Spring Security;
+				<a href="http://www.springsource.org/features/security" target="_blank">
+					Spring Security
+				</a>
 			</li>
 			<li>
-				JPA (Hibernate);
+				<a href="http://pt.wikipedia.org/wiki/Java_Persistence_API" target="_blank">
+					JPA
+				</a>
+				 (
+				<a href="http://www.hibernate.org/" target="_blank">
+					Hibernate
+				</a>
+				 )
 			</li>
 			<li>
-				Tiles;
+				<a href="http://tiles.apache.org/" target="_blank">
+					Tiles
+				</a>
 			</li>
 			<li>
-				Maven;
+				<a href="http://maven.apache.org/" target="_blank">
+					Maven
+				</a>
+			</li>
+			<li>
+				<a href="http://twitter.github.com/bootstrap/" target="_blank">
+					Bootstrap
+				</a>
 			</li>
 		</ul>
 		<p>
