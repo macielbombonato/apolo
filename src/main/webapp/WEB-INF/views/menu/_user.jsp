@@ -25,6 +25,13 @@
 						<ul class="dropdown-menu">
 							<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_LIST">
 								<li>
+									<a href='<s:url value="/user/search-form"></s:url>'>
+										<s:message code="common.search" />
+									</a>
+								</li>
+							</security:authorize>
+							<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_LIST">
+								<li>
 									<a href='<s:url value="/user/list"></s:url>'>
 										<s:message code="user.list" />
 									</a>

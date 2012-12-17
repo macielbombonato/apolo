@@ -1,5 +1,9 @@
 package br.apolo.data.repository.impl;
 
+import java.util.List;
+
+import javax.persistence.TypedQuery;
+
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Repository;
 
@@ -24,5 +28,25 @@ public class UserRepositoryImpl extends JpaRepositoryImpl<User> implements UserR
 			throw new UsernameNotFoundException(login);
 		}
 
+	}
+
+	@Override
+	public List<User> search(String param) {
+		List<User> result = null;
+		
+		StringBuilder queryStr = new StringBuilder();
+		
+		queryStr.append(" SELECT u ");
+		queryStr.append(" FROM User u ");
+		queryStr.append(" WHERE u.name like :param ");
+		queryStr.append(" OR u.email like :param ");
+		
+		TypedQuery<User> query = createQuery(queryStr.toString());
+		
+		query.setParameter("param", "%" + param + "%");
+		
+		result = query.getResultList();
+		
+		return result;
 	}
 }

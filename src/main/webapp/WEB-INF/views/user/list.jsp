@@ -4,6 +4,8 @@
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 
+<jsp:include page='_search-form.jsp'></jsp:include>
+
 <fieldset>
 	<legend>
 		<s:message code="user.list.title" />

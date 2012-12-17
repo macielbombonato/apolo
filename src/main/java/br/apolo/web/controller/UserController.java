@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import br.apolo.business.model.SearchResult;
 import br.apolo.business.service.UserGroupService;
 import br.apolo.business.service.UserService;
 import br.apolo.common.util.ApoloUtils;
@@ -168,6 +169,28 @@ public class UserController extends BaseController<User> {
 		List<User> userList = userService.list();
 		
 		mav.addObject("userList", userList);
+		
+		return mav;
+	}
+	
+	@SecuredEnum(UserPermission.USER_LIST)
+	@RequestMapping(value = "search", method = RequestMethod.POST)
+	public ModelAndView search(@ModelAttribute("param") String param) {
+		ModelAndView mav = new ModelAndView(Navigation.USER_LIST.getPath());
+		
+		SearchResult<User> result = userService.search(param);
+		
+		List<User> userList = result.getResults();
+		
+		mav.addObject("userList", userList);
+		
+		return mav;
+	}
+	
+	@SecuredEnum(UserPermission.USER_LIST)
+	@RequestMapping(value = "search-form", method = RequestMethod.GET)
+	public ModelAndView searchForm() {
+		ModelAndView mav = new ModelAndView(Navigation.USER_SEARCH.getPath());
 		
 		return mav;
 	}

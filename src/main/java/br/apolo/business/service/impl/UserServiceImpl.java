@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.apolo.business.model.SearchResult;
 import br.apolo.business.service.UserService;
 import br.apolo.data.model.User;
 import br.apolo.data.model.UserGroup;
@@ -80,6 +81,15 @@ public class UserServiceImpl implements UserService {
 			}
 		}
 
+		return result;
+	}
+
+	@Override
+	public SearchResult<User> search(String param) {
+		SearchResult<User> result = new SearchResult<User>();
+		
+		result.setResults(userRepository.search(param));
+		
 		return result;
 	}
 }

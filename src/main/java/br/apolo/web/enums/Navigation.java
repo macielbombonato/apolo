@@ -10,6 +10,7 @@ public enum Navigation {
 	USER_NEW("user/new"),
 	USER_EDIT("user/edit"),
 	USER_LIST("user/list"),
+	USER_SEARCH("user/search"),
 	USER_VIEW("user/view"),
 	USER_CHANGE_PASSWORD("user/change-password"),
 	
