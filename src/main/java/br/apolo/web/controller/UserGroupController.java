@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import br.apolo.business.model.SearchResult;
 import br.apolo.business.service.UserGroupService;
 import br.apolo.common.util.ApoloUtils;
 import br.apolo.data.model.UserGroup;
@@ -115,6 +116,28 @@ public class UserGroupController extends BaseController<UserGroup> {
 		
 		mav.addObject("userGroup", userGroup);
 		mav.addObject("readOnly", true);
+		
+		return mav;
+	}
+	
+	@SecuredEnum(UserPermission.USER_PERMISSION_LIST)
+	@RequestMapping(value = "search", method = RequestMethod.POST)
+	public ModelAndView search(@ModelAttribute("param") String param) {
+		ModelAndView mav = new ModelAndView(Navigation.USER_PERMISSION_LIST.getPath());
+		
+		SearchResult<UserGroup> result = userGroupService.search(param);
+		
+		List<UserGroup> userGroupList = result.getResults();
+		
+		mav.addObject("userGroupList", userGroupList);
+		
+		return mav;
+	}
+	
+	@SecuredEnum(UserPermission.USER_PERMISSION_LIST)
+	@RequestMapping(value = "search-form", method = RequestMethod.GET)
+	public ModelAndView searchForm() {
+		ModelAndView mav = new ModelAndView(Navigation.USER_PERMISSION_SEARCH.getPath());
 		
 		return mav;
 	}

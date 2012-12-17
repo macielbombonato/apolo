@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.apolo.business.model.SearchResult;
 import br.apolo.business.service.UserGroupService;
 import br.apolo.data.model.UserGroup;
 import br.apolo.data.repository.UserGroupRepository;
@@ -36,5 +37,14 @@ public class UserGroupServiceImpl implements UserGroupService {
 	@Transactional
 	public void remove(UserGroup userGroup) {
 		userGroupRepository.remove(userGroup);
+	}
+	
+	@Override
+	public SearchResult<UserGroup> search(String param) {
+		SearchResult<UserGroup> result = new SearchResult<UserGroup>();
+		
+		result.setResults(userGroupRepository.search(param));
+		
+		return result;
 	}
 }

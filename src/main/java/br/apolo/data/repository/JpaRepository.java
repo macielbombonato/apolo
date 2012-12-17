@@ -4,12 +4,14 @@ import java.util.List;
 
 import br.apolo.data.model.BaseEntity;
 
-public interface JpaRepository<T extends BaseEntity> {
-	T find(Long id);
+public interface JpaRepository<E extends BaseEntity> {
+	E find(Long id);
 
-	T saveOrUpdate(T entity);
+	E saveOrUpdate(E entity);
 
-	void remove(T entity);
+	void remove(E entity);
 
-	List<T> findAll();
+	List<E> findAll();
+	
+	List<E> search(String param);
 }
