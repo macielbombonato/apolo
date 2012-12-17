@@ -9,13 +9,16 @@ http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 	<security:http use-expressions="true" auto-config="false" disable-url-rewriting="true" create-session="ifRequired">
 		<security:form-login login-page="/auth/login" authentication-failure-url="/auth/loginfailed" default-target-url="/" />
 		<security:access-denied-handler error-page="/error/403" />
+
+		<security:intercept-url pattern="/monitoring" access="hasRole('ROLE_ADMIN')" />
+		<security:intercept-url pattern="/monitoring/**" access="hasRole('ROLE_ADMIN')" />
 		
 		<security:intercept-url pattern="/" access="permitAll" />
 		<security:intercept-url pattern="/auth/**" access="permitAll" />
 		<security:intercept-url pattern="/resources/**" access="permitAll" />
 		<security:intercept-url pattern="/error/**" access="permitAll" />
 		<security:intercept-url pattern="/**" access="isAuthenticated()" />
-
+		
 		<security:logout logout-url="/auth/logout" />
 	</security:http>
 
