@@ -2,51 +2,39 @@ package br.apolo.data.repository.impl;
 
 import java.util.List;
 
-import javax.persistence.TypedQuery;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceException;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Repository;
 
 import br.apolo.data.model.User;
-import br.apolo.data.repository.UserRepository;
+import br.apolo.data.model.User_;
+import br.apolo.data.repository.UserRepositoryCustom;
 
-@Repository(value = "userRepository")
-public class UserRepositoryImpl extends JpaRepositoryImpl<User> implements UserRepository {
+@Repository
+public class UserRepositoryImpl implements UserRepositoryCustom {
 
-	public User findByLogin(String login) {
-
-		// Validation included to prevent unnecessary data base access
-		if (login == null || login.isEmpty() || "anonymousUser".equals(login)) {
-			throw new UsernameNotFoundException(login);
-		}
-
-		try {
-			User u = createNamedQuery("User.findByLogin").setParameter("login", login).getSingleResult();
-
-			return u;
-		} catch (Exception e) {
-			throw new UsernameNotFoundException(login);
-		}
-
-	}
+	@PersistenceContext
+	private EntityManager em;
 
 	@Override
 	public List<User> search(String param) {
-		List<User> result = null;
-		
-		StringBuilder queryStr = new StringBuilder();
-		
-		queryStr.append(" SELECT u ");
-		queryStr.append(" FROM User u ");
-		queryStr.append(" WHERE u.name like :param ");
-		queryStr.append(" OR u.email like :param ");
-		
-		TypedQuery<User> query = createQuery(queryStr.toString());
-		
-		query.setParameter("param", "%" + param + "%");
-		
-		result = query.getResultList();
-		
-		return result;
+		try {
+			param = "%" + param + "%";
+
+			CriteriaBuilder cb = em.getCriteriaBuilder();
+			CriteriaQuery<User> query = cb.createQuery(User.class);
+			Root<User> root = query.from(User.class);
+			query.where(cb.or(cb.like(root.get(User_.name), param),
+					cb.like(root.get(User_.email), param)));
+
+			return em.createQuery(query).getResultList();
+		} catch (PersistenceException e) {
+			return null;
+		}
 	}
 }

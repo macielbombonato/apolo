@@ -2,34 +2,39 @@ package br.apolo.data.repository.impl;
 
 import java.util.List;
 
-import javax.persistence.TypedQuery;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceException;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 import org.springframework.stereotype.Repository;
 
 import br.apolo.data.model.UserGroup;
-import br.apolo.data.repository.UserGroupRepository;
+import br.apolo.data.model.UserGroup_;
+import br.apolo.data.repository.UserGroupRepositoryCustom;
 
-@Repository(value = "userGroupRepository")
-public class UserGroupRepositoryImpl extends JpaRepositoryImpl<UserGroup> implements UserGroupRepository {
+@Repository
+public class UserGroupRepositoryImpl implements UserGroupRepositoryCustom {
+
+	@PersistenceContext
+	private EntityManager em;
 
 	@Override
 	public List<UserGroup> search(String param) {
-		List<UserGroup> result = null;
-		
-		StringBuilder queryStr = new StringBuilder();
-		
-		queryStr.append(" SELECT u ");
-		queryStr.append(" FROM UserGroup u ");
-		queryStr.append(" WHERE u.name like :param ");
-		
-		TypedQuery<UserGroup> query = createQuery(queryStr.toString());
-		
-		query.setParameter("param", "%" + param + "%");
-		
-		result = query.getResultList();
-		
-		return result;
-	}
+		try {
+			param = "%" + param + "%";
 
+			CriteriaBuilder cb = em.getCriteriaBuilder();
+			CriteriaQuery<UserGroup> query = cb.createQuery(UserGroup.class);
+			Root<UserGroup> root = query.from(UserGroup.class);
+			query.where(cb.like(root.get(UserGroup_.name), param));
+
+			return em.createQuery(query).getResultList();
+		} catch (PersistenceException e) {
+			return null;
+		}
+	}
 
 }

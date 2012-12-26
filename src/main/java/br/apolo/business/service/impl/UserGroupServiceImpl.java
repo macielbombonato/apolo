@@ -19,32 +19,32 @@ public class UserGroupServiceImpl implements UserGroupService {
 
 	@Override
 	public List<UserGroup> list() {
-		return userGroupRepository.findAll();
+		return (List<UserGroup>) userGroupRepository.findAll();
 	}
 
 	@Override
 	public UserGroup find(Long id) {
-		return userGroupRepository.find(id);
+		return userGroupRepository.findOne(id);
 	}
 
 	@Override
 	@Transactional
 	public UserGroup save(UserGroup userGroup) {
-		return userGroupRepository.saveOrUpdate(userGroup);
+		return userGroupRepository.save(userGroup);
 	}
-	
+
 	@Override
 	@Transactional
 	public void remove(UserGroup userGroup) {
-		userGroupRepository.remove(userGroup);
+		userGroupRepository.delete(userGroup);
 	}
-	
+
 	@Override
 	public SearchResult<UserGroup> search(String param) {
 		SearchResult<UserGroup> result = new SearchResult<UserGroup>();
-		
+
 		result.setResults(userGroupRepository.search(param));
-		
+
 		return result;
 	}
 }
