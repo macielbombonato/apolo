@@ -39,12 +39,12 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User findByLogin(String login) {
-		return userRepository.findUserByLogin(login);
+		return userRepository.findUserByEmail(login);
 	}
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		User u = userRepository.findUserByLogin(username);
+		User u = userRepository.findUserByEmail(username);
 		Collection<GrantedAuthority> authorities = loadUserAuthorities(u);
 		return new CurrentUser(u.getId(), u.getEmail(), u.getPassword().toLowerCase(), u, authorities);
 	}

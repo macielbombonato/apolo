@@ -7,6 +7,6 @@ import br.apolo.data.model.User;
 public interface UserRepository extends CrudRepository<User, Long>,
 		UserRepositoryCustom {
 
-	User findUserByLogin(String login);
+	User findUserByEmail(String email);
 
 }

@@ -2,22 +2,25 @@ package br.apolo.common.config;
 
 import java.util.Properties;
 
+import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.orm.hibernate4.HibernateExceptionTranslator;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.transaction.annotation.TransactionManagementConfigurer;
 
 @Configuration
+@EnableJpaRepositories("br.apolo.data.repository")
 @EnableTransactionManagement
-public class PersistenceConfig implements TransactionManagementConfigurer {
+public class PersistenceConfig {
 	
 	@Value("${dataSource.driverClassName}")
 	private String driver;
@@ -50,9 +53,9 @@ public class PersistenceConfig implements TransactionManagementConfigurer {
 		
 		return dataSource;
 	}
-	
+
 	@Bean
-	public LocalContainerEntityManagerFactoryBean configureEntityManagerFactory() {
+	public EntityManagerFactory entityManagerFactory() {
 		LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
 		entityManagerFactoryBean.setDataSource(configureDataSource());
 		entityManagerFactoryBean.setPackagesToScan("br.apolo.data");
@@ -67,14 +70,20 @@ public class PersistenceConfig implements TransactionManagementConfigurer {
 		jpaProperties.put(org.hibernate.cfg.Environment.FORMAT_SQL, showAndFormatSQL);
 		
 		entityManagerFactoryBean.setJpaProperties(jpaProperties);
+		entityManagerFactoryBean.afterPropertiesSet();
 		
-		return entityManagerFactoryBean;
+		return entityManagerFactoryBean.getObject();
 	}
+	
+	@Bean 
+    public HibernateExceptionTranslator hibernateExceptionTranslator(){ 
+      return new HibernateExceptionTranslator(); 
+    }
 
 	@Bean	
-	public PlatformTransactionManager annotationDrivenTransactionManager() {
+	public PlatformTransactionManager transactionManager() {
 		JpaTransactionManager jpaTransactionManager = new JpaTransactionManager();
-		
+		jpaTransactionManager.setEntityManagerFactory(entityManagerFactory());
 		return jpaTransactionManager;
 	}
 
