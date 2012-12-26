@@ -6,7 +6,7 @@
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
 	
 	
-<div class="navbar">
+<div class="navbar navbar-fixed-top">
 	<div class="navbar-inner">
 		<div class="container">
 			<a class="btn btn-navbar" data-toggle="collapse"

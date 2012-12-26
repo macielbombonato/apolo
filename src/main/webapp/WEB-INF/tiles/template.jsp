@@ -28,8 +28,10 @@
 				<div class="span12">
 					<tiles:insertAttribute name="header" defaultValue="" />
 				</div>
-				
 			</div>
+			
+			<br /><br />
+			
 			<div class="row">
 				<div class="span12">
 					<tiles:insertAttribute name="body" defaultValue="" />
@@ -42,8 +44,15 @@
 			</div>
 		</div>
 		
+		<div id="loadingDialog" class="modal hide fade span1" tabindex="-1" data-role="dialog">
+			<center>
+				<img src='<c:url value="/resources/app/img/ajax-loader.gif" />' class="img-circle">
+			</center>
+		</div>
+		
 		<script src="http://code.jquery.com/jquery-latest.js"></script>
 		<script type="text/javascript" src='<c:url value="/resources/plugin/bootstrap/js/bootstrap.min.js" />'></script>
+		<script type="text/javascript" src='<c:url value="/resources/app/js/app.js" />'></script>
 		<script type="text/javascript" src='<c:url value="/resources/app/js/item-list-util.js" />'></script>
 		
 	</body>

@@ -12,13 +12,15 @@
 	<form id="userForm" action="<s:url value="/user/save"></s:url>" method="post">
 		<jsp:include page='_user-form.jsp'></jsp:include>
 		
-		<div class="row">
-			<div class="span12">
-				<button type="submit" class="btn btn-primary">
-					<s:message code="common.save" /> 
-				</button>
-			</div>
-		</div>	
+		<div class="form-actions">
+			<button type="submit" class="btn btn-primary">
+				<s:message code="common.save" /> 
+			</button>
+
+			<a href='<s:url value="/"></s:url>' class="btn">
+				<s:message code="common.cancel" />
+			</a>
+		</div>
 	</form>
 
 </fieldset>
