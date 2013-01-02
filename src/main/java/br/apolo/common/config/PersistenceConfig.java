@@ -18,7 +18,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
-@EnableJpaRepositories("br.apolo.data.repository")
+@EnableJpaRepositories("br.apolo")
 @EnableTransactionManagement
 public class PersistenceConfig {
 	
@@ -58,7 +58,7 @@ public class PersistenceConfig {
 	public EntityManagerFactory entityManagerFactory() {
 		LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
 		entityManagerFactoryBean.setDataSource(configureDataSource());
-		entityManagerFactoryBean.setPackagesToScan("br.apolo.data");
+		entityManagerFactoryBean.setPackagesToScan("br.apolo");
 		entityManagerFactoryBean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
 		
 		Properties jpaProperties = new Properties();
