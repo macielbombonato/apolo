@@ -5,13 +5,14 @@
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 
 <div class="row">
-	<br /><br /><br />
-	<div class="span12 alert alert-error">
-		<h2>
-			${code}
-		</h2>
-		<h3>
-			${message}
-		</h3>
+	<div class="span12">
+		<div class="alert alert-error">
+			<h2>
+				${code}
+			</h2>
+			<h3>
+				${message}
+			</h3>
+		</div>
 	</div>
 </div>

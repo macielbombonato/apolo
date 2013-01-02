@@ -5,13 +5,14 @@
 
 
 <div class="row">
-	<br /><br /><br />
-	<div class="span12 alert alert-error">
-		<h2>
-			<s:message code="error.fatal.title" />
-		</h2>
-		<h5>
-			<s:message code="error.fatal.message" />
-		</h5>
+	<div class="span12">
+		<div class="alert alert-error">
+			<h2>
+				<s:message code="error.fatal.title" />
+			</h2>
+			<h5>
+				<s:message code="error.fatal.message" />
+			</h5>
+		</div>
 	</div>
 </div>
