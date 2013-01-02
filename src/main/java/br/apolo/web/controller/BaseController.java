@@ -2,7 +2,6 @@ package br.apolo.web.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,8 +9,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import br.apolo.common.exception.GenericException;
 import br.apolo.data.model.BaseEntity;
-import br.apolo.data.model.User;
-import br.apolo.security.CurrentUser;
 import br.apolo.web.enums.Navigation;
 
 public abstract class BaseController<E extends BaseEntity> { 
@@ -92,17 +89,5 @@ public abstract class BaseController<E extends BaseEntity> {
 		mav.addObject("exception", ex);
 
 		return mav;
-	}
-	
-	protected User getAuthenticatedUser() {
-		CurrentUser currentUser = (CurrentUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		
-		User user = null;
-		
-		if (currentUser != null) {
-			user = currentUser.getSystemUser();
-		}
-		
-		return user;
 	}
 }

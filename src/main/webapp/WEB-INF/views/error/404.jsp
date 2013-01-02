@@ -32,9 +32,12 @@
 						<h2>
 							404
 						</h2>
-						<h5>
+						<h3>
 							<s:message code="error.404" />
-						</h5>
+						</h3>
+						<p>
+							<s:message code="error.404.msg" />
+						</p>
 					</div>
 				</div>
 			</div>

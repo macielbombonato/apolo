@@ -40,7 +40,7 @@ public class UserController extends BaseController<User> {
 	public ModelAndView index() {
 		ModelAndView mav = new ModelAndView(Navigation.USER_INDEX.getPath());
 		
-		mav.addObject("user", getAuthenticatedUser());
+		mav.addObject("user", userService.getAuthenticatedUser());
 		mav.addObject("readOnly", true);
 		return mav;
 	}
@@ -50,7 +50,7 @@ public class UserController extends BaseController<User> {
 	public ModelAndView changePassword() {
 		ModelAndView mav = new ModelAndView(Navigation.USER_CHANGE_PASSWORD.getPath());
 		
-		mav.addObject("user", getAuthenticatedUser());
+		mav.addObject("user", userService.getAuthenticatedUser());
 		mav.addObject("readOnly", true);
 		mav.addObject("changePassword", true);
 		return mav;
@@ -118,7 +118,7 @@ public class UserController extends BaseController<User> {
 		
 		User user = userService.find(id);
 		
-		if (!user.equals(getAuthenticatedUser())) {
+		if (!user.equals(userService.getAuthenticatedUser())) {
 			userService.remove(user);
 			
 			mav = list();

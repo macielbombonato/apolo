@@ -11,12 +11,16 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.apolo.business.model.SearchResult;
 import br.apolo.business.service.UserGroupService;
+import br.apolo.common.exception.AccessDeniedException;
+import br.apolo.common.util.ApoloUtils;
+import br.apolo.data.model.User;
 import br.apolo.data.model.UserGroup;
 import br.apolo.data.model.UserGroup_;
 import br.apolo.data.repository.UserGroupRepository;
+import br.apolo.security.UserPermission;
 
 @Service("userGroupService")
-public class UserGroupServiceImpl implements UserGroupService {
+public class UserGroupServiceImpl extends BaseServiceImpl<UserGroup> implements UserGroupService {
 
 	@Autowired
 	UserGroupRepository userGroupRepository;
@@ -33,14 +37,22 @@ public class UserGroupServiceImpl implements UserGroupService {
 
 	@Override
 	@Transactional
-	public UserGroup save(UserGroup userGroup) {
-		return userGroupRepository.save(userGroup);
+	public UserGroup save(UserGroup userGroup) throws AccessDeniedException {
+		if (userGroup != null && userGroup.getId().equals(1L)) {
+			throw new AccessDeniedException(ApoloUtils.getMessageBundle("user.group.msg.access.denied"));
+		} else {
+			return userGroupRepository.save(userGroup);	
+		}
 	}
 
 	@Override
 	@Transactional
-	public void remove(UserGroup userGroup) {
-		userGroupRepository.delete(userGroup);
+	public void remove(UserGroup userGroup) throws AccessDeniedException {
+		if (userGroup != null && userGroup.getId().equals(1L)) {
+			throw new AccessDeniedException(ApoloUtils.getMessageBundle("user.group.msg.access.denied"));
+		} else {
+			userGroupRepository.delete(userGroup);	
+		}
 	}
 
 	@Override
@@ -53,5 +65,22 @@ public class UserGroupServiceImpl implements UserGroupService {
 		result.setResults(userGroupRepository.search(param, fields));
 
 		return result;
+	}
+
+	@Override
+	public List<UserPermission> getUserPermissionList() {
+		List<UserPermission> permissions = new ArrayList<UserPermission>();
+		
+		User user = getAuthenticatedUser();
+		
+		for (UserPermission permission : UserPermission.values()) {
+			if (UserPermission.ADMIN.equals(permission) && user.getPermissions().contains(UserPermission.ADMIN)) {
+				permissions.add(permission);
+			} else if (!UserPermission.ADMIN.equals(permission)) {
+				permissions.add(permission);
+			}
+		}
+		
+		return permissions;
 	}
 }

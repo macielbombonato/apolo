@@ -11,8 +11,11 @@
 				${code}
 			</h2>
 			<h3>
-				${message}
+				${title}
 			</h3>
+			<p>
+				${message}
+			</p>
 		</div>
 	</div>
 </div>

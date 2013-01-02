@@ -25,7 +25,7 @@ import br.apolo.security.CurrentUser;
 import br.apolo.security.UserPermission;
 
 @Service("userService")
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl extends BaseServiceImpl<User> implements UserService {
 
 	@Autowired
 	UserRepository userRepository;

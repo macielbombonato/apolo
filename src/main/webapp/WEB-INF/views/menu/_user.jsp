@@ -18,63 +18,67 @@
 						<s:message code="user.header.admin" />
 					</li>
 					
-					<li class="dropdown-submenu">
-						<a tabindex="-1" href="#">
-							<s:message code="users" />
-						</a>
-						<ul class="dropdown-menu">
-							<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_LIST">
-								<li>
-									<a href='<s:url value="/user/search-form"></s:url>'>
-										<s:message code="common.search" />
-									</a>
-								</li>
-							</security:authorize>
-							<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_LIST">
-								<li>
-									<a href='<s:url value="/user/list"></s:url>'>
-										<s:message code="user.list" />
-									</a>
-								</li>
-							</security:authorize>
-							<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_CREATE">
-								<li>
-									<a href='<s:url value="/user/new"></s:url>'>
-										<s:message code="user.new" />
-									</a>
-								</li>
-							</security:authorize>
-						</ul>
-					</li>
+					<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_CREATE, ROLE_USER_LIST">
+						<li class="dropdown-submenu">
+							<a tabindex="-1" href="#">
+								<s:message code="users" />
+							</a>
+							<ul class="dropdown-menu">
+								<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_LIST">
+									<li>
+										<a href='<s:url value="/user/search-form"></s:url>'>
+											<s:message code="common.search" />
+										</a>
+									</li>
+								</security:authorize>
+								<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_LIST">
+									<li>
+										<a href='<s:url value="/user/list"></s:url>'>
+											<s:message code="user.list" />
+										</a>
+									</li>
+								</security:authorize>
+								<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_CREATE">
+									<li>
+										<a href='<s:url value="/user/new"></s:url>'>
+											<s:message code="user.new" />
+										</a>
+									</li>
+								</security:authorize>
+							</ul>
+						</li>
+					</security:authorize>
 					
-					<li class="dropdown-submenu">
-						<a tabindex="-1" href="#">
-							<s:message code="user.groups" />
-						</a>
-						<ul class="dropdown-menu">
-							<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_PERMISSION_LIST">
-								<li>
-									<a href='<s:url value="/user-group/search-form"></s:url>'>
-										<s:message code="common.search" />
-									</a>
-								</li>
-							</security:authorize>
-							<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_PERMISSION_LIST">
-								<li>
-									<a href='<s:url value="/user-group/list"></s:url>'>
-										<s:message code="user.group.list" />
-									</a>
-								</li>
-							</security:authorize>
-							<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_PERMISSION_CREATE">
-								<li>
-									<a href='<s:url value="/user-group/new"></s:url>'>
-										<s:message code="user.group.new" />
-									</a>
-								</li>
-							</security:authorize>
-						</ul>
-					</li>
+					<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_PERMISSION_LIST, ROLE_USER_PERMISSION_CREATE">
+						<li class="dropdown-submenu">
+							<a tabindex="-1" href="#">
+								<s:message code="user.groups" />
+							</a>
+							<ul class="dropdown-menu">
+								<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_PERMISSION_LIST">
+									<li>
+										<a href='<s:url value="/user-group/search-form"></s:url>'>
+											<s:message code="common.search" />
+										</a>
+									</li>
+								</security:authorize>
+								<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_PERMISSION_LIST">
+									<li>
+										<a href='<s:url value="/user-group/list"></s:url>'>
+											<s:message code="user.group.list" />
+										</a>
+									</li>
+								</security:authorize>
+								<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_PERMISSION_CREATE">
+									<li>
+										<a href='<s:url value="/user-group/new"></s:url>'>
+											<s:message code="user.group.new" />
+										</a>
+									</li>
+								</security:authorize>
+							</ul>
+						</li>
+					</security:authorize>
 					
 					<li class="divider" />
 				</security:authorize>

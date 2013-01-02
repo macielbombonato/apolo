@@ -12,14 +12,15 @@
 	<form id="userGroupForm" action="<s:url value="/user-group/save"></s:url>" method="post" class="form-inline">
 		<jsp:include page='_permission-form.jsp'></jsp:include>
 		
-		<div class="row">
-			<br /> <br />
-			<div class="span12">
-				<button type="submit" class="btn btn-primary">
-					<s:message code="common.save" /> 
-				</button>
-			</div>
-		</div>	
+		<div class="form-actions">
+			<button type="submit" class="btn btn-primary">
+				<s:message code="common.save" /> 
+			</button>
+
+			<a href='<s:url value="/"></s:url>' class="btn">
+				<s:message code="common.cancel" />
+			</a>
+		</div>
 	</form>
 
 </fieldset>

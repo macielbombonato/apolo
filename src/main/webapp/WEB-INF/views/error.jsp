@@ -8,11 +8,14 @@
 	<div class="span12">
 		<div class="alert alert-error">
 			<h2>
-				<s:message code="error.fatal.title" />
+				<s:message code="error.fatal.code" />
 			</h2>
-			<h5>
+			<h3>
+				<s:message code="error.fatal.title" />
+			</h3>
+			<p>
 				<s:message code="error.fatal.message" />
-			</h5>
+			</p>
 		</div>
 	</div>
 </div>

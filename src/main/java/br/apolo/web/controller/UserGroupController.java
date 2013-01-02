@@ -12,6 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import br.apolo.business.model.SearchResult;
 import br.apolo.business.service.UserGroupService;
+import br.apolo.common.exception.AccessDeniedException;
 import br.apolo.common.util.ApoloUtils;
 import br.apolo.data.model.UserGroup;
 import br.apolo.security.SecuredEnum;
@@ -31,12 +32,17 @@ public class UserGroupController extends BaseController<UserGroup> {
 		ModelAndView mav = new ModelAndView();
 		
 		if (userGroup != null) {
-			userGroupService.save(userGroup);
-			
-			mav = list();
-			
-			mav.addObject("msg", true);
-			mav.addObject("message", ApoloUtils.getMessageBundle("common.msg.save.success"));
+			try {
+				userGroupService.save(userGroup);
+				
+				mav = list();
+				mav.addObject("msg", true);
+				mav.addObject("message", ApoloUtils.getMessageBundle("common.msg.save.success"));
+			} catch (AccessDeniedException e) {
+				mav = list();
+				mav.addObject("error", true);
+				mav.addObject("message", e.getCustomMsg());
+			}
 		}
 		
 		return mav;
@@ -50,7 +56,6 @@ public class UserGroupController extends BaseController<UserGroup> {
 		List<UserGroup> userGroupList = userGroupService.list();
 		
 		mav.addObject("userGroupList", userGroupList);
-		mav.addObject("permissionList", UserPermission.values());
 		
 		return mav;
 	}
@@ -61,7 +66,7 @@ public class UserGroupController extends BaseController<UserGroup> {
 		ModelAndView mav = new ModelAndView(Navigation.USER_PERMISSION_CREATE.getPath());
 		
 		mav.addObject("user", new UserGroup());
-		mav.addObject("permissionList", UserPermission.values());
+		mav.addObject("permissionList", userGroupService.getUserPermissionList());
 		mav.addObject("readOnly", false);
 		
 		return mav;
@@ -75,7 +80,7 @@ public class UserGroupController extends BaseController<UserGroup> {
 		UserGroup userGroup = userGroupService.find(id);
 		
 		mav.addObject("userGroup", userGroup);
-		mav.addObject("permissionList", UserPermission.values());
+		mav.addObject("permissionList", userGroupService.getUserPermissionList());
 		mav.addObject("readOnly", false);
 		
 		return mav;
@@ -95,12 +100,17 @@ public class UserGroupController extends BaseController<UserGroup> {
 				mav.addObject("error", true);
 				mav.addObject("message", ApoloUtils.getMessageBundle("user.group.msg.error.has.associated.users"));
 			} else {
-				userGroupService.remove(userGroup);	
-				
-				mav = list();
-				
-				mav.addObject("msg", true);
-				mav.addObject("message", ApoloUtils.getMessageBundle("common.msg.remove.success"));
+				try {
+					userGroupService.remove(userGroup);
+					
+					mav = list();
+					mav.addObject("msg", true);
+					mav.addObject("message", ApoloUtils.getMessageBundle("common.msg.remove.success"));
+				} catch (AccessDeniedException e) {
+					mav = list();
+					mav.addObject("error", true);
+					mav.addObject("message", e.getCustomMsg());
+				}
 			}
 		}
 		

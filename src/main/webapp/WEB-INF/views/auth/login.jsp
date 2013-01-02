@@ -19,9 +19,7 @@
 			<form id="login_form" action="<c:url value="/j_spring_security_check" />" method="post" class="form-horizontal">
 				<div class="control-group">
 					<input type="text" id="j_username" name="j_username" class="input-block-level" style="margin-bottom: 15px;" size="30" placeholder='<s:message code="user.username" />' />
-				</div>
-				
-				<div class="control-group">
+					
 					<input type="password" id="j_password" name="j_password" class="input-block-level" style="margin-bottom: 15px;" size="30" placeholder='<s:message code="user.password" />'/>
 					
 					<button type="submit" id="login_button" class="btn btn-primary">

@@ -4,6 +4,7 @@ import java.util.List;
 
 import br.apolo.business.model.SearchResult;
 import br.apolo.data.model.BaseEntity;
+import br.apolo.data.model.User;
 
 public interface BaseService<E extends BaseEntity> {
 	
@@ -16,5 +17,7 @@ public interface BaseService<E extends BaseEntity> {
 	void remove(E entity);
 	
 	SearchResult<E> search(String param);
+	
+	User getAuthenticatedUser();
 
 }
