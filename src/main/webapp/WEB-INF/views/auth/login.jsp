@@ -23,9 +23,7 @@
 				
 				<div class="control-group">
 					<input type="password" id="j_password" name="j_password" class="input-block-level" style="margin-bottom: 15px;" size="30" placeholder='<s:message code="user.password" />'/>
-				</div>
-			
-				<div class="form-actions">
+					
 					<button type="submit" id="login_button" class="btn btn-primary">
 						<s:message code="user.login" />
 					</button>

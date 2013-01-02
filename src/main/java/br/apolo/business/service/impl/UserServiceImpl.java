@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import javax.persistence.metamodel.SingularAttribute;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.security.core.GrantedAuthority;
@@ -17,6 +19,7 @@ import br.apolo.business.model.SearchResult;
 import br.apolo.business.service.UserService;
 import br.apolo.data.model.User;
 import br.apolo.data.model.UserGroup;
+import br.apolo.data.model.User_;
 import br.apolo.data.repository.UserRepository;
 import br.apolo.security.CurrentUser;
 import br.apolo.security.UserPermission;
@@ -26,7 +29,7 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	UserRepository userRepository;
-
+	
 	@Override
 	public List<User> list() {
 		return (List<User>) userRepository.findAll();
@@ -88,7 +91,11 @@ public class UserServiceImpl implements UserService {
 	public SearchResult<User> search(String param) {
 		SearchResult<User> result = new SearchResult<User>();
 		
-		result.setResults(userRepository.search(param));
+		List<SingularAttribute<User, String>> fields = new ArrayList<SingularAttribute<User,String>>();
+		fields.add(User_.email);
+		fields.add(User_.name);
+		
+		result.setResults(userRepository.search(param, fields));
 		
 		return result;
 	}
