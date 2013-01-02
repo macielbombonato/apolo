@@ -5,6 +5,7 @@
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 
 <div class="row">
+	<br /><br /><br />
 	<div class="span12 alert alert-error">
 		<h2>
 			${code}

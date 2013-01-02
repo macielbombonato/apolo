@@ -24,11 +24,7 @@
 	
 	<body>
 		<div class="container">
-			<div class="row">
-				<div class="span12">
-					<tiles:insertAttribute name="header" defaultValue="" />
-				</div>
-			</div>
+			<tiles:insertAttribute name="header" defaultValue="" />
 			
 			<br /><br />
 			

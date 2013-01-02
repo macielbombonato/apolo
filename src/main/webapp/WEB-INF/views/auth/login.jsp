@@ -3,7 +3,7 @@
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
 
 <div class="row">
-	<div class="span6">
+	<div class="span4">
 		<fieldset>
 			<legend>
 				<s:message code="user.login.title" />
@@ -18,21 +18,11 @@
 
 			<form id="login_form" action="<c:url value="/j_spring_security_check" />" method="post" class="form-horizontal">
 				<div class="control-group">
-					<label for="j_password" class="control-label"> 
-						<s:message code="user.username" />
-					</label> 
-					<div class="controls">
-						<input type="text" id="j_username" name="j_username" class="input-block-level" style="margin-bottom: 15px;" size="30" placeholder='<s:message code="user.placeholder.email" />' />
-					</div>
+						<input type="text" id="j_username" name="j_username" class="input-block-level" style="margin-bottom: 15px;" size="30" placeholder='<s:message code="user.username" />' />
 				</div>
 				
 				<div class="control-group">
-					<label for="j_password" class="control-label"> 
-						<s:message code="user.password" />
-					</label>
-					<div class="controls"> 
 						<input type="password" id="j_password" name="j_password" class="input-block-level" style="margin-bottom: 15px;" size="30" placeholder='<s:message code="user.password" />'/>
-					</div>
 				</div>
 			
 				<div class="form-actions">
