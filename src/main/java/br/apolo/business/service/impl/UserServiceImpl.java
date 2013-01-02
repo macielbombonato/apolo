@@ -2,6 +2,7 @@ package br.apolo.business.service.impl;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.metamodel.SingularAttribute;
@@ -55,6 +56,11 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 	@Override
 	@Transactional
 	public User save(User entity) {
+		if (entity != null) {
+			entity.setLastUpdatedBy(getAuthenticatedUser());
+			entity.setLastUpdateDate(new Date());			
+		}
+		
 		return save(entity, false);
 	}
 

@@ -8,6 +8,7 @@ import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
@@ -17,12 +18,14 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import br.apolo.common.util.InputLength;
+import br.apolo.data.entitylistener.AuditLogListener;
 import br.apolo.security.UserPermission;
 
 @Entity
+@EntityListeners(value = AuditLogListener.class)
 @Table(name = "user_group")
 @AttributeOverride(name = "id", column = @Column(name = "user_group_id"))
-public class UserGroup extends BaseEntity {
+public class UserGroup extends AuditableBaseEntity {
 
 	private static final long serialVersionUID = -7985007135932159381L;
 

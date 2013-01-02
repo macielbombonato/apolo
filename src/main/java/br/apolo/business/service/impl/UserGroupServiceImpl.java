@@ -1,6 +1,7 @@
 package br.apolo.business.service.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.metamodel.SingularAttribute;
@@ -41,6 +42,9 @@ public class UserGroupServiceImpl extends BaseServiceImpl<UserGroup> implements 
 		if (userGroup != null && userGroup.getId().equals(1L)) {
 			throw new AccessDeniedException(ApoloUtils.getMessageBundle("user.group.msg.access.denied"));
 		} else {
+			userGroup.setLastUpdatedBy(getAuthenticatedUser());
+			userGroup.setLastUpdateDate(new Date());
+			
 			return userGroupRepository.save(userGroup);	
 		}
 	}

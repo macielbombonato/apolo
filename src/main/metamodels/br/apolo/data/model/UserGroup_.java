@@ -8,7 +8,7 @@ import javax.persistence.metamodel.StaticMetamodel;
 
 @Generated(value = "org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor")
 @StaticMetamodel(UserGroup.class)
-public abstract class UserGroup_ extends br.apolo.data.model.BaseEntity_ {
+public abstract class UserGroup_ extends br.apolo.data.model.AuditableBaseEntity_ {
 
 	public static volatile SetAttribute<UserGroup, User> users;
 	public static volatile SingularAttribute<UserGroup, String> name;

@@ -6,6 +6,7 @@ import java.util.Set;
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -16,13 +17,15 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import br.apolo.common.util.InputLength;
+import br.apolo.data.entitylistener.AuditLogListener;
 import br.apolo.security.UserPermission;
 
 @Entity
+@EntityListeners(value = AuditLogListener.class)
 @Table(name = "user")
 @AttributeOverride(name = "id", column = @Column(name = "user_id"))
 @NamedQueries({ @NamedQuery(name = "User.findByLogin", query = " FROM User WHERE email = :login") })
-public class User extends BaseEntity {
+public class User extends AuditableBaseEntity {
 
 	private static final long serialVersionUID = 5588722501578237833L;
 
