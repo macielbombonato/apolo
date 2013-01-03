@@ -53,7 +53,9 @@ public abstract class BaseEntity implements Serializable {
 
 		BaseEntity other = (BaseEntity) obj;
 
-		if (this.getId() == null && other.getId() != null) {
+		if (this.getId() == null && other.getId() == null) {
+			return false;
+		} else if (this.getId() == null && other.getId() != null) {
 			return false;
 		} else if (!this.getId().equals(other.getId())) {
 			return false;
