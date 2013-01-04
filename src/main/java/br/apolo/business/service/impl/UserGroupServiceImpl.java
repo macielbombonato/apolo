@@ -28,7 +28,7 @@ public class UserGroupServiceImpl extends BaseServiceImpl<UserGroup> implements 
 	
 	@Override
 	public List<UserGroup> list() {
-		return (List<UserGroup>) userGroupRepository.findAll();
+		return (List<UserGroup>) userGroupRepository.findAllUserGroups();
 	}
 
 	@Override

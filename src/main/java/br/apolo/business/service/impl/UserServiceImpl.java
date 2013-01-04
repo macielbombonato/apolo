@@ -33,7 +33,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 	
 	@Override
 	public List<User> list() {
-		return (List<User>) userRepository.findAll();
+		return (List<User>) userRepository.findAllUsers();
 	}
 
 	@Override
