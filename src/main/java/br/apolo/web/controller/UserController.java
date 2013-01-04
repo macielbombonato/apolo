@@ -19,7 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 import br.apolo.business.model.SearchResult;
 import br.apolo.business.service.UserGroupService;
 import br.apolo.business.service.UserService;
-import br.apolo.common.util.ApoloUtils;
+import br.apolo.common.util.MessageBundle;
 import br.apolo.data.model.User;
 import br.apolo.security.SecuredEnum;
 import br.apolo.security.UserPermission;
@@ -124,12 +124,12 @@ public class UserController extends BaseController<User> {
 			mav = list();
 			
 			mav.addObject("msg", true);
-			mav.addObject("message", ApoloUtils.getMessageBundle("common.msg.remove.success"));
+			mav.addObject("message", MessageBundle.getMessageBundle("common.msg.remove.success"));
 		} else {
 			mav = list();
 			
 			mav.addObject("error", true);
-			mav.addObject("message", ApoloUtils.getMessageBundle("user.msg.error.remove.yourself"));
+			mav.addObject("message", MessageBundle.getMessageBundle("user.msg.error.remove.yourself"));
 		}
 		
 		return mav;
@@ -155,7 +155,7 @@ public class UserController extends BaseController<User> {
 			mav = list();
 			
 			mav.addObject("msg", true);
-			mav.addObject("message", ApoloUtils.getMessageBundle("common.msg.save.success"));
+			mav.addObject("message", MessageBundle.getMessageBundle("common.msg.save.success"));
 		}
 		
 		return mav;

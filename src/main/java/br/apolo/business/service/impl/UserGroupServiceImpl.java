@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import br.apolo.business.model.SearchResult;
 import br.apolo.business.service.UserGroupService;
 import br.apolo.common.exception.AccessDeniedException;
-import br.apolo.common.util.ApoloUtils;
+import br.apolo.common.util.MessageBundle;
 import br.apolo.data.model.User;
 import br.apolo.data.model.UserGroup;
 import br.apolo.data.model.UserGroup_;
@@ -40,7 +40,7 @@ public class UserGroupServiceImpl extends BaseServiceImpl<UserGroup> implements 
 	@Transactional
 	public UserGroup save(UserGroup userGroup) throws AccessDeniedException {
 		if (userGroup != null && userGroup.getId().equals(1L)) {
-			throw new AccessDeniedException(ApoloUtils.getMessageBundle("user.group.msg.access.denied"));
+			throw new AccessDeniedException(MessageBundle.getMessageBundle("user.group.msg.access.denied"));
 		} else {
 			userGroup.setLastUpdatedBy(getAuthenticatedUser());
 			userGroup.setLastUpdateDate(new Date());
@@ -53,7 +53,7 @@ public class UserGroupServiceImpl extends BaseServiceImpl<UserGroup> implements 
 	@Transactional
 	public void remove(UserGroup userGroup) throws AccessDeniedException {
 		if (userGroup != null && userGroup.getId().equals(1L)) {
-			throw new AccessDeniedException(ApoloUtils.getMessageBundle("user.group.msg.access.denied"));
+			throw new AccessDeniedException(MessageBundle.getMessageBundle("user.group.msg.access.denied"));
 		} else {
 			userGroupRepository.delete(userGroup);	
 		}

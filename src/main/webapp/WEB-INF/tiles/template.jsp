@@ -30,6 +30,28 @@
 			
 			<div class="row">
 				<div class="span12">
+					<c:choose>
+						<c:when test="${error}">
+							<div class="alert alert-error">
+								${message}
+							</div>		
+						</c:when>
+						<c:when test="${warn}">
+							<div class="alert alert-warn">
+								${message}
+							</div>		
+						</c:when>
+						<c:when test="${msg}">
+							<div class="alert alert-info">
+								${message}
+							</div>		
+						</c:when>
+					</c:choose>
+				</div>
+			</div>
+			
+			<div class="row">
+				<div class="span12">
 					<tiles:insertAttribute name="body" defaultValue="" />
 				</div>
 			</div>

@@ -13,7 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 import br.apolo.business.model.SearchResult;
 import br.apolo.business.service.UserGroupService;
 import br.apolo.common.exception.AccessDeniedException;
-import br.apolo.common.util.ApoloUtils;
+import br.apolo.common.util.MessageBundle;
 import br.apolo.data.model.UserGroup;
 import br.apolo.security.SecuredEnum;
 import br.apolo.security.UserPermission;
@@ -37,7 +37,7 @@ public class UserGroupController extends BaseController<UserGroup> {
 				
 				mav = list();
 				mav.addObject("msg", true);
-				mav.addObject("message", ApoloUtils.getMessageBundle("common.msg.save.success"));
+				mav.addObject("message", MessageBundle.getMessageBundle("common.msg.save.success"));
 			} catch (AccessDeniedException e) {
 				mav = list();
 				mav.addObject("error", true);
@@ -98,14 +98,14 @@ public class UserGroupController extends BaseController<UserGroup> {
 				mav = list();
 				
 				mav.addObject("error", true);
-				mav.addObject("message", ApoloUtils.getMessageBundle("user.group.msg.error.has.associated.users"));
+				mav.addObject("message", MessageBundle.getMessageBundle("user.group.msg.error.has.associated.users"));
 			} else {
 				try {
 					userGroupService.remove(userGroup);
 					
 					mav = list();
 					mav.addObject("msg", true);
-					mav.addObject("message", ApoloUtils.getMessageBundle("common.msg.remove.success"));
+					mav.addObject("message", MessageBundle.getMessageBundle("common.msg.remove.success"));
 				} catch (AccessDeniedException e) {
 					mav = list();
 					mav.addObject("error", true);

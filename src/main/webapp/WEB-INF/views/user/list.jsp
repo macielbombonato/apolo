@@ -11,19 +11,6 @@
 		<s:message code="user.list.title" />
 	</legend>
 	
-	<c:choose>
-		<c:when test="${error}">
-			<div class="alert alert-error">
-				${message}
-			</div>		
-		</c:when>
-		<c:when test="${msg}">
-			<div class="alert alert-info">
-				${message}
-			</div>		
-		</c:when>
-	</c:choose>
-	
 	<table class="table table-striped table-hover table-bordered">
 		<thead>
 			<tr>

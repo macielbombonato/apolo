@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import br.apolo.common.util.ApoloUtils;
+import br.apolo.common.util.MessageBundle;
 import br.apolo.web.enums.Navigation;
 
 @Controller
@@ -16,8 +16,8 @@ public class ErrorController {
 	public ModelAndView accessDenied() {
 		ModelAndView mav = new ModelAndView(Navigation.ERROR.getPath());
 		mav.addObject("code", 403);
-		mav.addObject("title", ApoloUtils.getMessageBundle("error.403"));
-		mav.addObject("message", ApoloUtils.getMessageBundle("error.403.msg"));
+		mav.addObject("title", MessageBundle.getMessageBundle("error.403"));
+		mav.addObject("message", MessageBundle.getMessageBundle("error.403.msg"));
 		return mav;
 	}
 	
@@ -25,8 +25,8 @@ public class ErrorController {
 	public ModelAndView notFound() {
 		ModelAndView mav = new ModelAndView(Navigation.ERROR.getPath());
 		mav.addObject("code", 404);
-		mav.addObject("title", ApoloUtils.getMessageBundle("error.404"));
-		mav.addObject("message", ApoloUtils.getMessageBundle("error.404.msg"));
+		mav.addObject("title", MessageBundle.getMessageBundle("error.404"));
+		mav.addObject("message", MessageBundle.getMessageBundle("error.404.msg"));
 		return mav;
 	}
 	
@@ -34,8 +34,8 @@ public class ErrorController {
 	public ModelAndView internalError() {
 		ModelAndView mav = new ModelAndView(Navigation.ERROR.getPath());
 		mav.addObject("code", 500);
-		mav.addObject("title", ApoloUtils.getMessageBundle("error.500"));
-		mav.addObject("message", ApoloUtils.getMessageBundle("error.500.msg"));
+		mav.addObject("title", MessageBundle.getMessageBundle("error.500"));
+		mav.addObject("message", MessageBundle.getMessageBundle("error.500.msg"));
 		return mav;
 	}
 
