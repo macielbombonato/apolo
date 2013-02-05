@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import br.apolo.common.util.MessageBundle;
 import br.apolo.web.enums.Navigation;
 
 @Controller
@@ -20,8 +21,9 @@ public class AuthController {
 
 	@RequestMapping(value = "loginfailed", method = RequestMethod.GET)
 	public ModelAndView loginFailed(ModelMap model) {
-		model.addAttribute("error", "true");
 		ModelAndView mav = new ModelAndView(Navigation.AUTH_LOGIN.getPath(), model);
+		mav.addObject("error", true);
+		mav.addObject("message", MessageBundle.getMessageBundle("user.login.failure"));		
 		return mav;
 	}
 

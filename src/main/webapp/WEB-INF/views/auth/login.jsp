@@ -8,13 +8,6 @@
 			<legend>
 				<s:message code="user.login.title" />
 			</legend>
-			
-			<c:if test="${error}">
-				<div class="alert alert-error">
-					<s:message code="user.login.failure" />
-				</div>
-				
-			</c:if>
 
 			<form id="login_form" action="<c:url value="/j_spring_security_check" />" method="post" class="form-horizontal">
 				<div class="control-group">
