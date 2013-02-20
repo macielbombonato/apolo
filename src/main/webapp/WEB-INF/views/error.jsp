@@ -4,7 +4,7 @@
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags"%>
 
 
-<div class="row">
+<div class="row-fluid">
 	<div class="span12">
 		<div class="alert alert-error">
 			<h2>

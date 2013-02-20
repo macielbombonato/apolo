@@ -6,7 +6,7 @@
 
 <input type="hidden" id="id" name="id" value="${userGroup.id}" />
 
-<div class="row">
+<div class="row-fluid">
 	<div class="span12">
 		<label for="name">
 			<s:message code="user.group.name" />
@@ -17,7 +17,7 @@
 
 <br />
 
-<div class="row">
+<div class="row-fluid">
 	<c:choose>
 		<c:when test="${not readOnly}">
 			<div class="span5">

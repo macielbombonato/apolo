@@ -6,9 +6,9 @@
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
 	
 	
-<div class="navbar navbar-fixed-top">
+<div id="menu" class="navbar navbar-fixed-top">
 	<div class="navbar-inner">
-		<div class="container">
+		<div class="container-fluid">
 			<a class="btn btn-navbar" data-toggle="collapse"
 				data-target=".navbar-responsive-collapse"> 
 				<span class="icon-bar"></span> 
@@ -18,7 +18,7 @@
 			
 			<a class="brand" href='<s:url value="/"></s:url>'>
 				<img src='<c:url value="/resources/app/img/favicon.png" />' width="20" height="20">
-				<s:message code="app.title" />
+				<strong><s:message code="app.title" /></strong>
 			</a>
 			
 			<div class="nav-collapse collapse navbar-responsive-collapse">

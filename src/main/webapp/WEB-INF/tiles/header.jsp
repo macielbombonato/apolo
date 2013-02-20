@@ -8,8 +8,10 @@
 
 <jsp:include page='/WEB-INF/views/menu/menu.jsp'></jsp:include>
 
-<br />
-
-
-
-
+<!-- Subhead
+================================================== -->
+<header id="header" class="jumbotron subhead">
+  <div class="container">
+    <p class="lead">&nbsp;</p>
+  </div>
+</header>

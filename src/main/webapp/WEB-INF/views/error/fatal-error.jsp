@@ -19,13 +19,13 @@
 	</head>
 	
 	<body>
-		<div class="container">
-			<div class="row">
+		<div class="container-fluid">
+			<div class="row-fluid">
 				<div class="span12">
 					<jsp:include page='/WEB-INF/tiles/header.jsp'></jsp:include>
 				</div>
 			</div>
-			<div class="row">
+			<div class="row-fluid">
 				<br /><br /><br />
 				<div class="span12">
 					<div class="alert alert-error">
@@ -41,7 +41,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="row">
+			<div class="row-fluid">
 				<div class="span12">
 					<jsp:include page='/WEB-INF/tiles/footer.jsp'></jsp:include>
 				</div>

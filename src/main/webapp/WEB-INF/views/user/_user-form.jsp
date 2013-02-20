@@ -6,7 +6,7 @@
 
 <input type="hidden" id="id" name="id" value="${user.id}" />
 
-<div class="row">
+<div class="row-fluid">
 	<div class="span12">
 		<label for="name">
 			<s:message code="user.username" />
@@ -14,7 +14,7 @@
 		<input type="text" id="name" name="name" class="input-block-level" value="${user.name}" <c:if test="${readOnly}">readonly="true"</c:if> />
 	</div>
 </div>
-<div class="row">
+<div class="row-fluid">
 	<div class="span12">
 		<label for="email">
 			<s:message code="user.email" />
@@ -27,7 +27,7 @@
 	<c:when test="${not readOnly}">
 		<c:choose>
 			<c:when test="${editing}">
-				<div class="row">
+				<div class="row-fluid">
 					<div class="span12 inline">
 						<label for="changePassword">
 							<s:message code="user.change-password.title" />
@@ -42,7 +42,7 @@
 		</c:choose>
 		
 		<div id="passwordFields" <c:if test="${editing}"> style="display:none;" </c:if>>
-			<div class="row">
+			<div class="row-fluid">
 				<div class="span12">
 					<label for="password">
 						<s:message code="user.password" />
@@ -55,7 +55,7 @@
 	<c:when test="${changePassword}">
 		<input type="checkbox" id="changePassword" name="changePassword" value="true" checked="checked" style="display:none;"/>
 		
-		<div class="row">
+		<div class="row-fluid">
 			<div class="span12">
 				<label for="password">
 					<s:message code="user.password" />
@@ -66,11 +66,11 @@
 	</c:when>
 </c:choose>
 
-<div class="row">
+<div class="row-fluid">
 
 </div>
 
-<div class="row">
+<div class="row-fluid">
 	<c:choose>
 		<c:when test="${not readOnly}">
 			<div class="span5">

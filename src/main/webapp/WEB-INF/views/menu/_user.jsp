@@ -116,7 +116,10 @@
 	
 	<security:authorize access="!isAuthenticated()">
 		<li class="dropdown">
-			<a href='<s:url value="/auth/login"></s:url>' data-toggle="dropdown"> 
+			<a href='<s:url value="/auth/login"></s:url>' 
+					data-toggle="dropdown" 
+					onclick="$('#loginScreen').removeClass('row-fluid');$('#loginScreen').addClass('row');"
+				> 
 				<s:message code="user.restricted.area.access" /> <strong class="caret"></strong>
 			</a>
 			<div class="dropdown-menu" style="padding: 15px; padding-bottom: 0px;">

@@ -2,7 +2,7 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="s"%>
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
 
-<div class="row">
+<div id="loginScreen" class="row-fluid">
 	<div class="span4">
 		<fieldset>
 			<legend>

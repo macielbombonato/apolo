@@ -3,3 +3,5 @@ $(document).ready(function() {
 		$('#loadingDialog').modal('toggle');
 	});
 });
+
+$('#header').height($('#menu').height());

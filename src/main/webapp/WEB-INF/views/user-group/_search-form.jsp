@@ -6,7 +6,7 @@
 
 <form id="userForm" class="form-search" action="<s:url value="/user-group/search"></s:url>" method="post">
 	<div class="input-append">
-		<input type="text" id="param" name="param" class="span3 search-query" placeholder='<s:message code="user.group.search.field" />'>
+		<input type="text" id="param" name="param" class="search-query" placeholder='<s:message code="user.group.search.field" />'>
 		<button type="submit" class="btn">
 			<s:message code="common.search" /> 
 		</button>
