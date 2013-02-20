@@ -49,29 +49,10 @@
 	</head>
 	
 	<body>
-<<<<<<< OURS
-		<script src="http://code.jquery.com/jquery-latest.js"></script>
-		<script type="text/javascript" src='<c:url value="/resources/plugin/bootstrap/js/bootstrap.min.js" />'></script>
-	
-		<div class="container">
-			<tiles:insertAttribute name="header" defaultValue="" />
-			
-			<div id="loadingDialog" class="modal hide fade span1" tabindex="-1" data-role="dialog" data-backdrop="static">
-				<center>
-					<img src='<c:url value="/resources/app/img/ajax-loader.gif" />' class="img-circle">
-				</center>
-			</div>
-			
-			<br /><br />
-			
-			<div class="row">
-=======
-		
 		<tiles:insertAttribute name="header" defaultValue="" />
 		
 		<div class="container-fluid">
 			<div class="row-fluid">
->>>>>>> THEIRS
 				<div class="span12">
 					<c:choose>
 						<c:when test="${error}">
@@ -104,9 +85,7 @@
 				</div>
 			</div>
 		</div>
-		
-<<<<<<< OURS
-=======
+
 		<div class="container-fluid">
 			<div class="row-fluid">
 				<div id="loadingDialog" class="modal hide fade span1" tabindex="-1" data-role="dialog">
@@ -197,8 +176,6 @@
 		<!-- application script for Charisma demo -->
 		<script src='<c:url value="/resources/plugin/charisma/js/charisma.js" />'></script>
 		
-		
->>>>>>> THEIRS
 		<script type="text/javascript" src='<c:url value="/resources/app/js/app.js" />'></script>
 		<script type="text/javascript" src='<c:url value="/resources/app/js/item-list-util.js" />'></script>
 	</body>
