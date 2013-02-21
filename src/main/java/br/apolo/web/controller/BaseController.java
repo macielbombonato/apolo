@@ -2,12 +2,14 @@ package br.apolo.web.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.ModelAndView;
 
 import br.apolo.common.exception.GenericException;
+import br.apolo.common.util.MessageBundle;
 import br.apolo.data.model.BaseEntity;
 import br.apolo.web.enums.Navigation;
 
@@ -75,7 +77,7 @@ public abstract class BaseController<E extends BaseEntity> {
 	public ModelAndView handleGenericException(Exception ex) {
 		ex.printStackTrace();
 
-		ModelAndView mav = new ModelAndView("GenericExceptionPage");
+		ModelAndView mav = new ModelAndView(Navigation.ERROR.getPath());
 		mav.addObject("exception", ex);
 
 		return mav;
@@ -85,9 +87,23 @@ public abstract class BaseController<E extends BaseEntity> {
 	public ModelAndView handleException(Exception ex) {
 		ex.printStackTrace();
 
-		ModelAndView mav = new ModelAndView("error");
+		ModelAndView mav = new ModelAndView(Navigation.ERROR.getPath());
 		mav.addObject("exception", ex);
 
+		return mav;
+	}
+	
+	@ExceptionHandler(AccessDeniedException.class)
+	public ModelAndView handleException(AccessDeniedException ex) {
+		ex.printStackTrace();
+
+		ModelAndView mav = new ModelAndView(Navigation.ERROR.getPath());
+		mav.addObject("code", 403);
+		mav.addObject("title", MessageBundle.getMessageBundle("error.403"));
+		mav.addObject("message", MessageBundle.getMessageBundle("error.403.msg"));
+		
+		mav.addObject("exception", ex);
+		
 		return mav;
 	}
 }

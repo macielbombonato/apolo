@@ -38,5 +38,4 @@ public class ErrorController {
 		mav.addObject("message", MessageBundle.getMessageBundle("error.500.msg"));
 		return mav;
 	}
-
 }
