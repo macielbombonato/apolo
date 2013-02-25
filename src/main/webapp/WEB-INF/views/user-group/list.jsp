@@ -48,6 +48,7 @@
 					<td>
 						<div class="btn-group">
 							<a href='<s:url value="/user-group/view"></s:url>/${group.id}' class="btn" tabindex="-1">
+								<i class="icon-zoom-in"></i>
 								<s:message code="common.show" />
 							</a>
 							<button class="btn dropdown-toggle" data-toggle="dropdown" tabindex="-1">
@@ -56,11 +57,13 @@
 							<ul class="dropdown-menu">
 								<li>
 									<a href='<s:url value="/user-group/edit"></s:url>/${group.id}'>
+										<i class="icon-edit"></i>
 										<s:message code="common.edit" />
 									</a>
 								</li>
 								<li>
 									<a href='<s:url value="/user-group/remove"></s:url>/${group.id}'>
+										<i class="icon-remove"></i>
 										<s:message code="common.remove" />
 									</a>
 								</li>

@@ -35,7 +35,7 @@ public class UserGroupController extends BaseController<UserGroup> {
 			try {
 				userGroupService.save(userGroup);
 				
-				mav = list();
+				mav = view(userGroup.getId());
 				mav.addObject("msg", true);
 				mav.addObject("message", MessageBundle.getMessageBundle("common.msg.save.success"));
 			} catch (AccessDeniedException e) {

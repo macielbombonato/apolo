@@ -15,11 +15,7 @@
 		
 		<link rel="icon" type="image/png" href='<c:url value="/resources/app/img/favicon.png" />'>
 		
-		<link rel="stylesheet" media="screen" href='<c:url value="/resources/plugin/bootstrap/css/bootstrap.css" />' />
-		<link rel="stylesheet" href='<c:url value="/resources/plugin/bootstrap/css/bootstrap-responsive.css" />' />
-		
 		<!-- The styles -->
-		<link id="bs-css" href='<c:url value="/resources/plugin/charisma/css/bootstrap-cerulean.css" />' rel="stylesheet">
 		<style type="text/css">
 			body {
 				padding-bottom: 40px;
@@ -28,7 +24,8 @@
 				padding: 9px 0;
 			}
 		</style>
-		<link href='<c:url value="/resources/plugin/charisma/css/charisma-app.css" />' rel="stylesheet">
+		<link href='<c:url value="/resources/plugin/bootstrap/css/bootstrap.css" />' rel="stylesheet" />
+		<link href='<c:url value="/resources/plugin/bootstrap/css/bootstrap-responsive.css" />' rel="stylesheet" />
 		<link href='<c:url value="/resources/plugin/charisma/css/jquery-ui-1.8.21.custom.css" />' rel="stylesheet">
 		<link href='<c:url value="/resources/plugin/charisma/css/fullcalendar.css" />' rel='stylesheet'>
 		<link href='<c:url value="/resources/plugin/charisma/css/fullcalendar.print.css" />' rel='stylesheet'  media='print'>
@@ -88,7 +85,7 @@
 
 		<div class="container-fluid">
 			<div class="row-fluid">
-				<div id="loadingDialog" class="modal hide fade span1" tabindex="-1" data-role="dialog">
+				<div id="loadingDialog" class="modal hide fade span1" tabindex="-1" data-role="dialog" style="text-align: center;">
 					<img src='<c:url value="/resources/app/img/ajax-loader.gif" />' class="img-circle">
 				</div>
 			</div>
@@ -105,11 +102,9 @@
 		
 		<!-- jQuery -->
 		<script src="http://code.jquery.com/jquery-latest.js"></script>
+		<script src='<c:url value="/resources/plugin/charisma/js/jquery-1.7.2.min.js" />'></script>
 		<!-- jQuery UI -->
 		<script src='<c:url value="/resources/plugin/charisma/js/jquery-ui-1.8.21.custom.min.js" />'></script>
-		
-		<script type="text/javascript" src='<c:url value="/resources/plugin/bootstrap/js/bootstrap.min.js" />'></script>
-		
 		<!-- transition / effect library -->
 		<script src='<c:url value="/resources/plugin/charisma/js/bootstrap-transition.js" />'></script>
 		<!-- alert enhancer library -->

@@ -1,5 +1,7 @@
 package br.apolo.web.controller;
 
+import javax.servlet.jsp.JspTagException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
@@ -7,6 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.util.NestedServletException;
 
 import br.apolo.common.exception.GenericException;
 import br.apolo.common.util.MessageBundle;
@@ -78,6 +81,9 @@ public abstract class BaseController<E extends BaseEntity> {
 		ex.printStackTrace();
 
 		ModelAndView mav = new ModelAndView(Navigation.ERROR.getPath());
+		mav.addObject("code", 999);
+		mav.addObject("title", MessageBundle.getMessageBundle("error.999"));
+		mav.addObject("message", MessageBundle.getMessageBundle("error.999.msg"));
 		mav.addObject("exception", ex);
 
 		return mav;
@@ -88,6 +94,9 @@ public abstract class BaseController<E extends BaseEntity> {
 		ex.printStackTrace();
 
 		ModelAndView mav = new ModelAndView(Navigation.ERROR.getPath());
+		mav.addObject("code", 999);
+		mav.addObject("title", MessageBundle.getMessageBundle("error.999"));
+		mav.addObject("message", MessageBundle.getMessageBundle("error.999.msg"));
 		mav.addObject("exception", ex);
 
 		return mav;
@@ -101,7 +110,32 @@ public abstract class BaseController<E extends BaseEntity> {
 		mav.addObject("code", 403);
 		mav.addObject("title", MessageBundle.getMessageBundle("error.403"));
 		mav.addObject("message", MessageBundle.getMessageBundle("error.403.msg"));
+		mav.addObject("exception", ex);
 		
+		return mav;
+	}
+	
+	@ExceptionHandler(JspTagException.class)
+	public ModelAndView handleException(JspTagException ex) {
+		ex.printStackTrace();
+
+		ModelAndView mav = new ModelAndView(Navigation.ERROR.getPath());
+		mav.addObject("code", 500);
+		mav.addObject("title", MessageBundle.getMessageBundle("error.500"));
+		mav.addObject("message", MessageBundle.getMessageBundle("error.500.msg"));
+		mav.addObject("exception", ex);
+		
+		return mav;
+	}
+	
+	@ExceptionHandler(NestedServletException.class)
+	public ModelAndView handleException(NestedServletException ex) {
+		ex.printStackTrace();
+
+		ModelAndView mav = new ModelAndView(Navigation.ERROR.getPath());
+		mav.addObject("code", 500);
+		mav.addObject("title", MessageBundle.getMessageBundle("error.500"));
+		mav.addObject("message", MessageBundle.getMessageBundle("error.500.msg"));
 		mav.addObject("exception", ex);
 		
 		return mav;

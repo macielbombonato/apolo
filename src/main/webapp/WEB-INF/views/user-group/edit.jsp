@@ -17,7 +17,7 @@
 				<s:message code="common.save" /> 
 			</button>
 
-			<a href='<s:url value="/"></s:url>' class="btn">
+			<a href='<s:url value="/user-group/view"></s:url>/${userGroup.id}' class="btn">
 				<s:message code="common.cancel" />
 			</a>
 		</div>

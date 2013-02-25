@@ -10,5 +10,11 @@
 	</legend>
 	
 	<jsp:include page='_permission-form.jsp'></jsp:include>
+	
+	<div class="form-actions">
+		<a href='<s:url value="/user-group/list"></s:url>' class="btn">
+			<s:message code="common.back" />
+		</a>
+	</div>
 
 </fieldset>

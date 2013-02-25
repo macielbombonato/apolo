@@ -4,4 +4,4 @@ $(document).ready(function() {
 	});
 });
 
-$('#header').height($('#menu').height());
+$('#header').height($('#menu').height() + 10);

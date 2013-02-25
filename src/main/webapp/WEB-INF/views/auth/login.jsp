@@ -3,6 +3,9 @@
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
 
 <div id="loginScreen" class="row-fluid">
+	<div class="span2">
+	
+	</div>
 	<div class="span4">
 		<fieldset>
 			<legend>

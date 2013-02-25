@@ -10,5 +10,11 @@
 	</legend>
 	
 	<jsp:include page='_user-form.jsp'></jsp:include>
+	
+	<div class="form-actions">
+		<a href='<s:url value="/user/list"></s:url>' class="btn">
+			<s:message code="common.back" />
+		</a>
+	</div>
 
 </fieldset>

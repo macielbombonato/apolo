@@ -152,7 +152,7 @@ public class UserController extends BaseController<User> {
 		if (user != null) {
 			userService.save(user, changePassword);
 			
-			mav = list();
+			mav = view(user.getId());
 			
 			mav.addObject("msg", true);
 			mav.addObject("message", MessageBundle.getMessageBundle("common.msg.save.success"));

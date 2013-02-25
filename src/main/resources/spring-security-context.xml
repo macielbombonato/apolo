@@ -10,24 +10,6 @@ http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 		<security:form-login login-page="/auth/login" authentication-failure-url="/auth/loginfailed" default-target-url="/" />
 		<security:access-denied-handler error-page="/error/403" />
 		
-		<security:intercept-url pattern="/user/save" access="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER_CREATE') or hasRole('ROLE_USER_EDIT')" />
-		<security:intercept-url pattern="/user/new" access="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER_CREATE')" />
-		<security:intercept-url pattern="/user/edit/**" access="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER_EDIT')" />
-		<security:intercept-url pattern="/user/remove/**" access="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER_REMOVE')" />
-		<security:intercept-url pattern="/user/list" access="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER_LIST')" />
-		<security:intercept-url pattern="/user/view/**" access="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER_VIEW') or hasRole('ROLE_USER_LIST')" />
-		<security:intercept-url pattern="/user/search" access="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER_LIST')" />
-		<security:intercept-url pattern="/user/search-form" access="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER_LIST')" />
-		
-		<security:intercept-url pattern="/user-group/save" access="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER_PERMISSION_CREATE') or hasRole('ROLE_USER_PERMISSION_EDIT')" />
-		<security:intercept-url pattern="/user-group/new" access="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER_PERMISSION_CREATE')" />
-		<security:intercept-url pattern="/user-group/edit/**" access="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER_PERMISSION_EDIT')" />
-		<security:intercept-url pattern="/user-group/remove/**" access="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER_PERMISSION_REMOVE')" />
-		<security:intercept-url pattern="/user-group/list" access="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER_PERMISSION_LIST')" />
-		<security:intercept-url pattern="/user-group/view/**" access="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER_PERMISSION_VIEW') or hasRole('ROLE_USER_PERMISSION_LIST')" />
-		<security:intercept-url pattern="/user-group/search" access="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER_PERMISSION_LIST')" />
-		<security:intercept-url pattern="/user-group/search-form" access="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER_PERMISSION_LIST')" />
-
 		<security:intercept-url pattern="/monitoring" access="hasRole('ROLE_ADMIN')" />
 		<security:intercept-url pattern="/monitoring/**" access="hasRole('ROLE_ADMIN')" />
 		

@@ -10,7 +10,7 @@
 
 <!-- Subhead
 ================================================== -->
-<header id="header" class="jumbotron subhead">
+<header id="header">
   <div class="container">
     <p class="lead">&nbsp;</p>
   </div>
