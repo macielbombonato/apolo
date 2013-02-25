@@ -1,25 +1,34 @@
 INSERT INTO user_group (name) VALUES ('Administrators');
-INSERT INTO user_group (name) VALUES ('Super Users');
-INSERT INTO user_group (name) VALUES ('Restricted Users');
+INSERT INTO group_permission (group_id, permission_name) VALUES ((SELECT user_group_id FROM user_group WHERE name = 'Administrators'), 'ADMIN');
 
-INSERT INTO group_permission (group_id, permission_name) VALUES (1, 'ADMIN'); 
+INSERT INTO user_group (name) VALUES ('Users - Gerenciamento');
+INSERT INTO group_permission (group_id, permission_name) VALUES ((SELECT user_group_id FROM user_group WHERE name = 'Users - Gerenciamento'), 'USER'); 
+INSERT INTO group_permission (group_id, permission_name) VALUES ((SELECT user_group_id FROM user_group WHERE name = 'Users - Gerenciamento'), 'USER_CREATE'); 
+INSERT INTO group_permission (group_id, permission_name) VALUES ((SELECT user_group_id FROM user_group WHERE name = 'Users - Gerenciamento'), 'USER_EDIT');
+INSERT INTO group_permission (group_id, permission_name) VALUES ((SELECT user_group_id FROM user_group WHERE name = 'Users - Gerenciamento'), 'USER_REMOVE');
+INSERT INTO group_permission (group_id, permission_name) VALUES ((SELECT user_group_id FROM user_group WHERE name = 'Users - Gerenciamento'), 'USER_LIST');
 
-INSERT INTO group_permission (group_id, permission_name) VALUES (2, 'USER'); 
-INSERT INTO group_permission (group_id, permission_name) VALUES (2, 'USER_CREATE'); 
-INSERT INTO group_permission (group_id, permission_name) VALUES (2, 'USER_EDIT');
-INSERT INTO group_permission (group_id, permission_name) VALUES (2, 'USER_REMOVE');
-INSERT INTO group_permission (group_id, permission_name) VALUES (2, 'USER_LIST');
-INSERT INTO group_permission (group_id, permission_name) VALUES (2, 'USER_PERMISSION_LIST');
-INSERT INTO group_permission (group_id, permission_name) VALUES (2, 'USER_PERMISSION_CREATE');
-INSERT INTO group_permission (group_id, permission_name) VALUES (2, 'USER_PERMISSION_EDIT');
-INSERT INTO group_permission (group_id, permission_name) VALUES (2, 'USER_PERMISSION_REMOVE');
+INSERT INTO user_group (name) VALUES ('Users');
+INSERT INTO group_permission (group_id, permission_name) VALUES ((SELECT user_group_id FROM user_group WHERE name = 'Users'), 'USER');
 
-INSERT INTO group_permission (group_id, permission_name) VALUES (3, 'USER');
+INSERT INTO user_group (name) VALUES ('Permissions - Gerenciamento');
+INSERT INTO group_permission (group_id, permission_name) VALUES ((SELECT user_group_id FROM user_group WHERE name = 'Permissions - Gerenciamento'), 'USER_PERMISSION_LIST');
+INSERT INTO group_permission (group_id, permission_name) VALUES ((SELECT user_group_id FROM user_group WHERE name = 'Permissions - Gerenciamento'), 'USER_PERMISSION_CREATE');
+INSERT INTO group_permission (group_id, permission_name) VALUES ((SELECT user_group_id FROM user_group WHERE name = 'Permissions - Gerenciamento'), 'USER_PERMISSION_EDIT');
+INSERT INTO group_permission (group_id, permission_name) VALUES ((SELECT user_group_id FROM user_group WHERE name = 'Permissions - Gerenciamento'), 'USER_PERMISSION_REMOVE');
+INSERT INTO group_permission (group_id, permission_name) VALUES ((SELECT user_group_id FROM user_group WHERE name = 'Permissions - Gerenciamento'), 'USER_PERMISSION_VIEW');
+
+INSERT INTO user_group (name) VALUES ('Permissions');
+INSERT INTO group_permission (group_id, permission_name) VALUES ((SELECT user_group_id FROM user_group WHERE name = 'Permissions'), 'USER_PERMISSION_LIST');
+INSERT INTO group_permission (group_id, permission_name) VALUES ((SELECT user_group_id FROM user_group WHERE name = 'Permissions'), 'USER_PERMISSION_VIEW');
+
 
 INSERT INTO user (name, email, password) VALUES ('Administrator', 'admin@apolo.br', '21232f297a57a5a743894a0e4a801fc3');
-INSERT INTO user (name, email, password) VALUES ('Super user', 'user@apolo.br', '21232f297a57a5a743894a0e4a801fc3');
-INSERT INTO user (name, email, password) VALUES ('Restricted User', 'restr@apolo.br', '21232f297a57a5a743894a0e4a801fc3');
+INSERT INTO users_in_groups (user_id, group_id) VALUES ((SELECT user_id FROM user WHERE email = 'admin@apolo.br'), (SELECT user_group_id FROM user_group WHERE name = 'Administrators'));
 
-INSERT INTO users_in_groups (user_id, group_id) VALUES (1, 1);
-INSERT INTO users_in_groups (user_id, group_id) VALUES (2, 2);
-INSERT INTO users_in_groups (user_id, group_id) VALUES (3, 3);
+INSERT INTO user (name, email, password) VALUES ('Power user', 'user@apolo.br', '21232f297a57a5a743894a0e4a801fc3');
+INSERT INTO users_in_groups (user_id, group_id) VALUES ((SELECT user_id FROM user WHERE email = 'user@apolo.br'), (SELECT user_group_id FROM user_group WHERE name = 'Users - Gerenciamento'));
+INSERT INTO users_in_groups (user_id, group_id) VALUES ((SELECT user_id FROM user WHERE email = 'user@apolo.br'), (SELECT user_group_id FROM user_group WHERE name = 'Permissions - Gerenciamento'));
+
+INSERT INTO user (name, email, password) VALUES ('User', 'restr@apolo.br', '21232f297a57a5a743894a0e4a801fc3');
+INSERT INTO users_in_groups (user_id, group_id) VALUES ((SELECT user_id FROM user WHERE email = 'restr@apolo.br'), (SELECT user_group_id FROM user_group WHERE name = 'Users'));
