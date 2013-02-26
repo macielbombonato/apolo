@@ -172,6 +172,5 @@
 		<script src='<c:url value="/resources/plugin/charisma/js/charisma.js" />'></script>
 		
 		<script type="text/javascript" src='<c:url value="/resources/app/js/app.js" />'></script>
-		<script type="text/javascript" src='<c:url value="/resources/app/js/item-list-util.js" />'></script>
 	</body>
 </html>

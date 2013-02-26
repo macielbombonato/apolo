@@ -10,7 +10,7 @@
 </div>
 <div class="row-fluid">
 	<div class="span12">
-		<p class="muted">
+		<p class="muted well">
 			<small>
 				<s:message code="footer.message" htmlEscape="false"/>
 			</small>
