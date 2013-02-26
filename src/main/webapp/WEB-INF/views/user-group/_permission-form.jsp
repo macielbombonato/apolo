@@ -20,41 +20,19 @@
 <div class="row-fluid">
 	<c:choose>
 		<c:when test="${not readOnly}">
-			<div class="span5">
-				<label for="name">
-					<s:message code="user.group.permissions.available" />
-				</label>
-				<select id="listFrom" size="5" multiple="multiple" class="input-block-level">
-					<c:forEach items="${permissionList}" var="permission">
-						<option value="${permission}">
-							<s:message code="user.permission.${permission}" />
-						</option>
-					</c:forEach>
-				</select>
-			</div>
-			
-			<div class="span2">
-				<button id="btnAdd" type="button" class="btn btn-secondary btn-block" >
-					<i class="icon-step-forward"></i>
-				</button>
-				<button id="btnRemove" type="button" class="btn btn-secondary btn-block">
-					<i class="icon-step-backward"></i> 
-				</button>
-				<button id="btnAddAll" type="button" class="btn btn-secondary btn-block">
-					<i class="icon-fast-forward"></i>
-				</button>
-				<button id="btnRemoveAll" type="button" class="btn btn-secondary btn-block">
-					<i class="icon-fast-backward"></i>
-				</button>
-			</div>
-			
-			<div class="span5">
+			<div class="span12">
 				<label for="name">
 					<s:message code="user.group.permissions.selected" />
 				</label>
-				<select name="permissions" id="listTo" size="5" multiple="multiple" class="input-block-level" <c:if test="${readOnly}">disabled="disabled"</c:if>>
-					<c:forEach items="${userGroup.permissions}" var="permission">
-						<option value="${permission}" selected="selected">
+				<select name="permissions" id="listTo" size="5" multiple="multiple" class="input-block-level" <c:if test="${readOnly}">disabled="disabled"</c:if> data-rel="chosen" data-placeholder='<s:message code="common.select" />'>
+					<c:forEach items="${permissionList}" var="permission">
+						<option value="${permission}"
+							<c:forEach items="${userGroup.permissions}" var="groupPermission">
+								<c:if test="${permission == groupPermission}">
+									selected="selected"
+								</c:if>
+							</c:forEach>						
+						>
 							<s:message code="user.permission.${permission}" />
 						</option>
 					</c:forEach>

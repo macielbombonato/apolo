@@ -73,41 +73,19 @@
 <div class="row-fluid">
 	<c:choose>
 		<c:when test="${not readOnly}">
-			<div class="span5">
-				<label for="name">
-					<s:message code="user.group.permissions.available" />
-				</label>
-				<select id="listFrom" size="5" multiple="multiple" class="input-block-level">
-					<c:forEach items="${groupList}" var="group">
-						<option value="${group.id}">
-							${group.name}
-						</option>
-					</c:forEach>
-				</select>
-			</div>
-			
-			<div class="span2">
-				<button id="btnAdd" type="button" class="btn btn-secondary btn-block" >
-					<i class="icon-step-forward"></i>
-				</button>
-				<button id="btnRemove" type="button" class="btn btn-secondary btn-block">
-					<i class="icon-step-backward"></i> 
-				</button>
-				<button id="btnAddAll" type="button" class="btn btn-secondary btn-block">
-					<i class="icon-fast-forward"></i>
-				</button>
-				<button id="btnRemoveAll" type="button" class="btn btn-secondary btn-block">
-					<i class="icon-fast-backward"></i>
-				</button>
-			</div>
-			
-			<div class="span5">
+			<div class="span12">
 				<label for="name">
 					<s:message code="user.group.permissions.selected" />
 				</label>
-				<select name="groups" id="listTo" size="5" multiple="multiple" class="input-block-level" <c:if test="${readOnly}">disabled="disabled"</c:if>>
-					<c:forEach items="${user.groups}" var="group">
-						<option value="${group.id}" selected="selected">
+				<select name="groups" id="listTo" size="5" multiple="multiple" class="input-block-level" <c:if test="${readOnly}">disabled="disabled"</c:if> data-rel="chosen" data-placeholder='<s:message code="common.select" />' >
+					<c:forEach items="${groupList}" var="group">
+						<option value="${group.id}" 
+							<c:forEach items="${user.groups}" var="userGroup">
+								<c:if test="${group == userGroup}">
+									selected="selected"
+								</c:if>
+							</c:forEach>						
+						>
 							${group.name}
 						</option>
 					</c:forEach>
