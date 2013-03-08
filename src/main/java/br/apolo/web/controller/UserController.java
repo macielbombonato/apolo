@@ -1,12 +1,14 @@
 package br.apolo.web.controller;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomCollectionEditor;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -76,7 +78,15 @@ public class UserController extends BaseController<User> {
 	public ModelAndView create() {
 		ModelAndView mav = new ModelAndView(Navigation.USER_NEW.getPath());
 		
-		mav.addObject("user", new User());
+		User user = new User();
+		
+		user.setCreatedBy(userService.getAuthenticatedUser());
+		user.setCreationDate(new Date());
+		
+		user.setLastUpdatedBy(userService.getAuthenticatedUser());
+		user.setLastUpdateDate(new Date());
+		
+		mav.addObject("user", user);
 		mav.addObject("groupList", userGroupService.list());
 		mav.addObject("readOnly", false);
 		
@@ -89,6 +99,9 @@ public class UserController extends BaseController<User> {
 		ModelAndView mav = new ModelAndView(Navigation.USER_EDIT.getPath());
 		
 		User user = userService.find(id);
+		
+		user.setLastUpdatedBy(userService.getAuthenticatedUser());
+		user.setLastUpdateDate(new Date());
 		
 		mav.addObject("user", user);
 		mav.addObject("groupList", userGroupService.list());
@@ -140,13 +153,13 @@ public class UserController extends BaseController<User> {
 	 * Use public ModelAndView save(@ModelAttribute("user") User user, @RequestParam(defaultValue = "false") boolean changePassword)
 	 */
 	@Override
-	public ModelAndView save(User entity) {
+	public ModelAndView save(User entity, BindingResult result) {
 		return null;
 	}
 	
 	@SecuredEnum({ UserPermission.USER_CREATE, UserPermission.USER_EDIT })
 	@RequestMapping(value = "save", method = RequestMethod.POST)
-	public ModelAndView save(@ModelAttribute("user") User user, @RequestParam(defaultValue = "false") boolean changePassword) {
+	public ModelAndView save(@ModelAttribute("user") User user, @RequestParam(defaultValue = "false") boolean changePassword, BindingResult result) {
 		ModelAndView mav = new ModelAndView();
 		
 		if (user != null) {

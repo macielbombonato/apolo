@@ -39,7 +39,7 @@ public class UserGroupServiceImpl extends BaseServiceImpl<UserGroup> implements 
 	@Override
 	@Transactional
 	public UserGroup save(UserGroup userGroup) throws AccessDeniedException {
-		if (userGroup != null && userGroup.getId().equals(1L)) {
+		if (userGroup != null && new Long(1L).equals(userGroup.getId())) {
 			throw new AccessDeniedException(MessageBundle.getMessageBundle("user.group.msg.access.denied"));
 		} else {
 			userGroup.setLastUpdatedBy(getAuthenticatedUser());
@@ -52,7 +52,7 @@ public class UserGroupServiceImpl extends BaseServiceImpl<UserGroup> implements 
 	@Override
 	@Transactional
 	public void remove(UserGroup userGroup) throws AccessDeniedException {
-		if (userGroup != null && userGroup.getId().equals(1L)) {
+		if (userGroup != null && new Long(1L).equals(userGroup.getId())) {
 			throw new AccessDeniedException(MessageBundle.getMessageBundle("user.group.msg.access.denied"));
 		} else {
 			userGroupRepository.delete(userGroup);	

@@ -29,17 +29,17 @@
 
 	<error-page>
 		<error-code>403</error-code>
-		<location>/WEB-INF/views/error/403.jsp</location>
+		<location>/error/403</location>
 	</error-page>
 
 	<error-page>
 		<error-code>404</error-code>
-		<location>/WEB-INF/views/error/404.jsp</location>
+		<location>/error/404</location>
 	</error-page>
 	
 	<error-page>
 		<error-code>500</error-code>
-		<location>/WEB-INF/views/error/500.jsp</location>
+		<location>/error/500</location>
 	</error-page>
 	
 	<filter>

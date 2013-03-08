@@ -1,9 +1,11 @@
 package br.apolo.web.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,7 +30,7 @@ public class UserGroupController extends BaseController<UserGroup> {
 	
 	@SecuredEnum({ UserPermission.USER_PERMISSION_CREATE, UserPermission.USER_PERMISSION_EDIT })
 	@RequestMapping(value = "save", method = RequestMethod.POST)
-	public ModelAndView save(@ModelAttribute("userGroup") UserGroup userGroup) {
+	public ModelAndView save(@ModelAttribute("userGroup") UserGroup userGroup, BindingResult result) {
 		ModelAndView mav = new ModelAndView();
 		
 		if (userGroup != null) {
@@ -65,7 +67,15 @@ public class UserGroupController extends BaseController<UserGroup> {
 	public ModelAndView create() {
 		ModelAndView mav = new ModelAndView(Navigation.USER_PERMISSION_CREATE.getPath());
 		
-		mav.addObject("user", new UserGroup());
+		UserGroup userGroup = new UserGroup();
+		
+		userGroup.setCreatedBy(userGroupService.getAuthenticatedUser());
+		userGroup.setCreationDate(new Date());
+		
+		userGroup.setLastUpdatedBy(userGroupService.getAuthenticatedUser());
+		userGroup.setLastUpdateDate(new Date());
+		
+		mav.addObject("userGroup", userGroup);
 		mav.addObject("permissionList", userGroupService.getUserPermissionList());
 		mav.addObject("readOnly", false);
 		
@@ -78,6 +88,9 @@ public class UserGroupController extends BaseController<UserGroup> {
 		ModelAndView mav = new ModelAndView(Navigation.USER_PERMISSION_EDIT.getPath());
 		
 		UserGroup userGroup = userGroupService.find(id);
+		
+		userGroup.setLastUpdatedBy(userGroupService.getAuthenticatedUser());
+		userGroup.setLastUpdateDate(new Date());
 		
 		mav.addObject("userGroup", userGroup);
 		mav.addObject("permissionList", userGroupService.getUserPermissionList());

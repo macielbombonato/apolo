@@ -70,6 +70,9 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 		if (changePassword) {
 			Md5PasswordEncoder encoder = new Md5PasswordEncoder();
 			user.setPassword(encoder.encodePassword(user.getPassword(), null));			
+		} else {
+			User dbUser = this.find(user.getId());
+			user.setPassword(dbUser.getPassword());
 		}
 		
 		return userRepository.save(user);

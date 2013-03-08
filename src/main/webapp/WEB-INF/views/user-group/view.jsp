@@ -12,7 +12,15 @@
 	<jsp:include page='_permission-form.jsp'></jsp:include>
 	
 	<div class="form-actions">
+		<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_PERMISSION_EDIT">
+			<a href='<s:url value="/user-group/edit"></s:url>/${userGroup.id}' class="btn">
+				<i class="icon-edit"></i>
+				<s:message code="common.edit" />
+			</a>
+		</security:authorize>
+
 		<a href='<s:url value="/user-group/list"></s:url>' class="btn">
+			<i class="icon-backward"></i>
 			<s:message code="common.back" />
 		</a>
 	</div>

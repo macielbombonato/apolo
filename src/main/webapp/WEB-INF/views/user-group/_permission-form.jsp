@@ -3,6 +3,12 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+
+<s:message code="common.datePattern" var="datePattern" />
+
+<jsp:useBean id="inputlength" class="br.apolo.common.util.InputLength"/>
 
 <input type="hidden" id="id" name="id" value="${userGroup.id}" />
 
@@ -60,4 +66,52 @@
 			</div>
 		</c:otherwise>
 	</c:choose>
+</div>
+
+<div class="row-fluid" <c:if test="${!readOnly}">style="display:none;"</c:if>>
+	<div class="span6">
+		<label for="userGroup.createdBy.name">
+			<s:message code="common.author" />
+		</label>
+		<form:input path="userGroup.createdBy.id" cssClass="input-block-level" cssStyle="display:none;" />
+		<form:input path="userGroup.createdBy.name" cssClass="input-block-level" readonly="true" />
+	</div>
+	<div class="span6">
+		<label for="userGroup.creationDate">
+			<s:message code="common.creationDate" />
+		</label>
+		<input 
+				type="text" 
+				id="creationDate" 
+				name="creationDate" 
+				class="input-block-level" 
+				value="<fmt:formatDate value="${userGroup.creationDate}" 
+				pattern="${datePattern}" />" 
+				readonly="readonly"
+			/>
+	</div>
+</div>
+
+<div class="row-fluid" <c:if test="${!readOnly}">style="display:none;"</c:if>>
+	<div class="span6">
+		<label for="userGroup.lastUpdatedBy.name">
+			<s:message code="common.lastUpdatedBy" />
+		</label>
+		<form:input path="userGroup.lastUpdatedBy.id" cssClass="input-block-level" cssStyle="display:none;" />
+		<form:input path="userGroup.lastUpdatedBy.name" cssClass="input-block-level" readonly="true"/>
+	</div>
+	<div class="span6">
+		<label for="userGroup.lastUpdateDate">
+			<s:message code="common.lastUpdateDate" />
+		</label>
+		<input 
+				type="text" 
+				id="lastUpdateDate" 
+				name="lastUpdateDate" 
+				class="input-block-level" 
+				value="<fmt:formatDate value="${userGroup.lastUpdateDate}" 
+				pattern="${datePattern}" />" 
+				readonly="readonly"
+			/>
+	</div>
 </div>

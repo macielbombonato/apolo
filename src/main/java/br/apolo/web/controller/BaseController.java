@@ -1,12 +1,18 @@
 package br.apolo.web.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import javax.servlet.jsp.JspTagException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.NestedServletException;
@@ -35,7 +41,7 @@ public abstract class BaseController<E extends BaseEntity> {
 	 * @param entity
 	 * @return ModelAndView
 	 */
-	public abstract ModelAndView save(@ModelAttribute("entity") E entity);
+	public abstract ModelAndView save(E entity, BindingResult result);
 	
 	/**
 	 * In implementation use annotation like this example:
@@ -62,7 +68,16 @@ public abstract class BaseController<E extends BaseEntity> {
 	 * @return ModelAndView
 	 */
 	public abstract ModelAndView remove(@PathVariable Long id);
-
+	
+	@InitBinder
+	protected void dateBinder(WebDataBinder binder) {
+		//The date format to parse or output your dates
+		SimpleDateFormat dateFormat = new SimpleDateFormat(MessageBundle.getMessageBundle("common.datePattern"));
+	    //Create a new CustomDateEditor
+	    CustomDateEditor editor = new CustomDateEditor(dateFormat, true);
+	    //Register it as custom editor for the Date type
+	    binder.registerCustomEditor(Date.class, editor);
+	}
 	
 	public String redirect(Navigation nav) {
 		String path = "redirect:";
@@ -81,9 +96,9 @@ public abstract class BaseController<E extends BaseEntity> {
 		ex.printStackTrace();
 
 		ModelAndView mav = new ModelAndView(Navigation.ERROR.getPath());
-		mav.addObject("code", 999);
-		mav.addObject("title", MessageBundle.getMessageBundle("error.999"));
-		mav.addObject("message", MessageBundle.getMessageBundle("error.999.msg"));
+		mav.addObject("code", 500);
+		mav.addObject("title", MessageBundle.getMessageBundle("error.500"));
+		mav.addObject("message", MessageBundle.getMessageBundle("error.500.msg"));
 		mav.addObject("exception", ex);
 
 		return mav;
@@ -94,9 +109,9 @@ public abstract class BaseController<E extends BaseEntity> {
 		ex.printStackTrace();
 
 		ModelAndView mav = new ModelAndView(Navigation.ERROR.getPath());
-		mav.addObject("code", 999);
-		mav.addObject("title", MessageBundle.getMessageBundle("error.999"));
-		mav.addObject("message", MessageBundle.getMessageBundle("error.999.msg"));
+		mav.addObject("code", 500);
+		mav.addObject("title", MessageBundle.getMessageBundle("error.500"));
+		mav.addObject("message", MessageBundle.getMessageBundle("error.500.msg"));
 		mav.addObject("exception", ex);
 
 		return mav;
