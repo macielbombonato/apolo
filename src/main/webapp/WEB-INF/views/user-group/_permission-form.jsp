@@ -38,9 +38,7 @@
 									selected="selected"
 								</c:if>
 							</c:forEach>						
-						>
-							<s:message code="user.permission.${permission}" />
-						</option>
+						><s:message code="user.permission.${permission}" /></option>
 					</c:forEach>
 				</select>
 			</div>

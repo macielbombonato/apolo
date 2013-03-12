@@ -91,9 +91,7 @@
 									selected="selected"
 								</c:if>
 							</c:forEach>						
-						>
-							${group.name}
-						</option>
+						>${group.name}</option>
 					</c:forEach>
 				</select>
 			</div>
