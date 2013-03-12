@@ -17,7 +17,7 @@
 			</a> 
 			
 			<a class="brand" href='<s:url value="/"></s:url>'>
-				<img src='<c:url value="/resources/app/img/favicon.png" />' width="20" height="20">
+				<img src='<c:url value="/resources/app/img/favicon.png" />' width="20" height="20" style="width: 20px; height: 20px;" />
 				<strong><s:message code="app.title" /></strong>
 			</a>
 			
