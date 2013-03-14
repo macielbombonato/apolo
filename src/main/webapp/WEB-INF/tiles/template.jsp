@@ -2,6 +2,7 @@
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -95,7 +96,8 @@
 			var App = function() {
 				return {
 					contextPath : '${pageContext.request.contextPath}',
-					locale : '${sessionScope["org.springframework.web.servlet.i18n.SessionLocaleResolver.LOCALE"]}'
+					locale : '${sessionScope["org.springframework.web.servlet.i18n.SessionLocaleResolver.LOCALE"]}',
+					readOnly : ${readOnly != null ? readOnly : false }
 				};
 			}();
 		</script>
@@ -171,6 +173,18 @@
 		<!-- application script for Charisma demo -->
 		<script src='<c:url value="/resources/plugin/charisma/js/charisma.js" />'></script>
 		
+		<!-- tag-it script -->
+		<script src='<c:url value="/resources/plugin/tagit/js/tag-it.js" />'></script>
+		
+		<!-- cleditor script -->
+		<script src='<c:url value="/resources/plugin/cleditor/jquery.cleditor.js" />'></script>
+		
+		<!-- application scripts -->
 		<script type="text/javascript" src='<c:url value="/resources/app/js/app.js" />'></script>
+		
+		<!-- Scripts to load only if the user are in the form screen -->
+		<security:authorize access="!isAuthenticated()">
+			<script type="text/javascript" src='<c:url value="/resources/app/js/login.js" />'></script>
+		</security:authorize>
 	</body>
 </html>

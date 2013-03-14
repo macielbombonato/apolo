@@ -9,7 +9,7 @@
 	<ul class="nav">
 		<li class="dropdown">
 			<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-				<i class="icon-cog"></i>
+				<i class="icon-cog "></i>
 				<span class="hidden-phone">
 					<s:message code="user" />
 				</span>
@@ -85,7 +85,7 @@
 	<security:authorize access="isAuthenticated()">
 		<li class="dropdown">
 			<a class="dropdown-toggle" data-toggle="dropdown" href="#">
-				<i class="icon-user"></i>
+				<i class="icon-user "></i>
 				<span class="hidden-phone">
 					<security:authentication property="principal.systemUser.name" />
 				</span>
@@ -119,13 +119,13 @@
 		<li class="dropdown">
 			<a href='#' 
 				data-toggle="dropdown" 
-				onclick="$('#loginScreen').removeClass('row-fluid');$('#loginScreen').addClass('row');"
+				id="loginScreenOpen"
 			> 
-				<i class="icon-lock"></i>
+				<i class="icon-lock "></i>
 				<s:message code="user.restricted.area.access" /> 
 				<span class="caret"></span>
 			</a>
-			<div class="dropdown-menu" style="padding: 15px; padding-bottom: 0px;">
+			<div id="loginScreenPopup" class="dropdown-menu" style="padding: 15px; padding-bottom: 0px;">
 				<jsp:include page='../auth/login.jsp'></jsp:include>
 			</div>
 		</li>
