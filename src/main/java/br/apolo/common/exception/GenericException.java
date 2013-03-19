@@ -5,6 +5,19 @@ public class GenericException extends RuntimeException{
 	private static final long serialVersionUID = -8428935349351960489L;
 	
 	private String customMsg;
+	
+	public GenericException() {
+		super();
+	}
+
+	public GenericException(String message, Throwable cause) {
+		super(message, cause);
+		this.customMsg = message;
+	}
+
+	public GenericException(Throwable cause) {
+		super(cause);
+	}
 
 	public String getCustomMsg() {
 		return customMsg;

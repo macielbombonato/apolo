@@ -27,22 +27,26 @@
 		</style>
 		<link href='<c:url value="/resources/plugin/bootstrap/css/bootstrap.css" />' rel="stylesheet" />
 		<link href='<c:url value="/resources/plugin/bootstrap/css/bootstrap-responsive.css" />' rel="stylesheet" />
-		<link href='<c:url value="/resources/plugin/charisma/css/jquery-ui-1.8.21.custom.css" />' rel="stylesheet">
+		
+		<link href='<c:url value="/resources/plugin/jquery/themes/base/jquery-ui.css" />' rel="stylesheet" />
+		
 		<link href='<c:url value="/resources/plugin/charisma/css/fullcalendar.css" />' rel='stylesheet'>
 		<link href='<c:url value="/resources/plugin/charisma/css/fullcalendar.print.css" />' rel='stylesheet'  media='print'>
-		<link href='<c:url value="/resources/plugin/charisma/css/chosen.css" />' rel='stylesheet'>
 		<link href='<c:url value="/resources/plugin/charisma/css/uniform.default.css" />' rel='stylesheet'>
 		<link href='<c:url value="/resources/plugin/charisma/css/colorbox.css" />' rel='stylesheet'>
-		<link href='<c:url value="/resources/plugin/charisma/css/jquery.cleditor.css" />' rel='stylesheet'>
 		<link href='<c:url value="/resources/plugin/charisma/css/jquery.noty.css" />' rel='stylesheet'>
 		<link href='<c:url value="/resources/plugin/charisma/css/noty_theme_default.css" />' rel='stylesheet'>
-		<link href='<c:url value="/resources/plugin/charisma/css/elfinder.min.css" />' rel='stylesheet'>
-		<link href='<c:url value="/resources/plugin/charisma/css/elfinder.theme.css" />' rel='stylesheet'>
 		<link href='<c:url value="/resources/plugin/charisma/css/jquery.iphone.toggle.css" />' rel='stylesheet'>
 		<link href='<c:url value="/resources/plugin/charisma/css/opa-icons.css" />' rel='stylesheet'>
-		<link href='<c:url value="/resources/plugin/charisma/css/uploadify.css" />' rel='stylesheet'>
 		
-		<link rel="stylesheet" href='<c:url value="/resources/app/css/app.css" />' />
+		<link href='<c:url value="/resources/plugin/jquery-chosen/chosen.css" />' rel='stylesheet'>
+		
+		<link href='<c:url value="/resources/plugin/tagit/css/jquery.tagit.css" />' rel='stylesheet'>
+		<link href='<c:url value="/resources/plugin/tagit/css/tagit.ui-zendesk.css" />' rel='stylesheet'>
+		
+		<link href='<c:url value="/resources/plugin/cleditor/jquery.cleditor.css" />' rel='stylesheet'>
+		
+		<link href='<c:url value="/resources/app/css/app.css" />' rel='stylesheet'>
 		
 	</head>
 	
@@ -103,10 +107,21 @@
 		</script>
 		
 		<!-- jQuery -->
-		<script src="http://code.jquery.com/jquery-latest.js"></script>
-		<script src='<c:url value="/resources/plugin/charisma/js/jquery-1.7.2.min.js" />'></script>
-		<!-- jQuery UI -->
-		<script src='<c:url value="/resources/plugin/charisma/js/jquery-ui-1.8.21.custom.min.js" />'></script>
+		<script src='<c:url value="/resources/plugin/jquery/jquery-1.9.1.js" />'></script>
+		<script src='<c:url value="/resources/plugin/jquery/jquery-1.7.2.js" />'></script>
+		
+		<script src='<c:url value="/resources/plugin/jquery/ui/jquery-ui.js" />'></script>
+		
+		<!-- select or dropdown enhancer -->
+		<script src='<c:url value="/resources/plugin/jquery-chosen/chosen.jquery.js" />'></script>
+		
+		<!-- tag-it script -->
+		<script src='<c:url value="/resources/plugin/tagit/js/tag-it.js" />'></script>
+		
+		<!-- cleditor script -->
+		<script src='<c:url value="/resources/plugin/cleditor/jquery.cleditor.js" />'></script>
+		
+
 		<!-- transition / effect library -->
 		<script src='<c:url value="/resources/plugin/charisma/js/bootstrap-transition.js" />'></script>
 		<!-- alert enhancer library -->
@@ -148,36 +163,19 @@
 		<script src='<c:url value="/resources/plugin/charisma/js/jquery.flot.resize.min.js" />'></script>
 		<!-- chart libraries end -->
 	
-		<!-- select or dropdown enhancer -->
-		<script src='<c:url value="/resources/plugin/charisma/js/jquery.chosen.min.js" />'></script>
+
 		<!-- checkbox, radio, and file input styler -->
 		<script src='<c:url value="/resources/plugin/charisma/js/jquery.uniform.min.js" />'></script>
 		<!-- plugin for gallery image view -->
 		<script src='<c:url value="/resources/plugin/charisma/js/jquery.colorbox.min.js" />'></script>
-		<!-- rich text editor library -->
-		<script src='<c:url value="/resources/plugin/charisma/js/jquery.cleditor.min.js" />'></script>
 		<!-- notification plugin -->
 		<script src='<c:url value="/resources/plugin/charisma/js/jquery.noty.js" />'></script>
-		<!-- file manager library -->
-		<script src='<c:url value="/resources/plugin/charisma/js/jquery.elfinder.min.js" />'></script>
 		<!-- star rating plugin -->
 		<script src='<c:url value="/resources/plugin/charisma/js/jquery.raty.min.js" />'></script>
 		<!-- for iOS style toggle switch -->
 		<script src='<c:url value="/resources/plugin/charisma/js/jquery.iphone.toggle.js" />'></script>
 		<!-- autogrowing textarea plugin -->
 		<script src='<c:url value="/resources/plugin/charisma/js/jquery.autogrow-textarea.js" />'></script>
-		<!-- multiple file upload plugin -->
-		<script src='<c:url value="/resources/plugin/charisma/js/jquery.uploadify-3.1.min.js" />'></script>
-		<!-- history.js for cross-browser state change on ajax -->
-		<script src='<c:url value="/resources/plugin/charisma/js/jquery.history.js" />'></script>
-		<!-- application script for Charisma demo -->
-		<script src='<c:url value="/resources/plugin/charisma/js/charisma.js" />'></script>
-		
-		<!-- tag-it script -->
-		<script src='<c:url value="/resources/plugin/tagit/js/tag-it.js" />'></script>
-		
-		<!-- cleditor script -->
-		<script src='<c:url value="/resources/plugin/cleditor/jquery.cleditor.js" />'></script>
 		
 		<!-- application scripts -->
 		<script type="text/javascript" src='<c:url value="/resources/app/js/app.js" />'></script>

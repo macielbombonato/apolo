@@ -1,7 +1,10 @@
 package br.apolo.common.config;
 
+import java.io.File;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.HandlerMapping;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -26,11 +30,15 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
 import org.springframework.web.servlet.view.tiles2.TilesConfigurer;
 import org.springframework.web.servlet.view.tiles2.TilesViewResolver;
 
+import br.apolo.common.util.AppConfig;
+
 @Configuration
 @EnableWebMvc
 @ComponentScan(basePackages = { "br.apolo" })
 @ImportResource("classpath:spring-global-method-security.xml")
 public class WebMvcConfig extends WebMvcConfigurationSupport {
+	
+	protected static final Logger log = LoggerFactory.getLogger(WebMvcConfig.class);
 	
 	public WebMvcConfig() {
 		super();
@@ -42,6 +50,9 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
 	
 	private static final String RESOURCES_LOCATION = "/resources/";
 	private static final String RESOURCES_HANDLER = RESOURCES_LOCATION + "**";
+	
+	private static final String FILES_LOCATION = "file:/" + AppConfig.getObjectFilesPath();
+	private static final String FILES_HANDLER = "/uploadedfiles/**";
 	
 	
 	@Override
@@ -85,9 +96,35 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
 		return super.resourceHandlerMapping();
 	}
 	
+	@Bean
+	public CommonsMultipartResolver multipartResolver() {
+		return new CommonsMultipartResolver();
+	}
+	
 	@Override
 	protected void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry.addResourceHandler(RESOURCES_HANDLER).addResourceLocations(RESOURCES_LOCATION).setCachePeriod(175316);
+		
+		if (isValidFilesLocation()) {
+			registry.addResourceHandler(FILES_HANDLER).addResourceLocations(FILES_LOCATION).setCachePeriod(0);	
+		}
+	}
+	
+	private boolean isValidFilesLocation() {
+		boolean result = false;
+		
+		try {
+			File dir = new File(AppConfig.getObjectFilesPath());
+			if (!dir.exists()) {
+				dir.mkdirs();
+			}
+			
+			result = dir.exists();
+		} catch (Exception e) {
+			log.error(e.getMessage());
+		}
+		
+		return result;
 	}
 	
 	@Override
@@ -100,8 +137,6 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
 		argumentResolvers.add(new UserDetailsHandlerMethodArgumentResolver());
 	}
 	
-	// custom argument resolver inner classes
-
 	private static class UserDetailsHandlerMethodArgumentResolver implements HandlerMethodArgumentResolver {
 
 		public boolean supportsParameter(MethodParameter parameter) {

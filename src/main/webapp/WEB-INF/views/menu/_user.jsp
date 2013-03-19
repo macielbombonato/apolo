@@ -118,11 +118,14 @@
 	<security:authorize access="!isAuthenticated()">
 		<li class="dropdown">
 			<a href='#' 
+				class="dropdown-toggle"
 				data-toggle="dropdown" 
 				id="loginScreenOpen"
 			> 
 				<i class="icon-lock "></i>
-				<s:message code="user.restricted.area.access" /> 
+				<span class="hidden-phone">
+					<s:message code="user.restricted.area.access" />
+				</span> 
 				<span class="caret"></span>
 			</a>
 			<div id="loginScreenPopup" class="dropdown-menu" style="padding: 15px; padding-bottom: 0px;">

@@ -30,7 +30,7 @@
 				<label for="name">
 					<s:message code="user.group.permissions.selected" />
 				</label>
-				<select name="permissions" id="listTo" size="5" multiple="multiple" class="input-block-level" <c:if test="${readOnly}">disabled="disabled"</c:if> data-rel="chosen" data-placeholder='<s:message code="common.select" />'>
+				<select name="permissions" id="listTo" size="5" multiple="multiple" class="input-block-level applyChosen" <c:if test="${readOnly}">disabled="disabled"</c:if> data-placeholder='<s:message code="common.select" />'>
 					<c:forEach items="${permissionList}" var="permission">
 						<option value="${permission}"
 							<c:forEach items="${userGroup.permissions}" var="groupPermission">
