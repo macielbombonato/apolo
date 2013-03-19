@@ -35,6 +35,7 @@ public class FileServiceImpl<E extends BaseEntity> implements FileService<E> {
 			String filePath = 
 					AppConfig.getObjectFilesPath() + 
 					entity.getClass().getSimpleName() + 
+					File.separator +
 					entity.getId();
 
 			f = createAndValidateFile(filePath, true);
