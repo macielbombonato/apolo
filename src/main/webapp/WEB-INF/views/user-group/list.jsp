@@ -20,9 +20,11 @@
 				<th>
 					<s:message code="user.group.permissions" />
 				</th>
-				<th>
-					<s:message code="common.actions" />
-				</th>
+				<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_PERMISSION_VIEW, ROLE_USER_PERMISSION_EDIT, ROLE_USER_PERMISSION_REMOVE">
+					<th>
+						<s:message code="common.actions" />
+					</th>
+				</security:authorize>
 			</tr>
 		</thead>
 		
@@ -30,7 +32,14 @@
 			<c:forEach items="${userGroupList}" var="group">
 				<tr>
 					<td>
-						${group.name}
+						<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_PERMISSION_VIEW">
+							<a href='<s:url value="/user-group/view"></s:url>/${group.id}' class="btn btn-link">
+								${group.name}
+							</a>
+						</security:authorize>
+						<security:authorize  ifNotGranted="ROLE_ADMIN, ROLE_USER_PERMISSION_VIEW">
+							${group.name}
+						</security:authorize>
 					</td>
 					<td>
 						<table class="table table-condensed table-bordered">
@@ -45,31 +54,30 @@
 							</tbody>
 						</table>
 					</td>
-					<td>
-						<div class="btn-group">
-							<a href='<s:url value="/user-group/view"></s:url>/${group.id}' class="btn" tabindex="-1">
-								<i class="icon-zoom-in"></i>
-								<s:message code="common.show" />
-							</a>
-							<button class="btn dropdown-toggle" data-toggle="dropdown" tabindex="-1">
-								<span class="caret"></span>
-							</button>
-							<ul class="dropdown-menu">
-								<li>
-									<a href='<s:url value="/user-group/edit"></s:url>/${group.id}'>
+					<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_PERMISSION_VIEW, ROLE_USER_PERMISSION_EDIT, ROLE_USER_PERMISSION_REMOVE">
+						<td>
+							<div class="btn-group">
+								<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_PERMISSION_VIEW">
+									<a href='<s:url value="/user-group/view"></s:url>/${group.id}' class="btn btn-small">
+										<i class="icon-zoom-in"></i>
+										<s:message code="common.show" />
+									</a>
+								</security:authorize>
+								<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_PERMISSION_EDIT">
+									<a href='<s:url value="/user-group/edit"></s:url>/${group.id}' class="btn btn-small">
 										<i class="icon-edit"></i>
 										<s:message code="common.edit" />
 									</a>
-								</li>
-								<li>
-									<a href='<s:url value="/user-group/remove"></s:url>/${group.id}'>
+								</security:authorize>
+								<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_PERMISSION_REMOVE">
+									<a href='<s:url value="/user-group/remove"></s:url>/${group.id}' class="btn btn-small">
 										<i class="icon-remove"></i>
 										<s:message code="common.remove" />
 									</a>
-								</li>
-							</ul>
-						</div>
-					</td>
+								</security:authorize>
+							</div>
+						</td>
+					</security:authorize>
 				</tr>
 			</c:forEach>
 		</tbody>

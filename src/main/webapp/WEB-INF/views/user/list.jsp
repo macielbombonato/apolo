@@ -23,9 +23,11 @@
 				<th>
 					<s:message code="user.groups" />
 				</th>
-				<th>
-					<s:message code="common.actions" />
-				</th>
+				<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_LIST, ROLE_USER_EDIT, ROLE_USER_REMOVE">
+					<th>
+						<s:message code="common.actions" />
+					</th>
+				</security:authorize>
 			</tr>
 		</thead>
 		
@@ -33,7 +35,9 @@
 			<c:forEach items="${userList}" var="user">
 				<tr>
 					<td>
-						${user.name}
+						<a href='<s:url value="/user/view"></s:url>/${user.id}' class="btn btn-link">
+							${user.name}
+						</a>
 					</td>
 					<td>
 						${user.email}
@@ -44,40 +48,42 @@
 								<c:forEach items="${user.groups}" var="group">
 									<tr>
 										<td>
-											<a href='<s:url value="/user-group/view"></s:url>/${group.id}'>
+											<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_PERMISSION_VIEW">
+												<a href='<s:url value="/user-group/view"></s:url>/${group.id}' class="btn btn-link">
+													${group.name}
+												</a>
+											</security:authorize>
+											<security:authorize  ifNotGranted="ROLE_ADMIN, ROLE_USER_PERMISSION_VIEW">
 												${group.name}
-											</a>
+											</security:authorize>
 										</td>
 									</tr>
 								</c:forEach>
 							</tbody>
 						</table>
 					</td>
-					<td>
-						<div class="btn-group">
-							<a href='<s:url value="/user/view"></s:url>/${user.id}' class="btn" tabindex="-1">
-								<i class="icon-zoom-in"></i>
-								<s:message code="common.show" />
-							</a>
-							<button class="btn dropdown-toggle" data-toggle="dropdown" tabindex="-1">
-								<span class="caret"></span>
-							</button>
-							<ul class="dropdown-menu">
-								<li>
-									<a href='<s:url value="/user/edit"></s:url>/${user.id}'>
+					<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_LIST, ROLE_USER_EDIT, ROLE_USER_REMOVE">
+						<td>
+							<div class="btn-group">
+								<a href='<s:url value="/user/view"></s:url>/${user.id}' class="btn btn-small">
+									<i class="icon-zoom-in"></i>
+									<s:message code="common.show" />
+								</a>
+								<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_EDIT">
+									<a href='<s:url value="/user/edit"></s:url>/${user.id}' class="btn btn-small">
 										<i class="icon-edit"></i>
 										<s:message code="common.edit" />
 									</a>
-								</li>
-								<li>
-									<a href='<s:url value="/user/remove"></s:url>/${user.id}'>
+								</security:authorize>
+								<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_REMOVE">
+									<a href='<s:url value="/user/remove"></s:url>/${user.id}' class="btn btn-small">
 										<i class="icon-remove"></i>
 										<s:message code="common.remove" />
 									</a>
-								</li>
-							</ul>
-						</div>
-					</td>
+								</security:authorize>
+							</div>
+						</td>
+					</security:authorize>
 				</tr>
 			</c:forEach>
 		</tbody>

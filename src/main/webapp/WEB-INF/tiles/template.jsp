@@ -120,7 +120,9 @@
 		
 		<!-- cleditor script -->
 		<script src='<c:url value="/resources/plugin/cleditor/jquery.cleditor.js" />'></script>
-		
+
+		<!-- ellipsis script -->
+		<script src='<c:url value="/resources/plugin/jquery-ellipsis/jquery.ellipsis.js" />'></script>
 
 		<!-- transition / effect library -->
 		<script src='<c:url value="/resources/plugin/charisma/js/bootstrap-transition.js" />'></script>

@@ -50,6 +50,11 @@ $(document).ready(function() {
 		height: '80%',
 		disabled: App.readOnly
 	});
+	
+	$(".ellipsis").ellipsis({
+		row: 10, 
+		char: '...'
+	});
 });
 
 $('#header').height($('#menu').height() + 10);
