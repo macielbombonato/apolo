@@ -7,7 +7,7 @@
     <groupId>br.apolo</groupId>
     <artifactId>Apolo-Base</artifactId>
     <packaging>war</packaging>
-    <version>0.10.0</version>
+    <version>0.15.0</version>
     <name>Apolo</name>
 	<description>Arquitetura base de projeto Spring MVC + JPA</description>
 	

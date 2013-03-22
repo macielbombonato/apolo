@@ -96,6 +96,29 @@
 			</div>
 		</div>
 		
+		<div id="editData" class="modal hide fade" tabindex="-1" data-role="dialog">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4>
+					<s:message code="common.edit" />
+				</h4>
+			</div>
+			
+			<div class="modal-body">
+				<input type="text" id="dataInput" class="input-block-level"/>
+				<input type="hidden" id="editingFieldName" class="input-block-level"/>
+			</div>
+			
+			<div class="modal-footer">
+				<a href="#" class="btn" data-dismiss="modal">
+					<s:message code="common.cancel" />
+				</a>
+				<a href="#" class="btn btn-primary" onclick="editData();">
+					<s:message code="common.ok" />
+				</a>
+			</div>
+		</div>
+		
 		<script type="text/javascript">
 			var App = function() {
 				return {

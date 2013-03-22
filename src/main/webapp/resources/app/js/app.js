@@ -4,6 +4,13 @@ $(document).ready(function() {
 	});
 	
 	$('#loadingDialog').modal({
+		backdrop: 'static',
+		keyboard: false,
+		show: false
+	});
+	
+	$('#editData').modal({
+		backdrop: 'static',
 		keyboard: false,
 		show: false
 	});
@@ -61,4 +68,18 @@ $('#header').height($('#menu').height() + 10);
 
 if (!App.readOnly) {
 	$('.focus').trigger('focus');
+}
+
+function editDataOpen(fieldName) {
+	$('#dataInput').val($('#'+fieldName).val());
+	$('#editingFieldName').val(fieldName);
+	$('#editData').modal('toggle');
+} 
+
+function editData() {
+	$('#'+$('#editingFieldName').val()).val($('#dataInput').val());
+	$('#label_'+$('#editingFieldName').val()).text($('#dataInput').val());
+	$('#dataInput').val('');
+	$('#editingFieldName').val('');
+	$('#editData').modal('toggle');
 }
