@@ -3,10 +3,12 @@ package br.apolo.web.controller;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspTagException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindingResult;
@@ -21,10 +23,14 @@ import br.apolo.common.exception.GenericException;
 import br.apolo.common.util.MessageBundle;
 import br.apolo.data.model.BaseEntity;
 import br.apolo.web.enums.Navigation;
+import br.apolo.web.service.BreadCrumbTreeService;
 
 public abstract class BaseController<E extends BaseEntity> { 
 	
 	protected static final Logger log = LoggerFactory.getLogger(BaseController.class);
+	
+	@Autowired
+	protected BreadCrumbTreeService breadCrumbService;
 	
 	/**
 	 * In implementation use annotation like this example:
@@ -32,7 +38,7 @@ public abstract class BaseController<E extends BaseEntity> {
 	 * @RequestMapping(value = "path", method = RequestMethod.GET)
 	 * @return ModelAndView
 	 */
-	public abstract ModelAndView list();
+	public abstract ModelAndView list(HttpServletRequest request);
 	
 	/**
 	 * In implementation use annotation like this example:
@@ -41,7 +47,7 @@ public abstract class BaseController<E extends BaseEntity> {
 	 * @param entity
 	 * @return ModelAndView
 	 */
-	public abstract ModelAndView save(E entity, BindingResult result);
+	public abstract ModelAndView save(E entity, BindingResult result, HttpServletRequest request);
 	
 	/**
 	 * In implementation use annotation like this example:
@@ -49,7 +55,7 @@ public abstract class BaseController<E extends BaseEntity> {
 	 * @RequestMapping(value = "path", method = RequestMethod.GET)
 	 * @return ModelAndView
 	 */
-	public abstract ModelAndView create();
+	public abstract ModelAndView create(HttpServletRequest request);
 	
 	/**
 	 * In implementation use annotation like this example:
@@ -58,7 +64,7 @@ public abstract class BaseController<E extends BaseEntity> {
 	 * @param id
 	 * @return ModelAndView
 	 */
-	public abstract ModelAndView edit(@PathVariable Long id);
+	public abstract ModelAndView edit(@PathVariable Long id, HttpServletRequest request);
 	
 	/**
 	 * In implementation use annotation like this example:
@@ -67,7 +73,7 @@ public abstract class BaseController<E extends BaseEntity> {
 	 * @param id
 	 * @return ModelAndView
 	 */
-	public abstract ModelAndView remove(@PathVariable Long id);
+	public abstract ModelAndView remove(@PathVariable Long id, HttpServletRequest request);
 	
 	@InitBinder
 	protected void dateBinder(WebDataBinder binder) {

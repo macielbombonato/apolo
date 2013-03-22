@@ -3,6 +3,8 @@ package br.apolo.web.controller;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -30,18 +32,18 @@ public class UserGroupController extends BaseController<UserGroup> {
 	
 	@SecuredEnum({ UserPermission.USER_PERMISSION_CREATE, UserPermission.USER_PERMISSION_EDIT })
 	@RequestMapping(value = "save", method = RequestMethod.POST)
-	public ModelAndView save(@ModelAttribute("userGroup") UserGroup userGroup, BindingResult result) {
+	public ModelAndView save(@ModelAttribute("userGroup") UserGroup userGroup, BindingResult result, HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView();
 		
 		if (userGroup != null) {
 			try {
 				userGroupService.save(userGroup);
 				
-				mav = view(userGroup.getId());
+				mav = view(userGroup.getId(), request);
 				mav.addObject("msg", true);
 				mav.addObject("message", MessageBundle.getMessageBundle("common.msg.save.success"));
 			} catch (AccessDeniedException e) {
-				mav = list();
+				mav = list(request);
 				mav.addObject("error", true);
 				mav.addObject("message", e.getCustomMsg());
 			}
@@ -52,7 +54,9 @@ public class UserGroupController extends BaseController<UserGroup> {
 	
 	@SecuredEnum(UserPermission.USER_PERMISSION_LIST)
 	@RequestMapping(value = "list", method = RequestMethod.GET)
-	public ModelAndView list() {
+	public ModelAndView list(HttpServletRequest request) {
+		breadCrumbService.addNode(MessageBundle.getMessageBundle("breadcrumb.usergroup.list"), 1, request);
+		
 		ModelAndView mav = new ModelAndView(Navigation.USER_PERMISSION_LIST.getPath());
 		
 		List<UserGroup> userGroupList = userGroupService.list();
@@ -64,7 +68,9 @@ public class UserGroupController extends BaseController<UserGroup> {
 	
 	@SecuredEnum(UserPermission.USER_PERMISSION_CREATE)
 	@RequestMapping(value = "new", method = RequestMethod.GET)
-	public ModelAndView create() {
+	public ModelAndView create(HttpServletRequest request) {
+		breadCrumbService.addNode(MessageBundle.getMessageBundle("breadcrumb.usergroup.new"), 1, request);
+		
 		ModelAndView mav = new ModelAndView(Navigation.USER_PERMISSION_CREATE.getPath());
 		
 		UserGroup userGroup = new UserGroup();
@@ -84,7 +90,9 @@ public class UserGroupController extends BaseController<UserGroup> {
 	
 	@SecuredEnum(UserPermission.USER_PERMISSION_EDIT)
 	@RequestMapping(value = "edit/{id}", method = RequestMethod.GET)
-	public ModelAndView edit(@PathVariable Long id) {
+	public ModelAndView edit(@PathVariable Long id, HttpServletRequest request) {
+		breadCrumbService.addNode(MessageBundle.getMessageBundle("breadcrumb.usergroup.edit"), 2, request);
+		
 		ModelAndView mav = new ModelAndView(Navigation.USER_PERMISSION_EDIT.getPath());
 		
 		UserGroup userGroup = userGroupService.find(id);
@@ -101,14 +109,14 @@ public class UserGroupController extends BaseController<UserGroup> {
 	
 	@SecuredEnum(UserPermission.USER_PERMISSION_REMOVE)
 	@RequestMapping(value = "remove/{id}", method = RequestMethod.GET)
-	public ModelAndView remove(@PathVariable Long id) {
+	public ModelAndView remove(@PathVariable Long id, HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView();
 		
 		UserGroup userGroup = userGroupService.find(id);
 		
 		if (userGroup != null) {
 			if (userGroup.getUsers() != null && !userGroup.getUsers().isEmpty()) {
-				mav = list();
+				mav = list(request);
 				
 				mav.addObject("error", true);
 				mav.addObject("message", MessageBundle.getMessageBundle("user.group.msg.error.has.associated.users"));
@@ -116,11 +124,11 @@ public class UserGroupController extends BaseController<UserGroup> {
 				try {
 					userGroupService.remove(userGroup);
 					
-					mav = list();
+					mav = list(request);
 					mav.addObject("msg", true);
 					mav.addObject("message", MessageBundle.getMessageBundle("common.msg.remove.success"));
 				} catch (AccessDeniedException e) {
-					mav = list();
+					mav = list(request);
 					mav.addObject("error", true);
 					mav.addObject("message", e.getCustomMsg());
 				}
@@ -132,7 +140,9 @@ public class UserGroupController extends BaseController<UserGroup> {
 	
 	@SecuredEnum({UserPermission.USER_PERMISSION_VIEW, UserPermission.USER_PERMISSION_LIST, UserPermission.USER_LIST})
 	@RequestMapping(value = "view/{id}", method = RequestMethod.GET)
-	public ModelAndView view(@PathVariable Long id) {
+	public ModelAndView view(@PathVariable Long id, HttpServletRequest request) {
+		breadCrumbService.addNode(MessageBundle.getMessageBundle("breadcrumb.usergroup"), 2, request);
+		
 		ModelAndView mav = new ModelAndView(Navigation.USER_PERMISSION_VIEW.getPath());
 		
 		UserGroup userGroup = userGroupService.find(id);
@@ -145,7 +155,9 @@ public class UserGroupController extends BaseController<UserGroup> {
 	
 	@SecuredEnum(UserPermission.USER_PERMISSION_LIST)
 	@RequestMapping(value = "search", method = RequestMethod.POST)
-	public ModelAndView search(@ModelAttribute("param") String param) {
+	public ModelAndView search(@ModelAttribute("param") String param, HttpServletRequest request) {
+		breadCrumbService.addNode(MessageBundle.getMessageBundle("breadcrumb.usergroup.list"), 2, request);
+		
 		ModelAndView mav = new ModelAndView(Navigation.USER_PERMISSION_LIST.getPath());
 		
 		SearchResult<UserGroup> result = userGroupService.search(param);
@@ -159,7 +171,9 @@ public class UserGroupController extends BaseController<UserGroup> {
 	
 	@SecuredEnum(UserPermission.USER_PERMISSION_LIST)
 	@RequestMapping(value = "search-form", method = RequestMethod.GET)
-	public ModelAndView searchForm() {
+	public ModelAndView searchForm(HttpServletRequest request) {
+		breadCrumbService.addNode(MessageBundle.getMessageBundle("breadcrumb.usergroup.search"), 1, request);
+		
 		ModelAndView mav = new ModelAndView(Navigation.USER_PERMISSION_SEARCH.getPath());
 		
 		return mav;

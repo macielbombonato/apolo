@@ -1,9 +1,10 @@
 package br.apolo.web.controller;
 
-import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomCollectionEditor;
@@ -39,7 +40,9 @@ public class UserController extends BaseController<User> {
 	
 	@SecuredEnum(UserPermission.USER)
 	@RequestMapping(value = "", method = RequestMethod.GET)
-	public ModelAndView index() {
+	public ModelAndView index(HttpServletRequest request) {
+		breadCrumbService.addNode(MessageBundle.getMessageBundle("breadcrumb.user"), 1, request);
+		
 		ModelAndView mav = new ModelAndView(Navigation.USER_INDEX.getPath());
 		
 		mav.addObject("user", userService.getAuthenticatedUser());
@@ -49,7 +52,9 @@ public class UserController extends BaseController<User> {
 	
 	@SecuredEnum(UserPermission.USER)
 	@RequestMapping(value = "change-password", method = RequestMethod.GET)
-	public ModelAndView changePassword() {
+	public ModelAndView changePassword(HttpServletRequest request) {
+		breadCrumbService.addNode(MessageBundle.getMessageBundle("breadcrumb.user.changepassword"), 1, request);
+		
 		ModelAndView mav = new ModelAndView(Navigation.USER_CHANGE_PASSWORD.getPath());
 		
 		mav.addObject("user", userService.getAuthenticatedUser());
@@ -60,7 +65,7 @@ public class UserController extends BaseController<User> {
 	
 	@SecuredEnum(UserPermission.USER)
 	@RequestMapping(value = "change-password-save", method = RequestMethod.POST)
-	public String changePasswordSave(@ModelAttribute("user") User user) throws IOException {
+	public String changePasswordSave(@ModelAttribute("user") User user, HttpServletRequest request) {
 		
 		if (user != null) {
 			User dbuser = userService.find(user.getId());
@@ -75,7 +80,9 @@ public class UserController extends BaseController<User> {
 
 	@SecuredEnum(UserPermission.USER_CREATE)
 	@RequestMapping(value = "new", method = RequestMethod.GET)
-	public ModelAndView create() {
+	public ModelAndView create(HttpServletRequest request) {
+		breadCrumbService.addNode(MessageBundle.getMessageBundle("breadcrumb.user.new"), 1, request);
+		
 		ModelAndView mav = new ModelAndView(Navigation.USER_NEW.getPath());
 		
 		User user = new User();
@@ -95,7 +102,9 @@ public class UserController extends BaseController<User> {
 	
 	@SecuredEnum(UserPermission.USER_EDIT)
 	@RequestMapping(value = "edit/{id}", method = RequestMethod.GET)
-	public ModelAndView edit(@PathVariable Long id) {
+	public ModelAndView edit(@PathVariable Long id, HttpServletRequest request) {
+		breadCrumbService.addNode(MessageBundle.getMessageBundle("breadcrumb.user.edit"), 2, request);
+		
 		ModelAndView mav = new ModelAndView(Navigation.USER_EDIT.getPath());
 		
 		User user = userService.find(id);
@@ -113,7 +122,9 @@ public class UserController extends BaseController<User> {
 	
 	@SecuredEnum(UserPermission.USER_LIST)
 	@RequestMapping(value = "view/{id}", method = RequestMethod.GET)
-	public ModelAndView view(@PathVariable Long id) {
+	public ModelAndView view(@PathVariable Long id, HttpServletRequest request) {
+		breadCrumbService.addNode(MessageBundle.getMessageBundle("breadcrumb.user"), 2, request);
+		
 		ModelAndView mav = new ModelAndView(Navigation.USER_VIEW.getPath());
 		
 		User user = userService.find(id);
@@ -126,7 +137,7 @@ public class UserController extends BaseController<User> {
 	
 	@SecuredEnum(UserPermission.USER_REMOVE)
 	@RequestMapping(value = "remove/{id}", method = RequestMethod.GET)
-	public ModelAndView remove(@PathVariable Long id) {
+	public ModelAndView remove(@PathVariable Long id, HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView(Navigation.USER_LIST.getPath());
 		
 		User user = userService.find(id);
@@ -134,12 +145,12 @@ public class UserController extends BaseController<User> {
 		if (!user.equals(userService.getAuthenticatedUser())) {
 			userService.remove(user);
 			
-			mav = list();
+			mav = list(request);
 			
 			mav.addObject("msg", true);
 			mav.addObject("message", MessageBundle.getMessageBundle("common.msg.remove.success"));
 		} else {
-			mav = list();
+			mav = list(request);
 			
 			mav.addObject("error", true);
 			mav.addObject("message", MessageBundle.getMessageBundle("user.msg.error.remove.yourself"));
@@ -153,19 +164,19 @@ public class UserController extends BaseController<User> {
 	 * Use public ModelAndView save(@ModelAttribute("user") User user, @RequestParam(defaultValue = "false") boolean changePassword)
 	 */
 	@Override
-	public ModelAndView save(User entity, BindingResult result) {
+	public ModelAndView save(User entity, BindingResult result, HttpServletRequest request) {
 		return null;
 	}
 	
 	@SecuredEnum({ UserPermission.USER_CREATE, UserPermission.USER_EDIT })
 	@RequestMapping(value = "save", method = RequestMethod.POST)
-	public ModelAndView save(@ModelAttribute("user") User user, @RequestParam(defaultValue = "false") boolean changePassword, BindingResult result) {
+	public ModelAndView save(@ModelAttribute("user") User user, @RequestParam(defaultValue = "false") boolean changePassword, BindingResult result, HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView();
 		
 		if (user != null) {
 			userService.save(user, changePassword);
 			
-			mav = view(user.getId());
+			mav = view(user.getId(), request);
 			
 			mav.addObject("msg", true);
 			mav.addObject("message", MessageBundle.getMessageBundle("common.msg.save.success"));
@@ -176,7 +187,9 @@ public class UserController extends BaseController<User> {
 	
 	@SecuredEnum(UserPermission.USER_LIST)
 	@RequestMapping(value = "list", method = RequestMethod.GET)
-	public ModelAndView list() {
+	public ModelAndView list(HttpServletRequest request) {
+		breadCrumbService.addNode(MessageBundle.getMessageBundle("breadcrumb.user.list"), 1, request);
+		
 		ModelAndView mav = new ModelAndView(Navigation.USER_LIST.getPath());
 		
 		List<User> userList = userService.list();
@@ -188,7 +201,9 @@ public class UserController extends BaseController<User> {
 	
 	@SecuredEnum(UserPermission.USER_LIST)
 	@RequestMapping(value = "search", method = RequestMethod.POST)
-	public ModelAndView search(@ModelAttribute("param") String param) {
+	public ModelAndView search(@ModelAttribute("param") String param, HttpServletRequest request) {
+		breadCrumbService.addNode(MessageBundle.getMessageBundle("breadcrumb.user.list"), 2, request);
+		
 		ModelAndView mav = new ModelAndView(Navigation.USER_LIST.getPath());
 		
 		SearchResult<User> result = userService.search(param);
@@ -202,7 +217,9 @@ public class UserController extends BaseController<User> {
 	
 	@SecuredEnum(UserPermission.USER_LIST)
 	@RequestMapping(value = "search-form", method = RequestMethod.GET)
-	public ModelAndView searchForm() {
+	public ModelAndView searchForm(HttpServletRequest request) {
+		breadCrumbService.addNode(MessageBundle.getMessageBundle("breadcrumb.user.search"), 1, request);
+		
 		ModelAndView mav = new ModelAndView(Navigation.USER_SEARCH.getPath());
 		
 		return mav;
