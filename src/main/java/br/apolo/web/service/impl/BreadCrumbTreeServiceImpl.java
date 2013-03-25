@@ -4,6 +4,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Service;
 
+import br.apolo.common.util.MessageBundle;
+import br.apolo.web.enums.Navigation;
 import br.apolo.web.model.BreadCrumbNode;
 import br.apolo.web.model.BreadCrumbTree;
 import br.apolo.web.service.BreadCrumbTreeService;
@@ -18,6 +20,9 @@ public class BreadCrumbTreeServiceImpl implements BreadCrumbTreeService {
         BreadCrumbTree tree = (BreadCrumbTree) request.getSession().getAttribute("breadcrumb");
         if (tree == null) {
             tree = new BreadCrumbTree();
+            BreadCrumbNode home = new BreadCrumbNode(MessageBundle.getMessageBundle("breadcrumb.home"), Navigation.HOME.getPath(), 0);
+            tree.addNode(home);
+            
             request.getSession().setAttribute("breadcrumb", tree);
         }
         tree.addNode(node);

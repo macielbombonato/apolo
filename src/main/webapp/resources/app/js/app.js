@@ -48,6 +48,10 @@ $(document).ready(function() {
 		readOnly : App.readOnly
 	});
 	
+	$('.tagit').each(function(){
+		$(this).css('margin-left', '0px');
+	});
+	
 	$(".applyChosen").chosen({
 		allow_single_deselect:true
 	});
