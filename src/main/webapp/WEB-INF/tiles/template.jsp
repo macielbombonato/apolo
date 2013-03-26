@@ -90,36 +90,11 @@
 			</div>
 		</div>
 
-		<div class="container-fluid">
-			<div class="row-fluid">
-				<div id="loadingDialog" class="modal hide fade span1" tabindex="-1" data-role="dialog" style="text-align: center;">
-					<img src='<c:url value="/resources/app/img/ajax-loader.gif" />' class="img-circle">
-				</div>
-			</div>
-		</div>
+		<jsp:include page='_loadingDialog.jsp'></jsp:include>
 		
-		<div id="editData" class="modal hide fade" tabindex="-1" data-role="dialog">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-				<h4>
-					<s:message code="common.edit" />
-				</h4>
-			</div>
-			
-			<div class="modal-body">
-				<input type="text" id="dataInput" class="input-block-level"/>
-				<input type="hidden" id="editingFieldName" class="input-block-level"/>
-			</div>
-			
-			<div class="modal-footer">
-				<a href="#" class="btn" data-dismiss="modal">
-					<s:message code="common.cancel" />
-				</a>
-				<a href="#" class="btn btn-primary" onclick="editData();">
-					<s:message code="common.ok" />
-				</a>
-			</div>
-		</div>
+		<jsp:include page='_editDataDialog.jsp'></jsp:include>
+		
+		<jsp:include page='_removeConfirmationDialog.jsp'></jsp:include>
 		
 		<script type="text/javascript">
 			var App = function() {

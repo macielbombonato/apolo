@@ -16,21 +16,45 @@ public class AuditListener {
 	@PrePersist
 	void onCreate(IAuditableEntity e) {
 		User user = new User();
-		user.setId(((CurrentUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId());
+		
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		
+		if (principal != null && !"anonymousUser".equals(principal)) {
+			CurrentUser currentUser = (CurrentUser) principal;
+			
+			if (currentUser != null) {
+				user.setId(currentUser.getId());
+				
+				e.setCreatedBy(user);
+				e.setLastUpdatedBy(user);
+			}
+		} else {
+			e.setCreatedBy(null);
+			e.setLastUpdatedBy(null);
+		}
 
 		e.setCreationDate(new Date());
-		e.setCreatedBy(user);
 		e.setLastUpdateDate(new Date());
-		e.setLastUpdatedBy(user);
 	}
 
 	@PreUpdate
 	void onPersist(IAuditableEntity e) {
 		User user = new User();
-		user.setId(((CurrentUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId());
+		
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		
+		if (principal != null && !"anonymousUser".equals(principal)) {
+			CurrentUser currentUser = (CurrentUser) principal;
+			
+			if (currentUser != null) {
+				user.setId(currentUser.getId());
+				
+				e.setLastUpdatedBy(user);
+			}
+		} else {
+			e.setLastUpdatedBy(null);
+		}
 
 		e.setLastUpdateDate(new Date());
-		e.setLastUpdatedBy(user);
 	}
-
 }

@@ -30,7 +30,7 @@
 		
 		<tbody>
 			<c:forEach items="${userGroupList}" var="group">
-				<tr>
+				<tr id="userGroup_${group.id}">
 					<td>
 						<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_PERMISSION_VIEW">
 							<a href='<s:url value="/user-group/view"></s:url>/${group.id}' class="btn btn-link">
@@ -70,7 +70,7 @@
 									</a>
 								</security:authorize>
 								<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_PERMISSION_REMOVE">
-									<a href='<s:url value="/user-group/remove"></s:url>/${group.id}' class="btn btn-small">
+									<a href='#' class="btn btn-small" onclick="removeConfirmationDialogOpen('<s:url value="/user-group/remove"></s:url>/${group.id}', 'userGroup_${group.id}');">
 										<i class="icon-remove"></i>
 										<s:message code="common.remove" />
 									</a>

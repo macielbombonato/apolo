@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import net.sf.json.JSONObject;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import br.apolo.business.model.SearchResult;
@@ -107,35 +110,38 @@ public class UserGroupController extends BaseController<UserGroup> {
 		return mav;
 	}
 	
+	@Override
 	@SecuredEnum(UserPermission.USER_PERMISSION_REMOVE)
 	@RequestMapping(value = "remove/{id}", method = RequestMethod.GET)
-	public ModelAndView remove(@PathVariable Long id, HttpServletRequest request) {
-		ModelAndView mav = new ModelAndView();
+	public @ResponseBody String remove(@PathVariable Long id) {
+		String result = "";
+		
+		JSONObject jsonSubject = new JSONObject();
+		JSONObject jsonItem = new JSONObject();
 		
 		UserGroup userGroup = userGroupService.find(id);
 		
 		if (userGroup != null) {
 			if (userGroup.getUsers() != null && !userGroup.getUsers().isEmpty()) {
-				mav = list(request);
-				
-				mav.addObject("error", true);
-				mav.addObject("message", MessageBundle.getMessageBundle("user.group.msg.error.has.associated.users"));
+				result = MessageBundle.getMessageBundle("user.group.msg.error.has.associated.users");
+				jsonItem.put("success", false);
 			} else {
 				try {
 					userGroupService.remove(userGroup);
 					
-					mav = list(request);
-					mav.addObject("msg", true);
-					mav.addObject("message", MessageBundle.getMessageBundle("common.msg.remove.success"));
-				} catch (AccessDeniedException e) {
-					mav = list(request);
-					mav.addObject("error", true);
-					mav.addObject("message", e.getCustomMsg());
+					result = MessageBundle.getMessageBundle("common.msg.remove.success");
+					jsonItem.put("success", true);
+				} catch (Throwable e) {
+					result = MessageBundle.getMessageBundle("common.remove.msg.error");
+					jsonItem.put("success", false);
 				}
 			}
 		}
 		
-		return mav;
+		jsonItem.put("message", result);
+		jsonSubject.accumulate("result", jsonItem);
+		
+		return jsonSubject.toString();
 	}
 	
 	@SecuredEnum({UserPermission.USER_PERMISSION_VIEW, UserPermission.USER_PERMISSION_LIST, UserPermission.USER_LIST})

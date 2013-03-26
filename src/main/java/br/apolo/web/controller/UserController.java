@@ -6,6 +6,8 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
+import net.sf.json.JSONObject;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomCollectionEditor;
 import org.springframework.stereotype.Controller;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import br.apolo.business.model.SearchResult;
@@ -135,28 +138,33 @@ public class UserController extends BaseController<User> {
 		return mav;
 	}
 	
+	@Override
 	@SecuredEnum(UserPermission.USER_REMOVE)
 	@RequestMapping(value = "remove/{id}", method = RequestMethod.GET)
-	public ModelAndView remove(@PathVariable Long id, HttpServletRequest request) {
-		ModelAndView mav = new ModelAndView(Navigation.USER_LIST.getPath());
+	public @ResponseBody String remove(@PathVariable Long id) {
+		String result = "";
+		
+		JSONObject jsonSubject = new JSONObject();
+		JSONObject jsonItem = new JSONObject();
 		
 		User user = userService.find(id);
 		
-		if (!user.equals(userService.getAuthenticatedUser())) {
-			userService.remove(user);
-			
-			mav = list(request);
-			
-			mav.addObject("msg", true);
-			mav.addObject("message", MessageBundle.getMessageBundle("common.msg.remove.success"));
-		} else {
-			mav = list(request);
-			
-			mav.addObject("error", true);
-			mav.addObject("message", MessageBundle.getMessageBundle("user.msg.error.remove.yourself"));
+		if (user != null) {
+			try {
+				userService.remove(user);
+				
+				result = MessageBundle.getMessageBundle("common.msg.remove.success");
+				jsonItem.put("success", true);
+			} catch (Throwable e) {
+				result = MessageBundle.getMessageBundle("common.remove.msg.error");
+				jsonItem.put("success", false);
+			}
 		}
 		
-		return mav;
+		jsonItem.put("message", result);
+		jsonSubject.accumulate("result", jsonItem);
+		
+		return jsonSubject.toString();
 	}
 	
 	

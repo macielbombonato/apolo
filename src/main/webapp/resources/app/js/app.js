@@ -87,3 +87,36 @@ function editData() {
 	$('#editingFieldName').val('');
 	$('#editData').modal('toggle');
 }
+
+function removeConfirmationDialogOpen(url, objectId) {
+	$('#removeConfirmationObjectId').val(objectId);
+	$('#removeConfirmationUrl').val(url);
+	$('#removeConfirmationDialog').modal('toggle');
+} 
+
+function callRemove() {
+	$.ajax({
+		type : "GET",
+		url : $('#removeConfirmationUrl').val(),
+		beforeSend : function(xhr) {
+			$('#loadingDialog').modal('toggle');
+		},
+		success : function(response) {
+			var json = $.parseJSON(response);
+			
+			$('#removeMsg').text(json.result.message);
+			
+			if (json.result.success) {
+				$('#'+$('#removeConfirmationObjectId').val()).remove();		
+			}
+			
+			$('#loadingDialog').modal('toggle');
+			$('#removeConfirmationDialog').modal('toggle');
+			$('#removeMsgDialog').modal('toggle');
+		},
+		complete : function() {
+			$('#removeConfirmationObjectId').val('');
+			$('#removeConfirmationUrl').val('');
+		}
+	});
+}

@@ -16,6 +16,7 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.NestedServletException;
 
@@ -71,9 +72,9 @@ public abstract class BaseController<E extends BaseEntity> {
 	 * @SecuredEnum(UserPermission.permission_name) 
 	 * @RequestMapping(value = "path/{id}", method = RequestMethod.GET)
 	 * @param id
-	 * @return ModelAndView
+	 * @return String - Json with operation return message
 	 */
-	public abstract ModelAndView remove(@PathVariable Long id, HttpServletRequest request);
+	public abstract @ResponseBody String remove(@PathVariable Long id);
 	
 	@InitBinder
 	protected void dateBinder(WebDataBinder binder) {

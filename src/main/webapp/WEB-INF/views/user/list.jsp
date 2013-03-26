@@ -33,7 +33,7 @@
 		
 		<tbody>
 			<c:forEach items="${userList}" var="user">
-				<tr>
+				<tr id="user_${user.id}">
 					<td>
 						<a href='<s:url value="/user/view"></s:url>/${user.id}' class="btn btn-link">
 							${user.name}
@@ -76,7 +76,7 @@
 									</a>
 								</security:authorize>
 								<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_REMOVE">
-									<a href='<s:url value="/user/remove"></s:url>/${user.id}' class="btn btn-small">
+									<a href='#' class="btn btn-small" onclick="removeConfirmationDialogOpen('<s:url value="/user/remove"></s:url>/${user.id}', 'user_${user.id}');">
 										<i class="icon-remove"></i>
 										<s:message code="common.remove" />
 									</a>
