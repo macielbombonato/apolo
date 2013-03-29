@@ -11,75 +11,82 @@
 		<s:message code="user.group.list.title" />
 	</legend>
 	
-	<table class="table table-striped table-hover table-bordered">
-		<thead>
-			<tr>
-				<th>
-					<s:message code="user.group.name" />
-				</th>
-				<th>
-					<s:message code="user.group.permissions" />
-				</th>
-				<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_PERMISSION_VIEW, ROLE_USER_PERMISSION_EDIT, ROLE_USER_PERMISSION_REMOVE">
-					<th>
-						<s:message code="common.actions" />
-					</th>
-				</security:authorize>
-			</tr>
-		</thead>
-		
-		<tbody>
-			<c:forEach items="${userGroupList}" var="group">
-				<tr id="userGroup_${group.id}">
-					<td>
-						<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_PERMISSION_VIEW">
-							<a href='<s:url value="/user-group/view"></s:url>/${group.id}' class="btn btn-link">
-								${group.name}
-							</a>
+	<c:choose>
+		<c:when test="${userGroupList != null && not empty userGroupList}">
+			<table class="table table-striped table-hover table-bordered">
+				<thead>
+					<tr>
+						<th>
+							<s:message code="user.group.name" />
+						</th>
+						<th>
+							<s:message code="user.group.permissions" />
+						</th>
+						<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_PERMISSION_VIEW, ROLE_USER_PERMISSION_EDIT, ROLE_USER_PERMISSION_REMOVE">
+							<th>
+								<s:message code="common.actions" />
+							</th>
 						</security:authorize>
-						<security:authorize  ifNotGranted="ROLE_ADMIN, ROLE_USER_PERMISSION_VIEW">
-							${group.name}
-						</security:authorize>
-					</td>
-					<td>
-						<table class="table table-condensed table-bordered">
-							<tbody>
-								<c:forEach items="${group.permissions}" var="permission">
-									<tr>
-										<td>
-											<s:message code="user.permission.${permission}" />
-										</td>
-									</tr>
-								</c:forEach>
-							</tbody>
-						</table>
-					</td>
-					<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_PERMISSION_VIEW, ROLE_USER_PERMISSION_EDIT, ROLE_USER_PERMISSION_REMOVE">
-						<td>
-							<div class="btn-group">
+					</tr>
+				</thead>
+				
+				<tbody>
+					<c:forEach items="${userGroupList}" var="group">
+						<tr id="userGroup_${group.id}">
+							<td>
 								<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_PERMISSION_VIEW">
-									<a href='<s:url value="/user-group/view"></s:url>/${group.id}' class="btn btn-small">
-										<i class="icon-zoom-in"></i>
-										<s:message code="common.show" />
+									<a href='<s:url value="/user-group/view"></s:url>/${group.id}' class="btn btn-link">
+										${group.name}
 									</a>
 								</security:authorize>
-								<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_PERMISSION_EDIT">
-									<a href='<s:url value="/user-group/edit"></s:url>/${group.id}' class="btn btn-small">
-										<i class="icon-edit"></i>
-										<s:message code="common.edit" />
-									</a>
+								<security:authorize  ifNotGranted="ROLE_ADMIN, ROLE_USER_PERMISSION_VIEW">
+									${group.name}
 								</security:authorize>
-								<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_PERMISSION_REMOVE">
-									<a href='#' class="btn btn-small" onclick="removeConfirmationDialogOpen('<s:url value="/user-group/remove"></s:url>/${group.id}', 'userGroup_${group.id}');">
-										<i class="icon-remove"></i>
-										<s:message code="common.remove" />
-									</a>
-								</security:authorize>
-							</div>
-						</td>
-					</security:authorize>
-				</tr>
-			</c:forEach>
-		</tbody>
-	</table>
+							</td>
+							<td>
+								<table class="table table-condensed table-bordered">
+									<tbody>
+										<c:forEach items="${group.permissions}" var="permission">
+											<tr>
+												<td>
+													<s:message code="user.permission.${permission}" />
+												</td>
+											</tr>
+										</c:forEach>
+									</tbody>
+								</table>
+							</td>
+							<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_PERMISSION_VIEW, ROLE_USER_PERMISSION_EDIT, ROLE_USER_PERMISSION_REMOVE">
+								<td>
+									<div class="btn-group">
+										<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_PERMISSION_VIEW">
+											<a href='<s:url value="/user-group/view"></s:url>/${group.id}' class="btn btn-small">
+												<i class="icon-zoom-in"></i>
+												<s:message code="common.show" />
+											</a>
+										</security:authorize>
+										<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_PERMISSION_EDIT">
+											<a href='<s:url value="/user-group/edit"></s:url>/${group.id}' class="btn btn-small">
+												<i class="icon-edit"></i>
+												<s:message code="common.edit" />
+											</a>
+										</security:authorize>
+										<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_PERMISSION_REMOVE">
+											<a href='#' class="btn btn-small" onclick="removeConfirmationDialogOpen('<s:url value="/user-group/remove"></s:url>/${group.id}', 'userGroup_${group.id}');">
+												<i class="icon-remove"></i>
+												<s:message code="common.remove" />
+											</a>
+										</security:authorize>
+									</div>
+								</td>
+							</security:authorize>
+						</tr>
+					</c:forEach>
+				</tbody>
+			</table>
+		</c:when>
+		<c:otherwise>
+			<s:message code="common.nodatafound" htmlEscape="false"/>
+		</c:otherwise>
+	</c:choose>
 </fieldset>
