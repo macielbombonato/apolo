@@ -3,17 +3,20 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags"%>
 
-<div class="row-fluid">
-	<div class="span12">
-		<hr>
-	</div>
+<div style="height:60px; position:relative; ">
+	&nbsp;
 </div>
-<div class="row-fluid">
-	<div class="span12">
-		<p class="muted well">
-			<small>
-				<s:message code="footer.message" htmlEscape="false"/>
-			</small>
-		</p>
+
+<div class="container-fluid">
+	<div class="row-fluid">
+		<div class="footer">
+			<div class="footer_contents"> 
+				<p class="muted">
+					<small>
+						<s:message code="footer.message" htmlEscape="false"/>
+					</small>
+				</p>
+			</div>
+		</div>
 	</div>
 </div>

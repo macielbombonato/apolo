@@ -1,7 +1,73 @@
+body {
+	padding-bottom: 40px;
+}
+
+.sidebar-nav {
+	padding: 9px 0;
+}
+
 label {
 	font-weight: bold;
 }
 
 caption {
 	font-weight: bold;
+}
+
+@media (max-width: 480px) {
+	#header {
+		height:0px;
+	}
+}
+
+@media (max-width: 767px) {
+	#header {
+		height:0px;
+	}
+}
+
+@media (min-width: 768px) and (max-width: 979px) {
+	#header {
+		height:0px;
+	}
+}
+
+@media (min-width: 980px) {
+	.footer {
+	    height:40px; // Replace with the height your footer should be
+	    width: 100%; // Don't change
+	    background-image: none;
+	    background-repeat: repeat;
+	    background-attachment: scroll;
+	    background-position: 0% 0%;
+	    background-color: #FFFFFF;
+	    position: fixed;
+	    bottom: 0pt;
+	}   
+	
+	.footer_contents {
+	    height:40px; // Replace with the height your footer should be
+	    width: 1000px; // Visible width of footer
+	    margin:auto;
+	}
+}
+
+@media (min-width: 1200px) {
+	.footer {
+	    height:40px; // Replace with the height your footer should be
+	    width: 100%; // Don't change
+	    background-image: none;
+	    background-repeat: repeat;
+	    background-attachment: scroll;
+	    background-position: 0% 0%;
+	    background-color: #FFFFFF;
+	    position: fixed;
+	    bottom: 0pt;
+	}   
+	
+	.footer_contents {
+	    height:40px; // Replace with the height your footer should be
+	    width: 1000px; // Visible width of footer
+	    margin:auto;
+	}
 }

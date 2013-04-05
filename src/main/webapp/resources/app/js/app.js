@@ -68,8 +68,6 @@ $(document).ready(function() {
 	});
 });
 
-$('#header').height($('#menu').height() + 10);
-
 if (!App.readOnly) {
 	$('.focus').trigger('focus');
 }

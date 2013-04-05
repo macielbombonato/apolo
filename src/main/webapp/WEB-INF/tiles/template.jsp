@@ -83,12 +83,9 @@
 					<tiles:insertAttribute name="body" defaultValue="" />
 				</div>
 			</div>
-			<div class="row-fluid">
-				<div class="span12">
-					<tiles:insertAttribute name="footer" defaultValue="" />
-				</div>
-			</div>
 		</div>
+		
+		<tiles:insertAttribute name="footer" defaultValue="" />
 
 		<jsp:include page='_loadingDialog.jsp'></jsp:include>
 		
