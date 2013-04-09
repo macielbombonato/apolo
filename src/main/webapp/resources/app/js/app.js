@@ -15,6 +15,11 @@ $(document).ready(function() {
 		show: false
 	});
 	
+	$( ".btn" ).tooltip({
+		'selector': '',
+		'placement': 'top'
+	});
+	
 	// set the defaults for the datepicker
 	jQuery(function($){
 		$.datepicker.regional['pt-BR'] = {

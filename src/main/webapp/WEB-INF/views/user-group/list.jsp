@@ -60,17 +60,17 @@
 								<td>
 									<div class="btn-group">
 										<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_PERMISSION_VIEW">
-											<a href='<s:url value="/user-group/view"></s:url>/${group.id}' class="btn btn-small" title="<s:message code="common.show" />">
+											<a href='<s:url value="/user-group/view"></s:url>/${group.id}' class="btn btn-small" data-toggle="tooltip" title="<s:message code="common.show" />">
 												<i class="icon-zoom-in"></i>
 											</a>
 										</security:authorize>
 										<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_PERMISSION_EDIT">
-											<a href='<s:url value="/user-group/edit"></s:url>/${group.id}' class="btn btn-small" title="<s:message code="common.edit" />">
+											<a href='<s:url value="/user-group/edit"></s:url>/${group.id}' class="btn btn-small" data-toggle="tooltip" title="<s:message code="common.edit" />">
 												<i class="icon-edit"></i>
 											</a>
 										</security:authorize>
 										<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_PERMISSION_REMOVE">
-											<a href='#' class="btn btn-small btn-danger" onclick="removeConfirmationDialogOpen('<s:url value="/user-group/remove"></s:url>/${group.id}', 'userGroup_${group.id}');" title="<s:message code="common.remove" />">
+											<a href='#' class="btn btn-small btn-danger" onclick="removeConfirmationDialogOpen('<s:url value="/user-group/remove"></s:url>/${group.id}', 'userGroup_${group.id}');" data-toggle="tooltip" title="<s:message code="common.remove" />">
 												<i class="icon-remove"></i>
 											</a>
 										</security:authorize>
