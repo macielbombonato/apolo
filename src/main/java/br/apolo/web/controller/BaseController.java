@@ -86,6 +86,30 @@ public abstract class BaseController<E extends BaseEntity> {
 	    binder.registerCustomEditor(Date.class, editor);
 	}
 	
+	/**
+	 * This method was created to be used in save methods.
+	 * In error cases the system can redirect the user to origin path to fix data to submit it again.
+	 * @param request
+	 * @param firstOption - First Navigation enum option
+	 * @param secondOption - Second Navigation enum option
+	 * @return String - Origin path
+	 */
+	protected String getRedirectionPath(HttpServletRequest request, Navigation firstOption, Navigation secondOption) {
+		String referer = request.getHeader("referer");
+		String redirectionPath = "";
+		if (referer != null && referer.contains(firstOption.getPath())) {
+			redirectionPath = firstOption.getPath();
+		} else {
+			redirectionPath = secondOption.getPath();
+		}
+		
+        if (referer == null || !referer.endsWith("save")) {
+        	breadCrumbService.addNode(MessageBundle.getMessageBundle("breadcrumb.changeinprogress"), breadCrumbService.getTreeSize(request), request);        	
+        }
+		
+		return redirectionPath;
+	}
+	
 	public String redirect(Navigation nav) {
 		String path = "redirect:";
 		

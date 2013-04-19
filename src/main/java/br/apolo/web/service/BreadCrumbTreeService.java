@@ -12,4 +12,11 @@ public interface BreadCrumbTreeService {
      * @param request
      */
     void addNode(String nodeName, int level, HttpServletRequest request);
+    
+    /**
+     * Return the nodes tree size
+     * @param request
+     * @return int - tree size
+     */
+    int getTreeSize(HttpServletRequest request);
 }

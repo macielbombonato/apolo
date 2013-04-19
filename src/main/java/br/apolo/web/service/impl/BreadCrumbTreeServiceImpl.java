@@ -15,8 +15,8 @@ public class BreadCrumbTreeServiceImpl implements BreadCrumbTreeService {
 
 	@Override
 	public void addNode(String nodeName, int level, HttpServletRequest request) {
-        String referrer = request.getHeader("referer");
-        BreadCrumbNode node = new BreadCrumbNode(nodeName, referrer, level);
+        String referer = request.getHeader("referer");
+        BreadCrumbNode node = new BreadCrumbNode(nodeName, referer, level);
         BreadCrumbTree tree = (BreadCrumbTree) request.getSession().getAttribute("breadcrumb");
         if (tree == null) {
             tree = new BreadCrumbTree();
@@ -26,6 +26,19 @@ public class BreadCrumbTreeServiceImpl implements BreadCrumbTreeService {
             request.getSession().setAttribute("breadcrumb", tree);
         }
         tree.addNode(node);
+	}
+	
+	@Override
+	public int getTreeSize(HttpServletRequest request) {
+		int result = 0;
+		
+		BreadCrumbTree tree = (BreadCrumbTree) request.getSession().getAttribute("breadcrumb");
+		
+		if (tree != null && tree.getTree() != null) {
+			result = tree.getTree().size();
+		}
+		
+		return result;
 	}
 
 }
