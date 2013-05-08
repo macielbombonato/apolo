@@ -76,7 +76,7 @@
 											</a>
 										</security:authorize>
 										<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_REMOVE">
-											<a href='#' class="btn btn-small btn-danger" onclick="removeConfirmationDialogOpen('<s:url value="/user/remove"></s:url>/${user.id}', 'user_${user.id}');" data-toggle="tooltip" title="<s:message code="common.remove" />">
+											<a href='#' class="btn btn-small" onclick="removeConfirmationDialogOpen('<s:url value="/user/remove"></s:url>/${user.id}', 'user_${user.id}');" data-toggle="tooltip" title="<s:message code="common.remove" />">
 												<i class="icon-remove"></i>
 											</a>
 										</security:authorize>
