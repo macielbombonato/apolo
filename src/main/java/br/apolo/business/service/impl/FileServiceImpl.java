@@ -1,14 +1,12 @@
 package br.apolo.business.service.impl;
 
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -20,14 +18,10 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import javax.imageio.ImageIO;
-
-import org.apache.poi.hslf.model.Slide;
-import org.apache.poi.hslf.usermodel.SlideShow;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
-import org.apache.poi.openxml4j.opc.OPCPackage;
-import org.apache.poi.xslf.usermodel.XMLSlideShow;
-import org.apache.poi.xslf.usermodel.XSLFSlide;
+import org.apache.commons.io.FilenameUtils;
+import org.artofsolving.jodconverter.OfficeDocumentConverter;
+import org.artofsolving.jodconverter.office.DefaultOfficeManagerConfiguration;
+import org.artofsolving.jodconverter.office.OfficeManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -43,7 +37,7 @@ import br.apolo.data.model.BaseEntity;
 public class FileServiceImpl<E extends BaseEntity> implements FileService<E> {
 	
 	private static final Logger log = LoggerFactory.getLogger(FileServiceImpl.class);
-
+	
 	@Override
 	public String uploadFile(E entity, FileContent file, InputStream inputStream) {
 		String fileName = entity.getId() + extractFileExtension(file.getFile().getOriginalFilename());
@@ -124,58 +118,17 @@ public class FileServiceImpl<E extends BaseEntity> implements FileService<E> {
 
 	}
 	
-	public int convertPPTFileToImages(E entity, String sourceName) {
-		
-		int pages = 0;
-		
-		String filePath = AppConfig.getObjectFilesPath() + 
-				entity.getClass().getSimpleName() + 
-				File.separator +
-				entity.getId();
-		
-		String sourceFilePath = filePath +
-				File.separator +
-				sourceName;
-		
-		try {
-	        FileInputStream inputStream = new FileInputStream(sourceFilePath);
-	        SlideShow ppt = new SlideShow(inputStream);
-	        inputStream.close();
-	        Dimension pgsize = ppt.getPageSize();
+	private OfficeManager getOfficeManager() {
+		OfficeManager officeManager = null;
 
-	        Graphics2D graphics = null;
-	        BufferedImage image = null;
-	        
-	        for(Slide slide : ppt.getSlides()){
-	        	image = new BufferedImage(pgsize.width * 2, pgsize.height * 2, BufferedImage.TYPE_INT_RGB);
-	        	graphics = (Graphics2D) image.createGraphics();
-	        	graphics.scale(2.0, 2.0);
-
-	        	slide.draw(graphics);
-	        	
-	    		try {
-	    			File file = new File(filePath + File.separator + entity.getId() + "_" + (++pages) + ".png");
-	    			ImageIO.write(image, "png", file);
-	    		} catch (IOException e) {
-	    			log.error(e.getMessage(), e);
-	    		}
-	    		
-	    		graphics.dispose();
-	        }
-		} catch (FileNotFoundException e) {
-			log.error(e.getMessage(), e);
-		} catch (UnsupportedEncodingException e) {
-			log.error(e.getMessage(), e);
-		} catch (IOException e) {
-			log.error(e.getMessage(), e);
-		}
-
-		return pages;
+		DefaultOfficeManagerConfiguration configuration = new DefaultOfficeManagerConfiguration();
+		
+		officeManager = configuration.buildOfficeManager();
+		
+		return officeManager;
 	}
 	
-	public int convertPPTxFileToImages(E entity, String sourceName) {
-		
-		int pages = 0;
+	public void convertMSOfficeFilesToPDF(E entity, String sourceName) {
 		
 		String filePath = AppConfig.getObjectFilesPath() + 
 				entity.getClass().getSimpleName() + 
@@ -186,44 +139,85 @@ public class FileServiceImpl<E extends BaseEntity> implements FileService<E> {
 				File.separator +
 				sourceName;
 		
+		String destFilePath = filePath +
+				File.separator +
+				entity.getId() + ".pdf"; 
+
+		File inputFile = new File(sourceFilePath);
+		File outputFile = new File(destFilePath);
+		
+		String extension = FilenameUtils.getExtension(inputFile.getName());
+		
+		OfficeManager officeManager = getOfficeManager();
+		
+		OfficeDocumentConverter converter = new OfficeDocumentConverter(officeManager);
+		
+		long startTime = System.currentTimeMillis();
 		try {
-	        FileInputStream inputStream = new FileInputStream(sourceFilePath);
-	        
-	        XMLSlideShow ppt = new XMLSlideShow(OPCPackage.open(sourceFilePath));
-	        
-	        inputStream.close();
-	        Dimension pgsize = ppt.getPageSize();
-
-	        Graphics2D graphics = null;
-	        BufferedImage image = null;
-	        
-	        for(XSLFSlide slide : ppt.getSlides()){
-	        	image = new BufferedImage(pgsize.width * 2, pgsize.height * 2, BufferedImage.TYPE_INT_RGB);
-	        	graphics = (Graphics2D) image.createGraphics();
-	        	graphics.scale(2.0, 2.0);
-
-	        	slide.draw(graphics);
-	        	
-	    		try {
-	    			File file = new File(filePath + File.separator + entity.getId() + "_" + (++pages) + ".png");
-	    			ImageIO.write(image, "png", file);
-	    		} catch (IOException e) {
-	    			log.error(e.getMessage(), e);
-	    		}
-	    		
-	    		graphics.dispose();
-	        }
-		} catch (FileNotFoundException e) {
-			log.error(e.getMessage(), e);
-		} catch (UnsupportedEncodingException e) {
-			log.error(e.getMessage(), e);
-		} catch (IOException e) {
-			log.error(e.getMessage(), e);
-		} catch (InvalidFormatException e) {
-			log.error(e.getMessage(), e);
+			officeManager.start();
+		} catch (Exception exception) {
+			log.error(exception.getMessage(), exception);
 		}
+		
+		try {
+			converter.convert(inputFile, outputFile);
+		} catch (Exception exception) {
+			log.error(String.format("failed conversion: %s [%db] to %s; %s; input file: %s", extension, inputFile.length(), ".pdf", exception, inputFile.getName()));
+		} finally {
+			officeManager.stop();
+			long conversionTime = System.currentTimeMillis() - startTime;
+			log.info(String.format("conversion time: %s [%db] to %s in %dms", extension, inputFile.length(), ".pdf", conversionTime));
+		}
+	}
+	
+	public int convertPDFToImages(E entity) {
+		int totalPages = 0;
+		
+		String location = AppConfig.getGhostScriptExecutable();
+		
+		String filePath = AppConfig.getObjectFilesPath() + 
+				entity.getClass().getSimpleName() + 
+				File.separator +
+				entity.getId();
+		
+		String sourceFilePath = filePath + 
+				File.separator +
+				entity.getId() + ".pdf";
 
-		return pages;
+		
+        String outputPath = filePath + File.separator + entity.getId() + "_%d.png";
+        
+        String command = location + " -dBATCH -q -dNOPAUSE -sDEVICE=png16m -r144 -sOutputFile="+outputPath + " -f " + sourceFilePath;
+        
+        long startTime = System.currentTimeMillis();
+        try {
+    		log.info("Executing: " + command);
+
+    		Process proc = Runtime.getRuntime().exec(command);
+
+    		int exitVal = proc.waitFor();
+    		log.debug("ExitValue: " + exitVal);
+    		
+    		File destDir = new File(filePath);
+    		
+            FilenameFilter filter = new FilenameFilter() {
+            	public boolean accept(File directory, String fileName) {
+            		return fileName.endsWith(".png");
+            	}
+            };
+            
+            totalPages = destDir.list(filter).length;
+        	
+        } catch (InterruptedException e) {
+        	log.error(e.getMessage(), e);
+        } catch (IOException e) {
+        	log.error(e.getMessage(), e);
+        } finally {
+        	long conversionTime = System.currentTimeMillis() - startTime;
+        	log.info(String.format("conversion time: %dms", conversionTime));
+        }
+		
+		return totalPages;
 	}
 	
 	/**
