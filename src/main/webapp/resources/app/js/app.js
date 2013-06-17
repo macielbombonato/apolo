@@ -20,6 +20,26 @@ $(document).ready(function() {
 		'placement': 'top'
 	});
 	
+	$( ".tooltipLeft" ).tooltip({
+		'selector': '',
+		'placement': 'left'
+	});
+	
+	$( ".tooltipRight" ).tooltip({
+		'selector': '',
+		'placement': 'right'
+	});
+	
+	$( ".tooltipBottom" ).tooltip({
+		'selector': '',
+		'placement': 'bottom'
+	});
+	
+	$( ".tooltipTop" ).tooltip({
+		'selector': '',
+		'placement': 'top'
+	});
+	
 	// set the defaults for the datepicker
 	jQuery(function($){
 		$.datepicker.regional['pt-BR'] = {

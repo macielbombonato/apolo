@@ -7,19 +7,19 @@
     <groupId>br.apolo</groupId>
     <artifactId>Apolo-Base</artifactId>
     <packaging>war</packaging>
-    <version>0.26.0</version>
+    <version>0.26.${buildNumber}</version>
     <name>Apolo</name>
 	<description>Arquitetura base de projeto Spring MVC + JPA</description>
 	
 	<organization>
-		<name>Literata Suporte Linguístico SS LTDA</name>
-		<url>http://www.literatasl.com.br</url>
+		<name>Team Olimpus</name>
+		<url>https://bitbucket.org/teamolimpus</url>
 	</organization>
 	
 	<scm>
-		<url>https://macielbombonato@bitbucket.org/macielbombonato/apolo-base.git</url>
-		<connection>scm:git:https://macielbombonato@bitbucket.org/macielbombonato/apolo-base.git</connection>
-		<developerConnection>scm:git:https://macielbombonato@bitbucket.org/macielbombonato/apolo-base.git</developerConnection>
+		<url>https://bitbucket.org/teamolimpus/apolo-base.git</url>
+		<connection>scm:git:https://bitbucket.org/teamolimpus/apolo-base.git</connection>
+		<developerConnection>scm:git:https://bitbucket.org/teamolimpus/apolo-base.git</developerConnection>
 	</scm>
 	
 	<developers>
@@ -28,10 +28,7 @@
 			<name>Maciel Escudero Bombonato</name>
 			<email>maciel.bombonato@gmail.com</email>
 			<roles>
-				<role>Arquiteto</role>
-				<role>Desenvolvedor</role>
-				<role>Analista de Sistemas</role>
-				<role>Implantador</role>
+				<role>Owner</role>
 			</roles>
 			<timezone>-3</timezone>
 		</developer>
@@ -430,15 +427,7 @@
                 <configuration>
                     <source>${java-version}</source>
                     <target>${java-version}</target>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <version>2.1.1</version>
-                <configuration>
-                    <warName>${artifactId}-${version}</warName>
-                    <ignoreWebxml>false</ignoreWebxml>
+                    <encoding>${project.build.sourceEncoding}</encoding>
                 </configuration>
             </plugin>
             <plugin>
@@ -459,9 +448,58 @@
                 <artifactId>maven-resources-plugin</artifactId>
                 <version>2.5</version>
                 <configuration>
-                    <encoding>UTF-8</encoding>
+                    <encoding>${project.build.sourceEncoding}</encoding>
                 </configuration>
             </plugin>
+            
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>buildnumber-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>validate</phase>
+						<goals>
+							<goal>create</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<doCheck>false</doCheck>
+					<doUpdate>true</doUpdate>
+				</configuration>
+			</plugin>
+			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.1</version>
+				<configuration>
+					<archive>
+						<manifestEntries>
+							<SCM-Revision>${buildNumber}</SCM-Revision>
+						</manifestEntries>
+					</archive>
+					<webResources>
+						<resource>
+							<directory>src/main/webapp</directory>
+							<filtering>true</filtering>
+						</resource>
+					</webResources>
+					<warName>${artifactId}</warName>
+					<ignoreWebxml>false</ignoreWebxml>
+				</configuration>
+			</plugin>
         </plugins>
+        
+		<resources>
+			<resource>
+				<directory>src/main/resources/build</directory>
+				<filtering>true</filtering>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>false</filtering>
+			</resource>
+		</resources>
     </build>
 </project>

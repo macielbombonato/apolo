@@ -45,6 +45,8 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
 	}
 	
 	private static final String MESSAGE_SOURCE = "/WEB-INF/classes/messages";
+	private static final String VERSION_SOURCE = "/WEB-INF/classes/version";
+	
 	private static final String TILES = "/WEB-INF/tiles/tiles.xml";
 	private static final String VIEWS = "/WEB-INF/views/**/views.xml";
 	
@@ -66,7 +68,7 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
 	@Bean(name = "messageSource")
 	public MessageSource configureMessageSource() {
 		ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
-		messageSource.setBasename(MESSAGE_SOURCE);
+		messageSource.setBasenames(MESSAGE_SOURCE, VERSION_SOURCE);
 		messageSource.setCacheSeconds(5);
 		return messageSource;
 	}
