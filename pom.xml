@@ -7,7 +7,7 @@
     <groupId>br.apolo</groupId>
     <artifactId>Apolo-Base</artifactId>
     <packaging>war</packaging>
-    <version>0.26.${buildNumber}</version>
+    <version>0.30.${buildNumber}</version>
     <name>Apolo</name>
 	<description>Arquitetura base de projeto Spring MVC + JPA</description>
 	
@@ -414,44 +414,19 @@
 		</dependency>
     </dependencies>
     <build>
+		<resources>
+			<resource>
+				<directory>src/main/resources/build</directory>
+				<filtering>true</filtering>
+			</resource>
+			
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>false</filtering>
+			</resource>
+		</resources>
+		
         <plugins> 
-            <plugin>
-				<groupId>org.apache.tomcat.maven</groupId>
-				<artifactId>tomcat7-maven-plugin</artifactId>
-				<version>2.0</version>
-			</plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.3.2</version>
-                <configuration>
-                    <source>${java-version}</source>
-                    <target>${java-version}</target>
-                    <encoding>${project.build.sourceEncoding}</encoding>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>install</id>
-                        <phase>install</phase>
-                        <goals>
-                            <goal>sources</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>2.5</version>
-                <configuration>
-                    <encoding>${project.build.sourceEncoding}</encoding>
-                </configuration>
-            </plugin>
-            
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>buildnumber-maven-plugin</artifactId>
@@ -468,38 +443,61 @@
 					<doUpdate>true</doUpdate>
 				</configuration>
 			</plugin>
+        
+            <plugin>
+				<groupId>org.apache.tomcat.maven</groupId>
+				<artifactId>tomcat7-maven-plugin</artifactId>
+				<version>2.0</version>
+			</plugin>
+			
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>install</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>sources</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+			
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <source>${java-version}</source>
+                    <target>${java-version}</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
+            
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.5</version>
+                <configuration>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
 			
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
-				<version>2.1</version>
+				<version>2.1.1</version>
 				<configuration>
 					<archive>
 						<manifestEntries>
 							<SCM-Revision>${buildNumber}</SCM-Revision>
 						</manifestEntries>
 					</archive>
-					<webResources>
-						<resource>
-							<directory>src/main/webapp</directory>
-							<filtering>true</filtering>
-						</resource>
-					</webResources>
 					<warName>${artifactId}</warName>
 					<ignoreWebxml>false</ignoreWebxml>
 				</configuration>
 			</plugin>
         </plugins>
-        
-		<resources>
-			<resource>
-				<directory>src/main/resources/build</directory>
-				<filtering>true</filtering>
-			</resource>
-			<resource>
-				<directory>src/main/resources</directory>
-				<filtering>false</filtering>
-			</resource>
-		</resources>
     </build>
 </project>
