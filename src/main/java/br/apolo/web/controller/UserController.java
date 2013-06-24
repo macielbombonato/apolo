@@ -10,6 +10,7 @@ import net.sf.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomCollectionEditor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
@@ -41,7 +42,7 @@ public class UserController extends BaseController<User> {
 	@Autowired
 	UserGroupService userGroupService;
 	
-	@SecuredEnum(UserPermission.USER)
+	@PreAuthorize("isAuthenticated()")
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public ModelAndView index(HttpServletRequest request) {
 		breadCrumbService.addNode(MessageBundle.getMessageBundle("breadcrumb.user"), 1, request);
@@ -53,7 +54,7 @@ public class UserController extends BaseController<User> {
 		return mav;
 	}
 	
-	@SecuredEnum(UserPermission.USER)
+	@PreAuthorize("isAuthenticated()")
 	@RequestMapping(value = "change-password", method = RequestMethod.GET)
 	public ModelAndView changePassword(HttpServletRequest request) {
 		breadCrumbService.addNode(MessageBundle.getMessageBundle("breadcrumb.user.changepassword"), 1, request);
@@ -66,7 +67,7 @@ public class UserController extends BaseController<User> {
 		return mav;
 	}
 	
-	@SecuredEnum(UserPermission.USER)
+	@PreAuthorize("isAuthenticated()")
 	@RequestMapping(value = "change-password-save", method = RequestMethod.POST)
 	public String changePasswordSave(@ModelAttribute("user") User user, HttpServletRequest request) {
 		
