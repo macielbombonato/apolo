@@ -10,9 +10,11 @@ import net.sf.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomCollectionEditor;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -179,13 +181,37 @@ public class UserController extends BaseController<User> {
 	
 	@SecuredEnum({ UserPermission.USER_CREATE, UserPermission.USER_EDIT })
 	@RequestMapping(value = "save", method = RequestMethod.POST)
-	public ModelAndView save(@ModelAttribute("user") User user, @RequestParam(defaultValue = "false") boolean changePassword, BindingResult result, HttpServletRequest request) {
+	public ModelAndView save(@ModelAttribute("user") User entity, @RequestParam(defaultValue = "false") boolean changePassword, BindingResult result, HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView();
 		
-		if (user != null) {
-			userService.save(user, changePassword);
+		/*
+		 * Object validation
+		 */
+		if (result.hasErrors() || entityHasErrors(entity)) {
+			mav.setViewName(getRedirectionPath(request, Navigation.USER_NEW, Navigation.USER_EDIT));
+			mav.addObject("user", entity);
+			mav.addObject("groupList", userGroupService.list());
+			mav.addObject("readOnly", false);
+			mav.addObject("error", true);
 			
-			mav = view(user.getId(), request);
+			StringBuilder message = new StringBuilder();
+			for (ObjectError error : result.getAllErrors()) {
+				DefaultMessageSourceResolvable argument = (DefaultMessageSourceResolvable) error.getArguments()[0];
+				
+				message.append(MessageBundle.getMessageBundle("user." + argument.getDefaultMessage()) + ": " + error.getDefaultMessage() + "\n <br />");
+			}
+			
+			message.append(additionalValidation(entity));
+			
+			mav.addObject("message", message.toString());
+			
+			return mav;
+		} 
+		
+		if (entity != null) {
+			userService.save(entity, changePassword);
+			
+			mav = view(entity.getId(), request);
 			
 			mav.addObject("msg", true);
 			mav.addObject("message", MessageBundle.getMessageBundle("common.msg.save.success"));
@@ -257,5 +283,47 @@ public class UserController extends BaseController<User> {
             }
           });
     }
+    
+    private boolean entityHasErrors(User entity) {
+		boolean hasErrors = false;
+		
+		if (entity != null) {
+			if (validateEmail(entity)) {
+				hasErrors = true;
+			}
+		}
+		
+		return hasErrors;
+	}
+    
+    private boolean validateEmail(User entity){
+    	boolean hasError = false;
+    	
+    	SearchResult<User> result = userService.search(entity.getEmail());
+		
+		List<User> userList = result.getResults();
+		
+		if(userList.size() > 0){
+			User user = userList.get(0);
+			
+			if(!user.equals(entity)){
+				hasError = true;
+			}
+		}
+		
+		return hasError;
+    }
+    
+    private String additionalValidation(User entity) {
+		StringBuilder message = new StringBuilder();
+		
+		if (entity != null) {
+			if (validateEmail(entity)) {
+				message.append(MessageBundle.getMessageBundle("user.email") + ": " + MessageBundle.getMessageBundle("user.email.duplicate") + "\n <br />");
+			}
+		}
+		
+		return message.toString();
+	}
 
 }
