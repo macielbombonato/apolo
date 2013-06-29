@@ -15,7 +15,7 @@
 <div class="row-fluid">
 	<div class="span12">
 		<label for="name">
-			<s:message code="user.username" />
+			<s:message code="user.name" />
 		</label>
 		<input type="text" id="name" name="name" class="input-block-level" value="${user.name}" <c:if test="${readOnly}">readonly="true"</c:if> />
 	</div>
@@ -81,7 +81,7 @@
 		<c:when test="${not readOnly}">
 			<div class="span12">
 				<label for="name">
-					<s:message code="user.group.permissions.selected" />
+					<s:message code="user.groups" />
 				</label>
 				<select name="groups" id="listTo" size="5" multiple="multiple" class="input-block-level applyChosen" <c:if test="${readOnly}">disabled="disabled"</c:if> data-placeholder='<s:message code="common.select" />' >
 					<c:forEach items="${groupList}" var="group">
@@ -101,7 +101,7 @@
 				<table class="table table-striped table-hover table-bordered">
 					<caption>
 						<strong>
-							<s:message code="user.group.permissions.selected" />
+							<s:message code="user.groups" />
 						</strong>
 					</caption>
 					<tbody>

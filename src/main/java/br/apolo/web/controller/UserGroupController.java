@@ -4,12 +4,15 @@ import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import net.sf.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,14 +38,37 @@ public class UserGroupController extends BaseController<UserGroup> {
 	
 	@SecuredEnum({ UserPermission.USER_PERMISSION_CREATE, UserPermission.USER_PERMISSION_EDIT })
 	@RequestMapping(value = "save", method = RequestMethod.POST)
-	public ModelAndView save(@ModelAttribute("userGroup") UserGroup userGroup, BindingResult result, HttpServletRequest request) {
+	public ModelAndView save(@Valid @ModelAttribute("entity") UserGroup entity, BindingResult result, HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView();
 		
-		if (userGroup != null) {
-			try {
-				userGroupService.save(userGroup);
+		/*
+		 * Object validation
+		 */
+		if (result.hasErrors()) {
+			mav.setViewName(getRedirectionPath(request, Navigation.USER_PERMISSION_NEW, Navigation.USER_PERMISSION_EDIT));
+			
+			mav.addObject("userGroup", entity);
+			mav.addObject("permissionList", userGroupService.getUserPermissionList());
+			mav.addObject("readOnly", false);
+			mav.addObject("error", true);
+			
+			StringBuilder message = new StringBuilder();
+			for (ObjectError error : result.getAllErrors()) {
+				DefaultMessageSourceResolvable argument = (DefaultMessageSourceResolvable) error.getArguments()[0];
 				
-				mav = view(userGroup.getId(), request);
+				message.append(MessageBundle.getMessageBundle("common.field") + " " + MessageBundle.getMessageBundle("user.group." + argument.getDefaultMessage()) + ": " + error.getDefaultMessage() + "\n <br />");
+			}
+			
+			mav.addObject("message", message.toString());
+			
+			return mav;
+		} 
+		
+		if (entity != null) {
+			try {
+				userGroupService.save(entity);
+				
+				mav = view(entity.getId(), request);
 				mav.addObject("msg", true);
 				mav.addObject("message", MessageBundle.getMessageBundle("common.msg.save.success"));
 			} catch (AccessDeniedException e) {
@@ -74,7 +100,7 @@ public class UserGroupController extends BaseController<UserGroup> {
 	public ModelAndView create(HttpServletRequest request) {
 		breadCrumbService.addNode(MessageBundle.getMessageBundle("breadcrumb.usergroup.new"), 1, request);
 		
-		ModelAndView mav = new ModelAndView(Navigation.USER_PERMISSION_CREATE.getPath());
+		ModelAndView mav = new ModelAndView(Navigation.USER_PERMISSION_NEW.getPath());
 		
 		UserGroup userGroup = new UserGroup();
 		

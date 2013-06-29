@@ -48,7 +48,7 @@
                                 
 				<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_PERMISSION_LIST, ROLE_USER_PERMISSION_CREATE">
 					<li class="nav-header">
-						<s:message code="user.groups" />
+						<s:message code="user.groups.short" />
 					</li>
 					<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_PERMISSION_LIST">
 						<li>

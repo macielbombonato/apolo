@@ -21,7 +21,7 @@
 								name="j_username" 
 								class="input-block-level focus" 
 								style="margin-bottom: 15px;" size="30" 
-								placeholder='<s:message code="user.username" />' 
+								placeholder='<s:message code="user.name" />' 
 							/>
 					</div>
 				</div>

@@ -17,7 +17,7 @@
 				<thead>
 					<tr>
 						<th>
-							<s:message code="user.username" />
+							<s:message code="user.name" />
 						</th>
 						<th>
 							<s:message code="user.email" />

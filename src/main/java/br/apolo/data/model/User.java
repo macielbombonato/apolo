@@ -15,6 +15,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import br.apolo.common.util.InputLength;
 import br.apolo.data.entitylistener.AuditLogListener;
@@ -29,17 +31,24 @@ public class User extends AuditableBaseEntity {
 
 	private static final long serialVersionUID = 5588722501578237833L;
 
-	@Column(name = "name", length = InputLength.MEDIUM, nullable = false)
+	@Column(name = "name", length = InputLength.NAME, nullable = false)
+	@NotNull
+	@Size(min = 1, max = InputLength.NAME)
 	private String name;
 
-	@Column(name = "email", unique = true, length = InputLength.SMALL, nullable = false)
+	@Column(name = "email", unique = true, length = InputLength.NAME, nullable = false)
+	@NotNull
+	@Size(min = 1, max = InputLength.NAME)
 	private String email;
 
 	@Column(name = "password", length = InputLength.MEDIUM, nullable = false)
 	private String password;
 
 	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "users_in_groups", joinColumns = { @JoinColumn(name = "user_id", referencedColumnName = "user_id") }, inverseJoinColumns = { @JoinColumn(name = "group_id", referencedColumnName = "user_group_id") })
+	@JoinTable(name = "users_in_groups", 
+			joinColumns = { @JoinColumn(name = "user_id", referencedColumnName = "user_id") }, 
+			inverseJoinColumns = { @JoinColumn(name = "group_id", referencedColumnName = "user_group_id") })
+	@NotNull
 	private Set<UserGroup> groups;
 
 	@Transient

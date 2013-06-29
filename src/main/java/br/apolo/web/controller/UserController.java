@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import net.sf.json.JSONObject;
 
@@ -71,8 +72,7 @@ public class UserController extends BaseController<User> {
 	
 	@PreAuthorize("isAuthenticated()")
 	@RequestMapping(value = "change-password-save", method = RequestMethod.POST)
-	public String changePasswordSave(@ModelAttribute("user") User user, HttpServletRequest request) {
-		
+	public ModelAndView changePasswordSave(@ModelAttribute("user") User user, HttpServletRequest request) {
 		if (user != null) {
 			User dbuser = userService.find(user.getId());
 			
@@ -81,7 +81,7 @@ public class UserController extends BaseController<User> {
 			userService.save(dbuser, true);
 		}
 		
-		return redirect(Navigation.HOME);
+		return index(request);
 	}
 
 	@SecuredEnum(UserPermission.USER_CREATE)
@@ -181,7 +181,7 @@ public class UserController extends BaseController<User> {
 	
 	@SecuredEnum({ UserPermission.USER_CREATE, UserPermission.USER_EDIT })
 	@RequestMapping(value = "save", method = RequestMethod.POST)
-	public ModelAndView save(@ModelAttribute("user") User entity, @RequestParam(defaultValue = "false") boolean changePassword, BindingResult result, HttpServletRequest request) {
+	public ModelAndView save(@Valid @ModelAttribute("user") User entity, BindingResult result, HttpServletRequest request, @RequestParam(defaultValue = "false") boolean changePassword) {
 		ModelAndView mav = new ModelAndView();
 		
 		/*
@@ -194,11 +194,19 @@ public class UserController extends BaseController<User> {
 			mav.addObject("readOnly", false);
 			mav.addObject("error", true);
 			
+			/*
+			 * especific validation to show or not the password field
+			 */
+			String referer = request.getHeader("referer");
+			if (referer != null && referer.contains(Navigation.USER_EDIT.getPath())) {
+				mav.addObject("editing", true);
+			}
+			
 			StringBuilder message = new StringBuilder();
 			for (ObjectError error : result.getAllErrors()) {
 				DefaultMessageSourceResolvable argument = (DefaultMessageSourceResolvable) error.getArguments()[0];
 				
-				message.append(MessageBundle.getMessageBundle("user." + argument.getDefaultMessage()) + ": " + error.getDefaultMessage() + "\n <br />");
+				message.append(MessageBundle.getMessageBundle(MessageBundle.getMessageBundle("common.field") + " " + "user." + argument.getDefaultMessage()) + ": " + error.getDefaultMessage() + "\n <br />");
 			}
 			
 			message.append(additionalValidation(entity));
@@ -299,16 +307,11 @@ public class UserController extends BaseController<User> {
     private boolean validateEmail(User entity){
     	boolean hasError = false;
     	
-    	SearchResult<User> result = userService.search(entity.getEmail());
+    	User result = userService.findByLogin(entity.getEmail());
 		
-		List<User> userList = result.getResults();
-		
-		if(userList.size() > 0){
-			User user = userList.get(0);
-			
-			if(!user.equals(entity)){
-				hasError = true;
-			}
+		if(result != null 
+				&& !result.getId().equals(entity.getId())){
+			hasError = true;
 		}
 		
 		return hasError;

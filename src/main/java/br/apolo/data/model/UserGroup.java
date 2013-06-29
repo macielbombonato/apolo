@@ -16,6 +16,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import br.apolo.common.util.InputLength;
 import br.apolo.data.entitylistener.AuditLogListener;
@@ -30,6 +32,8 @@ public class UserGroup extends AuditableBaseEntity {
 	private static final long serialVersionUID = -7985007135932159381L;
 
 	@Column(name = "name", length = InputLength.MEDIUM, nullable = false)
+	@NotNull
+	@Size(min = 1, max = InputLength.MEDIUM)
 	private String name;
 
 	@ElementCollection(targetClass = UserPermission.class, fetch = FetchType.EAGER)
@@ -39,6 +43,7 @@ public class UserGroup extends AuditableBaseEntity {
 			uniqueConstraints = @UniqueConstraint(columnNames = {"group_id", "permission_name" }, name = "uq_group_permission")
 	)
 	@Column(name = "permission_name")
+	@NotNull
 	private Set<UserPermission> permissions;
 
 	@ManyToMany(mappedBy = "groups", cascade = CascadeType.MERGE)
