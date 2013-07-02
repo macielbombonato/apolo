@@ -9,6 +9,11 @@ $(document).ready(function() {
 		show: false
 	});
 	
+    $('a.back').click(function(){
+        parent.history.back();
+        return false;
+    });
+	
 	$('#editData').modal({
 		backdrop: 'static',
 		keyboard: false,

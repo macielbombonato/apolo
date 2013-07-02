@@ -19,7 +19,7 @@
 			</a>
 		</security:authorize>
 
-		<a href='<s:url value="/user-group/list"></s:url>' class="btn">
+		<a href='#' class="btn back" > 
 			<i class="icon-backward"></i>
 			<s:message code="common.back" />
 		</a>

@@ -17,7 +17,7 @@
 				<s:message code="common.save" /> 
 			</button>
 
-			<a href='<s:url value="/user/list"></s:url>' class="btn">
+			<a href='#' class="btn back" > 
 				<s:message code="common.cancel" />
 			</a>
 		</div>
