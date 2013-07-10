@@ -72,7 +72,24 @@ public class UserController extends BaseController<User> {
 	
 	@PreAuthorize("isAuthenticated()")
 	@RequestMapping(value = "change-password-save", method = RequestMethod.POST)
-	public ModelAndView changePasswordSave(@ModelAttribute("user") User user, HttpServletRequest request) {
+	public ModelAndView changePasswordSave(@ModelAttribute("user") User user, HttpServletRequest request, @RequestParam(defaultValue = "") String passwordConfirmation) {
+		ModelAndView mav = index(request);
+		
+		if (entityHasErrors(user, true, passwordConfirmation)) {
+			mav.setViewName(getRedirectionPath(request, Navigation.USER_CHANGE_PASSWORD, Navigation.USER_CHANGE_PASSWORD));
+			mav.addObject("user", userService.getAuthenticatedUser());
+			mav.addObject("readOnly", true);
+			mav.addObject("changePassword", true);
+			mav.addObject("error", true);
+			
+			StringBuilder message = new StringBuilder();
+			message.append(additionalValidation(user, true, passwordConfirmation));
+			
+			mav.addObject("message", message.toString());
+			
+			return mav;
+		} 
+		
 		if (user != null) {
 			User dbuser = userService.find(user.getId());
 			
@@ -81,7 +98,7 @@ public class UserController extends BaseController<User> {
 			userService.save(dbuser, true);
 		}
 		
-		return index(request);
+		return mav;
 	}
 
 	@SecuredEnum(UserPermission.USER_CREATE)
@@ -181,13 +198,13 @@ public class UserController extends BaseController<User> {
 	
 	@SecuredEnum({ UserPermission.USER_CREATE, UserPermission.USER_EDIT })
 	@RequestMapping(value = "save", method = RequestMethod.POST)
-	public ModelAndView save(@Valid @ModelAttribute("user") User entity, BindingResult result, HttpServletRequest request, @RequestParam(defaultValue = "false") boolean changePassword) {
+	public ModelAndView save(@Valid @ModelAttribute("user") User entity, BindingResult result, HttpServletRequest request, @RequestParam(defaultValue = "false") boolean changePassword, @RequestParam(defaultValue = "") String passwordConfirmation) {
 		ModelAndView mav = new ModelAndView();
 		
 		/*
 		 * Object validation
 		 */
-		if (result.hasErrors() || entityHasErrors(entity)) {
+		if (result.hasErrors() || entityHasErrors(entity, changePassword, passwordConfirmation)) {
 			mav.setViewName(getRedirectionPath(request, Navigation.USER_NEW, Navigation.USER_EDIT));
 			mav.addObject("user", entity);
 			mav.addObject("groupList", userGroupService.list());
@@ -209,7 +226,7 @@ public class UserController extends BaseController<User> {
 				message.append(MessageBundle.getMessageBundle(MessageBundle.getMessageBundle("common.field") + " " + "user." + argument.getDefaultMessage()) + ": " + error.getDefaultMessage() + "\n <br />");
 			}
 			
-			message.append(additionalValidation(entity));
+			message.append(additionalValidation(entity, changePassword, passwordConfirmation));
 			
 			mav.addObject("message", message.toString());
 			
@@ -292,11 +309,13 @@ public class UserController extends BaseController<User> {
           });
     }
     
-    private boolean entityHasErrors(User entity) {
+    private boolean entityHasErrors(User entity, boolean changePassword, String passwordConfirmation) {
 		boolean hasErrors = false;
 		
 		if (entity != null) {
 			if (validateEmail(entity)) {
+				hasErrors = true;
+			} else if(changePassword && !entity.getPassword().equals(passwordConfirmation)) {
 				hasErrors = true;
 			}
 		}
@@ -317,12 +336,16 @@ public class UserController extends BaseController<User> {
 		return hasError;
     }
     
-    private String additionalValidation(User entity) {
+    private String additionalValidation(User entity, boolean changePassword, String passwordConfirmation) {
 		StringBuilder message = new StringBuilder();
 		
 		if (entity != null) {
 			if (validateEmail(entity)) {
 				message.append(MessageBundle.getMessageBundle("user.email") + ": " + MessageBundle.getMessageBundle("user.email.duplicate") + "\n <br />");
+			}
+			
+			if(changePassword && !entity.getPassword().equals(passwordConfirmation)) {
+				message.append(MessageBundle.getMessageBundle("user.password.confirmation") + ": " + MessageBundle.getMessageBundle("user.password.confirmatin.failure") + "\n <br />");
 			}
 		}
 		

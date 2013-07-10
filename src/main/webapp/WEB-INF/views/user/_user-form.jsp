@@ -53,7 +53,26 @@
 					<label for="password">
 						<s:message code="user.password" />
 					</label>
-					<input type="password" id="password" name="password" />
+					<div class="input-append">
+						<input type="password" id="password" name="password" />
+						<div class="switch switch-small" 
+								data-on="danger" 
+								data-off="success"
+								data-on-label="<i class='icon-eye-open'></i>" 
+								data-off-label="<i class='icon-eye-close'></i>"
+							>
+							<input type="checkbox" id="showPassword"/>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="row-fluid">
+				<div class="span12">
+					<label for="passwordConfirmation">
+						<s:message code="user.password.confirmation" />
+					</label>
+					<input type="password" id="passwordConfirmation" name="passwordConfirmation" />
 				</div>
 			</div>
 		</div>
@@ -66,7 +85,26 @@
 				<label for="password">
 					<s:message code="user.password" />
 				</label>
-				<input type="password" id="password" name="password" />
+				<div class="input-append">
+					<input type="password" id="password" name="password" />
+					<div class="switch switch-small" 
+							data-on="danger" 
+							data-off="success"
+							data-on-label="<i class='icon-eye-open'></i>" 
+							data-off-label="<i class='icon-eye-close'></i>"
+						>
+						<input type="checkbox" id="showPassword"/>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="row-fluid">
+			<div class="span12">
+				<label for="passwordConfirmation">
+					<s:message code="user.password.confirmation" />
+				</label>
+				<input type="password" id="passwordConfirmation" name="passwordConfirmation" />
 			</div>
 		</div>
 	</c:when>

@@ -1,4 +1,20 @@
 $(document).ready(function() {
+	$('#showPassword').change(function(){
+		var passwordText = $('#password');
+		if($(this).attr('checked') == 'checked'){
+			passwordText.get(0).type = 'text';
+		} else {
+			passwordText.get(0).type = 'password';
+		}
+		
+		var passwordConfirmationText = $('#passwordConfirmation');
+		if($(this).attr('checked') == 'checked'){
+			passwordConfirmationText.get(0).type = 'text';
+		} else {
+			passwordConfirmationText.get(0).type = 'password';
+		}
+	});
+	
 	$('button[type=submit]').click(function(e) {
 		$('#loadingDialog').modal('toggle');
 	});

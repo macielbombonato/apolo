@@ -27,6 +27,7 @@
 		</style>
 		<link href='<c:url value="/resources/plugin/bootstrap/css/bootstrap.css" />' rel="stylesheet" />
 		<link href='<c:url value="/resources/plugin/bootstrap/css/bootstrap-responsive.css" />' rel="stylesheet" />
+		<link href='<c:url value="/resources/plugin/bootstrap/css/bootstrap-switch.css" />' rel="stylesheet" />
 		
 		<link href='<c:url value="/resources/plugin/jquery/themes/base/jquery-ui.css" />' rel="stylesheet" />
 		
@@ -108,6 +109,10 @@
 		<script src='<c:url value="/resources/plugin/jquery/jquery-1.7.2.js" />'></script>
 		
 		<script src='<c:url value="/resources/plugin/jquery/ui/jquery-ui.js" />'></script>
+		
+		<script src='<c:url value="/resources/plugin/bootstrap/js/bootstrap.js" />'></script>
+		
+		<script src='<c:url value="/resources/plugin/bootstrap/js/bootstrap-switch.js" />'></script>
 		
 		<!-- select or dropdown enhancer -->
 		<script src='<c:url value="/resources/plugin/jquery-chosen/chosen.jquery.js" />'></script>
