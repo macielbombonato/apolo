@@ -87,4 +87,9 @@ public class UserGroupServiceImpl extends BaseServiceImpl<UserGroup> implements 
 		
 		return permissions;
 	}
+	
+	@Override
+	public UserGroup findByName(String name) {
+		return userGroupRepository.findByName(name);
+	}
 }

@@ -12,4 +12,6 @@ public interface UserGroupRepository extends PagingAndSortingRepository<UserGrou
 	@Query("FROM UserGroup e ORDER BY e.name")
 	List<UserGroup> findAllUserGroups();
 	
+	UserGroup findByName(String name);
+	
 }

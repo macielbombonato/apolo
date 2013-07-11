@@ -17,9 +17,20 @@
 				<s:message code="common.save" /> 
 			</button>
 
-			<a href='<s:url value="/user-group/view"></s:url>/${userGroup.id}' class="btn">
-				<s:message code="common.cancel" />
-			</a>
+			<c:choose>
+				<c:when test="${userGroup.id != null}">
+					<a href='<s:url value="/user-group/view"></s:url>/${userGroup.id}' class="btn">
+						<i class="icon-remove-circle"></i>
+						<s:message code="common.cancel" />
+					</a>				
+				</c:when>
+				<c:otherwise>
+					<a href='<s:url value="/user-group/list"></s:url>' class="btn">
+						<i class="icon-remove-circle"></i>
+						<s:message code="common.cancel" />
+					</a>
+				</c:otherwise>
+			</c:choose>
 		</div>
 	</form>
 

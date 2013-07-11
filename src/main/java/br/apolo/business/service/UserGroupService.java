@@ -9,4 +9,6 @@ public interface UserGroupService extends BaseService<UserGroup> {
 
 	List<UserPermission> getUserPermissionList();
 	
+	UserGroup findByName(String name);
+	
 }

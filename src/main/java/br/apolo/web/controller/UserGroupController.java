@@ -44,7 +44,7 @@ public class UserGroupController extends BaseController<UserGroup> {
 		/*
 		 * Object validation
 		 */
-		if (result.hasErrors()) {
+		if (result.hasErrors() || entityHasErrors(entity)) {
 			mav.setViewName(getRedirectionPath(request, Navigation.USER_PERMISSION_NEW, Navigation.USER_PERMISSION_EDIT));
 			
 			mav.addObject("userGroup", entity);
@@ -58,6 +58,8 @@ public class UserGroupController extends BaseController<UserGroup> {
 				
 				message.append(MessageBundle.getMessageBundle("common.field") + " " + MessageBundle.getMessageBundle("user.group." + argument.getDefaultMessage()) + ": " + error.getDefaultMessage() + "\n <br />");
 			}
+			
+			message.append(additionalValidation(entity));
 			
 			mav.addObject("message", message.toString());
 			
@@ -210,5 +212,41 @@ public class UserGroupController extends BaseController<UserGroup> {
 		
 		return mav;
 	}
+
+    private boolean entityHasErrors(UserGroup entity) {
+		boolean hasErrors = false;
+		
+		if (entity != null) {
+			if (validateName(entity)) {
+				hasErrors = true;
+			}
+		}
+		
+		return hasErrors;
+	}
 	
+    private boolean validateName(UserGroup entity){
+    	boolean hasError = false;
+    	
+    	UserGroup result = userGroupService.findByName(entity.getName());
+		
+		if(result != null 
+				&& !result.getId().equals(entity.getId())){
+			hasError = true;
+		}
+		
+		return hasError;
+    }
+    
+    private String additionalValidation(UserGroup entity) {
+		StringBuilder message = new StringBuilder();
+		
+		if (entity != null) {
+			if (validateName(entity)) {
+				message.append(MessageBundle.getMessageBundle("user.group.name") + ": " + MessageBundle.getMessageBundle("user.group.name.duplicate") + "\n <br />");
+			}
+		}
+		
+		return message.toString();
+	}
 }
