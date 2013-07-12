@@ -5,6 +5,7 @@ import java.util.Date;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import br.apolo.data.model.User;
@@ -41,20 +42,26 @@ public class AuditListener {
 	void onPersist(IAuditableEntity e) {
 		User user = new User();
 		
-		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		
-		if (principal != null && !"anonymousUser".equals(principal)) {
-			CurrentUser currentUser = (CurrentUser) principal;
-			
-			if (currentUser != null) {
-				user.setId(currentUser.getId());
+		Object principal = null;
 				
-				e.setLastUpdatedBy(user);
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		
+		if (authentication != null) {
+			principal = authentication.getPrincipal();
+			
+			if (principal != null && !"anonymousUser".equals(principal)) {
+				CurrentUser currentUser = (CurrentUser) principal;
+				
+				if (currentUser != null) {
+					user.setId(currentUser.getId());
+					
+					e.setLastUpdatedBy(user);
+				}
+			} else {
+				e.setLastUpdatedBy(null);
 			}
-		} else {
-			e.setLastUpdatedBy(null);
-		}
 
-		e.setLastUpdateDate(new Date());
+			e.setLastUpdateDate(new Date());
+		}
 	}
 }
