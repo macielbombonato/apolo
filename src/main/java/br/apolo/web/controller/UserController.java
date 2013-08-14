@@ -170,13 +170,18 @@ public class UserController extends BaseController<User> {
 		User user = userService.find(id);
 		
 		if (user != null) {
-			try {
-				userService.remove(user);
-				
-				result = MessageBundle.getMessageBundle("common.msg.remove.success");
-				jsonItem.put("success", true);
-			} catch (Throwable e) {
-				result = MessageBundle.getMessageBundle("common.remove.msg.error");
+			if (!userService.getAuthenticatedUser().equals(user)) {
+				try {
+					userService.remove(user);
+					
+					result = MessageBundle.getMessageBundle("common.msg.remove.success");
+					jsonItem.put("success", true);
+				} catch (Throwable e) {
+					result = MessageBundle.getMessageBundle("common.remove.msg.error");
+					jsonItem.put("success", false);
+				}
+			} else {
+				result = MessageBundle.getMessageBundle("user.msg.error.remove.yourself");
 				jsonItem.put("success", false);
 			}
 		}

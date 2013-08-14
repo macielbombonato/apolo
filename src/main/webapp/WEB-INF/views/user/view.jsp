@@ -13,14 +13,14 @@
 	
 	<div class="form-actions">
 		<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_EDIT">
-			<a href='<s:url value="/user/edit"></s:url>/${user.id}' class="btn">
-				<i class="icon-edit"></i>
+			<a href='<s:url value="/user/edit"></s:url>/${user.id}' class="btn btn-default">
+				<i class="glyphicon glyphicon-edit"></i>
 				<s:message code="common.edit" />
 			</a>
 		</security:authorize>
 		
-		<a href='#' class="btn back" > 
-			<i class="icon-backward"></i>
+		<a href='#' class="btn btn-default back" > 
+			<i class="glyphicon glyphicon-backward"></i>
 			<s:message code="common.back" />
 		</a>
 	</div>

@@ -9,15 +9,17 @@
 		<s:message code="user.change-password.title" />
 	</legend>
 	
-	<form id="userForm" action="<s:url value="/user/change-password-save"></s:url>" method="post">
+	<form id="userForm" action="<s:url value="/user/change-password-save"></s:url>" method="post" role="form">
 		<jsp:include page='_user-form.jsp'></jsp:include>
 		
 		<div class="form-actions">
 			<button type="submit" class="btn btn-primary">
+				<i class="glyphicon glyphicon-ok"></i>
 				<s:message code="common.save" /> 
 			</button>
 
-			<a href='<s:url value="/user"></s:url>' class="btn">
+			<a href='<s:url value="/user"></s:url>' class="btn btn-default">
+				<i class="glyphicon glyphicon-remove-circle"></i>
 				<s:message code="common.cancel" />
 			</a>
 		</div>	

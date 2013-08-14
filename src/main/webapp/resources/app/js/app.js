@@ -116,6 +116,12 @@ $(document).ready(function() {
 
 $('#header').height($('#menu').height() + 5);
 
+$('video').mediaelementplayer({
+	success: function(media, node, player) {
+		$('#' + node.id + '-mode').html('mode: ' + media.pluginType);
+	}
+});
+
 if (!App.readOnly) {
 	$('.focus').trigger('focus');
 }

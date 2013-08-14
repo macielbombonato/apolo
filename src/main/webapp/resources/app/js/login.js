@@ -1,5 +1,5 @@
 $('#loginScreenOpen').click(function(){
-	$('#loginScreen').removeClass('row-fluid');
+	$('#loginScreen').removeClass('row ');
 	$('#loginScreen').addClass('row');
 	
 	$('#loginScreenPopup').toggle(function() {

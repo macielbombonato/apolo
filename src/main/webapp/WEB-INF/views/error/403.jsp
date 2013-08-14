@@ -14,18 +14,17 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		
 		<link rel="stylesheet" href='<%=request.getContextPath()%>/resources/plugin/bootstrap/css/bootstrap.min.css' />
-		<link rel="stylesheet" href='<%=request.getContextPath()%>/resources/plugin/bootstrap/css/bootstrap-responsive.min.css' />
 		
 	</head>
 	
 	<body>
-		<div class="container-fluid">
-			<div class="row-fluid">
+		<div class="container ">
+			<div class="row ">
 				<div class="span12">
 					<jsp:include page='/WEB-INF/tiles/header.jsp'></jsp:include>
 				</div>
 			</div>
-			<div class="row-fluid">
+			<div class="row ">
 				<br /><br /><br />
 				<div class="span12">
 					<div class="alert alert-error">
@@ -41,7 +40,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="row-fluid">
+			<div class="row ">
 				<div class="span12">
 					<jsp:include page='/WEB-INF/tiles/footer.jsp'></jsp:include>
 				</div>

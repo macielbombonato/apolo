@@ -9,12 +9,12 @@
 
 <!-- Subhead ================================================== -->
 <header id="header">
-  <div class="container-fluid">
+  <div class="container">
     <p class="lead">&nbsp;</p>
   </div>
 </header>
 
-<div class="row-fluid">
+<div class="row">
 	<div class="span12">
 		<div id="breadcrumb">
 			<ul class="breadcrumb">
@@ -38,13 +38,11 @@
 								</c:when>
 								<c:when test="${status.index == fn:length(breadcrumb.tree)-1 && status.index!=0}">
 									<li id="current">
-										<span class="divider">/</span>
 										${bc.name}
 									</li>
 								</c:when>
 								<c:otherwise>
 									<li>
-										<span class="divider">/</span>
 										<a href="${bc.value}">
 											${bc.name}
 										</a>
@@ -57,11 +55,9 @@
 				<li class="pull-right">
 					<s:message code="version" var="version"/>
 					
-					<p class="text-right muted tooltipLeft" data-toggle="tooltip" title="<s:message code="version"/>">
-						<small>
-							<s:message code="system.version" />:&nbsp; ${fn:substring(version, 0, 15)}
-						</small>
-					</p>
+					<small class="text-right muted tooltipLeft" data-toggle="tooltip" title="<s:message code="version"/>">
+						<s:message code="system.version" />:&nbsp; ${fn:substring(version, 0, 15)}
+					</small>
 				</li>
 			</ul>
 		</div>	

@@ -2,7 +2,7 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="s"%>
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
 
-<div id="loginScreen" class="row-fluid">
+<div id="loginScreen" class="row ">
 	<div class="span2">
 	
 	</div>
@@ -13,9 +13,9 @@
 			</legend>
 
 			<form id="login_form" action="<c:url value="/j_spring_security_check" />" method="post" class="form-horizontal">
-				<div class="row-fluid">
+				<div class="row ">
 					<div class="input-prepend span11">
-						<span class="add-on"><i class="icon-user"></i></span>
+						<span class="add-on"><i class="glyphicon glyphicon-user"></i></span>
 						<input type="text" 
 								id="j_username" 
 								name="j_username" 
@@ -26,9 +26,9 @@
 					</div>
 				</div>
 				
-				<div class="row-fluid">	
+				<div class="row ">	
 					<div class="input-prepend span11">
-						<span class="add-on"><i class="icon-lock"></i></span>
+						<span class="add-on"><i class="glyphicon glyphicon-lock"></i></span>
 						<input type="password" 
 								id="j_password" 
 								name="j_password" 
@@ -39,7 +39,7 @@
 					</div>
 				</div>
 				
-				<div class="row-fluid">
+				<div class="row ">
 					<div class="span12">
 						<button type="submit" id="login_button" class="btn btn-primary">
 							<s:message code="user.login" />

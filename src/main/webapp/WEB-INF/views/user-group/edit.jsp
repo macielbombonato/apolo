@@ -9,24 +9,25 @@
 		<s:message code="user.group.edit.title" />
 	</legend>
 	
-	<form id="userGroupForm" action="<s:url value="/user-group/save"></s:url>" method="post" class="form-inline">
+	<form id="userGroupForm" action="<s:url value="/user-group/save"></s:url>" method="post" role="form">
 		<jsp:include page='_permission-form.jsp'></jsp:include>
 		
 		<div class="form-actions">
 			<button type="submit" class="btn btn-primary">
+				<i class="glyphicon glyphicon-ok"></i>
 				<s:message code="common.save" /> 
 			</button>
 
 			<c:choose>
 				<c:when test="${userGroup.id != null}">
-					<a href='<s:url value="/user-group/view"></s:url>/${userGroup.id}' class="btn">
-						<i class="icon-remove-circle"></i>
+					<a href='<s:url value="/user-group/view"></s:url>/${userGroup.id}' class="btn btn-default">
+						<i class="glyphicon glyphicon-remove-circle"></i>
 						<s:message code="common.cancel" />
 					</a>				
 				</c:when>
 				<c:otherwise>
-					<a href='<s:url value="/user-group/list"></s:url>' class="btn">
-						<i class="icon-remove-circle"></i>
+					<a href='<s:url value="/user-group/list"></s:url>' class="btn btn-default">
+						<i class="glyphicon glyphicon-remove-circle"></i>
 						<s:message code="common.cancel" />
 					</a>
 				</c:otherwise>

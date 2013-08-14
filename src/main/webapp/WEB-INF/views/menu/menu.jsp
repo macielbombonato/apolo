@@ -8,20 +8,19 @@
 	
 <div id="menu" class="navbar navbar-fixed-top">
 	<div class="navbar-inner">
-		<div class="container-fluid">
-			<a class="btn btn-navbar" data-toggle="collapse"
-				data-target=".navbar-responsive-collapse"> 
-				<span class="icon-bar"></span> 
-				<span class="icon-bar"></span> 
-				<span class="icon-bar"></span>
-			</a> 
+		<div class="container ">
+	        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+	          <span class="icon-bar"></span>
+	          <span class="icon-bar"></span>
+	          <span class="icon-bar"></span>
+	        </button>
 			
-			<a class="brand" href='<s:url value="/"></s:url>'>
+			<a class="navbar-brand" href='<s:url value="/"></s:url>'>
 				<img src='<c:url value="/resources/app/img/favicon.png" />' width="20" height="20" style="width: 20px; height: 20px;" />
 				<strong><s:message code="app.title" /></strong>
 			</a>
 			
-			<div class="nav-collapse collapse navbar-responsive-collapse">
+			<div class="nav-collapse collapse">
 				<jsp:include page='_user.jsp'></jsp:include>
 			</div>
 			<!-- /.nav-collapse -->

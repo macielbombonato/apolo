@@ -9,24 +9,25 @@
 		<s:message code="user.new.title" />
 	</legend>
 	
-	<form id="userForm" action="<s:url value="/user/save"></s:url>" method="post">
+	<form id="userForm" action="<s:url value="/user/save"></s:url>" role="form" method="post">
 		<jsp:include page='_user-form.jsp'></jsp:include>
 		
 		<div class="form-actions">
 			<button type="submit" class="btn btn-primary">
+				<i class="glyphicon glyphicon-ok"></i>
 				<s:message code="common.save" /> 
 			</button>
 
 			<c:choose>
 				<c:when test="${user.id != null}">
-					<a href='<s:url value="/user/view"></s:url>/${user.id}' class="btn">
-						<i class="icon-remove-circle"></i>
+					<a href='<s:url value="/user/view"></s:url>/${user.id}' class="btn btn-default">
+						<i class="glyphicon glyphicon-remove-circle"></i>
 						<s:message code="common.cancel" />
 					</a>				
 				</c:when>
 				<c:otherwise>
-					<a href='#' class="btn back" > 
-						<i class="icon-remove-circle"></i>
+					<a href='#' class="btn back btn-default" > 
+						<i class="glyphicon glyphicon-remove-circle"></i>
 						<s:message code="common.cancel" />
 					</a>
 				</c:otherwise>

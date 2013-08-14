@@ -19,11 +19,11 @@
 	
 	<div class="modal-footer">
 		<a href="#" class="btn" data-dismiss="modal">
-			<i class="icon-remove-circle"></i>
+			<i class="glyphicon glyphicon-remove-circle"></i>
 			<s:message code="common.cancel" />
 		</a>
 		<a href="#" class="btn btn-primary" onclick="editData();">
-			<i class="icon-check"></i>
+			<i class="glyphicon glyphicon-check"></i>
 			<s:message code="common.ok" />
 		</a>
 	</div>

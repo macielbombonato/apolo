@@ -7,8 +7,8 @@
 	&nbsp;
 </div>
 
-<div class="container-fluid">
-	<div class="row-fluid">
+<div class="container ">
+	<div class="row ">
 		<div class="footer">
 			<div class="footer_contents"> 
 				<p class="muted">
