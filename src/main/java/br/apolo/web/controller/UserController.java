@@ -24,9 +24,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import br.apolo.business.model.FileContent;
 import br.apolo.business.model.SearchResult;
+import br.apolo.business.service.FileService;
 import br.apolo.business.service.UserGroupService;
 import br.apolo.business.service.UserService;
 import br.apolo.common.util.MessageBundle;
@@ -39,11 +42,16 @@ import br.apolo.web.enums.Navigation;
 @RequestMapping(value = "/user")
 public class UserController extends BaseController<User> {
 
+	private final String ACCEPTED_FILE_TYPE = ".gif.jpg.png";
+	
 	@Autowired
 	UserService userService;
 	
 	@Autowired
 	UserGroupService userGroupService;
+	
+	@Autowired
+	private FileService<User> fileService;
 	
 	@PreAuthorize("isAuthenticated()")
 	@RequestMapping(value = "", method = RequestMethod.GET)
@@ -95,7 +103,7 @@ public class UserController extends BaseController<User> {
 			
 			dbuser.setPassword(user.getPassword());
 			
-			userService.save(dbuser, true);
+			userService.save(dbuser, true, null);
 		}
 		
 		return mav;
@@ -206,6 +214,27 @@ public class UserController extends BaseController<User> {
 	public ModelAndView save(@Valid @ModelAttribute("user") User entity, BindingResult result, HttpServletRequest request, @RequestParam(defaultValue = "false") boolean changePassword, @RequestParam(defaultValue = "") String passwordConfirmation) {
 		ModelAndView mav = new ModelAndView();
 		
+		MultipartFile objectFile = null;
+		
+		List<MultipartFile> files = null;
+		
+		if (entity.getPicturefiles() != null) {
+			files = entity.getPicturefiles();
+		}
+		
+		if(files != null && !files.isEmpty()) {
+			for (MultipartFile multipartFile : files) {
+				objectFile = multipartFile;
+			}
+		}
+		
+		if (objectFile != null 
+				&& objectFile.getOriginalFilename() != null 
+				&& !objectFile.getOriginalFilename().isEmpty()) {
+			entity.setPictureOriginalName(objectFile.getOriginalFilename());
+			entity.setPictureGeneratedName(objectFile.getOriginalFilename());
+		}
+		
 		/*
 		 * Object validation
 		 */
@@ -228,7 +257,7 @@ public class UserController extends BaseController<User> {
 			for (ObjectError error : result.getAllErrors()) {
 				DefaultMessageSourceResolvable argument = (DefaultMessageSourceResolvable) error.getArguments()[0];
 				
-				message.append(MessageBundle.getMessageBundle(MessageBundle.getMessageBundle("common.field") + " " + "user." + argument.getDefaultMessage()) + ": " + error.getDefaultMessage() + "\n <br />");
+				message.append(MessageBundle.getMessageBundle("common.field") + " " + MessageBundle.getMessageBundle("user." + argument.getDefaultMessage()) + ": " + error.getDefaultMessage() + "\n <br />");
 			}
 			
 			message.append(additionalValidation(entity, changePassword, passwordConfirmation));
@@ -239,7 +268,14 @@ public class UserController extends BaseController<User> {
 		} 
 		
 		if (entity != null) {
-			userService.save(entity, changePassword);
+			FileContent file = null;
+			
+			if (objectFile != null) {
+				file = new FileContent();
+				file.setFile(objectFile);
+			}
+			
+			userService.save(entity, changePassword, file);
 			
 			mav = view(entity.getId(), request);
 			
@@ -322,6 +358,8 @@ public class UserController extends BaseController<User> {
 				hasErrors = true;
 			} else if(changePassword && !entity.getPassword().equals(passwordConfirmation)) {
 				hasErrors = true;
+			} else if (isValidFileType(entity)) {
+				hasErrors = true;
 			}
 		}
 		
@@ -352,9 +390,27 @@ public class UserController extends BaseController<User> {
 			if(changePassword && !entity.getPassword().equals(passwordConfirmation)) {
 				message.append(MessageBundle.getMessageBundle("user.password.confirmation") + ": " + MessageBundle.getMessageBundle("user.password.confirmatin.failure") + "\n <br />");
 			}
+			
+			if (isValidFileType(entity)) {
+				message.append(MessageBundle.getMessageBundle("user.picturefiles") + ": " + MessageBundle.getMessageBundle("user.fileType") + "\n <br />");
+			}
 		}
 		
 		return message.toString();
+	}
+    
+	private boolean isValidFileType(User entity) {
+		boolean hasErrors = false;
+		
+		if (entity.getPictureOriginalName() == null 
+				|| (entity.getPictureOriginalName() != null
+					&& entity.getPictureOriginalName().length() > 0
+					&& !ACCEPTED_FILE_TYPE.contains(fileService.extractFileExtension(entity.getPictureOriginalName()))
+				)) {
+			hasErrors = true;
+		}
+		
+		return hasErrors;
 	}
 
 }

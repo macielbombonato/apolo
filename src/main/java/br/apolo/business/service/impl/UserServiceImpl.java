@@ -1,5 +1,6 @@
 package br.apolo.business.service.impl;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -16,8 +17,12 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.apolo.business.model.FileContent;
 import br.apolo.business.model.SearchResult;
+import br.apolo.business.service.FileService;
 import br.apolo.business.service.UserService;
+import br.apolo.common.exception.GenericException;
+import br.apolo.common.util.MessageBundle;
 import br.apolo.data.model.User;
 import br.apolo.data.model.UserGroup;
 import br.apolo.data.model.User_;
@@ -30,6 +35,9 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 
 	@Autowired
 	UserRepository userRepository;
+	
+	@Autowired
+	private FileService<User> fileService;
 	
 	@Override
 	public List<User> list() {
@@ -61,18 +69,38 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 			entity.setLastUpdateDate(new Date());			
 		}
 		
-		return save(entity, false);
+		return save(entity, false, null);
 	}
 
 	@Override
 	@Transactional
-	public User save(User user, boolean changePassword) {
+	public User save(User user, boolean changePassword, FileContent file) {
 		if (changePassword) {
 			Md5PasswordEncoder encoder = new Md5PasswordEncoder();
 			user.setPassword(encoder.encodePassword(user.getPassword(), null));			
 		} else {
 			User dbUser = this.find(user.getId());
 			user.setPassword(dbUser.getPassword());
+		}
+		
+		if (file != null) {
+			if (file != null 
+					&& file.getFile() != null 
+					&& file.getFile().getOriginalFilename() != null 
+					&& !file.getFile().getOriginalFilename().isEmpty()) {
+				
+				if (user.getId() == null) {
+					userRepository.save(user);	
+				}
+				
+				user.setPictureOriginalName(file.getFile().getOriginalFilename());
+				try {
+					user.setPictureGeneratedName(fileService.uploadFile(user, file, file.getFile().getInputStream()));
+				} catch (IOException e) {
+					String message = MessageBundle.getMessageBundle("commons.errorUploadingFile");
+					throw new GenericException(message);
+				}
+			}
 		}
 		
 		return userRepository.save(user);

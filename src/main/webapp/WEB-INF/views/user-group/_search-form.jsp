@@ -10,6 +10,7 @@
 			<input type="text" id="param" name="param" class="search-query form-control" placeholder='<s:message code="user.group.search.field" />'>
 			<span class="input-group-btn">
 				<button type="submit" class="btn btn-info">
+					<i class="glyphicon glyphicon-search"></i>
 					<s:message code="common.search" /> 
 				</button>
 			</span>

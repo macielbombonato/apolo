@@ -115,28 +115,13 @@
 	</security:authorize>
         
 	<security:authorize access="!isAuthenticated()">
-		<li class="dropdown">
-			<a id="loginDialogOpen" href="#"> 
+		<li>
+			<a href='<s:url value="/auth/login"></s:url>'>
 				<i class="glyphicon glyphicon-lock "></i>
 				<span class="hidden-phone">
 					<s:message code="user.restricted.area.access" />
 				</span> 
-				<span class="caret"></span>
 			</a>
-			
-			<div id="loginDialog" class="modal fade" tabindex="-1" data-role="dialog" style="text-align: center;">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-body">
-							<div class="row">
-								<div class="col-lg-12">
-									<jsp:include page='../auth/login.jsp'></jsp:include>
-								</div>							
-							</div>
-						</div>					
-					</div>
-				</div>
-			</div>
 		</li>
 	</security:authorize>
 </ul>

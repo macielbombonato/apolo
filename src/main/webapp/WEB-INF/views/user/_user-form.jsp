@@ -11,6 +11,8 @@
 <jsp:useBean id="inputlength" class="br.apolo.common.util.InputLength"/>
 
 <input type="hidden" id="id" name="id" value="${user.id}" />
+<input type="hidden" id="pictureOriginalName" name="pictureOriginalName" value="${user.pictureOriginalName}" />
+<input type="hidden" id="pictureGeneratedName" name="pictureGeneratedName" value="${user.pictureGeneratedName}" />
 
 <ul class="nav nav-tabs" id="formTab">
 	<li class="active">
@@ -120,38 +122,43 @@
 			</c:when>
 			<c:otherwise>
 				<div class="form-group">
-					<table class="table table-striped table-hover table-bordered">
-						<caption>
+					<div class="panel panel-default">
+						<div class="panel-heading">
 							<strong>
 								<s:message code="user.groups" />
 							</strong>
-						</caption>
-						<tbody>
+						</div>
+						<ul class="list-group">
 							<c:forEach items="${user.groups}" var="group">
-								<tr>
-									<td>
-										<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_LIST, ROLE_USER_PERMISSION_LIST, ROLE_USER_PERMISSION_VIEW">
-											<a href='<s:url value="/user-group/view"></s:url>/${group.id}'>
-												${group.name}
-											</a>
-										</security:authorize>
-										
-										<security:authorize  ifNotGranted="ROLE_ADMIN, ROLE_USER_LIST, ROLE_USER_PERMISSION_LIST, ROLE_USER_PERMISSION_VIEW">
+								<li class="list-group-item">
+									<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_LIST, ROLE_USER_PERMISSION_LIST, ROLE_USER_PERMISSION_VIEW">
+										<a href='<s:url value="/user-group/view"></s:url>/${group.id}'>
 											${group.name}
-										</security:authorize>
-									</td>
-								</tr>
+										</a>
+									</security:authorize>
+									
+									<security:authorize  ifNotGranted="ROLE_ADMIN, ROLE_USER_LIST, ROLE_USER_PERMISSION_LIST, ROLE_USER_PERMISSION_VIEW">
+										${group.name}
+									</security:authorize>
+								</li>
 							</c:forEach>
-						</tbody>
-					</table>
+						</ul>
+					</div>
 				</div>
 			</c:otherwise>
 		</c:choose>
+		
+		<c:if test="${!readOnly}">
+			<div class="form-group">
+				<label for="picturefiles" class="control-label">
+					<s:message code="user.picturefiles" />
+				</label>
+				<input type="file" class="form-control" name="picturefiles[0]" />
+			</div>		
+		</c:if>
 	</div>
 	
-	<c:if test="${readOnly}">
-		<div class="tab-pane" id="authorShipTab">
-			<jsp:include page='_authorship.jsp'></jsp:include>
-		</div>	
-	</c:if>
+	<div class="tab-pane" id="authorShipTab">
+		<jsp:include page='_authorship.jsp'></jsp:include>
+	</div>
 </div>

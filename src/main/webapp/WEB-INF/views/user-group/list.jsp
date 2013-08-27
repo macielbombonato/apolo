@@ -6,11 +6,15 @@
 
 <jsp:include page='_search-form.jsp'></jsp:include>
 
-<fieldset>
-	<legend>
-		<s:message code="user.group.list.title" />
-	</legend>
-	
+<br />
+
+<div class="panel panel-primary">
+	<div class="panel-heading">
+		<strong>
+			<s:message code="user.group.list.title" />
+		</strong>
+	</div>
+
 	<c:choose>
 		<c:when test="${userGroupList != null && not empty userGroupList}">
 			<table class="table table-striped table-hover table-bordered">
@@ -44,17 +48,13 @@
 								</security:authorize>
 							</td>
 							<td>
-								<table class="table table-condensed table-bordered">
-									<tbody>
-										<c:forEach items="${group.permissions}" var="permission">
-											<tr>
-												<td>
-													<s:message code="user.permission.${permission}" />
-												</td>
-											</tr>
-										</c:forEach>
-									</tbody>
-								</table>
+								<ul class="list-group">
+									<c:forEach items="${group.permissions}" var="permission">
+										<li class="list-group-item">
+											<s:message code="user.permission.${permission}" />
+										</li>
+									</c:forEach>
+								</ul>
 							</td>
 							<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_PERMISSION_VIEW, ROLE_USER_PERMISSION_EDIT, ROLE_USER_PERMISSION_REMOVE">
 								<td>
@@ -83,7 +83,11 @@
 			</table>
 		</c:when>
 		<c:otherwise>
-			<s:message code="common.nodatafound" htmlEscape="false"/>
+			<div class="panel-body">
+				<p>
+					<s:message code="common.nodatafound" htmlEscape="false"/>
+				</p>
+			</div>
 		</c:otherwise>
 	</c:choose>
-</fieldset>
+</div>

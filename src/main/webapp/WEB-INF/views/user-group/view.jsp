@@ -4,25 +4,27 @@
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 
-<fieldset>
-	<legend>
-		<s:message code="user.group.view.title" />
-	</legend>
-	
-	<jsp:include page='_permission-form.jsp'></jsp:include>
-	
-	<div class="form-actions">
-		<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_PERMISSION_EDIT">
-			<a href='<s:url value="/user-group/edit"></s:url>/${userGroup.id}' class="btn btn-default">
-				<i class="glyphicon glyphicon-edit"></i>
-				<s:message code="common.edit" />
-			</a>
-		</security:authorize>
-
-		<a href='#' class="btn back btn-default" > 
-			<i class="glyphicon glyphicon-backward"></i>
-			<s:message code="common.back" />
-		</a>
+<div class="panel panel-primary">
+	<div class="panel-heading">
+		<strong>
+			<s:message code="user.group.view.title" />
+		</strong>
 	</div>
-
-</fieldset>
+	<div class="panel-body">
+		<jsp:include page='_permission-form.jsp'></jsp:include>
+		
+		<div class="form-actions">
+			<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_PERMISSION_EDIT">
+				<a href='<s:url value="/user-group/edit"></s:url>/${userGroup.id}' class="btn btn-default">
+					<i class="glyphicon glyphicon-edit"></i>
+					<s:message code="common.edit" />
+				</a>
+			</security:authorize>
+	
+			<a href='#' class="btn back btn-default" > 
+				<i class="glyphicon glyphicon-backward"></i>
+				<s:message code="common.back" />
+			</a>
+		</div>
+	</div>
+</div>

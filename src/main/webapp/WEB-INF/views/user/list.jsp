@@ -6,16 +6,22 @@
 
 <jsp:include page='_search-form.jsp'></jsp:include>
 
-<fieldset>
-	<legend>
-		<s:message code="user.list.title" />
-	</legend>
-	
+<br />
+
+<div class="panel panel-primary">
+	<div class="panel-heading">
+		<strong>
+			<s:message code="user.list.title" />
+		</strong>
+	</div>
 	<c:choose>
 		<c:when test="${userList != null && not empty userList}">
 			<table class="table table-striped table-hover table-bordered">
 				<thead>
 					<tr>
+						<th>
+							<s:message code="user.picturefiles" />
+						</th>
 						<th>
 							<s:message code="user.name" />
 						</th>
@@ -37,6 +43,18 @@
 					<c:forEach items="${userList}" var="user">
 						<tr id="user_${user.id}">
 							<td>
+								<center>
+									<c:choose>
+										<c:when test="${user.pictureGeneratedName != null}">
+											<img class="img-thumbnail" src="<s:url value="/uploadedfiles/User"></s:url>/${user.id}/${user.pictureGeneratedName}" style="width: 40px;"/>
+										</c:when>
+										<c:otherwise>
+											<span class="glyphicon glyphicon-user"> </span>
+										</c:otherwise>
+									</c:choose>								
+								</center>
+							</td>
+							<td>
 								<a href='<s:url value="/user/view"></s:url>/${user.id}' class="btn btn-link">
 									${user.name}
 								</a>
@@ -45,24 +63,20 @@
 								${user.email}
 							</td>
 							<td>
-								<table class="table table-condensed table-bordered">
-									<tbody>
-										<c:forEach items="${user.groups}" var="group">
-											<tr>
-												<td>
-													<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_PERMISSION_VIEW">
-														<a href='<s:url value="/user-group/view"></s:url>/${group.id}' class="btn btn-link">
-															${group.name}
-														</a>
-													</security:authorize>
-													<security:authorize  ifNotGranted="ROLE_ADMIN, ROLE_USER_PERMISSION_VIEW">
-														${group.name}
-													</security:authorize>
-												</td>
-											</tr>
-										</c:forEach>
-									</tbody>
-								</table>
+								<ul class="list-group">
+									<c:forEach items="${user.groups}" var="group">
+										<li class="list-group-item">
+											<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_PERMISSION_VIEW">
+												<a href='<s:url value="/user-group/view"></s:url>/${group.id}' class="btn btn-link">
+													${group.name}
+												</a>
+											</security:authorize>
+											<security:authorize  ifNotGranted="ROLE_ADMIN, ROLE_USER_PERMISSION_VIEW">
+												${group.name}
+											</security:authorize>
+										</li>
+									</c:forEach>
+								</ul>
 							</td>
 							<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_LIST, ROLE_USER_EDIT, ROLE_USER_REMOVE">
 								<td>
@@ -94,7 +108,11 @@
 			</table>
 		</c:when>
 		<c:otherwise>
-			<s:message code="common.nodatafound" htmlEscape="false"/>
+			<div class="panel-body">
+				<p>
+					<s:message code="common.nodatafound" htmlEscape="false"/>
+				</p>
+			</div>
 		</c:otherwise>
 	</c:choose>
-</fieldset>
+</div>

@@ -111,10 +111,5 @@
 		
 		<!-- application scripts -->
 		<script type="text/javascript" src='<c:url value="/resources/app/js/app.js" />'></script>
-		
-		<!-- Scripts to load only if the user are in the form screen -->
-		<security:authorize access="!isAuthenticated()">
-			<script type="text/javascript" src='<c:url value="/resources/app/js/login.js" />'></script>
-		</security:authorize>
 	</body>
 </html>

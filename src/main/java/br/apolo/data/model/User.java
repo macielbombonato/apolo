@@ -1,6 +1,7 @@
 package br.apolo.data.model;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.AttributeOverride;
@@ -17,6 +18,8 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import org.springframework.web.multipart.MultipartFile;
 
 import br.apolo.common.util.InputLength;
 import br.apolo.data.entitylistener.AuditLogListener;
@@ -53,6 +56,15 @@ public class User extends AuditableBaseEntity {
 
 	@Transient
 	private Set<UserPermission> permissions;
+	
+	@Column(name = "pic_original_name", length = InputLength.MEDIUM, nullable = true)
+	private String pictureOriginalName;
+
+	@Column(name = "pic_generated_name", length = InputLength.MEDIUM, nullable = true)
+	private String pictureGeneratedName;
+	
+	@Transient
+	private List<MultipartFile> picturefiles;
 
 	public String getName() {
 		return name;
@@ -96,5 +108,29 @@ public class User extends AuditableBaseEntity {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public String getPictureOriginalName() {
+		return pictureOriginalName;
+	}
+
+	public void setPictureOriginalName(String pictureOriginalName) {
+		this.pictureOriginalName = pictureOriginalName;
+	}
+
+	public String getPictureGeneratedName() {
+		return pictureGeneratedName;
+	}
+
+	public void setPictureGeneratedName(String pictureGeneratedName) {
+		this.pictureGeneratedName = pictureGeneratedName;
+	}
+
+	public List<MultipartFile> getPicturefiles() {
+		return picturefiles;
+	}
+
+	public void setPicturefiles(List<MultipartFile> picturefiles) {
+		this.picturefiles = picturefiles;
 	}
 }

@@ -10,34 +10,27 @@
 
 <jsp:useBean id="inputlength" class="br.apolo.common.util.InputLength"/>
 
-<div class="form-group " <c:if test="${!readOnly}">style="display:none;"</c:if>>
+<div class="form-group ">
 	<label for="userGroup.createdBy.name" class="control-label">
 		<s:message code="common.author" />
 	</label>
-	<form:input path="userGroup.createdBy.id" cssClass="form-control" cssStyle="display:none;" />
-	<form:input path="userGroup.createdBy.name" cssClass="form-control" readonly="true" />
+	
+	<form:input path="userGroup.createdBy.id" cssClass="input-block-level" cssStyle="display:none;" />
 	
 	<p>
-		${user.createdBy.name}
+		${userGroup.createdBy.name}
 	</p>
 </div>
 
-<div class="form-group " <c:if test="${!readOnly}">style="display:none;"</c:if>>
+<div class="form-group ">
 	<label for="userGroup.creationDate" class="control-label">
 		<s:message code="common.creationDate" />
 	</label>
-	<input 
-			type="text" 
-			id="creationDate" 
-			name="creationDate" 
-			class="form-control" 
-			value="<fmt:formatDate value="${userGroup.creationDate}" 
-			pattern="${datePattern}" />" 
-			readonly="readonly"
-		/>
-		
+	
+	<form:hidden path="userGroup.creationDate" cssClass="input-block-level" cssStyle="display:none;" />
+	
 	<p>
-		<fmt:formatDate value="${user.creationDate}" pattern="${datePattern}" />
+		<fmt:formatDate value="${userGroup.creationDate}" pattern="${datePattern}" />
 	</p>
 </div>
 
@@ -46,7 +39,8 @@
 		<label for="userGroup.lastUpdatedBy.name" class="control-label">
 			<s:message code="common.lastUpdatedBy" />
 		</label>
-		<form:input path="userGroup.lastUpdatedBy.id" cssClass="form-control" cssStyle="display:none;" />
+		
+		<form:input path="userGroup.lastUpdatedBy.id" cssClass="input-block-level" cssStyle="display:none;" />
 		
 		<p>
 			${userGroup.lastUpdatedBy.name}
@@ -54,23 +48,16 @@
 	</div>
 </c:if>
 	
-<c:if test="${user.lastUpdateDate != null}">
+<c:if test="${userGroup.lastUpdateDate != null}">
 	<div class="form-group " <c:if test="${!readOnly}">style="display:none;"</c:if>>
 		<label for="userGroup.lastUpdateDate" class="control-label">
 			<s:message code="common.lastUpdateDate" />
 		</label>
-		<input 
-				type="text" 
-				id="lastUpdateDate" 
-				name="lastUpdateDate" 
-				class="form-control" 
-				value="<fmt:formatDate value="${userGroup.lastUpdateDate}" 
-				pattern="${datePattern}" />" 
-				readonly="readonly"
-			/>
-			
+		
+		<form:hidden path="userGroup.lastUpdateDate" cssClass="input-block-level" cssStyle="display:none;" />
+		
 		<p>
-			<fmt:formatDate value="${user.lastUpdateDate}" pattern="${datePattern}" />
+			<fmt:formatDate value="${userGroup.lastUpdateDate}" pattern="${datePattern}" />
 		</p>
 	</div>
 </c:if>

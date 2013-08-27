@@ -14,16 +14,21 @@
 	<label for="user.createdBy.name" class="control-label">
 		<s:message code="common.author" />
 	</label>
-	<form:input path="user.createdBy.id" cssClass="form-control" cssStyle="display:none;" />
+	
+	<form:input path="user.createdBy.id" cssClass="input-block-level" cssStyle="display:none;" />
+	
 	<p>
 		${user.createdBy.name}
 	</p>
 </div>
 
-<div class="form-group " <c:if test="${!readOnly}">style="display:none;"</c:if>>
+<div class="form-group ">
 	<label for="user.creationDate" class="control-label">
 		<s:message code="common.creationDate" />
 	</label>
+	
+	<form:hidden path="user.creationDate" cssClass="input-block-level" cssStyle="display:none;" />
+		
 	<p>
 		<fmt:formatDate value="${user.creationDate}" pattern="${datePattern}" />
 	</p>
@@ -34,7 +39,9 @@
 		<label for="user.lastUpdatedBy.name" class="control-label">
 			<s:message code="common.lastUpdatedBy" />
 		</label>
-		<form:input path="user.lastUpdatedBy.id" cssClass="form-control" cssStyle="display:none;" />
+		
+		<form:input path="user.lastUpdatedBy.id" cssClass="input-block-level" cssStyle="display:none;" />
+		
 		<p>
 			${user.lastUpdatedBy.name}
 		</p>
@@ -46,6 +53,9 @@
 		<label for="user.lastUpdateDate" class="control-label">
 			<s:message code="common.lastUpdateDate" />
 		</label>
+		
+		<form:hidden path="user.lastUpdateDate" cssClass="input-block-level" cssStyle="display:none;" />
+		
 		<p>
 			<fmt:formatDate value="${user.lastUpdateDate}" pattern="${datePattern}" />
 		</p>

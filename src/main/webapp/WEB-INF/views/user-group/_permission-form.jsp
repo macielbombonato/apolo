@@ -58,31 +58,27 @@
 			</c:when>
 			<c:otherwise>
 				<div class="form-group">
-					<table class="table table-striped table-hover table-bordered">
-						<caption>
+					<div class="panel panel-default">
+						<div class="panel-heading">
 							<strong>
 								<s:message code="user.group.permissions.selected" />
 							</strong>
-						</caption>
-						<tbody>
+						</div>
+						<ul class="list-group">
 							<c:forEach items="${userGroup.permissions}" var="permission">
-								<tr>
-									<td>
-										<s:message code="user.permission.${permission}" />
-									</td>
-								</tr>
+								<li class="list-group-item">
+									<s:message code="user.permission.${permission}" />
+								</li>
 							</c:forEach>
-						</tbody>
-					</table>
+						</ul>
+					</div>
 				</div>
 			</c:otherwise>
 		</c:choose>
 	</div>
 	
-	<c:if test="${readOnly}">
-		<div class="tab-pane" id="authorShipTab">
-			<jsp:include page='_authorship.jsp'></jsp:include>
-		</div>	
-	</c:if>
+	<div class="tab-pane" id="authorShipTab">
+		<jsp:include page='_authorship.jsp'></jsp:include>
+	</div>	
 </div>
 		
