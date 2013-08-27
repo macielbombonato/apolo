@@ -1,8 +1,9 @@
-$('#loginScreenOpen').click(function(){
-	$('#loginScreen').removeClass('row ');
-	$('#loginScreen').addClass('row');
-	
-	$('#loginScreenPopup').toggle(function() {
-		$('#loginScreenPopup #j_username').trigger('focus');
-	});
+$('#loginDialog').modal({
+	backdrop: 'static',
+	keyboard: false,
+	show: false
+});
+
+$('#loginDialog').click(function(){
+	$('#loginDialog').modal('show');
 });

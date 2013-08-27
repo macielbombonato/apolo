@@ -2,49 +2,46 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="s"%>
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
 
-<div id="loginScreen" class="row ">
-	<div class="span2">
-	
-	</div>
-	<div class="span4">
+<div class="row ">
+	<div class="col-lg-12">
 		<fieldset>
 			<legend>
 				<s:message code="user.login.title" />
 			</legend>
 
-			<form id="login_form" action="<c:url value="/j_spring_security_check" />" method="post" class="form-horizontal">
-				<div class="row ">
-					<div class="input-prepend span11">
-						<span class="add-on"><i class="glyphicon glyphicon-user"></i></span>
+			<form id="login_form" action="<c:url value="/j_spring_security_check" />" method="post" role="form" class="form-horizontal">
+				<div class="form-group">
+					<div class="input-group">
+						<span class="input-group-addon">
+							<span class="glyphicon glyphicon-user"></span>
+						</span>
 						<input type="text" 
 								id="j_username" 
 								name="j_username" 
-								class="input-block-level focus" 
-								style="margin-bottom: 15px;" size="30" 
+								class="form-control focus" 
 								placeholder='<s:message code="user.name" />' 
 							/>
-					</div>
+					</div>					
 				</div>
 				
-				<div class="row ">	
-					<div class="input-prepend span11">
-						<span class="add-on"><i class="glyphicon glyphicon-lock"></i></span>
+				<div class="form-group">
+					<div class="input-group">
+						<span class="input-group-addon">
+							<span class="glyphicon glyphicon-lock"></span>
+						</span>
 						<input type="password" 
 								id="j_password" 
 								name="j_password" 
-								class="input-block-level" 
-								style="margin-bottom: 15px;" size="30" 
+								class="form-control" 
 								placeholder='<s:message code="user.password" />'
 							/>
-					</div>
+					</div>					
 				</div>
 				
-				<div class="row ">
-					<div class="span12">
-						<button type="submit" id="login_button" class="btn btn-primary">
-							<s:message code="user.login" />
-						</button>
-					</div>
+				<div class="form-group">
+					<button type="submit" id="login_button" class="btn btn-primary">
+						<s:message code="user.login" />
+					</button>
 				</div>
 			</form>
 		</fieldset>

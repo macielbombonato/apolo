@@ -41,6 +41,7 @@ $(document).ready(function() {
 		'placement': 'top'
 	});
 	
+	// Tooltip
 	$( ".tooltipLeft" ).tooltip({
 		'selector': '',
 		'placement': 'left'
@@ -111,6 +112,11 @@ $(document).ready(function() {
 	$(".ellipsis").ellipsis({
 		row: 10, 
 		char: '...'
+	});
+	
+	$('#formTab a').click(function (e) {
+		e.preventDefault();
+		$(this).tab('show');
 	});
 });
 

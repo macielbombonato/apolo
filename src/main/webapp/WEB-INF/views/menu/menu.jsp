@@ -6,25 +6,23 @@
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
 	
 	
-<div id="menu" class="navbar navbar-fixed-top">
-	<div class="navbar-inner">
-		<div class="container ">
-	        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
-	          <span class="icon-bar"></span>
-	          <span class="icon-bar"></span>
-	          <span class="icon-bar"></span>
-	        </button>
-			
-			<a class="navbar-brand" href='<s:url value="/"></s:url>'>
-				<img src='<c:url value="/resources/app/img/favicon.png" />' width="20" height="20" style="width: 20px; height: 20px;" />
-				<strong><s:message code="app.title" /></strong>
-			</a>
-			
-			<div class="nav-collapse collapse">
-				<jsp:include page='_user.jsp'></jsp:include>
-			</div>
-			<!-- /.nav-collapse -->
-		</div>
+<nav id="menu" class="navbar navbar-default navbar-fixed-top" role="navigation">
+	<!-- Brand and toggle get grouped for better mobile display -->
+	<div class="navbar-header">
+		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+			<span class="sr-only">Toggle navigation</span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+		</button>
+		<a class="navbar-brand" href='<s:url value="/"></s:url>'>
+			<img src='<c:url value="/resources/app/img/favicon.png" />' width="20" height="20" style="width: 20px; height: 20px;" />
+			<strong><s:message code="app.title" /></strong>
+		</a>
 	</div>
-	<!-- /navbar-inner -->
-</div>
+	
+	<!-- Collect the nav links, forms, and other content for toggling -->
+	<div class="collapse navbar-collapse navbar-ex1-collapse">
+		<jsp:include page='_user.jsp'></jsp:include>
+	</div>
+</nav>

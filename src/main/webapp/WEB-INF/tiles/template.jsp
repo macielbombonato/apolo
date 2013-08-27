@@ -9,8 +9,6 @@
 	<head>
 	    <meta charset="utf-8">
 	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-	    <meta name="description" content="">
-	    <meta name="author" content="">
 		
 		<title>
 			<s:message code="app.title" />
@@ -18,8 +16,8 @@
 		
 		<link rel="icon" type="image/png" href='<c:url value="/resources/app/img/favicon.png" />'>
 		
-		<link href='<c:url value="/resources/plugin/bootstrap/css/bootstrap.css" />' rel="stylesheet" />
-		<link href='<c:url value="/resources/plugin/bootstrap/css/bootstrap-glyphicons.css" />' rel="stylesheet" />
+		<link href='<c:url value="/resources/plugin/bootstrap/css/bootstrap.css" />' rel="stylesheet" media="screen"/>
+		<link href='<c:url value="/resources/plugin/bootstrap/css/bootstrap-theme.css" />' rel="stylesheet" />
 		
 		<link href='<c:url value="/resources/plugin/jquery/themes/base/jquery-ui.css" />' rel="stylesheet" />
 		

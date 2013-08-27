@@ -58,7 +58,7 @@
 							</td>
 							<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_PERMISSION_VIEW, ROLE_USER_PERMISSION_EDIT, ROLE_USER_PERMISSION_REMOVE">
 								<td>
-									<div class="btn-group">
+									<div class="btn-group btn-group-sm">
 										<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_PERMISSION_VIEW">
 											<a href='<s:url value="/user-group/view"></s:url>/${group.id}' class="btn btn-small btn-default" data-toggle="tooltip" title="<s:message code="common.show" />">
 												<i class="glyphicon glyphicon-zoom-in"></i>

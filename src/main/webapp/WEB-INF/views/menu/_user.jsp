@@ -80,7 +80,7 @@
 	</ul>
 </security:authorize>
 
-<ul class="nav pull-right">
+<ul class="nav navbar-nav navbar-right">
 	<security:authorize access="isAuthenticated()">
 		<li class="dropdown">
 			<a class="dropdown-toggle" data-toggle="dropdown" href="#">
@@ -116,19 +116,26 @@
         
 	<security:authorize access="!isAuthenticated()">
 		<li class="dropdown">
-			<a href='#' 
-				class="dropdown-toggle"
-				data-toggle="dropdown" 
-				id="loginScreenOpen"
-			> 
+			<a id="loginDialogOpen" href="#"> 
 				<i class="glyphicon glyphicon-lock "></i>
 				<span class="hidden-phone">
 					<s:message code="user.restricted.area.access" />
 				</span> 
 				<span class="caret"></span>
 			</a>
-			<div id="loginScreenPopup" class="dropdown-menu" style="padding: 15px; padding-bottom: 0px;">
-				<jsp:include page='../auth/login.jsp'></jsp:include>
+			
+			<div id="loginDialog" class="modal fade" tabindex="-1" data-role="dialog" style="text-align: center;">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-body">
+							<div class="row">
+								<div class="col-lg-12">
+									<jsp:include page='../auth/login.jsp'></jsp:include>
+								</div>							
+							</div>
+						</div>					
+					</div>
+				</div>
 			</div>
 		</li>
 	</security:authorize>

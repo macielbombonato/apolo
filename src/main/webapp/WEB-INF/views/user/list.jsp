@@ -66,7 +66,7 @@
 							</td>
 							<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_LIST, ROLE_USER_EDIT, ROLE_USER_REMOVE">
 								<td>
-									<div class="btn-group">
+									<div class="btn-group btn-group-sm">
 										<a href='<s:url value="/user/view"></s:url>/${user.id}' class="btn btn-default btn-small" data-toggle="tooltip" title="<s:message code="common.show" />">
 											<i class="glyphicon glyphicon-zoom-in"></i>
 										</a>

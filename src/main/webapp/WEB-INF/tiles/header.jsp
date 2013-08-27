@@ -14,52 +14,46 @@
   </div>
 </header>
 
-<div class="row">
-	<div class="span12">
-		<div id="breadcrumb">
-			<ul class="breadcrumb">
+<ol id="breadcrumb" class="breadcrumb">
+	<c:choose>
+		<c:when test="${breadcrumb == null || breadcrumb.tree == null || empty breadcrumb.tree}">
+			<li>
+				<a id="first" href="<s:url value="/"></s:url>">
+					<s:message code="breadcrumb.home" />
+				</a>
+			</li>
+		</c:when>
+		<c:otherwise>
+			<c:forEach var="bc" items="${breadcrumb.tree}" varStatus="status">
 				<c:choose>
-					<c:when test="${breadcrumb == null || breadcrumb.tree == null || empty breadcrumb.tree}">
+					<c:when test="${status.index==0}">
 						<li>
 							<a id="first" href="<s:url value="/"></s:url>">
 								<s:message code="breadcrumb.home" />
 							</a>
 						</li>
 					</c:when>
+					<c:when test="${status.index == fn:length(breadcrumb.tree)-1 && status.index!=0}">
+						<li id="current" class="active">
+							${bc.name}
+						</li>
+					</c:when>
 					<c:otherwise>
-						<c:forEach var="bc" items="${breadcrumb.tree}" varStatus="status">
-							<c:choose>
-								<c:when test="${status.index==0}">
-									<li>
-										<a id="first" href="<s:url value="/"></s:url>">
-											<s:message code="breadcrumb.home" />
-										</a>
-									</li>
-								</c:when>
-								<c:when test="${status.index == fn:length(breadcrumb.tree)-1 && status.index!=0}">
-									<li id="current">
-										${bc.name}
-									</li>
-								</c:when>
-								<c:otherwise>
-									<li>
-										<a href="${bc.value}">
-											${bc.name}
-										</a>
-									</li> 
-								</c:otherwise>
-							</c:choose>
-						</c:forEach>
+						<li>
+							<a href="${bc.value}">
+								${bc.name}
+							</a>
+						</li> 
 					</c:otherwise>
 				</c:choose>
-				<li class="pull-right">
-					<s:message code="version" var="version"/>
-					
-					<small class="text-right muted tooltipLeft" data-toggle="tooltip" title="<s:message code="version"/>">
-						<s:message code="system.version" />:&nbsp; ${fn:substring(version, 0, 15)}
-					</small>
-				</li>
-			</ul>
-		</div>	
-	</div>
-</div>
+			</c:forEach>
+		</c:otherwise>
+	</c:choose>
+	<li class="pull-right">
+		<s:message code="version" var="version"/>
+		
+		<small class="text-right muted tooltipLeft" data-toggle="tooltip" title="<s:message code="version"/>">
+			<s:message code="system.version" />:&nbsp; ${fn:substring(version, 0, 15)}
+		</small>
+	</li>
+</ol>
