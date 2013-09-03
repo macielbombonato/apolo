@@ -8,6 +8,8 @@ import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.SecurityConfig;
 import org.springframework.security.access.annotation.AnnotationMetadataExtractor;
 
+import br.apolo.data.enums.UserPermission;
+
 public class EnumAnnotationMetadataExtractor implements
 		AnnotationMetadataExtractor<SecuredEnum> {
 

@@ -6,7 +6,7 @@
 
 <div class="row ">
 	<div class="span12">
-		<div class="alert alert-error">
+		<div class="alert alert-danger">
 			<h2>
 				<s:message code="error.fatal.code" />
 			</h2>

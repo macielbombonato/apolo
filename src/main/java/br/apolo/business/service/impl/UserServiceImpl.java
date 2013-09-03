@@ -23,12 +23,12 @@ import br.apolo.business.service.FileService;
 import br.apolo.business.service.UserService;
 import br.apolo.common.exception.GenericException;
 import br.apolo.common.util.MessageBundle;
+import br.apolo.data.enums.UserPermission;
 import br.apolo.data.model.User;
 import br.apolo.data.model.UserGroup;
 import br.apolo.data.model.User_;
 import br.apolo.data.repository.UserRepository;
 import br.apolo.security.CurrentUser;
-import br.apolo.security.UserPermission;
 
 @Service("userService")
 public class UserServiceImpl extends BaseServiceImpl<User> implements UserService {

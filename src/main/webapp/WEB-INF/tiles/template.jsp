@@ -43,7 +43,7 @@
 					<div class="span12">
 						<c:choose>
 							<c:when test="${error}">
-								<div class="alert alert-error">
+								<div class="alert alert-danger">
 									${message}
 								</div>		
 							</c:when>

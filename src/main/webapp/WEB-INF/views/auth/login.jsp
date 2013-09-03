@@ -2,7 +2,7 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="s"%>
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
 
-<div class="panel panel-primary">
+<div class="panel panel-primary" style="margin-left: 25%; margin-right: 25%;">
 	<div class="panel-heading">
 		<strong>
 			<s:message code="user.login.title" />

@@ -14,11 +14,11 @@ import br.apolo.business.model.SearchResult;
 import br.apolo.business.service.UserGroupService;
 import br.apolo.common.exception.AccessDeniedException;
 import br.apolo.common.util.MessageBundle;
+import br.apolo.data.enums.UserPermission;
 import br.apolo.data.model.User;
 import br.apolo.data.model.UserGroup;
 import br.apolo.data.model.UserGroup_;
 import br.apolo.data.repository.UserGroupRepository;
-import br.apolo.security.UserPermission;
 
 @Service("userGroupService")
 public class UserGroupServiceImpl extends BaseServiceImpl<UserGroup> implements UserGroupService {

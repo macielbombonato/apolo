@@ -13,13 +13,14 @@ import org.hibernate.Hibernate;
 
 @MappedSuperclass
 public abstract class BaseEntity implements Serializable {
+	
 	private static final long serialVersionUID = -5925658342836351396L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id", nullable = false)
 	private Long id;
-
+	
 	public Long getId() {
 		return id;
 	}

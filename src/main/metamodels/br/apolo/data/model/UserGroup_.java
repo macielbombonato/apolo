@@ -1,6 +1,6 @@
 package br.apolo.data.model;
 
-import br.apolo.security.UserPermission;
+import br.apolo.data.enums.UserPermission;
 import javax.annotation.Generated;
 import javax.persistence.metamodel.SetAttribute;
 import javax.persistence.metamodel.SingularAttribute;

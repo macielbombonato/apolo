@@ -24,9 +24,9 @@ import br.apolo.business.model.SearchResult;
 import br.apolo.business.service.UserGroupService;
 import br.apolo.common.exception.AccessDeniedException;
 import br.apolo.common.util.MessageBundle;
+import br.apolo.data.enums.UserPermission;
 import br.apolo.data.model.UserGroup;
 import br.apolo.security.SecuredEnum;
-import br.apolo.security.UserPermission;
 import br.apolo.web.enums.Navigation;
 
 @Controller

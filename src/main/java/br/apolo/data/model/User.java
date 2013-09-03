@@ -23,7 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import br.apolo.common.util.InputLength;
 import br.apolo.data.entitylistener.AuditLogListener;
-import br.apolo.security.UserPermission;
+import br.apolo.data.enums.UserPermission;
 
 @Entity
 @EntityListeners(value = AuditLogListener.class)
@@ -33,7 +33,7 @@ import br.apolo.security.UserPermission;
 public class User extends AuditableBaseEntity {
 
 	private static final long serialVersionUID = 5588722501578237833L;
-
+	
 	@Column(name = "name", length = InputLength.NAME, nullable = false)
 	@NotNull
 	@Size(min = 1, max = InputLength.NAME)

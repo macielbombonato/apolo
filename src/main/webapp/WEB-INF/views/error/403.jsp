@@ -27,7 +27,7 @@
 			<div class="row ">
 				<br /><br /><br />
 				<div class="span12">
-					<div class="alert alert-error">
+					<div class="alert alert-danger">
 						<h2>
 							403
 						</h2>

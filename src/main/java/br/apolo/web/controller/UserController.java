@@ -33,9 +33,9 @@ import br.apolo.business.service.FileService;
 import br.apolo.business.service.UserGroupService;
 import br.apolo.business.service.UserService;
 import br.apolo.common.util.MessageBundle;
+import br.apolo.data.enums.UserPermission;
 import br.apolo.data.model.User;
 import br.apolo.security.SecuredEnum;
-import br.apolo.security.UserPermission;
 import br.apolo.web.enums.Navigation;
 
 @Controller
