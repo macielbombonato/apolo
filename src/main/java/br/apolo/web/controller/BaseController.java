@@ -41,6 +41,8 @@ public abstract class BaseController<E extends BaseEntity> {
 	 */
 	public abstract ModelAndView list(HttpServletRequest request);
 	
+	public abstract ModelAndView list(@PathVariable Integer pageNumber, HttpServletRequest request);
+	
 	/**
 	 * In implementation use annotation like this example:
 	 * @SecuredEnum({ UserPermission.permission_name }) 

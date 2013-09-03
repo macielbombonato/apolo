@@ -12,6 +12,7 @@ import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomCollectionEditor;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
+import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -285,17 +286,30 @@ public class UserController extends BaseController<User> {
 		
 		return mav;
 	}
-	
+
 	@SecuredEnum(UserPermission.USER_LIST)
 	@RequestMapping(value = "list", method = RequestMethod.GET)
 	public ModelAndView list(HttpServletRequest request) {
+		return list(1, request);
+	}
+	
+	@SecuredEnum(UserPermission.USER_LIST)
+	@RequestMapping(value = "list/{pageNumber}", method = RequestMethod.GET)
+	public ModelAndView list(@PathVariable Integer pageNumber, HttpServletRequest request) {
 		breadCrumbService.addNode(MessageBundle.getMessageBundle("breadcrumb.user.list"), 1, request);
 		
 		ModelAndView mav = new ModelAndView(Navigation.USER_LIST.getPath());
 		
-		List<User> userList = userService.list();
+		Page<User> page = userService.list(pageNumber);
 		
-		mav.addObject("userList", userList);
+	    int current = page.getNumber() + 1;
+	    int begin = Math.max(1, current - 5);
+	    int end = Math.min(begin + 10, page.getTotalPages());
+	    
+	    mav.addObject("beginIndex", begin);
+	    mav.addObject("endIndex", end);
+	    mav.addObject("currentIndex", current);
+		mav.addObject("page", page);
 		
 		return mav;
 	}

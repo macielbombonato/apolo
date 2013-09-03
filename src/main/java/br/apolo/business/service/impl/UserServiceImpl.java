@@ -9,6 +9,9 @@ import java.util.List;
 import javax.persistence.metamodel.SingularAttribute;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -38,10 +41,21 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 	
 	@Autowired
 	private FileService<User> fileService;
-	
+
 	@Override
 	public List<User> list() {
-		return (List<User>) userRepository.findAllUsers();
+		return userRepository.findAll(new Sort(new Sort.Order(Sort.Direction.ASC, "name")));
+	}
+	
+	@Override
+	public Page<User> list(Integer pageNumber) {
+		if (pageNumber < 1) {
+			pageNumber = 1;
+		}
+		
+		PageRequest request = new PageRequest(pageNumber - 1, PAGE_SIZE, Sort.Direction.ASC, "name");
+		
+		return userRepository.findAll(request);
 	}
 
 	@Override

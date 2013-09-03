@@ -2,13 +2,13 @@ package br.apolo.business.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+
 import br.apolo.business.model.SearchResult;
 import br.apolo.data.model.BaseEntity;
 import br.apolo.data.model.User;
 
 public interface BaseService<E extends BaseEntity> {
-	
-	List<E> list();
 	
 	E find(Long id);
 	
@@ -16,8 +16,12 @@ public interface BaseService<E extends BaseEntity> {
 	
 	void remove(E entity);
 	
-	SearchResult<E> search(String param);
-	
 	User getAuthenticatedUser();
+	
+	List<E> list();
+	
+	Page<E> list(Integer pageNumber);
+	
+	SearchResult<E> search(String param);
 
 }

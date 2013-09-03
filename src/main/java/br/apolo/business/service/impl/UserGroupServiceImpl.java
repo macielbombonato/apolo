@@ -7,6 +7,9 @@ import java.util.List;
 import javax.persistence.metamodel.SingularAttribute;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,7 +31,18 @@ public class UserGroupServiceImpl extends BaseServiceImpl<UserGroup> implements 
 	
 	@Override
 	public List<UserGroup> list() {
-		return (List<UserGroup>) userGroupRepository.findAllUserGroups();
+		return userGroupRepository.findAll(new Sort(new Sort.Order(Sort.Direction.ASC, "name")));
+	}
+	
+	@Override
+	public Page<UserGroup> list(Integer pageNumber) {
+		if (pageNumber < 1) {
+			pageNumber = 1;
+		}
+		
+		PageRequest request = new PageRequest(pageNumber - 1, PAGE_SIZE, Sort.Direction.ASC, "name");
+		
+		return userGroupRepository.findAll(request);
 	}
 
 	@Override
