@@ -18,7 +18,7 @@
 		<jsp:include page='_pagination.jsp'></jsp:include>
 	</center>
 	<c:choose>
-		<c:when test="${page.content != null && not empty page.content}">
+		<c:when test="${userList != null && not empty userList}">
 			<div class="table-responsive">
 				<table class="table table-striped table-hover table-bordered">
 					<thead>
@@ -44,7 +44,7 @@
 					</thead>
 					
 					<tbody>
-						<c:forEach items="${page.content}" var="user">
+						<c:forEach items="${userList}" var="user">
 							<tr id="user_${user.id}">
 								<td>
 									<center>

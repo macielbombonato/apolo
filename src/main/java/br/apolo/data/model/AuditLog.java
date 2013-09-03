@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Type;
 
@@ -36,6 +37,9 @@ public class AuditLog extends BaseEntity {
 
 	@Column(name = "executed_by", nullable = false)
 	private Long executedById;
+	
+	@Transient
+	private User executedBy;
 
 	public DatabaseTransactionType getTransactionType() {
 		return transactionType;
@@ -75,6 +79,14 @@ public class AuditLog extends BaseEntity {
 
 	public void setExecutedById(Long executedById) {
 		this.executedById = executedById;
+	}
+
+	public User getExecutedBy() {
+		return executedBy;
+	}
+
+	public void setExecutedBy(User executedBy) {
+		this.executedBy = executedBy;
 	}
 
 }

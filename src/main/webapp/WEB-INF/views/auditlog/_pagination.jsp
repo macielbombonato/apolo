@@ -4,10 +4,10 @@
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 
-<c:url var="firstUrl" value="/user/list/1" />
-<c:url var="lastUrl" value="/user/list/${page.totalPages}" />
-<c:url var="prevUrl" value="/user/list/${currentIndex - 1}" />
-<c:url var="nextUrl" value="/user/list/${currentIndex + 1}" />
+<c:url var="firstUrl" value="/auditlog/list/1" />
+<c:url var="lastUrl" value="/auditlog/list/${page.totalPages}" />
+<c:url var="prevUrl" value="/auditlog/list/${currentIndex - 1}" />
+<c:url var="nextUrl" value="/auditlog/list/${currentIndex + 1}" />
 
 <c:if test="${page != null && page.content != null}">
 	<ul class="pagination pagination-sm">
@@ -22,7 +22,7 @@
 			</c:otherwise>
 		</c:choose>
 		<c:forEach var="i" begin="${beginIndex}" end="${endIndex}">
-			<c:url var="pageUrl" value="/user/list/${i}" />
+			<c:url var="pageUrl" value="/auditlog/list/${i}" />
 			<c:choose>
 				<c:when test="${i == currentIndex}">
 					<li class="active"><a href="${pageUrl}"><c:out value="${i}" /></a></li>

@@ -311,6 +311,10 @@ public class UserController extends BaseController<User> {
 	    mav.addObject("currentIndex", current);
 		mav.addObject("page", page);
 		
+		if (page != null && page.getContent() != null) {
+			mav.addObject("userList", page.getContent());	
+		}
+		
 		return mav;
 	}
 	

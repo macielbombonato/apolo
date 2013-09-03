@@ -108,6 +108,10 @@ public class UserGroupController extends BaseController<UserGroup> {
 	    mav.addObject("currentIndex", current);
 		mav.addObject("page", page);
 		
+		if (page != null && page.getContent() != null) {
+			mav.addObject("userGroupList", page.getContent());	
+		}
+		
 		return mav;
 	}
 	

@@ -20,10 +20,11 @@ public enum Navigation {
 	USER_PERMISSION_EDIT("user-group/edit"),
 	USER_PERMISSION_VIEW("user-group/view"),
 	
-	
 	AUTH("auth"),
 	AUTH_LOGIN("auth/login"),
 	AUTH_LOGOUT("auth/logout"),
+	
+	AUDIT_LOG_LIST("auditlog/list"),
 	
 	ERROR("error/error"),
 	

@@ -18,7 +18,7 @@
 		<jsp:include page='_pagination.jsp'></jsp:include>
 	</center>
 	<c:choose>
-		<c:when test="${page.content != null && not empty page.content}">
+		<c:when test="${userGroupList != null && not empty userGroupList}">
 			<div class="table-responsive">
 				<table class="table table-striped table-hover table-bordered">
 					<thead>
@@ -38,7 +38,7 @@
 					</thead>
 					
 					<tbody>
-						<c:forEach items="${page.content}" var="group">
+						<c:forEach items="${userGroupList}" var="group">
 							<tr id="userGroup_${group.id}">
 								<td>
 									<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_PERMISSION_VIEW">
