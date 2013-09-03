@@ -122,6 +122,9 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
 			}
 			
 			result = dir.exists();
+			
+			log.info("*************** Files Location *************** " + dir.getAbsolutePath());
+			
 		} catch (Exception e) {
 			log.error(e.getMessage());
 		}
