@@ -21,10 +21,9 @@
 					</c:choose>					
 				</center>
 				<br />
-				<br />
 				<div class="form-group">
 					<label for="name" class="control-label">
-						<s:message code="user.name" />
+						<s:message code="user.name" />:
 					</label>
 					<span id="name">
 						${user.name}
@@ -32,7 +31,7 @@
 				</div>
 				<div class="form-group">
 					<label for="email" class="control-label">
-						<s:message code="user.email" />
+						<s:message code="user.email" />:
 					</label>
 					<span id="email">
 						${user.email}

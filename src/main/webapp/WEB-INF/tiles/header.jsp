@@ -49,11 +49,16 @@
 			</c:forEach>
 		</c:otherwise>
 	</c:choose>
-	<li class="pull-right">
+	<li class="pull-right onlyBigWindows">
 		<s:message code="version" var="version"/>
 		
-		<small class="text-right muted tooltipLeft" data-toggle="tooltip" title="<s:message code="version"/>">
+		<button data-content="<s:message code="version"/>" 
+				data-placement="left" 
+				data-toggle="popover" 
+				class="btn btn-link btn-xs applyPopoverHover" 
+				href="#" 
+				data-html="true">
 			<s:message code="system.version" />:&nbsp; ${fn:substring(version, 0, 15)}
-		</small>
+		</button>
 	</li>
 </ol>

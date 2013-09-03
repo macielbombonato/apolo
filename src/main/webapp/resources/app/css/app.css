@@ -14,9 +14,18 @@ caption {
 	font-weight: bold;
 }
 
+.popover {
+	max-width: 800px;
+	width: auto;
+}
+
 @media (max-width: 480px) {
 	#header {
 		height:0px;
+	}
+	
+	.onlyBigWindows {
+		visibility: hidden;
 	}
 }
 
@@ -24,11 +33,19 @@ caption {
 	#header {
 		height:0px;
 	}
+	
+	.onlyBigWindows {
+		visibility: hidden;
+	}
 }
 
 @media (min-width: 768px) and (max-width: 979px) {
 	#header {
 		height:0px;
+	}
+	
+	.onlyBigWindows {
+		visibility: hidden;
 	}
 }
 

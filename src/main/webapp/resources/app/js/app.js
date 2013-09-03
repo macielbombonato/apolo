@@ -62,6 +62,13 @@ $(document).ready(function() {
 		'placement': 'top'
 	});
 	
+	// Popover
+	$(".applyPopover").popover();
+	
+	$(".applyPopoverHover").popover({
+		'trigger': 'hover' 
+	});
+	
 	// set the defaults for the datepicker
 	jQuery(function($){
 		$.datepicker.regional['pt-BR'] = {
