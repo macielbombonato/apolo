@@ -36,7 +36,7 @@
     
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <java-version>1.6</java-version>
+        <java-version>1.7</java-version>
         <org.springframework-version>3.2.2.RELEASE</org.springframework-version>
         <org.springframework.security-version>3.1.4.RELEASE</org.springframework.security-version>
         <org.aspectj-version>1.6.9</org.aspectj-version>
@@ -483,6 +483,22 @@
 										</execute>
 									</action>
 								</pluginExecution>
+								
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>com.mysema.maven</groupId>
+										<artifactId>maven-apt-plugin</artifactId>
+										<versionRange>[0.0.1,)</versionRange>
+										<goals>
+											<goal>process</goal>
+											<goal>test-process</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<execute/>
+									</action>
+								</pluginExecution>
+								
 							</pluginExecutions>
 						</lifecycleMappingMetadata>
 					</configuration>
@@ -531,33 +547,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.0</version>
-				<executions>
-					<execution>
-						<id>generate-sources</id>
-						<phase>generate-sources</phase>
-						<goals>
-							<goal>compile</goal>
-						</goals>
-						<configuration>
-							<annotationProcessors>
-								<annotationProcessor>com.mysema.query.apt.jpa.JPAAnnotationProcessor</annotationProcessor>
-							</annotationProcessors>
-							<generatedSourcesDirectory>target/generated-sources/java</generatedSourcesDirectory>
-							<proc>only</proc>
-						</configuration>
-					</execution>
-					<execution>
-						<id>compile</id>
-						<phase>compile</phase>
-						<goals>
-							<goal>compile</goal>
-						</goals>
-						<configuration>
-							<proc>none</proc>
-						</configuration>
-					</execution>
-				</executions>
+                <version>2.3.2</version>
                 <configuration>
                     <source>${java-version}</source>
                     <target>${java-version}</target>
