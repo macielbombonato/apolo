@@ -7,7 +7,7 @@
 <form id="userForm" class="form-search form-inline" role="form" action="<s:url value="/user/search"></s:url>" method="post">
 	<div class="form-group">
 		<div class="input-group">
-			<input type="text" id="param" name="param" class="search-query form-control" placeholder='<s:message code="user.search.field" />' />
+			<input type="text" id="searchParameter" name="searchParameter" value="${searchParameter}" class="search-query form-control" placeholder='<s:message code="user.search.field" />' />
 			<span class="input-group-btn">
 				<button type="submit" class="btn btn-info">
 					<i class="glyphicon glyphicon-search"></i>

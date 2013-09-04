@@ -7,6 +7,10 @@
 
 <s:message code="common.fullDatePattern" var="datePattern" />
 
+<jsp:include page='_search-form.jsp'></jsp:include>
+
+<br />
+
 <div class="panel panel-primary">
 	<div class="panel-heading">
 		<strong>
@@ -14,7 +18,7 @@
 		</strong>
 	</div>
 	<center>
-		<jsp:include page='_pagination.jsp'></jsp:include>
+		<jsp:include page='../_pagination.jsp'></jsp:include>
 	</center>
 	<c:choose>
 		<c:when test="${auditList != null && not empty auditList}">
@@ -79,6 +83,6 @@
 		</c:otherwise>
 	</c:choose>
 	<center>
-		<jsp:include page='_pagination.jsp'></jsp:include>
+		<jsp:include page='../_pagination.jsp'></jsp:include>
 	</center>
 </div>

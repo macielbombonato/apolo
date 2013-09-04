@@ -1,7 +1,6 @@
 package br.apolo.web.controller;
 
 import java.util.Date;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -21,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import br.apolo.business.model.SearchResult;
 import br.apolo.business.service.UserGroupService;
 import br.apolo.common.exception.AccessDeniedException;
 import br.apolo.common.util.MessageBundle;
@@ -99,14 +97,9 @@ public class UserGroupController extends BaseController<UserGroup> {
 		
 		Page<UserGroup> page = userGroupService.list(pageNumber);
 		
-	    int current = page.getNumber() + 1;
-	    int begin = Math.max(1, current - 5);
-	    int end = Math.min(begin + 10, page.getTotalPages());
+	    configurePageable(mav, page, "/user-group/list");
 	    
-	    mav.addObject("beginIndex", begin);
-	    mav.addObject("endIndex", end);
-	    mav.addObject("currentIndex", current);
-		mav.addObject("page", page);
+	    mav.addObject("searchParameter", "");
 		
 		if (page != null && page.getContent() != null) {
 			mav.addObject("userGroupList", page.getContent());	
@@ -114,7 +107,7 @@ public class UserGroupController extends BaseController<UserGroup> {
 		
 		return mav;
 	}
-	
+
 	@SecuredEnum(UserPermission.USER_PERMISSION_CREATE)
 	@RequestMapping(value = "new", method = RequestMethod.GET)
 	public ModelAndView create(HttpServletRequest request) {
@@ -204,19 +197,30 @@ public class UserGroupController extends BaseController<UserGroup> {
 		
 		return mav;
 	}
-	
+
 	@SecuredEnum(UserPermission.USER_PERMISSION_LIST)
 	@RequestMapping(value = "search", method = RequestMethod.POST)
-	public ModelAndView search(@ModelAttribute("param") String param, HttpServletRequest request) {
+	public ModelAndView search(@ModelAttribute("searchParameter") String searchParameter, HttpServletRequest request) {
+		return search(1, searchParameter, request);
+	}
+	
+	@SecuredEnum(UserPermission.USER_PERMISSION_LIST)
+	@RequestMapping(value = "search/{searchParameter}/{pageNumber}", method = RequestMethod.GET)
+	public ModelAndView search(@PathVariable Integer pageNumber, @PathVariable String searchParameter, HttpServletRequest request) {
 		breadCrumbService.addNode(MessageBundle.getMessageBundle("breadcrumb.usergroup.list"), 2, request);
 		
 		ModelAndView mav = new ModelAndView(Navigation.USER_PERMISSION_LIST.getPath());
 		
-		SearchResult<UserGroup> result = userGroupService.search(param);
+		Page<UserGroup> page = userGroupService.search(pageNumber, searchParameter);
 		
-		List<UserGroup> userGroupList = result.getResults();
+		configurePageable(mav, page, "/user-group/search/"+searchParameter);
 		
-		mav.addObject("userGroupList", userGroupList);
+		mav.addObject("searchParameter", searchParameter);
+		
+		if (page != null && page.getContent() != null) {
+			mav.addObject("userGroupList", page.getContent());	
+		}
+		
 		
 		return mav;
 	}

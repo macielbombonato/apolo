@@ -4,10 +4,10 @@
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 
-<form id="userForm" class="form-search form-inline" role="form" action="<s:url value="/user-group/search"></s:url>" method="post">
+<form id="userForm" class="form-search form-inline" role="form" action="<s:url value="/auditlog/search"></s:url>" method="post">
 	<div class="form-group">
 		<div class="input-group">
-			<input type="text" id="searchParameter" name="searchParameter" value="${searchParameter}" class="search-query form-control" placeholder='<s:message code="user.group.search.field" />'>
+			<input type="text" id="searchParameter" name="searchParameter" value="${searchParameter}" class="search-query form-control" placeholder='<s:message code="auditlog.search.field" />' />
 			<span class="input-group-btn">
 				<button type="submit" class="btn btn-info">
 					<i class="glyphicon glyphicon-search"></i>
@@ -17,3 +17,4 @@
 		</div>
 	</div>
 </form>
+

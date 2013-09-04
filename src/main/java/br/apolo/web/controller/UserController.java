@@ -29,7 +29,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import br.apolo.business.model.FileContent;
-import br.apolo.business.model.SearchResult;
 import br.apolo.business.service.FileService;
 import br.apolo.business.service.UserGroupService;
 import br.apolo.business.service.UserService;
@@ -302,14 +301,9 @@ public class UserController extends BaseController<User> {
 		
 		Page<User> page = userService.list(pageNumber);
 		
-	    int current = page.getNumber() + 1;
-	    int begin = Math.max(1, current - 5);
-	    int end = Math.min(begin + 10, page.getTotalPages());
-	    
-	    mav.addObject("beginIndex", begin);
-	    mav.addObject("endIndex", end);
-	    mav.addObject("currentIndex", current);
-		mav.addObject("page", page);
+		configurePageable(mav, page, "/user/list");
+		
+		mav.addObject("searchParameter", "");
 		
 		if (page != null && page.getContent() != null) {
 			mav.addObject("userList", page.getContent());	
@@ -320,16 +314,26 @@ public class UserController extends BaseController<User> {
 	
 	@SecuredEnum(UserPermission.USER_LIST)
 	@RequestMapping(value = "search", method = RequestMethod.POST)
-	public ModelAndView search(@ModelAttribute("param") String param, HttpServletRequest request) {
+	public ModelAndView search(@ModelAttribute("searchParameter") String searchParameter, HttpServletRequest request) {
+		return search(1, searchParameter, request);
+	}
+	
+	@SecuredEnum(UserPermission.USER_LIST)
+	@RequestMapping(value = "search/{searchParameter}/{pageNumber}", method = RequestMethod.GET)
+	public ModelAndView search(@PathVariable Integer pageNumber, @PathVariable String searchParameter, HttpServletRequest request) {
 		breadCrumbService.addNode(MessageBundle.getMessageBundle("breadcrumb.user.list"), 2, request);
 		
 		ModelAndView mav = new ModelAndView(Navigation.USER_LIST.getPath());
 		
-		SearchResult<User> result = userService.search(param);
+		Page<User> page = userService.search(pageNumber, searchParameter);
 		
-		List<User> userList = result.getResults();
+		configurePageable(mav, page, "/user/search/"+searchParameter);
 		
-		mav.addObject("userList", userList);
+		mav.addObject("searchParameter", searchParameter);
+		
+		if (page != null && page.getContent() != null) {
+			mav.addObject("userList", page.getContent());	
+		}
 		
 		return mav;
 	}

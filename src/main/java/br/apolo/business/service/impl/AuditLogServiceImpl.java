@@ -3,8 +3,6 @@ package br.apolo.business.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.metamodel.SingularAttribute;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -12,16 +10,13 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.apolo.business.model.SearchResult;
 import br.apolo.business.service.AuditLogService;
 import br.apolo.business.service.UserService;
 import br.apolo.data.model.AuditLog;
-import br.apolo.data.model.AuditLog_;
-import br.apolo.data.model.User;
 import br.apolo.data.repository.AuditLogRepository;
 
 @Service(value = "auditLogService")
-public class AuditLogServiceImpl implements AuditLogService {
+public class AuditLogServiceImpl extends BaseServiceImpl<AuditLog> implements AuditLogService {
 
 	@Autowired
 	private AuditLogRepository auditLogRepository;
@@ -59,11 +54,7 @@ public class AuditLogServiceImpl implements AuditLogService {
 		
 		Page<AuditLog> result = auditLogRepository.findAll(request);
 		
-		if (result != null && result.getContent() != null && !result.getContent().isEmpty()) {
-			for (AuditLog auditLog : result.getContent()) {
-				auditLog.setExecutedBy(userService.find(auditLog.getExecutedById()));
-			}
-		}
+		findAllOperationExecutors(result);
 		
 		return result;
 	}
@@ -78,19 +69,29 @@ public class AuditLogServiceImpl implements AuditLogService {
 	}
 
 	@Override
-	public SearchResult<AuditLog> search(String param) {
-		SearchResult<AuditLog> result = new SearchResult<AuditLog>();
+	public Page<AuditLog> search(Integer pageNumber, String param) {
+		if (pageNumber < 1) {
+			pageNumber = 1;
+		}
 		
-		List<SingularAttribute<AuditLog, String>> fields = new ArrayList<SingularAttribute<AuditLog,String>>();
-		fields.add(AuditLog_.entityName);
+		PageRequest request = new PageRequest(pageNumber - 1, PAGE_SIZE, Sort.Direction.ASC, "entityName");
 		
-		result.setResults(auditLogRepository.search(param, fields));
+		if (param != null) {
+			param = "%" + param + "%";	
+		}
+		
+		Page<AuditLog> result = auditLogRepository.findByEntityNameLikeOrderByEntityNameAscOperationDateDesc(param, request);
+		
+		findAllOperationExecutors(result);
 		
 		return result;
 	}
 
-	@Override
-	public User getAuthenticatedUser() {
-		return null;
+	private void findAllOperationExecutors(Page<AuditLog> result) {
+		if (result != null && result.getContent() != null && !result.getContent().isEmpty()) {
+			for (AuditLog auditLog : result.getContent()) {
+				auditLog.setExecutedBy(userService.find(auditLog.getExecutedById()));
+			}
+		}
 	}
 }

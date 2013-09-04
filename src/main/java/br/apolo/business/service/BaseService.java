@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.data.domain.Page;
 
-import br.apolo.business.model.SearchResult;
 import br.apolo.data.model.BaseEntity;
 import br.apolo.data.model.User;
 
@@ -22,6 +21,4 @@ public interface BaseService<E extends BaseEntity> {
 	
 	Page<E> list(Integer pageNumber);
 	
-	SearchResult<E> search(String param);
-
 }

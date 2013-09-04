@@ -15,7 +15,7 @@
 		</strong>
 	</div>
 	<center>
-		<jsp:include page='_pagination.jsp'></jsp:include>
+		<jsp:include page='../_pagination.jsp'></jsp:include>
 	</center>
 	<c:choose>
 		<c:when test="${userGroupList != null && not empty userGroupList}">
@@ -95,6 +95,6 @@
 		</c:otherwise>
 	</c:choose>
 	<center>
-		<jsp:include page='_pagination.jsp'></jsp:include>
+		<jsp:include page='../_pagination.jsp'></jsp:include>
 	</center>
 </div>

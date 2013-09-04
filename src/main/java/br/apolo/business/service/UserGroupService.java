@@ -2,6 +2,8 @@ package br.apolo.business.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+
 import br.apolo.data.enums.UserPermission;
 import br.apolo.data.model.UserGroup;
 
@@ -12,5 +14,7 @@ public interface UserGroupService extends BaseService<UserGroup> {
 	List<UserPermission> getUserPermissionList();
 	
 	UserGroup findByName(String name);
+	
+	Page<UserGroup> search(Integer pageNumber, String param);
 	
 }

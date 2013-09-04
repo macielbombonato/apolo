@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.data.domain.Page;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
@@ -86,6 +87,18 @@ public abstract class BaseController<E extends BaseEntity> {
 	    CustomDateEditor editor = new CustomDateEditor(dateFormat, true);
 	    //Register it as custom editor for the Date type
 	    binder.registerCustomEditor(Date.class, editor);
+	}
+	
+	protected void configurePageable(ModelAndView mav, Page<E> page, String url) {
+		int current = page.getNumber() + 1;
+	    int begin = Math.max(1, current - 5);
+	    int end = Math.min(begin + 10, page.getTotalPages());
+	    
+	    mav.addObject("beginIndex", begin);
+	    mav.addObject("endIndex", end);
+	    mav.addObject("currentIndex", current);
+	    mav.addObject("url", url);
+		mav.addObject("page", page);
 	}
 	
 	/**

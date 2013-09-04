@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.metamodel.SingularAttribute;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -13,14 +11,12 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.apolo.business.model.SearchResult;
 import br.apolo.business.service.UserGroupService;
 import br.apolo.common.exception.AccessDeniedException;
 import br.apolo.common.util.MessageBundle;
 import br.apolo.data.enums.UserPermission;
 import br.apolo.data.model.User;
 import br.apolo.data.model.UserGroup;
-import br.apolo.data.model.UserGroup_;
 import br.apolo.data.repository.UserGroupRepository;
 
 @Service("userGroupService")
@@ -74,15 +70,18 @@ public class UserGroupServiceImpl extends BaseServiceImpl<UserGroup> implements 
 	}
 
 	@Override
-	public SearchResult<UserGroup> search(String param) {
-		SearchResult<UserGroup> result = new SearchResult<UserGroup>();
+	public Page<UserGroup> search(Integer pageNumber, String param) {
+		if (pageNumber < 1) {
+			pageNumber = 1;
+		}
 		
-		List<SingularAttribute<UserGroup, String>> fields = new ArrayList<SingularAttribute<UserGroup,String>>();
-		fields.add(UserGroup_.name);
+		PageRequest request = new PageRequest(pageNumber - 1, PAGE_SIZE, Sort.Direction.ASC, "name");
 		
-		result.setResults(userGroupRepository.search(param, fields));
-
-		return result;
+		if (param != null) {
+			param = "%" + param + "%";	
+		}
+		
+		return userGroupRepository.findByNameLikeOrderByNameAsc(param, request);
 	}
 
 	@Override

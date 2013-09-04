@@ -1,5 +1,6 @@
 package br.apolo.business.service;
 
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import br.apolo.business.model.FileContent;
@@ -12,4 +13,6 @@ public interface UserService extends UserDetailsService, BaseService<User> {
 	User findByLogin(String login);
 
 	User save(User user, boolean changePassword, FileContent file);
+	
+	Page<User> search(Integer pageNumber, String param);
 }

@@ -6,8 +6,6 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.metamodel.SingularAttribute;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,7 +19,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.apolo.business.model.FileContent;
-import br.apolo.business.model.SearchResult;
 import br.apolo.business.service.FileService;
 import br.apolo.business.service.UserService;
 import br.apolo.common.exception.GenericException;
@@ -29,7 +26,6 @@ import br.apolo.common.util.MessageBundle;
 import br.apolo.data.enums.UserPermission;
 import br.apolo.data.model.User;
 import br.apolo.data.model.UserGroup;
-import br.apolo.data.model.User_;
 import br.apolo.data.repository.UserRepository;
 import br.apolo.security.CurrentUser;
 
@@ -139,15 +135,17 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 	}
 
 	@Override
-	public SearchResult<User> search(String param) {
-		SearchResult<User> result = new SearchResult<User>();
+	public Page<User> search(Integer pageNumber, String param) {
+		if (pageNumber < 1) {
+			pageNumber = 1;
+		}
 		
-		List<SingularAttribute<User, String>> fields = new ArrayList<SingularAttribute<User,String>>();
-		fields.add(User_.email);
-		fields.add(User_.name);
+		PageRequest request = new PageRequest(pageNumber - 1, PAGE_SIZE, Sort.Direction.ASC, "name");
 		
-		result.setResults(userRepository.search(param, fields));
+		if (param != null) {
+			param = "%" + param + "%";	
+		}
 		
-		return result;
+		return userRepository.findByNameLikeOrEmailLikeOrderByNameAsc(param, param, request);
 	}
 }
