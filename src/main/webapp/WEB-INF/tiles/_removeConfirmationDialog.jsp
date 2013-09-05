@@ -59,3 +59,30 @@
 		</div>
 	</div>
 </div>
+
+
+<div id="removeRedirectionConfirmationDialog" class="modal hide fade" tabindex="-1" data-role="dialog">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		<h4>
+			<s:message code="common.remove" />
+		</h4>
+	</div>
+	
+	<div class="modal-body">
+		<p>
+			<s:message code="common.remove.msg" htmlEscape="false"/>
+		</p>
+		<input type="hidden" id="removeRedirectionConfirmationUrl" />
+		<input type="hidden" id="removeRedirectionConfirmationObjectId" />
+	</div>
+	
+	<div class="modal-footer">
+		<a href="#" class="btn" data-dismiss="modal">
+			<s:message code="common.cancel" />
+		</a>
+		<a id="btnCallRemove" href="#" class="btn btn-danger">
+			<s:message code="common.remove" />
+		</a>
+	</div>
+</div>

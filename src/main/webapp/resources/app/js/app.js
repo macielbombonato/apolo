@@ -159,6 +159,14 @@ function removeConfirmationDialogOpen(url, objectId) {
 	$('#removeConfirmationDialog').modal('toggle');
 } 
 
+function removeRedirectionConfirmationDialogOpen(url, objectId) {
+	$('#removeRedirectionConfirmationObjectId').val(objectId);
+	$('#removeRedirectionConfirmationUrl').val(url);
+	$('#removeRedirectionConfirmationDialog').modal('toggle');
+	
+	$('#btnCallRemove').attr('href', $('#removeRedirectionConfirmationUrl').val());
+}
+
 function callRemove() {
 	$.ajax({
 		type : "GET",

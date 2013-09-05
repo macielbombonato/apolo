@@ -200,6 +200,30 @@ public class UserController extends BaseController<User> {
 		return jsonSubject.toString();
 	}
 	
+	@SecuredEnum(UserPermission.USER_REMOVE)
+	@RequestMapping(value = "remove-registry/{id}", method = RequestMethod.GET)
+	public ModelAndView removeRegistry(@PathVariable Long id, HttpServletRequest request) {
+		ModelAndView mav = new ModelAndView(Navigation.USER_LIST.getPath());
+		
+		User user = userService.find(id);
+		
+		if (user != null) {
+			try {
+				userService.remove(user);
+
+				mav = list(request);
+				mav.addObject("msg", true);
+				mav.addObject("message", MessageBundle.getMessageBundle("common.msg.remove.success"));
+			} catch (Throwable e) {
+				mav = list(request);
+				mav.addObject("error", true);
+				mav.addObject("message", MessageBundle.getMessageBundle("common.remove.msg.error"));
+			}
+		}
+		
+		return mav;
+	}
+	
 	
 	/**
 	 * Use public ModelAndView save(@ModelAttribute("user") User user, @RequestParam(defaultValue = "false") boolean changePassword)

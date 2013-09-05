@@ -183,6 +183,30 @@ public class UserGroupController extends BaseController<UserGroup> {
 		return jsonSubject.toString();
 	}
 	
+	@SecuredEnum(UserPermission.USER_PERMISSION_REMOVE)
+	@RequestMapping(value = "remove-registry/{id}", method = RequestMethod.GET)
+	public ModelAndView removeRegistry(@PathVariable Long id, HttpServletRequest request) {
+		ModelAndView mav = new ModelAndView(Navigation.USER_PERMISSION_LIST.getPath());
+		
+		UserGroup userGroup = userGroupService.find(id);
+		
+		if (userGroup != null) {
+			try {
+				userGroupService.remove(userGroup);
+
+				mav = list(request);
+				mav.addObject("msg", true);
+				mav.addObject("message", MessageBundle.getMessageBundle("common.msg.remove.success"));
+			} catch (Throwable e) {
+				mav = list(request);
+				mav.addObject("error", true);
+				mav.addObject("message", MessageBundle.getMessageBundle("common.remove.msg.error"));
+			}
+		}
+		
+		return mav;
+	}
+	
 	@SecuredEnum({UserPermission.USER_PERMISSION_VIEW, UserPermission.USER_PERMISSION_LIST, UserPermission.USER_LIST})
 	@RequestMapping(value = "view/{id}", method = RequestMethod.GET)
 	public ModelAndView view(@PathVariable Long id, HttpServletRequest request) {
