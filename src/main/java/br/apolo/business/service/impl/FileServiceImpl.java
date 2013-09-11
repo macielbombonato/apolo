@@ -24,12 +24,13 @@ import org.artofsolving.jodconverter.office.DefaultOfficeManagerConfiguration;
 import org.artofsolving.jodconverter.office.OfficeManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.apolo.business.model.FileContent;
 import br.apolo.business.service.FileService;
+import br.apolo.common.config.model.ApplicationProperties;
 import br.apolo.common.exception.GenericException;
-import br.apolo.common.util.AppConfig;
 import br.apolo.common.util.MessageBundle;
 import br.apolo.data.model.BaseEntity;
 
@@ -37,6 +38,9 @@ import br.apolo.data.model.BaseEntity;
 public class FileServiceImpl<E extends BaseEntity> implements FileService<E> {
 	
 	private static final Logger log = LoggerFactory.getLogger(FileServiceImpl.class);
+	
+	@Autowired
+	ApplicationProperties applicationProperties;
 	
 	@Override
 	public String uploadFile(E entity, FileContent file, InputStream inputStream) {
@@ -53,7 +57,7 @@ public class FileServiceImpl<E extends BaseEntity> implements FileService<E> {
 			fileName = validateFileName(fileName);
 
 			String filePath = 
-					AppConfig.getObjectFilesPath() + 
+					applicationProperties.getUploadedFilesPath() + 
 					entity.getClass().getSimpleName() + 
 					File.separator +
 					entity.getId();
@@ -78,7 +82,7 @@ public class FileServiceImpl<E extends BaseEntity> implements FileService<E> {
 	
 	public void convertTextFileToHtmlFile(E entity, String sourceName, String destName) {
 		
-		String filePath = AppConfig.getObjectFilesPath() + 
+		String filePath = applicationProperties.getUploadedFilesPath() + 
 				entity.getClass().getSimpleName() + 
 				File.separator +
 				entity.getId();
@@ -130,7 +134,7 @@ public class FileServiceImpl<E extends BaseEntity> implements FileService<E> {
 	
 	public void convertMSOfficeFilesToPDF(E entity, String sourceName) {
 		
-		String filePath = AppConfig.getObjectFilesPath() + 
+		String filePath = applicationProperties.getUploadedFilesPath() + 
 				entity.getClass().getSimpleName() + 
 				File.separator +
 				entity.getId();
@@ -173,9 +177,9 @@ public class FileServiceImpl<E extends BaseEntity> implements FileService<E> {
 	public int convertPDFToImages(E entity) {
 		int totalPages = 0;
 		
-		String location = AppConfig.getGhostScriptExecutable();
+		String location = applicationProperties.getPdfImageExtractorExecutablePath();
 		
-		String filePath = AppConfig.getObjectFilesPath() + 
+		String filePath = applicationProperties.getUploadedFilesPath() + 
 				entity.getClass().getSimpleName() + 
 				File.separator +
 				entity.getId();
@@ -374,13 +378,13 @@ public class FileServiceImpl<E extends BaseEntity> implements FileService<E> {
 
 	private void writeZipFile(File directoryToZip, List<File> fileList) {
 		try {
-			File dir = new File(AppConfig.getObjectFilesPath() + "ZipPackages");
+			File dir = new File(applicationProperties.getUploadedFilesPath() + "ZipPackages");
 			if (!dir.exists()) {
 				dir.mkdirs();
 			}
 			
 			File zipFile = new File(
-					AppConfig.getObjectFilesPath() + 
+					applicationProperties.getUploadedFilesPath() + 
 					"ZipPackages" + 
 					File.separator +  
 					directoryToZip.getName() + 

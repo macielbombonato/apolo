@@ -51,8 +51,15 @@ public class AuditLogListener {
 		}
 
 		User user = new User();
-		user.setId(((CurrentUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId());
-
+		
+		if (SecurityContextHolder.getContext() != null
+				&& SecurityContextHolder.getContext().getAuthentication() != null
+				&& SecurityContextHolder.getContext().getAuthentication().getPrincipal() != null) {
+			user.setId(((CurrentUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId());
+		} else {
+			user.setId(1L);
+		}
+		
 		AuditLog auditLog = new AuditLog();
 
 		/*

@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -30,7 +31,7 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
 import org.springframework.web.servlet.view.tiles2.TilesConfigurer;
 import org.springframework.web.servlet.view.tiles2.TilesViewResolver;
 
-import br.apolo.common.util.AppConfig;
+import br.apolo.common.config.model.ApplicationProperties;
 
 @Configuration
 @EnableWebMvc
@@ -53,9 +54,29 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
 	private static final String RESOURCES_LOCATION = "/resources/";
 	private static final String RESOURCES_HANDLER = RESOURCES_LOCATION + "**";
 	
-	private static final String FILES_LOCATION = "file:/" + AppConfig.getObjectFilesPath();
-	private static final String FILES_HANDLER = "/uploadedfiles/**";
+	@Value("${uploadedfiles.path}")
+	private String uploadedFilesPath;
 	
+	@Value("${filesHandler.path}")
+	private String filesHandler;
+	
+	@Value("${pdfimageextractor.executable.path}")
+	private String pdfImageExtractorExecutablePath;
+	
+	@Value("${video.converter.executable.path}")
+	private String videoConverterExecutablePath;
+	
+    @Bean
+    public ApplicationProperties applicationProperties() {
+    	ApplicationProperties result = new ApplicationProperties();
+    	
+    	result.setUploadedFilesPath(uploadedFilesPath);
+    	result.setFilesHandler(filesHandler);
+    	result.setPdfImageExtractorExecutablePath(pdfImageExtractorExecutablePath);
+    	result.setVideoConverterExecutablePath(videoConverterExecutablePath);
+    	
+    	return result;
+    }
 	
 	@Override
 	public RequestMappingHandlerMapping requestMappingHandlerMapping() {
@@ -108,7 +129,7 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
 		registry.addResourceHandler(RESOURCES_HANDLER).addResourceLocations(RESOURCES_LOCATION).setCachePeriod(175316);
 		
 		if (isValidFilesLocation()) {
-			registry.addResourceHandler(FILES_HANDLER).addResourceLocations(FILES_LOCATION).setCachePeriod(0);	
+			registry.addResourceHandler(filesHandler).addResourceLocations("file:/" + uploadedFilesPath).setCachePeriod(0);	
 		}
 	}
 	
@@ -116,7 +137,7 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
 		boolean result = false;
 		
 		try {
-			File dir = new File(AppConfig.getObjectFilesPath());
+			File dir = new File(uploadedFilesPath);
 			if (!dir.exists()) {
 				dir.mkdirs();
 			}

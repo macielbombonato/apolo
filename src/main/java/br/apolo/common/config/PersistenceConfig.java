@@ -42,7 +42,7 @@ public class PersistenceConfig {
 	
 	@Value("${hibernate.show.and.format.sql}")
 	private boolean showAndFormatSQL;
-
+	
 	@Bean
 	public DataSource configureDataSource() {
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
@@ -58,14 +58,13 @@ public class PersistenceConfig {
 	public EntityManagerFactory entityManagerFactory() {
 		LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
 		entityManagerFactoryBean.setDataSource(configureDataSource());
-		entityManagerFactoryBean.setPackagesToScan("br.apolo");
+		entityManagerFactoryBean.setPackagesToScan("br.org.eldorado.lms.buildacting");
 		entityManagerFactoryBean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
 		
 		Properties jpaProperties = new Properties();
 		jpaProperties.put(org.hibernate.cfg.Environment.DIALECT, dialect);
 		jpaProperties.put(org.hibernate.cfg.Environment.HBM2DDL_AUTO, hbm2ddlAuto);
 		jpaProperties.put(org.hibernate.cfg.Environment.ENABLE_LAZY_LOAD_NO_TRANS, true);
-		
 		jpaProperties.put(org.hibernate.cfg.Environment.SHOW_SQL, showAndFormatSQL);
 		jpaProperties.put(org.hibernate.cfg.Environment.FORMAT_SQL, showAndFormatSQL);
 		
