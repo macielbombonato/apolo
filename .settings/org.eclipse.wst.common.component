@@ -4,7 +4,6 @@
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
         <wb-resource deploy-path="/" source-path="/src/main/webapp"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources/build"/>
-        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/metamodels"/>
         <property name="java-output-path" value="/Apolo-Base/target/classes"/>
         <property name="context-root" value="apolo"/>
     </wb-module>

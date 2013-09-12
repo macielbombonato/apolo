@@ -5,7 +5,7 @@
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 
 <div class="row">
-	<div class="col-sm-4">
+	<div class="col-sm-3">
 		<div class="panel panel-primary">
 			<div class="panel-body">
 				<center>
@@ -65,7 +65,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="col-sm-8">
+	<div class="col-sm-9">
 		<div class="panel panel-primary">
 			<div class="panel-heading">
 				<center>

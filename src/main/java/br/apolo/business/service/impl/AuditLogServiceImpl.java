@@ -15,8 +15,8 @@ import br.apolo.business.service.UserService;
 import br.apolo.data.model.AuditLog;
 import br.apolo.data.repository.AuditLogRepository;
 
-@Service(value = "auditLogService")
-public class AuditLogServiceImpl extends BaseServiceImpl<AuditLog> implements AuditLogService {
+@Service("auditLogService")
+public class AuditLogServiceImpl implements AuditLogService {
 
 	@Autowired
 	private AuditLogRepository auditLogRepository;
@@ -62,10 +62,6 @@ public class AuditLogServiceImpl extends BaseServiceImpl<AuditLog> implements Au
 	@Override
 	public AuditLog find(Long id) {
 		return auditLogRepository.findOne(id);
-	}
-
-	@Override
-	public void remove(AuditLog entity) {
 	}
 
 	@Override
