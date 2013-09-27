@@ -12,7 +12,7 @@ O apolo é versionado com git, portanto, para fazer sua cópia do código e cont
 Após ter instalado o git, para pegar sua cópia basta utilizar o seguinte comando:
 
 ```
-$ git clone https://bitbucket.org/olympus/apolo-base.git
+$ git clone https://bitbucket.org/olimpo/apolo-base.git
 ```
 
 Para usuário Windows, eu indico o seguinte client git: [http://msysgit.github.com/](http://msysgit.github.com/)
