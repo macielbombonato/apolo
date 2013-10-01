@@ -1,4 +1,4 @@
-INSERT INTO users (name, email, password, status, created_by, creation_dt) VALUES ('Administrator', 'admin@apolo.br', '21232f297a57a5a743894a0e4a801fc3', 'active', 1, NOW());
+INSERT INTO users (name, email, password, status, created_by, creation_dt) VALUES ('Administrator', 'admin@apolo.br', '21232f297a57a5a743894a0e4a801fc3', 'admin', 1, NOW());
 
 INSERT INTO user_group (name, created_by, creation_dt) VALUES ('Administrators', 1, NOW());
 INSERT INTO group_permission (group_id, permission_name) VALUES ((SELECT user_group_id FROM user_group WHERE name = 'Administrators'), 'ADMIN');

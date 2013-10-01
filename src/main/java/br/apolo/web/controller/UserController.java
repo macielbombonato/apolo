@@ -311,6 +311,72 @@ public class UserController extends BaseController<User> {
 		
 		return mav;
 	}
+	
+	@SecuredEnum(UserPermission.USER_MANAGER)
+	@RequestMapping(value = "lock/{id}", method = RequestMethod.GET)
+	public ModelAndView lock(@PathVariable Long id, HttpServletRequest request) {
+		ModelAndView mav = new ModelAndView(Navigation.USER_EDIT.getPath());
+		
+		User user = userService.find(id);
+		
+		if (user != null) {
+			
+			userService.lock(user);
+			
+			mav = view(user.getId(), request);
+			
+			mav.addObject("msg", true);
+			mav.addObject("message", MessageBundle.getMessageBundle("common.msg.save.success"));
+		}
+		
+		return mav;
+	}
+	
+	@SecuredEnum(UserPermission.USER_MANAGER)
+	@RequestMapping(value = "unlock/{id}", method = RequestMethod.GET)
+	public ModelAndView unlock(@PathVariable Long id, HttpServletRequest request) {
+		ModelAndView mav = new ModelAndView(Navigation.USER_EDIT.getPath());
+		
+		User user = userService.find(id);
+		
+		if (user != null) {
+			
+			userService.unlock(user);
+			
+			mav = view(user.getId(), request);
+			
+			mav.addObject("msg", true);
+			mav.addObject("message", MessageBundle.getMessageBundle("common.msg.save.success"));
+		}
+		
+		return mav;
+	}
+	
+	@SecuredEnum(UserPermission.USER_MANAGER)
+	@RequestMapping(value = "list-locked", method = RequestMethod.GET)
+	public ModelAndView listLocked(HttpServletRequest request) {
+		return listLocked(1, request);
+	}
+	
+	@SecuredEnum(UserPermission.USER_MANAGER)
+	@RequestMapping(value = "list-locked/{pageNumber}", method = RequestMethod.GET)
+	public ModelAndView listLocked(@PathVariable Integer pageNumber, HttpServletRequest request) {
+		breadCrumbService.addNode(MessageBundle.getMessageBundle("breadcrumb.user.list"), 1, request);
+		
+		ModelAndView mav = new ModelAndView(Navigation.USER_LIST.getPath());
+		
+		Page<User> page = userService.listLocked(pageNumber);
+		
+		configurePageable(mav, page, "/user/list-locked");
+		
+		mav.addObject("searchParameter", "");
+		
+		if (page != null && page.getContent() != null) {
+			mav.addObject("userList", page.getContent());	
+		}
+		
+		return mav;
+	}
 
 	@SecuredEnum(UserPermission.USER_LIST)
 	@RequestMapping(value = "list", method = RequestMethod.GET)

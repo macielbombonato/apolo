@@ -6,6 +6,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMap.Builder;
 
 public enum UserStatus {
+	ADMIN("admin"),
 	ACTIVE("active"),
 	LOCKED("locked");
 	

@@ -16,7 +16,7 @@
 			</a>
                         
 			<ul class="dropdown-menu">
-				<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_CREATE, ROLE_USER_LIST">
+				<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_CREATE, ROLE_USER_LIST, ROLE_USER_MANAGER">
 					<li class="dropdown-header">
 						<s:message code="users" />
 					</li>
@@ -33,6 +33,14 @@
 							<a href='<s:url value="/user/list"></s:url>'>
 								<i class="glyphicon glyphicon-th-list"></i>
 								<s:message code="user.list" />
+							</a>
+						</li>
+					</security:authorize>
+					<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_MANAGER">
+						<li>
+							<a href='<s:url value="/user/list-locked"></s:url>'>
+								<i class="glyphicon glyphicon-eye-close"></i>
+								<s:message code="user.list.locked" />
 							</a>
 						</li>
 					</security:authorize>

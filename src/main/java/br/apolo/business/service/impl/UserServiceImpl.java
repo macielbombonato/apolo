@@ -21,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import br.apolo.business.model.FileContent;
 import br.apolo.business.service.FileService;
 import br.apolo.business.service.UserService;
-import br.apolo.common.exception.GenericException;
+import br.apolo.common.exception.BusinessException;
 import br.apolo.common.util.MessageBundle;
 import br.apolo.data.enums.UserPermission;
 import br.apolo.data.enums.UserStatus;
@@ -86,6 +86,11 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 	@Override
 	@Transactional
 	public User save(User user, boolean changePassword, FileContent file) {
+		if (!user.getPermissions().contains(UserPermission.ADMIN)) {
+			String message = MessageBundle.getMessageBundle("user.edit.msg.error.admin.permission");
+			throw new BusinessException(message);
+		}
+		
 		if (changePassword) {
 			Md5PasswordEncoder encoder = new Md5PasswordEncoder();
 			user.setPassword(encoder.encodePassword(user.getPassword(), null));			
@@ -109,7 +114,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 					user.setPictureGeneratedName(fileService.uploadFile(user, file, file.getFile().getInputStream()));
 				} catch (IOException e) {
 					String message = MessageBundle.getMessageBundle("commons.errorUploadingFile");
-					throw new GenericException(message);
+					throw new BusinessException(message);
 				}
 			}
 		}
@@ -120,6 +125,11 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 	@Override
 	@Transactional
 	public void remove(User user) {
+		if (UserStatus.ADMIN.equals(user.getStatus())) {
+			String message = MessageBundle.getMessageBundle("user.remove.msg.error.admin");
+			throw new BusinessException(message);
+		}
+		
 		userRepository.delete(user);
 	}
 
@@ -148,5 +158,42 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 		}
 		
 		return userRepository.findByNameLikeOrEmailLikeAndStatusOrderByNameAsc(param, param, UserStatus.ACTIVE, request);
+	}
+
+	@Override
+	public User lock(User user) {
+		if (UserStatus.ADMIN.equals(user.getStatus())) {
+			String message = MessageBundle.getMessageBundle("user.status.msg.error.admin");
+			throw new BusinessException(message);
+		} else if(getAuthenticatedUser().equals(user)) {
+			String message = MessageBundle.getMessageBundle("user.status.msg.error.sameuser");
+			throw new BusinessException(message);
+		}
+		
+		User dbUser = this.find(user.getId());
+		user.setPassword(dbUser.getPassword());
+		user.setStatus(UserStatus.LOCKED);
+		
+		return userRepository.save(user);
+	}
+
+	@Override
+	public User unlock(User user) {
+		User dbUser = this.find(user.getId());
+		user.setPassword(dbUser.getPassword());
+		user.setStatus(UserStatus.ACTIVE);
+		
+		return userRepository.save(user);
+	}
+	
+	@Override
+	public Page<User> listLocked(Integer pageNumber) {
+		if (pageNumber < 1) {
+			pageNumber = 1;
+		}
+		
+		PageRequest request = new PageRequest(pageNumber - 1, PAGE_SIZE, Sort.Direction.ASC, "name");
+		
+		return userRepository.findByStatusNot(UserStatus.ACTIVE, request);
 	}
 }

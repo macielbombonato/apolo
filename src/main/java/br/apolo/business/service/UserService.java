@@ -15,4 +15,10 @@ public interface UserService extends UserDetailsService, BaseService<User> {
 	User save(User user, boolean changePassword, FileContent file);
 	
 	Page<User> search(Integer pageNumber, String param);
+	
+	User lock(User user);
+	
+	User unlock(User user);
+	
+	Page<User> listLocked(Integer pageNumber);
 }

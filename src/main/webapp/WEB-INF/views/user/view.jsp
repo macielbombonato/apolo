@@ -37,6 +37,23 @@
 					</a>
 				</security:authorize>
 				
+				<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_MANAGER">
+					<c:choose>
+						<c:when test="${user.status == 'ACTIVE'}">
+							<a href='<s:url value="/user/lock"></s:url>/${user.id}' class="btn btn-danger">
+								<i class="glyphicon glyphicon-eye-close"></i>
+								<s:message code="user.lock" />
+							</a>
+						</c:when>
+						<c:otherwise>
+							<a href='<s:url value="/user/unlock"></s:url>/${user.id}' class="btn btn-success">
+								<i class="glyphicon glyphicon-eye-open"></i>
+								<s:message code="user.unlock" />
+							</a>
+						</c:otherwise>
+					</c:choose>
+				</security:authorize>
+				
 				<a href='#' class="btn btn-default back" > 
 					<i class="glyphicon glyphicon-backward"></i>
 					<s:message code="common.back" />

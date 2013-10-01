@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.NestedServletException;
 
+import br.apolo.common.exception.BusinessException;
 import br.apolo.common.exception.GenericException;
 import br.apolo.common.util.MessageBundle;
 import br.apolo.data.model.BaseEntity;
@@ -137,6 +138,19 @@ public abstract class BaseController<E extends BaseEntity> {
 		return path;
 	}
 
+	@ExceptionHandler(BusinessException.class)
+	public ModelAndView handleBusinessException(BusinessException ex) {
+		ex.printStackTrace();
+
+		ModelAndView mav = new ModelAndView(Navigation.ERROR.getPath());
+		mav.addObject("code", 500);
+		mav.addObject("title", MessageBundle.getMessageBundle("error.500"));
+		mav.addObject("message", ex.getCustomMsg());
+		mav.addObject("exception", ex);
+
+		return mav;
+	}
+	
 	@ExceptionHandler(GenericException.class)
 	public ModelAndView handleGenericException(Exception ex) {
 		ex.printStackTrace();

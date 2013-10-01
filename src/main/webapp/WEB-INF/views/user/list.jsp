@@ -35,6 +35,9 @@
 							<th>
 								<s:message code="user.groups" />
 							</th>
+							<th>
+								<s:message code="user.status" />
+							</th>
 							<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_LIST, ROLE_USER_EDIT, ROLE_USER_REMOVE">
 								<th>
 									<s:message code="common.actions" />
@@ -81,6 +84,9 @@
 											</li>
 										</c:forEach>
 									</ul>
+								</td>
+								<td>
+									<s:message code="user.status.${user.status}" />
 								</td>
 								<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_LIST, ROLE_USER_EDIT, ROLE_USER_REMOVE">
 									<td>
