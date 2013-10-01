@@ -68,6 +68,12 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		User u = userRepository.findUserByEmail(username);
+		
+		if (UserStatus.LOCKED.equals(u.getStatus())) {
+			String message = MessageBundle.getMessageBundle("user.auth.msg.error.locked");
+			throw new BusinessException(message);
+		}
+		
 		Collection<GrantedAuthority> authorities = loadUserAuthorities(u);
 		return new CurrentUser(u.getId(), u.getEmail(), u.getPassword().toLowerCase(), u, authorities);
 	}
