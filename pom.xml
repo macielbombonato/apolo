@@ -43,8 +43,13 @@
         <cglib-version>2.2.2</cglib-version>
         <org.slf4j-version>1.5.10</org.slf4j-version>
         <org.apache.tiles-version>2.2.2</org.apache.tiles-version>
+        <postgresql-version>9.2-1002.jdbc4</postgresql-version>
     </properties>
     <repositories>
+		<repository>
+			<id>sonatype-forge</id>
+			<url>https://repository.sonatype.org/content/groups/forge/</url>
+		</repository>
         <repository>
             <id>java.net2</id>
             <name>Repository hosting the jee6 artifacts</name>
@@ -75,8 +80,17 @@
                 <enabled>true</enabled>
             </snapshots>
         </repository>
+        <repository>
+        	<id>central</id>
+        	<url>http://repo1.maven.org/maven2/</url>
+        </repository>
     </repositories>
     <dependencies>
+		<dependency>
+			<groupId>postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>${postgresql-version}</version>
+		</dependency>
         <!-- Spring -->
         <dependency>
             <groupId>org.springframework</groupId>

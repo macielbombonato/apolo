@@ -12,8 +12,6 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
@@ -29,9 +27,8 @@ import br.apolo.data.enums.UserStatus;
 
 @Entity
 @EntityListeners(value = AuditLogListener.class)
-@Table(name = "user")
+@Table(name = "users")
 @AttributeOverride(name = "id", column = @Column(name = "user_id"))
-@NamedQueries({ @NamedQuery(name = "User.findByLogin", query = " FROM User WHERE email = :login") })
 public class User extends AuditableBaseEntity {
 
 	private static final long serialVersionUID = 5588722501578237833L;
