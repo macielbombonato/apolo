@@ -49,7 +49,7 @@
 								<td>
 									<center>
 										<c:choose>
-											<c:when test="${user.pictureGeneratedName != null}">
+											<c:when test="${user.pictureGeneratedName != null && not empty user.pictureGeneratedName}">
 												<img class="img-thumbnail" src="<s:url value="/uploadedfiles/User"></s:url>/${user.id}/${user.pictureGeneratedName}" style="width: 40px;"/>
 											</c:when>
 											<c:otherwise>

@@ -24,6 +24,7 @@ import br.apolo.business.service.UserService;
 import br.apolo.common.exception.GenericException;
 import br.apolo.common.util.MessageBundle;
 import br.apolo.data.enums.UserPermission;
+import br.apolo.data.enums.UserStatus;
 import br.apolo.data.model.User;
 import br.apolo.data.model.UserGroup;
 import br.apolo.data.repository.UserRepository;
@@ -51,7 +52,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 		
 		PageRequest request = new PageRequest(pageNumber - 1, PAGE_SIZE, Sort.Direction.ASC, "name");
 		
-		return userRepository.findAll(request);
+		return userRepository.findByStatus(UserStatus.ACTIVE, request);
 	}
 
 	@Override
@@ -146,6 +147,6 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 			param = "%" + param + "%";	
 		}
 		
-		return userRepository.findByNameLikeOrEmailLikeOrderByNameAsc(param, param, request);
+		return userRepository.findByNameLikeOrEmailLikeAndStatusOrderByNameAsc(param, param, UserStatus.ACTIVE, request);
 	}
 }

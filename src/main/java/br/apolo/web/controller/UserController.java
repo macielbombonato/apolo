@@ -34,6 +34,7 @@ import br.apolo.business.service.UserGroupService;
 import br.apolo.business.service.UserService;
 import br.apolo.common.util.MessageBundle;
 import br.apolo.data.enums.UserPermission;
+import br.apolo.data.enums.UserStatus;
 import br.apolo.data.model.User;
 import br.apolo.security.SecuredEnum;
 import br.apolo.web.enums.Navigation;
@@ -118,6 +119,7 @@ public class UserController extends BaseController<User> {
 		
 		User user = new User();
 		
+		user.setStatus(UserStatus.ACTIVE);
 		user.setCreatedBy(userService.getAuthenticatedUser());
 		user.setCreationDate(new Date());
 		

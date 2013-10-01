@@ -1,4 +1,4 @@
-INSERT INTO user (name, email, password, created_by, creation_dt) VALUES ('Administrator', 'admin@apolo.br', '21232f297a57a5a743894a0e4a801fc3', 1, NOW());
+INSERT INTO user (name, email, password, status, created_by, creation_dt) VALUES ('Administrator', 'admin@apolo.br', '21232f297a57a5a743894a0e4a801fc3', 'active', 1, NOW());
 
 INSERT INTO user_group (name, created_by, creation_dt) VALUES ('Administrators', 1, NOW());
 INSERT INTO group_permission (group_id, permission_name) VALUES ((SELECT user_group_id FROM user_group WHERE name = 'Administrators'), 'ADMIN');
@@ -27,9 +27,9 @@ INSERT INTO group_permission (group_id, permission_name) VALUES ((SELECT user_gr
 INSERT INTO group_permission (group_id, permission_name) VALUES ((SELECT user_group_id FROM user_group WHERE name = 'Permissions'), 'USER_PERMISSION_VIEW');
 
 
-INSERT INTO user (name, email, password, created_by, creation_dt) VALUES ('Power user', 'user@apolo.br', '21232f297a57a5a743894a0e4a801fc3', 1, NOW());
+INSERT INTO user (name, email, password, status, created_by, creation_dt) VALUES ('Power user', 'user@apolo.br', '21232f297a57a5a743894a0e4a801fc3', 'active', 1, NOW());
 INSERT INTO users_in_groups (user_id, group_id) VALUES ((SELECT user_id FROM user WHERE email = 'user@apolo.br'), (SELECT user_group_id FROM user_group WHERE name = 'Users - Management'));
 INSERT INTO users_in_groups (user_id, group_id) VALUES ((SELECT user_id FROM user WHERE email = 'user@apolo.br'), (SELECT user_group_id FROM user_group WHERE name = 'Permissions - Management'));
 
-INSERT INTO user (name, email, password, created_by, creation_dt) VALUES ('User', 'restr@apolo.br', '21232f297a57a5a743894a0e4a801fc3', 1, NOW());
+INSERT INTO user (name, email, password, status, created_by, creation_dt) VALUES ('User', 'restr@apolo.br', '21232f297a57a5a743894a0e4a801fc3', 'active', 1, NOW());
 INSERT INTO users_in_groups (user_id, group_id) VALUES ((SELECT user_id FROM user WHERE email = 'restr@apolo.br'), (SELECT user_group_id FROM user_group WHERE name = 'Users'));

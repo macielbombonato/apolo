@@ -12,16 +12,18 @@
 	</div>
 	<div class="panel-body">
 		<div class="col-sm-2">
-			<c:choose>
-				<c:when test="${user.pictureGeneratedName != null}">
-					<img class="img-thumbnail" src="<s:url value="/uploadedfiles/User"></s:url>/${user.id}/${user.pictureGeneratedName}" />
-				</c:when>
-				<c:otherwise>
-					<h1>
-						<span class="glyphicon glyphicon-user"> </span>
-					</h1>
-				</c:otherwise>
-			</c:choose>
+			<center>
+				<c:choose>
+					<c:when test="${user.pictureGeneratedName != null && not empty user.pictureGeneratedName}">
+						<img class="img-thumbnail" src="<s:url value="/uploadedfiles/User"></s:url>/${user.id}/${user.pictureGeneratedName}" />
+					</c:when>
+					<c:otherwise>
+						<h1>
+							<span class="glyphicon glyphicon-user"> </span>
+						</h1>
+					</c:otherwise>
+				</c:choose>
+			</center>
 		</div>
 		
 		<div class="col-sm-10">

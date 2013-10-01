@@ -19,11 +19,13 @@ import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.hibernate.annotations.Type;
 import org.springframework.web.multipart.MultipartFile;
 
 import br.apolo.common.util.InputLength;
 import br.apolo.data.entitylistener.AuditLogListener;
 import br.apolo.data.enums.UserPermission;
+import br.apolo.data.enums.UserStatus;
 
 @Entity
 @EntityListeners(value = AuditLogListener.class)
@@ -46,6 +48,10 @@ public class User extends AuditableBaseEntity {
 
 	@Column(name = "password", length = InputLength.MEDIUM, nullable = false)
 	private String password;
+	
+	@Column(name = "status", nullable = false)
+	@Type(type = "br.apolo.data.enums.usertype.UserStatusUserType")
+	private UserStatus status;
 
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "users_in_groups", 
@@ -132,5 +138,13 @@ public class User extends AuditableBaseEntity {
 
 	public void setPicturefiles(List<MultipartFile> picturefiles) {
 		this.picturefiles = picturefiles;
+	}
+
+	public UserStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(UserStatus status) {
+		this.status = status;
 	}
 }

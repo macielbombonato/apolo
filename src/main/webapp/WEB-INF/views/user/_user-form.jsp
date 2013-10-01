@@ -11,6 +11,7 @@
 <jsp:useBean id="inputlength" class="br.apolo.common.util.InputLength"/>
 
 <input type="hidden" id="id" name="id" value="${user.id}" />
+<input type="hidden" id="status" name="status" value="${user.status}" />
 <input type="hidden" id="pictureOriginalName" name="pictureOriginalName" value="${user.pictureOriginalName}" />
 <input type="hidden" id="pictureGeneratedName" name="pictureGeneratedName" value="${user.pictureGeneratedName}" />
 
