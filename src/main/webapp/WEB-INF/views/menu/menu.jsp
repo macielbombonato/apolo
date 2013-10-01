@@ -16,8 +16,10 @@
 			<span class="icon-bar"></span>
 		</button>
 		<a class="navbar-brand" href='<s:url value="/"></s:url>'>
-			<img src='<c:url value="/resources/app/img/favicon.png" />' width="20" height="20" style="width: 20px; height: 20px;" />
-			<strong><s:message code="app.title" /></strong>
+			<strong style="font-family: monospace; font-size: xx-large;">
+				<img src='<c:url value="/resources/app/img/favicon.png" />' width="25" height="25" style="width: 25px; height: 25px;" />
+				<s:message code="app.title" />
+			</strong>
 		</a>
 	</div>
 	
