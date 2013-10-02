@@ -6,9 +6,24 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMap.Builder;
 
 public enum UserStatus {
-	ADMIN("admin"),
-	ACTIVE("active"),
-	LOCKED("locked");
+	ADMIN("admin") {
+		@Override
+		public boolean isChangeable() {
+			return false;
+		}
+	},
+	ACTIVE("active") {
+		@Override
+		public boolean isChangeable() {
+			return true;
+		}
+	},
+	LOCKED("locked") {
+		@Override
+		public boolean isChangeable() {
+			return true;
+		}
+	};
 	
 	private final String code;
 	
@@ -33,4 +48,6 @@ public enum UserStatus {
 	public String getCode() {
 		return code;
 	}
+	
+	public abstract boolean isChangeable();
 }

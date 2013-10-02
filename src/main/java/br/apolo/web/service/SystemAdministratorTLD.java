@@ -1,7 +1,5 @@
 package br.apolo.web.service;
 
-import java.io.IOException;
-
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.TagSupport;
@@ -32,12 +30,15 @@ public class SystemAdministratorTLD extends TagSupport {
 			userService = (UserService) ctx.getBean("userService");
 		}
 		
-		User user = userService.getSystemAdministrator();
-		
         try {
-            JspWriter out = pageContext.getOut();
-            out.println(MessageBundle.getMessageBundle("common.admin") + ": <a href='mailto:" + user.getEmail() + "' >" + user.getName() + "</a>");
-        } catch (IOException e) {
+        	User user = userService.getSystemAdministrator();
+        	
+        	if (user != null) {
+                JspWriter out = pageContext.getOut();
+                out.println(MessageBundle.getMessageBundle("common.admin") + ": <a href='mailto:" + user.getEmail() + "' >" + user.getName() + "</a>");        		
+        	}
+
+        } catch (Exception e) {
             log.error(e.getMessage(), e);
         }
         

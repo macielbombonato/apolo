@@ -52,7 +52,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 		
 		PageRequest request = new PageRequest(pageNumber - 1, PAGE_SIZE, Sort.Direction.ASC, "name");
 		
-		return userRepository.findByStatus(UserStatus.ACTIVE, request);
+		return userRepository.findByStatusNot(UserStatus.LOCKED, request);
 	}
 
 	@Override
@@ -131,7 +131,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 	@Override
 	@Transactional
 	public void remove(User user) {
-		if (UserStatus.ADMIN.equals(user.getStatus())) {
+		if (!user.getStatus().isChangeable()) {
 			String message = MessageBundle.getMessageBundle("user.remove.msg.error.admin");
 			throw new BusinessException(message);
 		}
@@ -163,12 +163,12 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 			param = "%" + param + "%";	
 		}
 		
-		return userRepository.findByNameLikeOrEmailLikeAndStatusOrderByNameAsc(param, param, UserStatus.ACTIVE, request);
+		return userRepository.findByNameLikeOrEmailLikeAndStatusNotOrderByNameAsc(param, param, UserStatus.LOCKED, request);
 	}
 
 	@Override
 	public User lock(User user) {
-		if (UserStatus.ADMIN.equals(user.getStatus())) {
+		if (!user.getStatus().isChangeable()) {
 			String message = MessageBundle.getMessageBundle("user.status.msg.error.admin");
 			throw new BusinessException(message);
 		} else if(getAuthenticatedUser().equals(user)) {
@@ -185,6 +185,11 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 
 	@Override
 	public User unlock(User user) {
+		if (!user.getStatus().isChangeable()) {
+			String message = MessageBundle.getMessageBundle("user.status.msg.error.admin");
+			throw new BusinessException(message);
+		}
+		
 		User dbUser = this.find(user.getId());
 		user.setPassword(dbUser.getPassword());
 		user.setStatus(UserStatus.ACTIVE);
@@ -200,11 +205,19 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 		
 		PageRequest request = new PageRequest(pageNumber - 1, PAGE_SIZE, Sort.Direction.ASC, "name");
 		
-		return userRepository.findByStatusNot(UserStatus.ACTIVE, request);
+		return userRepository.findByStatus(UserStatus.LOCKED, request);
 	}
 
 	@Override
 	public User getSystemAdministrator() {
-		return userRepository.findByStatus(UserStatus.ADMIN);
+		User user = null;
+		
+		List<User> userList = userRepository.findByStatus(UserStatus.ADMIN);
+		
+		if (userList != null && !userList.isEmpty()) {
+			user = userList.get(0);
+		}
+		
+		return user;
 	}
 }

@@ -15,11 +15,9 @@
 			<div class="footer_contents"> 
 				<p class="muted">
 					<small>
-						<s:message code="footer.message" htmlEscape="false"/>
-						<br />
-						
 						<sysadmin:mailto />
-
+						<br />
+						<s:message code="footer.message" htmlEscape="false"/>
 					</small>
 				</p>
 			</div>

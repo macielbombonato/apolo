@@ -1,5 +1,7 @@
 package br.apolo.data.repository;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,10 +16,12 @@ public interface UserRepository extends JpaRepository<User, Long>, UserRepositor
 	
 	Page<User> findByNameLikeOrEmailLikeAndStatusOrderByNameAsc(@Param("name") String name, @Param("email") String email, @Param("status") UserStatus status, Pageable page);
 	
+	Page<User> findByNameLikeOrEmailLikeAndStatusNotOrderByNameAsc(@Param("name") String name, @Param("email") String email, @Param("status") UserStatus status, Pageable page);
+	
 	Page<User> findByStatus(UserStatus status, Pageable page);
 	
 	Page<User> findByStatusNot(UserStatus status, Pageable page);
 	
-	User findByStatus(UserStatus status);
+	List<User> findByStatus(UserStatus status);
 	
 }
