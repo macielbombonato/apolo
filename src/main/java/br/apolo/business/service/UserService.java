@@ -21,4 +21,6 @@ public interface UserService extends UserDetailsService, BaseService<User> {
 	User unlock(User user);
 	
 	Page<User> listLocked(Integer pageNumber);
+	
+	User getSystemAdministrator();
 }

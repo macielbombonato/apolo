@@ -18,4 +18,6 @@ public interface UserRepository extends JpaRepository<User, Long>, UserRepositor
 	
 	Page<User> findByStatusNot(UserStatus status, Pageable page);
 	
+	User findByStatus(UserStatus status);
+	
 }

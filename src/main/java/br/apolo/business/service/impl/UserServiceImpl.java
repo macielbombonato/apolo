@@ -202,4 +202,9 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 		
 		return userRepository.findByStatusNot(UserStatus.ACTIVE, request);
 	}
+
+	@Override
+	public User getSystemAdministrator() {
+		return userRepository.findByStatus(UserStatus.ADMIN);
+	}
 }
