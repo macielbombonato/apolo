@@ -42,7 +42,6 @@
         <org.aspectj-version>1.6.9</org.aspectj-version>
         <cglib-version>2.2.2</cglib-version>
         <org.slf4j-version>1.5.10</org.slf4j-version>
-        <org.apache.tiles-version>2.2.2</org.apache.tiles-version>
         <postgresql-version>9.2-1002.jdbc4</postgresql-version>
     </properties>
     <repositories>
@@ -172,12 +171,6 @@
             <artifactId>hibernate-validator</artifactId>
             <version>4.3.0.Final</version>
         </dependency>
-        <!-- Apache Tiles -->
-        <dependency>
-            <groupId>org.apache.tiles</groupId>
-            <artifactId>tiles-jsp</artifactId>
-            <version>${org.apache.tiles-version}</version>
-        </dependency>
         <!-- CGLIB -->
         <dependency>
             <groupId>cglib</groupId>
@@ -297,30 +290,10 @@
         	<version>1.1.2</version>
         </dependency>
         <dependency>
-        	<groupId>org.apache.tiles</groupId>
-        	<artifactId>tiles-api</artifactId>
-        	<version>2.2.1</version>
-        </dependency>
-        <dependency>
         	<groupId>org.apache.taglibs</groupId>
         	<artifactId>taglibs-parent</artifactId>
         	<version>3</version>
         	<type>pom</type>
-        </dependency>
-        <dependency>
-        	<groupId>org.apache.tiles</groupId>
-        	<artifactId>tiles-core</artifactId>
-        	<version>2.2.1</version>
-        </dependency>
-        <dependency>
-        	<groupId>org.apache.tiles</groupId>
-        	<artifactId>tiles-el</artifactId>
-        	<version>2.2.1</version>
-        </dependency>
-        <dependency>
-        	<groupId>org.apache.tiles</groupId>
-        	<artifactId>tiles-extras</artifactId>
-        	<version>2.2.1</version>
         </dependency>
         <dependency>
         	<groupId>org.hibernate</groupId>

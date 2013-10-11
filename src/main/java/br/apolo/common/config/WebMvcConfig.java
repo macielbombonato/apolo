@@ -23,13 +23,13 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.HandlerMapping;
+import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
-import org.springframework.web.servlet.view.tiles2.TilesConfigurer;
-import org.springframework.web.servlet.view.tiles2.TilesViewResolver;
+import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import br.apolo.common.config.model.ApplicationProperties;
 
@@ -47,9 +47,6 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
 	
 	private static final String MESSAGE_SOURCE = "/WEB-INF/classes/messages";
 	private static final String VERSION_SOURCE = "/WEB-INF/classes/version";
-	
-	private static final String TILES = "/WEB-INF/tiles/tiles.xml";
-	private static final String VIEWS = "/WEB-INF/views/**/views.xml";
 	
 	private static final String RESOURCES_LOCATION = "/resources/";
 	private static final String RESOURCES_HANDLER = RESOURCES_LOCATION + "**";
@@ -95,15 +92,11 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
 	}
 	
 	@Bean
-	public TilesViewResolver configureTilesViewResolver() {
-		return new TilesViewResolver();
-	}
-	
-	@Bean
-	public TilesConfigurer configureTilesConfigurer() {
-		TilesConfigurer configurer = new TilesConfigurer();
-		configurer.setDefinitions(new String[] {TILES, VIEWS});
-		return configurer;
+	public ViewResolver configureViewResolver() {
+        InternalResourceViewResolver resolver = new InternalResourceViewResolver();
+        resolver.setPrefix("/WEB-INF/views/");
+        resolver.setSuffix(".jsp");
+        return resolver;
 	}
 	
 	@Override
