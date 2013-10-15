@@ -8,10 +8,10 @@ import java.sql.Types;
 import org.hibernate.HibernateException;
 import org.hibernate.engine.spi.SessionImplementor;
 
-import br.apolo.data.enums.UserStatus;
+import br.apolo.data.enums.Status;
 import br.com.insula.opes.hibernate.usertype.ImmutableUserType;
 
-public class UserStatusUserType extends ImmutableUserType {
+public class StatusUserType extends ImmutableUserType {
 	private static final long serialVersionUID = 1L;
 
 	@Override
@@ -21,7 +21,7 @@ public class UserStatusUserType extends ImmutableUserType {
 
 	@Override
 	public Class<?> returnedClass() {
-		return UserStatus.class;
+		return Status.class;
 	}
 
 	public Object nullSafeGet(ResultSet rs, String[] names, SessionImplementor session, Object owner)
@@ -31,7 +31,7 @@ public class UserStatusUserType extends ImmutableUserType {
 			return null;
 		}
 		else {
-			return UserStatus.fromCode(value);
+			return Status.fromCode(value);
 		}
 	}
 
@@ -42,7 +42,7 @@ public class UserStatusUserType extends ImmutableUserType {
 			st.setNull(index, Types.VARCHAR);
 		}
 		else {
-			st.setString(index, ((UserStatus) value).getCode());
+			st.setString(index, ((Status) value).getCode());
 		}
 	}
 

@@ -4,6 +4,8 @@ public enum Navigation {
 	
 	HOME("/"), 
 	INDEX("index"),
+	INSTALL("/install"),
+	INSTALL_NEW("/install/new"),
 	
 	USER("user"),
 	USER_INDEX("user/index"),

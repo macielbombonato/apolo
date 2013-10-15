@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import br.apolo.business.model.FileContent;
+import br.apolo.business.model.InstallFormModel;
 import br.apolo.data.model.User;
 
 public interface UserService extends UserDetailsService, BaseService<User> {
@@ -23,4 +24,6 @@ public interface UserService extends UserDetailsService, BaseService<User> {
 	Page<User> listLocked(Integer pageNumber);
 	
 	User getSystemAdministrator();
+	
+	boolean systemSetup(InstallFormModel formModel, FileContent file);
 }

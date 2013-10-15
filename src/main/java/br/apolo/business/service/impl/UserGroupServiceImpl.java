@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import br.apolo.business.service.UserGroupService;
 import br.apolo.common.exception.AccessDeniedException;
 import br.apolo.common.util.MessageBundle;
+import br.apolo.data.enums.Status;
 import br.apolo.data.enums.UserPermission;
 import br.apolo.data.model.User;
 import br.apolo.data.model.UserGroup;
@@ -23,7 +24,7 @@ import br.apolo.data.repository.UserGroupRepository;
 public class UserGroupServiceImpl extends BaseServiceImpl<UserGroup> implements UserGroupService {
 
 	@Autowired
-	UserGroupRepository userGroupRepository;
+	private UserGroupRepository userGroupRepository;
 	
 	@Override
 	public List<UserGroup> list() {
@@ -49,9 +50,13 @@ public class UserGroupServiceImpl extends BaseServiceImpl<UserGroup> implements 
 	@Override
 	@Transactional
 	public UserGroup save(UserGroup userGroup) throws AccessDeniedException {
-		if (userGroup != null && new Long(1L).equals(userGroup.getId())) {
+		if (userGroup != null && Status.ADMIN.equals(userGroup.getStatus()) && userGroup.getId() != null) {
 			throw new AccessDeniedException(MessageBundle.getMessageBundle("user.group.msg.access.denied"));
 		} else {
+			if (!Status.ADMIN.equals(userGroup.getStatus())) {
+				userGroup.setStatus(Status.ACTIVE);
+			}
+			
 			userGroup.setLastUpdatedBy(getAuthenticatedUser());
 			userGroup.setLastUpdateDate(new Date());
 			
@@ -62,7 +67,7 @@ public class UserGroupServiceImpl extends BaseServiceImpl<UserGroup> implements 
 	@Override
 	@Transactional
 	public void remove(UserGroup userGroup) throws AccessDeniedException {
-		if (userGroup != null && new Long(1L).equals(userGroup.getId())) {
+		if (userGroup != null && Status.ADMIN.equals(userGroup.getStatus()) && userGroup.getId() != null) {
 			throw new AccessDeniedException(MessageBundle.getMessageBundle("user.group.msg.access.denied"));
 		} else {
 			userGroupRepository.delete(userGroup);	

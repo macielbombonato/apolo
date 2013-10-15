@@ -5,7 +5,7 @@ import java.util.Map;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMap.Builder;
 
-public enum UserStatus {
+public enum Status {
 	ADMIN("admin") {
 		@Override
 		public boolean isChangeable() {
@@ -27,21 +27,21 @@ public enum UserStatus {
 	
 	private final String code;
 	
-	private static final Map<String, UserStatus> valueMap;
+	private static final Map<String, Status> valueMap;
 	
 	static {
-		Builder<String, UserStatus> builder = ImmutableMap.builder();
-		for (UserStatus tipo : values()) {
+		Builder<String, Status> builder = ImmutableMap.builder();
+		for (Status tipo : values()) {
 			builder.put(tipo.code, tipo);
 		}
 		valueMap = builder.build();
 	}
 	
-	public static UserStatus fromCode(String code) {
+	public static Status fromCode(String code) {
 		return valueMap.get(code);
 	}
 
-	private UserStatus(String code) {
+	private Status(String code) {
 		this.code = code;
 	}
 

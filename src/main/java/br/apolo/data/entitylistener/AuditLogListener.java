@@ -13,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.context.ContextLoader;
 
 import br.apolo.business.service.AuditLogService;
+import br.apolo.business.service.UserService;
 import br.apolo.business.service.impl.AuditLogServiceImpl;
 import br.apolo.data.enums.DatabaseTransactionType;
 import br.apolo.data.model.AuditLog;
@@ -23,7 +24,10 @@ import br.apolo.security.CurrentUser;
 public class AuditLogListener {
 
 	@Autowired
-	AuditLogService auditLogService;
+	private AuditLogService auditLogService;
+	
+	@Autowired
+	private UserService userService;
 
 	@PostRemove
 	void postDelete(AuditableBaseEntity e) {
@@ -49,15 +53,28 @@ public class AuditLogListener {
 
 			auditLogService = (AuditLogService) ctx.getBean("auditLogService");
 		}
-
-		User user = new User();
 		
-		if (SecurityContextHolder.getContext() != null
-				&& SecurityContextHolder.getContext().getAuthentication() != null
-				&& SecurityContextHolder.getContext().getAuthentication().getPrincipal() != null) {
-			user.setId(((CurrentUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId());
+		if (userService == null) {
+			ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+
+			userService = (UserService) ctx.getBean("userService");
+		}
+
+		User user = null;
+		
+		Long executorId = null;
+		
+		try {
+			executorId = ((CurrentUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
+		} catch(Throwable errorId) {
+			executorId = null;
+		}
+		
+		if (executorId != null) {
+			user = new User();
+			user.setId(executorId);
 		} else {
-			user.setId(1L);
+			user = userService.find(1L);
 		}
 		
 		AuditLog auditLog = new AuditLog();
@@ -70,13 +87,15 @@ public class AuditLogListener {
 			entityName = e.getClass().getSimpleName();
 		}
 
-		auditLog.setTransactionType(transactionType);
-		auditLog.setEntityName(entityName);
-		auditLog.setRegistryId(e.getId());
-		auditLog.setExecutedById(user.getId());
-		auditLog.setOperationDate(new Date());
+		if (user != null) {
+			auditLog.setTransactionType(transactionType);
+			auditLog.setEntityName(entityName);
+			auditLog.setRegistryId(e.getId());
+			auditLog.setExecutedById(user.getId());
+			auditLog.setOperationDate(new Date());
 
-		auditLogService.save(auditLog);
+			auditLogService.save(auditLog);			
+		}
 	}
 
 	public void setAuditLogService(AuditLogServiceImpl auditLogService1) {

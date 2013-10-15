@@ -10,6 +10,7 @@
 <jsp:useBean id="inputlength" class="br.apolo.common.util.InputLength"/>
 
 <input type="hidden" id="id" name="id" value="${userGroup.id}" />
+<input type="hidden" id="status" name="status" value="${userGroup.status}" />
 
 <ul class="nav nav-tabs" id="formTab">
 	<li class="active">

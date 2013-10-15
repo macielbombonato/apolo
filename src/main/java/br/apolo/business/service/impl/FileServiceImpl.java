@@ -40,7 +40,7 @@ public class FileServiceImpl<E extends BaseEntity> implements FileService<E> {
 	private static final Logger log = LoggerFactory.getLogger(FileServiceImpl.class);
 	
 	@Autowired
-	ApplicationProperties applicationProperties;
+	private ApplicationProperties applicationProperties;
 	
 	@Override
 	public String uploadFile(E entity, FileContent file, InputStream inputStream) {
@@ -112,6 +112,8 @@ public class FileServiceImpl<E extends BaseEntity> implements FileService<E> {
 			writer.println("  </body>");
 			writer.println("</html>");
 			writer.close();
+			
+			reader.close();
 		} catch (FileNotFoundException e) {
 			log.error(e.getMessage(), e);
 		} catch (UnsupportedEncodingException e) {
@@ -287,16 +289,20 @@ public class FileServiceImpl<E extends BaseEntity> implements FileService<E> {
 	    FileChannel source = null;
 	    FileChannel destination = null;
 	    try {
-	        source = new FileInputStream(sourceFile).getChannel();
+	        FileInputStream fileInputStream = new FileInputStream(sourceFile);
+			source = fileInputStream.getChannel();
 	        
-	        destination = new FileOutputStream(destFile).getChannel();
+	        FileOutputStream fileOutputStream = new FileOutputStream(destFile);
+			destination = fileOutputStream.getChannel();
 	        destination.force(true);
 
 	        long count = 0;
 	        long size = source.size();              
 	        while((count += destination.transferFrom(source, count, size-count))<size);
-	    }
-	    finally {
+	        
+	        fileInputStream.close();
+	        fileOutputStream.close();
+	    } finally {
 	        if(source != null) {
 	            source.close();
 	        }

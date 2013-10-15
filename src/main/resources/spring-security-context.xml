@@ -12,6 +12,7 @@ http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 		
 		<security:intercept-url pattern="/uploadedfiles/**" access="isAuthenticated()" />
 		<security:intercept-url pattern="/auth/**" access="permitAll" />
+		<security:intercept-url pattern="/install/**" access="permitAll" />
 		<security:intercept-url pattern="/resources/**" access="permitAll" />
 		<security:intercept-url pattern="/error/**" access="permitAll" />
 		<security:intercept-url pattern="/" access="permitAll" />

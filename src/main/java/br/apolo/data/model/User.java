@@ -22,8 +22,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import br.apolo.common.util.InputLength;
 import br.apolo.data.entitylistener.AuditLogListener;
+import br.apolo.data.enums.Status;
 import br.apolo.data.enums.UserPermission;
-import br.apolo.data.enums.UserStatus;
 
 @Entity
 @EntityListeners(value = AuditLogListener.class)
@@ -47,8 +47,8 @@ public class User extends AuditableBaseEntity {
 	private String password;
 	
 	@Column(name = "status", nullable = false)
-	@Type(type = "br.apolo.data.enums.usertype.UserStatusUserType")
-	private UserStatus status;
+	@Type(type = "br.apolo.data.enums.usertype.StatusUserType")
+	private Status status;
 
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "users_in_groups", 
@@ -137,11 +137,11 @@ public class User extends AuditableBaseEntity {
 		this.picturefiles = picturefiles;
 	}
 
-	public UserStatus getStatus() {
+	public Status getStatus() {
 		return status;
 	}
 
-	public void setStatus(UserStatus status) {
+	public void setStatus(Status status) {
 		this.status = status;
 	}
 }

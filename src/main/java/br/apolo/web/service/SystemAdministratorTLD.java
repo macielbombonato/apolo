@@ -1,5 +1,6 @@
 package br.apolo.web.service;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.TagSupport;
@@ -13,6 +14,7 @@ import org.springframework.web.context.ContextLoader;
 import br.apolo.business.service.UserService;
 import br.apolo.common.util.MessageBundle;
 import br.apolo.data.model.User;
+import br.apolo.web.enums.Navigation;
 
 public class SystemAdministratorTLD extends TagSupport {
 	
@@ -23,7 +25,11 @@ public class SystemAdministratorTLD extends TagSupport {
 	@Autowired
 	private UserService userService;
 	
+	private User systemAdmin;
+	
 	public int doStartTag() throws JspException {
+		int result = SKIP_BODY;
+		
 		if (userService == null) {
 			ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
 
@@ -31,18 +37,26 @@ public class SystemAdministratorTLD extends TagSupport {
 		}
 		
         try {
-        	User user = userService.getSystemAdministrator();
+        	if (systemAdmin == null) {
+        		systemAdmin = userService.getSystemAdministrator();
+        	}
         	
-        	if (user != null) {
+        	if (systemAdmin != null) {
                 JspWriter out = pageContext.getOut();
-                out.println(MessageBundle.getMessageBundle("common.admin") + ": <a href='mailto:" + user.getEmail() + "' >" + user.getName() + "</a>");        		
+                out.println(MessageBundle.getMessageBundle("common.admin") + ": <a href='mailto:" + systemAdmin.getEmail() + "' >" + systemAdmin.getName() + "</a>");        		
+        	} else {
+        		String caminho = Navigation.INSTALL.getPath();
+        		RequestDispatcher redirection = pageContext.getRequest().getRequestDispatcher(caminho);
+        		redirection.forward(pageContext.getRequest(), pageContext.getResponse());
+        		
+        		result = SKIP_PAGE;
         	}
 
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         }
         
-        return SKIP_BODY;
+        return result;
 
 	}
 
