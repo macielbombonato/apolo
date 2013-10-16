@@ -34,12 +34,24 @@ public class IndexController {
 	@Autowired
 	private UserService userService;
 	
+	/**
+	 * System welcome page
+	 * @param model
+	 * @param request
+	 * @return String
+	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String index(Model model, HttpServletRequest request) {
 		breadCrumbService.addNode(MessageBundle.getMessageBundle("breadcrumb.home"), 0, request);
 		return Navigation.INDEX.getPath();
 	}
 	
+	/**
+	 * System installation (setup) page
+	 * @param model
+	 * @param request
+	 * @return ModelAndView
+	 */
 	@RequestMapping(value = "/install", method = RequestMethod.GET)
 	public ModelAndView install(Model model, HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView(Navigation.INSTALL_NEW.getPath());
@@ -56,6 +68,11 @@ public class IndexController {
 		return mav;
 	}
 	
+	/**
+	 * Save installation settings
+	 * @param install
+	 * @return ModelAndView
+	 */
 	@RequestMapping(value = "/install/save", method = RequestMethod.POST)
 	public ModelAndView save(@ModelAttribute("install") InstallFormModel install) {
 		boolean success = false;
@@ -123,6 +140,10 @@ public class IndexController {
 		return mav;
 	}
 	
+	/**
+	 * Verify if the system has an administrator in the database 
+	 * @return boolean
+	 */
 	private boolean hasSystemAdministrator() {
 		boolean result = false;
 		

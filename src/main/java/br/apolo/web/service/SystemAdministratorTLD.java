@@ -25,6 +25,9 @@ public class SystemAdministratorTLD extends TagSupport {
 	@Autowired
 	private UserService userService;
 	
+	/**
+	 * The System administrator is a class field to be re used and go less times to data base.
+	 */
 	private User systemAdmin;
 	
 	public int doStartTag() throws JspException {
@@ -41,6 +44,9 @@ public class SystemAdministratorTLD extends TagSupport {
         		systemAdmin = userService.getSystemAdministrator();
         	}
         	
+        	/*
+        	 * If systemAdmin do not exist, the system has to be setuped. The user will be forwarded to this page
+        	 */
         	if (systemAdmin != null) {
                 JspWriter out = pageContext.getOut();
                 out.println(MessageBundle.getMessageBundle("common.admin") + ": <a href='mailto:" + systemAdmin.getEmail() + "' >" + systemAdmin.getName() + "</a>");        		

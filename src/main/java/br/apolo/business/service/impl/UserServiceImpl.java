@@ -99,7 +99,8 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 	@Override
 	@Transactional
 	public User save(User user, boolean changePassword, FileContent file) {
-		if (!user.getPermissions().contains(UserPermission.ADMIN)) {
+		if (Status.ADMIN.equals(user.getStatus()) 
+				&& !user.getPermissions().contains(UserPermission.ADMIN)) {
 			String message = MessageBundle.getMessageBundle("user.edit.msg.error.admin.permission");
 			throw new BusinessException(message);
 		}
