@@ -5,10 +5,10 @@
 >
     <modelVersion>4.0.0</modelVersion>
     <groupId>br.apolo</groupId>
-    <artifactId>Apolo-Base</artifactId>
+    <artifactId>apolo</artifactId>
     <packaging>war</packaging>
-    <version>1.1.${buildNumber}</version>
-    <name>Apolo</name>
+    <version>1.2</version>
+    <name>Apolo-Base</name>
 	<description>Arquitetura base de projeto Spring MVC + JPA</description>
 	
 	<organization>
@@ -551,9 +551,12 @@
 				<artifactId>maven-war-plugin</artifactId>
 				<version>2.1.1</version>
 				<configuration>
+					<manifest>
+						<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+					</manifest>
 					<archive>
 						<manifestEntries>
-							<SCM-Revision>${buildNumber}</SCM-Revision>
+							<SVN-Revision>${buildNumber}</SVN-Revision>
 						</manifestEntries>
 					</archive>
 					<warName>${artifactId}</warName>
@@ -562,4 +565,5 @@
 			</plugin>
         </plugins>
     </build>
+    <url>https://bitbucket.org/olimpo/apolo-base</url>
 </project>
