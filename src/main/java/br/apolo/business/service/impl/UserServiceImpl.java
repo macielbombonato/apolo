@@ -241,7 +241,17 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 			}
 			
 			if (dbUser == null) {
-				UserGroup userGroup = userGroupRepository.findOne(1L);
+				UserGroup userGroup = null;
+				
+				try {
+					userGroup = userGroupRepository.findOne(1L);
+				} catch (Throwable e) {
+					/*
+					 * If is the really first time that you are using application, this line will throw a error
+					 * In other cases, this error can´t occur
+					 */
+					log.error(e.getMessage(), e);
+				}
 				
 				if (userGroup == null 
 						|| (userGroup.getPermissions() != null 
