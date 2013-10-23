@@ -1,13 +1,21 @@
 package br.apolo.data.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.AttributeOverride;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.Type;
 
 import br.apolo.common.util.InputLength;
@@ -41,6 +49,13 @@ public class UserCustomField extends AuditableBaseEntity {
 	@Size(min = 0, max = InputLength.NAME)
 	private String defaultValue;
 	
+	@OneToMany(orphanRemoval = true, mappedBy = "userCustomField", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+	@LazyCollection(LazyCollectionOption.FALSE)
+	private Set<UserCustomFieldOption> options;
+	
+	@Transient
+	private Set<String> optionsStringList;
+	
 	public FieldType getType() {
 		return type;
 	}
@@ -71,5 +86,30 @@ public class UserCustomField extends AuditableBaseEntity {
 
 	public void setDefaultValue(String defaultValue) {
 		this.defaultValue = defaultValue;
+	}
+
+	public Set<UserCustomFieldOption> getOptions() {
+		return options;
+	}
+
+	public void setOptions(Set<UserCustomFieldOption> options) {
+		this.options = options;
+	}
+
+	public Set<String> getOptionsStringList() {
+		if (options != null 
+				&& !options.isEmpty()) {
+			optionsStringList = new HashSet<String>();
+			
+			for (UserCustomFieldOption option : options) {
+				optionsStringList.add(option.getValue());
+			}
+		}
+		
+		return optionsStringList;
+	}
+
+	public void setOptionsStringList(Set<String> optionsStringList) {
+		this.optionsStringList = optionsStringList;
 	}
 }

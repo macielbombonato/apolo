@@ -6,7 +6,38 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMap.Builder;
 
 public enum FieldType {
-	TEXT("text");
+	TEXT("text") {
+		@Override
+		public boolean hasOptions() {
+			return false;
+		}
+	},
+	TEXT_AREA("text_area") {
+		@Override
+		public boolean hasOptions() {
+			return false;
+		}
+	},
+	SELECT("select") {
+		@Override
+		public boolean hasOptions() {
+			return true;
+		}
+	},
+	SELECT_MULTIPLE("select_multiple") {
+		@Override
+		public boolean hasOptions() {
+			return true;
+		}
+	},
+	RADIO("radio") {
+		@Override
+		public boolean hasOptions() {
+			return true;
+		}
+	},
+	
+	;
 	
 	private final String code;
 	
@@ -30,5 +61,11 @@ public enum FieldType {
 
 	public String getCode() {
 		return code;
+	}
+	
+	public abstract boolean hasOptions();
+	
+	public boolean getShowOptions() {
+		return hasOptions();
 	}
 }

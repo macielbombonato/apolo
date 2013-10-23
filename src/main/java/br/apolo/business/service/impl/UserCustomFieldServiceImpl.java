@@ -1,6 +1,7 @@
 package br.apolo.business.service.impl;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import br.apolo.business.service.UserCustomFieldService;
 import br.apolo.common.exception.AccessDeniedException;
 import br.apolo.data.model.UserCustomField;
+import br.apolo.data.model.UserCustomFieldOption;
 import br.apolo.data.repository.UserCustomFieldRepository;
 
 @Service("userCustomFieldService")
@@ -45,10 +47,33 @@ public class UserCustomFieldServiceImpl extends BaseServiceImpl<UserCustomField>
 	@Override
 	@Transactional
 	public UserCustomField save(UserCustomField userCustomField) throws AccessDeniedException {
-		userCustomField.setLastUpdatedBy(getAuthenticatedUser());
-		userCustomField.setLastUpdateDate(new Date());
+		if (userCustomField != null) {
+			userCustomField.setLastUpdatedBy(getAuthenticatedUser());
+			userCustomField.setLastUpdateDate(new Date());
+			
+			if (userCustomField.getOptionsStringList() != null 
+					&& !userCustomField.getOptionsStringList().isEmpty()) {
+				if (userCustomField.getOptions() == null) {
+					userCustomField.setOptions(new HashSet<UserCustomFieldOption>());
+				} else {
+					userCustomField.getOptions().clear();
+				}
+				
+				UserCustomFieldOption option = null;
+				for (String optionString : userCustomField.getOptionsStringList()) {
+					option = new UserCustomFieldOption();
+					option.setUserCustomField(userCustomField);
+					option.setValue(optionString);
+					
+					userCustomField.getOptions().add(option);
+				}
+			} else {
+				userCustomField.setOptions(new HashSet<UserCustomFieldOption>());
+			}
+		}
 		
-		return userCustomFieldRepository.save(userCustomField);
+		
+		return userCustomFieldRepository.saveAndFlush(userCustomField);
 	}
 
 	@Override

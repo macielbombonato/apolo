@@ -33,12 +33,13 @@
 			<label for="name" class="control-label">
 				<s:message code="user.custom.field.type" />
 			</label>
-			<select id="type" name="type" class="input-block-level applyChosen form-control" <c:if test="${readOnly}">disabled="disabled"</c:if> data-placeholder='<s:message code="common.select" />'>
+			<select id="type" name="type" class="input-block-level applyChosen form-control" <c:if test="${readOnly}">disabled="disabled"</c:if> data-placeholder='<s:message code="common.select" />' onchange="toggleOptions($('#type option:selected').data('show-option'));">
 				<c:forEach items="${typeList}" var="type">
 					<option value="${type}"
 						<c:if test="${type == userCustomField.type}">
 							selected="selected"
-						</c:if>
+						</c:if> 
+						data-show-option="${type.showOptions}"
 					><s:message code="user.custom.field.type.${type}" /></option>
 				</c:forEach>
 			</select>
@@ -56,6 +57,13 @@
 				<s:message code="user.custom.field.label" />
 			</label>
 			<input class="form-control" type="text" id="label" name="label" value="${userCustomField.label}" <c:if test="${readOnly}">readonly="true"</c:if> />
+		</div>
+		
+		<div class="form-group" id="options">
+			<label for="optionsStringList" class="control-label">
+				<s:message code="user.custom.field.options" />
+			</label>
+			<form:input path="userCustomField.optionsStringList" cssClass="applyTagit" disabled="${readOnly}" maxlength="${inputlength.name}" />
 		</div>
 		
 	</div>

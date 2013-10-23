@@ -60,7 +60,7 @@ public class UserGroupServiceImpl extends BaseServiceImpl<UserGroup> implements 
 			userGroup.setLastUpdatedBy(getAuthenticatedUser());
 			userGroup.setLastUpdateDate(new Date());
 			
-			return userGroupRepository.save(userGroup);	
+			return userGroupRepository.saveAndFlush(userGroup);	
 		}
 	}
 

@@ -120,7 +120,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 					&& !file.getFile().getOriginalFilename().isEmpty()) {
 				
 				if (user.getId() == null) {
-					userRepository.save(user);	
+					userRepository.saveAndFlush(user);	
 				}
 				
 				user.setPictureOriginalName(file.getFile().getOriginalFilename());
@@ -133,7 +133,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 			}
 		}
 		
-		return userRepository.save(user);
+		return userRepository.saveAndFlush(user);
 	}
 	
 	@Override

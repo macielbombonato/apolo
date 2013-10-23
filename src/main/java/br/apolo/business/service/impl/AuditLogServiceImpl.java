@@ -26,7 +26,7 @@ public class AuditLogServiceImpl implements AuditLogService {
 
 	@Transactional
 	public AuditLog save(AuditLog entity) {
-		return auditLogRepository.save(entity);
+		return auditLogRepository.saveAndFlush(entity);
 	}
 
 	@Override

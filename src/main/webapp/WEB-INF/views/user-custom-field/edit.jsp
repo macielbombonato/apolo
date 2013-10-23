@@ -47,6 +47,9 @@
 		</div>
 		
 		<jsp:include page='/WEB-INF/views/fragment/_contentfooter.jsp'></jsp:include>
+		
+		<script type="text/javascript" src='<c:url value="/resources/app/js/userCustomField.js" />'></script>
+		
 		<jsp:include page='/WEB-INF/views/fragment/_pagefooter.jsp'></jsp:include>
 	</body>
 </html>
