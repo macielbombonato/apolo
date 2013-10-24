@@ -4,6 +4,7 @@
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="apolo" uri="/WEB-INF/taglib/apolo.tld" %>
 
 <s:message code="common.datePattern" var="datePattern" />
 
@@ -156,6 +157,9 @@
 				<input type="file" class="form-control" name="picturefiles[0]" />
 			</div>		
 		</c:if>
+		
+		<apolo:customField user="${user}" fieldList="${customFieldList}" readOnly="${readOnly}" />
+		
 	</div>
 	
 	<div class="tab-pane" id="authorShipTab">

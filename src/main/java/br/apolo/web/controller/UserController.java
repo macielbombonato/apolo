@@ -30,11 +30,12 @@ import org.springframework.web.servlet.ModelAndView;
 
 import br.apolo.business.model.FileContent;
 import br.apolo.business.service.FileService;
+import br.apolo.business.service.UserCustomFieldService;
 import br.apolo.business.service.UserGroupService;
 import br.apolo.business.service.UserService;
 import br.apolo.common.util.MessageBundle;
-import br.apolo.data.enums.UserPermission;
 import br.apolo.data.enums.Status;
+import br.apolo.data.enums.UserPermission;
 import br.apolo.data.model.User;
 import br.apolo.security.SecuredEnum;
 import br.apolo.web.enums.Navigation;
@@ -50,6 +51,9 @@ public class UserController extends BaseController<User> {
 	
 	@Autowired
 	UserGroupService userGroupService;
+	
+	@Autowired
+	UserCustomFieldService userCustomFieldService;
 	
 	@Autowired
 	private FileService<User> fileService;
@@ -128,6 +132,7 @@ public class UserController extends BaseController<User> {
 		
 		mav.addObject("user", user);
 		mav.addObject("groupList", userGroupService.list());
+		mav.addObject("customFieldList", userCustomFieldService.list());
 		mav.addObject("readOnly", false);
 		
 		return mav;
@@ -147,6 +152,7 @@ public class UserController extends BaseController<User> {
 		
 		mav.addObject("user", user);
 		mav.addObject("groupList", userGroupService.list());
+		mav.addObject("customFieldList", userCustomFieldService.list());
 		mav.addObject("readOnly", false);
 		mav.addObject("editing", true);
 		
@@ -163,6 +169,7 @@ public class UserController extends BaseController<User> {
 		User user = userService.find(id);
 		
 		mav.addObject("user", user);
+		mav.addObject("customFieldList", userCustomFieldService.list());
 		mav.addObject("readOnly", true);
 		
 		return mav;
@@ -268,6 +275,7 @@ public class UserController extends BaseController<User> {
 			mav.setViewName(getRedirectionPath(request, Navigation.USER_NEW, Navigation.USER_EDIT));
 			mav.addObject("user", entity);
 			mav.addObject("groupList", userGroupService.list());
+			mav.addObject("customFieldList", userCustomFieldService.list());
 			mav.addObject("readOnly", false);
 			mav.addObject("error", true);
 			

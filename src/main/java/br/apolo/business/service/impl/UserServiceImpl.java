@@ -29,6 +29,7 @@ import br.apolo.common.util.MessageBundle;
 import br.apolo.data.enums.Status;
 import br.apolo.data.enums.UserPermission;
 import br.apolo.data.model.User;
+import br.apolo.data.model.UserCustomFieldValue;
 import br.apolo.data.model.UserGroup;
 import br.apolo.data.repository.UserGroupRepository;
 import br.apolo.data.repository.UserRepository;
@@ -130,6 +131,12 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 					String message = MessageBundle.getMessageBundle("commons.errorUploadingFile");
 					throw new BusinessException(message);
 				}
+			}
+		}
+		
+		if (user.getCustomFields() != null && !user.getCustomFields().isEmpty()) {
+			for (UserCustomFieldValue field : user.getCustomFields()) {
+				field.setUser(user);
 			}
 		}
 		

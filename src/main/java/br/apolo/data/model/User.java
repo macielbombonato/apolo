@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.persistence.AttributeOverride;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
@@ -12,11 +13,14 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.Type;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -59,6 +63,10 @@ public class User extends AuditableBaseEntity {
 
 	@Transient
 	private Set<UserPermission> permissions;
+	
+	@OneToMany(orphanRemoval = true, mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+	@LazyCollection(LazyCollectionOption.FALSE)
+	private List<UserCustomFieldValue> customFields;
 	
 	@Column(name = "pic_original_name", length = InputLength.MEDIUM, nullable = true)
 	private String pictureOriginalName;
@@ -143,5 +151,13 @@ public class User extends AuditableBaseEntity {
 
 	public void setStatus(Status status) {
 		this.status = status;
+	}
+
+	public List<UserCustomFieldValue> getCustomFields() {
+		return customFields;
+	}
+
+	public void setCustomFields(List<UserCustomFieldValue> customFields) {
+		this.customFields = customFields;
 	}
 }

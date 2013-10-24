@@ -45,8 +45,8 @@ public class UserCustomField extends AuditableBaseEntity {
 	@Size(min = 1, max = InputLength.NAME)
 	private String label;
 	
-	@Column(name = "default_value", length = InputLength.NAME, nullable = true)
-	@Size(min = 0, max = InputLength.NAME)
+	@Column(name = "default_value", length = InputLength.MEMO, nullable = true)
+	@Size(min = 0, max = InputLength.MEMO)
 	private String defaultValue;
 	
 	@OneToMany(orphanRemoval = true, mappedBy = "userCustomField", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})

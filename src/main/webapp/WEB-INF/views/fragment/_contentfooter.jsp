@@ -2,7 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"  %>
-<%@ taglib prefix="sysadmin" uri="/WEB-INF/taglib/systemAdministrator.tld" %>
+<%@ taglib prefix="apolo" uri="/WEB-INF/taglib/apolo.tld" %>
 
 <div style="height:60px; position:relative; ">
 	&nbsp;
@@ -14,7 +14,7 @@
 			<div class="footer_contents"> 
 				<p class="muted">
 					<small>
-						<sysadmin:mailto />
+						<apolo:sysadmin />
 						<br />
 						<s:message code="footer.message" htmlEscape="false"/>
 					</small>

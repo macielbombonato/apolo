@@ -1,6 +1,8 @@
 package br.apolo.common.util;
 
 public class InputLength {
+	public static final int MEMO = 4000;
+	
 	public static final int ERROR_MESSAGE = 4000;
 
 	public static final int DB_OBJECT_NAME = 128;
