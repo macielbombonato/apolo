@@ -64,7 +64,7 @@ public class User extends AuditableBaseEntity {
 	@Transient
 	private Set<UserPermission> permissions;
 	
-	@OneToMany(orphanRemoval = true, mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+	@OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
 	@LazyCollection(LazyCollectionOption.FALSE)
 	private List<UserCustomFieldValue> customFields;
 	

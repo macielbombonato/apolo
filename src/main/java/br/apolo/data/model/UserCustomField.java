@@ -9,6 +9,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
@@ -51,6 +52,7 @@ public class UserCustomField extends AuditableBaseEntity {
 	
 	@OneToMany(orphanRemoval = true, mappedBy = "userCustomField", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
 	@LazyCollection(LazyCollectionOption.FALSE)
+	@OrderBy("value")
 	private Set<UserCustomFieldOption> options;
 	
 	@Transient
