@@ -60,15 +60,16 @@
 			<input class="form-control" type="text" id="label" name="label" value="${userCustomField.label}" <c:if test="${readOnly}">readonly="true"</c:if> />
 		</div>
 		
-		<c:if test="${userCustomField.type != null && userCustomField.type.showOptions}">
-			<div class="form-group" id="options">
-				<label for="optionsStringList" class="control-label">
-					<s:message code="user.custom.field.options" />
-				</label>
-				<form:input path="userCustomField.optionsStringList" cssClass="applyTagit" disabled="${readOnly}" maxlength="${inputlength.name}" />
-			</div>		
-		</c:if>
-		
+		<div class="form-group" id="options"
+				<c:if test="${userCustomField.type == null && !userCustomField.type.showOptions}">
+					style="display:none;"
+				</c:if>
+			>
+			<label for="optionsStringList" class="control-label">
+				<s:message code="user.custom.field.options" />
+			</label>
+			<form:input path="userCustomField.optionsStringList" cssClass="applyTagit" disabled="${readOnly}" maxlength="${inputlength.name}" />
+		</div>
 	</div>
 	
 	<div class="tab-pane" id="authorShipTab">
