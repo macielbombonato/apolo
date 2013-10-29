@@ -11,13 +11,13 @@
 		<div class="container ">
 			<div class="row ">
 				<div class="media">
-					
-					<img class="pull-left" src='<c:url value="/resources/app/img/favicon.png" />' />
-					
-					<div class="media-body">
-						 <h4 class="media-heading">
-						 	<s:message code="view.index.apolo.title" />
-						 </h4>
+					<div class="col-md-4">
+						<img class="img-responsive" src='<c:url value="/resources/app/img/favicon.png" />' />
+					</div>
+					<div class="media-body col-md-8">
+						<h4 class="media-heading">
+							<s:message code="view.index.apolo.title" />
+						</h4>
 						 
 						<p>
 							<s:message code="view.index.hello" htmlEscape="false"/>
