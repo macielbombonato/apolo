@@ -1,11 +1,14 @@
 package br.apolo.web.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BreadCrumbTree {
+public class BreadCrumbTree implements Serializable {
 	 
-    private List<BreadCrumbNode> breadCrumb;
+	private static final long serialVersionUID = -6089164246689886746L;
+	
+	private List<BreadCrumbNode> breadCrumb;
  
     private BreadCrumbNode findNode(BreadCrumbNode node) {
         for (BreadCrumbNode n : breadCrumb) {
