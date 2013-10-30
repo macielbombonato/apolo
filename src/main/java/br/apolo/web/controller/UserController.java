@@ -173,7 +173,7 @@ public class UserController extends BaseController<User> {
 		
 		ModelAndView mav = new ModelAndView(Navigation.USER_VIEW.getPath());
 		
-		if (authenticatedUserHasPermission(userService, id, UserPermission.USER_EDIT)) {
+		if (authenticatedUserHasPermission(userService, id, UserPermission.USER_LIST)) {
 			User user = userService.find(id);
 			
 			mav.addObject("user", user);
