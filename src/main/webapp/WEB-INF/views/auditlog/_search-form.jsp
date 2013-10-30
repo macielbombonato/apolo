@@ -4,7 +4,7 @@
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 
 <form id="userForm" class="form-search form-inline" role="form" action="<s:url value="/auditlog/search"></s:url>" method="post">
-	<div class="form-group">
+	<div class="form-group col-md-12">
 		<div class="input-group">
 			<input type="text" id="searchParameter" name="searchParameter" value="${searchParameter}" class="search-query form-control" placeholder='<s:message code="auditlog.search.field" />' />
 			<span class="input-group-btn">

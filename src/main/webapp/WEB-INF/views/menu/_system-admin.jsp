@@ -9,13 +9,13 @@
 			<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 				<i class="glyphicon glyphicon-cog "></i>
 				<span class="hidden-phone">
-					<s:message code="user" />
+					<s:message code="sysadmin.menu.header" />
 				</span>
 				<span class="caret"></span>
 			</a>
                         
 			<ul class="dropdown-menu">
-				<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_CREATE, ROLE_USER_LIST, ROLE_USER_MANAGER, ROLE_USER_CUSTOM_FIELD_LIST, ROLE_USER_CUSTOM_FIELD_CREATE">
+				<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_CREATE, ROLE_USER_LIST, ROLE_USER_MANAGER">
 					<li class="dropdown-header">
 						<s:message code="users" />
 					</li>
@@ -46,28 +46,6 @@
 							<a href='<s:url value="/user/new"></s:url>'>
 								<i class="glyphicon glyphicon-plus"></i>
 								<s:message code="user.new" />
-							</a>
-						</li>
-					</security:authorize>
-					<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_CUSTOM_FIELD_LIST">
-						<li>
-							<a href='<s:url value="/user-custom-field/search-form"></s:url>'>
-								<i class="glyphicon glyphicon-search"></i>
-								<s:message code="user.custom.field.search" />
-							</a>
-						</li>
-						<li>
-							<a href='<s:url value="/user-custom-field/list"></s:url>'>
-								<i class="glyphicon glyphicon-th-list"></i>
-								<s:message code="user.custom.field.list" />
-							</a>
-						</li>
-					</security:authorize>
-					<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_CUSTOM_FIELD_CREATE">
-						<li>
-							<a href='<s:url value="/user-custom-field/new"></s:url>'>
-								<i class="glyphicon glyphicon-plus"></i>
-								<s:message code="user.custom.field.new" />
 							</a>
 						</li>
 					</security:authorize>
@@ -103,16 +81,42 @@
 					</security:authorize>
 				</security:authorize>
 				
-				<security:authorize  ifAnyGranted="ROLE_ADMIN">
+				<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_CUSTOM_FIELD_LIST, ROLE_USER_CUSTOM_FIELD_CREATE">
 					<li class="dropdown-header">
-						<s:message code="sysadmin.menu.header" />
+						<s:message code="sysadmin.menu.config" />
 					</li>
-					<li>
-						<a href='<s:url value="/auditlog/list"></s:url>'>
-							<i class="glyphicon glyphicon-th-list"></i>
-							<s:message code="auditlog.list" />
-						</a>
-					</li>
+					
+					<security:authorize  ifAnyGranted="ROLE_ADMIN">
+						<li>
+							<a href='<s:url value="/auditlog/list"></s:url>'>
+								<i class="glyphicon glyphicon-th-list"></i>
+								<s:message code="auditlog.list" />
+							</a>
+						</li>
+					</security:authorize>
+					
+					<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_CUSTOM_FIELD_LIST">
+						<li>
+							<a href='<s:url value="/user-custom-field/search-form"></s:url>'>
+								<i class="glyphicon glyphicon-search"></i>
+								<s:message code="user.custom.field.search" />
+							</a>
+						</li>
+						<li>
+							<a href='<s:url value="/user-custom-field/list"></s:url>'>
+								<i class="glyphicon glyphicon-th-list"></i>
+								<s:message code="user.custom.field.list" />
+							</a>
+						</li>
+					</security:authorize>
+					<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_CUSTOM_FIELD_CREATE">
+						<li>
+							<a href='<s:url value="/user-custom-field/new"></s:url>'>
+								<i class="glyphicon glyphicon-plus"></i>
+								<s:message code="user.custom.field.new" />
+							</a>
+						</li>
+					</security:authorize>
 				</security:authorize>
 			</ul>
 		</li>           
