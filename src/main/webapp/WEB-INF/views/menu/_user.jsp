@@ -16,6 +16,12 @@
 			<ul class="dropdown-menu">
 				<li>
 					<a href='<s:url value="/user"></s:url>'>
+						<i class="glyphicon glyphicon-dashboard"></i>
+						<s:message code="user.dashboard" />
+					</a>
+				</li>
+				<li>
+					<a href='<s:url value="/user/view"></s:url>/<security:authentication property="principal.systemUser.id" />'>
 						<i class="glyphicon glyphicon-user"></i>
 						<s:message code="user.profile" />
 					</a>

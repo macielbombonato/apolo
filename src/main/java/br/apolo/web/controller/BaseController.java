@@ -21,10 +21,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.NestedServletException;
 
+import br.apolo.business.service.BaseService;
 import br.apolo.common.exception.BusinessException;
 import br.apolo.common.exception.GenericException;
 import br.apolo.common.util.MessageBundle;
+import br.apolo.data.enums.UserPermission;
 import br.apolo.data.model.BaseEntity;
+import br.apolo.data.model.User;
 import br.apolo.web.enums.Navigation;
 import br.apolo.web.service.BreadCrumbTreeService;
 
@@ -88,6 +91,14 @@ public abstract class BaseController<E extends BaseEntity> {
 	    CustomDateEditor editor = new CustomDateEditor(dateFormat, true);
 	    //Register it as custom editor for the Date type
 	    binder.registerCustomEditor(Date.class, editor);
+	}
+	
+	protected boolean authenticatedUserHasPermission(BaseService<E> service, Long id, UserPermission neededPermission) {
+		User authenticatedUser = service.getAuthenticatedUser();
+		
+		return authenticatedUser != null 
+				&& (authenticatedUser.getId().equals(id) 
+						|| (authenticatedUser.getPermissions().contains(UserPermission.ADMIN) || authenticatedUser.getPermissions().contains(neededPermission)));
 	}
 	
 	protected void configurePageable(ModelAndView mav, Page<E> page, String url) {

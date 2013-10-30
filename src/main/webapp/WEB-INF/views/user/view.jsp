@@ -42,6 +42,17 @@
 									<s:message code="common.edit" />
 								</a>
 							</security:authorize>
+							<security:authorize ifNotGranted="ROLE_ADMIN, ROLE_USER_EDIT">
+
+								<security:authentication property="principal.systemUser.id" var="authenticatedUserId" />
+
+								<c:if test="${authenticatedUserId == user.id}">
+									<a href='<s:url value="/user/edit"></s:url>/${user.id}' class="btn btn-default">
+										<i class="glyphicon glyphicon-edit"></i>
+										<s:message code="common.edit" />
+									</a>
+								</c:if>
+							</security:authorize>
 							
 							<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_MANAGER">
 								<c:if test="${user.status.changeable}">

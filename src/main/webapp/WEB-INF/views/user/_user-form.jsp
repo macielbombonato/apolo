@@ -105,10 +105,17 @@
 		<c:choose>
 			<c:when test="${not readOnly}">
 				<div class="form-group">
-					<label for="name" class="control-label">
-						<s:message code="user.groups" />
-					</label>
-					<select name="groups" id="listTo" size="5" multiple="multiple" class="input-block-level applyChosen form-control" <c:if test="${readOnly}">disabled="disabled"</c:if> data-placeholder='<s:message code="common.select" />' >
+					<security:authorize ifAnyGranted="ROLE_ADMIN, ROLE_USER_CREATE, ROLE_USER_EDIT">
+						<label for="name" class="control-label">
+							<s:message code="user.groups" />
+						</label>
+					</security:authorize>
+
+					<select name="groups" id="listTo" size="5" multiple="multiple"  
+							<security:authorize ifNotGranted="ROLE_ADMIN, ROLE_USER_CREATE, ROLE_USER_EDIT">style="display:none"</security:authorize>
+							<security:authorize ifAnyGranted="ROLE_ADMIN, ROLE_USER_CREATE, ROLE_USER_EDIT">class="input-block-level applyChosen form-control"</security:authorize>
+							<c:if test="${readOnly}">disabled="disabled"</c:if> 
+							data-placeholder='<s:message code="common.select" />' >
 						<c:forEach items="${groupList}" var="group">
 							<option value="${group.id}" 
 								<c:forEach items="${user.groups}" var="userGroup">

@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomCollectionEditor;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -138,39 +139,50 @@ public class UserController extends BaseController<User> {
 		return mav;
 	}
 	
-	@SecuredEnum(UserPermission.USER_EDIT)
+	@PreAuthorize("isAuthenticated()")
 	@RequestMapping(value = "edit/{id}", method = RequestMethod.GET)
 	public ModelAndView edit(@PathVariable Long id, HttpServletRequest request) {
 		breadCrumbService.addNode(MessageBundle.getMessageBundle("breadcrumb.user.edit"), 2, request);
 		
 		ModelAndView mav = new ModelAndView(Navigation.USER_EDIT.getPath());
 		
-		User user = userService.find(id);
-		
-		user.setLastUpdatedBy(userService.getAuthenticatedUser());
-		user.setLastUpdateDate(new Date());
-		
-		mav.addObject("user", user);
-		mav.addObject("groupList", userGroupService.list());
-		mav.addObject("customFieldList", userCustomFieldService.list());
-		mav.addObject("readOnly", false);
-		mav.addObject("editing", true);
+		// The authenticated user can change your own profile or others if has user edit permission
+		if (authenticatedUserHasPermission(userService, id, UserPermission.USER_EDIT)) {
+			User user = userService.find(id);
+			
+			user.setLastUpdatedBy(userService.getAuthenticatedUser());
+			user.setLastUpdateDate(new Date());
+			
+			mav.addObject("user", user);
+			mav.addObject("groupList", userGroupService.list());
+			mav.addObject("customFieldList", userCustomFieldService.list());
+			mav.addObject("readOnly", false);
+			mav.addObject("editing", true);			
+		} else {
+			String message = MessageBundle.getMessageBundle("user.msg.error.permission");
+			throw new AccessDeniedException(message);
+		}
 		
 		return mav;
 	}
-	
-	@SecuredEnum(UserPermission.USER_LIST)
+
+	@PreAuthorize("isAuthenticated()")
 	@RequestMapping(value = "view/{id}", method = RequestMethod.GET)
 	public ModelAndView view(@PathVariable Long id, HttpServletRequest request) {
 		breadCrumbService.addNode(MessageBundle.getMessageBundle("breadcrumb.user"), 2, request);
 		
 		ModelAndView mav = new ModelAndView(Navigation.USER_VIEW.getPath());
 		
-		User user = userService.find(id);
-		
-		mav.addObject("user", user);
-		mav.addObject("customFieldList", userCustomFieldService.list());
-		mav.addObject("readOnly", true);
+		if (authenticatedUserHasPermission(userService, id, UserPermission.USER_EDIT)) {
+			User user = userService.find(id);
+			
+			mav.addObject("user", user);
+			mav.addObject("customFieldList", userCustomFieldService.list());
+			mav.addObject("readOnly", true);			
+		} else {
+			String message = MessageBundle.getMessageBundle("user.msg.error.permission");
+			throw new AccessDeniedException(message);
+		}
 		
 		return mav;
 	}
@@ -242,7 +254,7 @@ public class UserController extends BaseController<User> {
 		return null;
 	}
 	
-	@SecuredEnum({ UserPermission.USER_CREATE, UserPermission.USER_EDIT })
+	@PreAuthorize("isAuthenticated()")
 	@RequestMapping(value = "save", method = RequestMethod.POST)
 	public ModelAndView save(@Valid @ModelAttribute("user") User entity, BindingResult result, HttpServletRequest request, @RequestParam(defaultValue = "false") boolean changePassword, @RequestParam(defaultValue = "") String passwordConfirmation) {
 		ModelAndView mav = new ModelAndView();
@@ -302,19 +314,25 @@ public class UserController extends BaseController<User> {
 		} 
 		
 		if (entity != null) {
-			FileContent file = null;
-			
-			if (objectFile != null) {
-				file = new FileContent();
-				file.setFile(objectFile);
+			if (authenticatedUserHasPermission(userService, entity.getId(), UserPermission.USER_CREATE) 
+					|| authenticatedUserHasPermission(userService, entity.getId(), UserPermission.USER_EDIT)) {
+				FileContent file = null;
+				
+				if (objectFile != null) {
+					file = new FileContent();
+					file.setFile(objectFile);
+				}
+				
+				userService.save(entity, changePassword, file);
+				
+				mav = view(entity.getId(), request);
+				
+				mav.addObject("msg", true);
+				mav.addObject("message", MessageBundle.getMessageBundle("common.msg.save.success"));				
+			} else {
+				String message = MessageBundle.getMessageBundle("user.msg.error.permission");
+				throw new AccessDeniedException(message);
 			}
-			
-			userService.save(entity, changePassword, file);
-			
-			mav = view(entity.getId(), request);
-			
-			mav.addObject("msg", true);
-			mav.addObject("message", MessageBundle.getMessageBundle("common.msg.save.success"));
 		}
 		
 		return mav;
