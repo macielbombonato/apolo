@@ -84,7 +84,7 @@ public enum Navigation {
 	USER_INDEX("user") {
 		@Override
 		public String getNodeName() {
-			return MessageBundle.getMessageBundle("breadcrumb.user");
+			return MessageBundle.getMessageBundle("breadcrumb.user.panel");
 		}
 
 		@Override
