@@ -90,7 +90,7 @@ public class UserCustomFieldController extends BaseController<UserCustomField> {
 	@SecuredEnum(UserPermission.USER_CUSTOM_FIELD_LIST)
 	@RequestMapping(value = "list/{pageNumber}", method = RequestMethod.GET)
 	public ModelAndView list(@PathVariable Integer pageNumber, HttpServletRequest request) {
-		breadCrumbService.addNode(MessageBundle.getMessageBundle("breadcrumb.userCustomField.list"), 1, request);
+		breadCrumbService.addNode(Navigation.USER_CUSTOM_FIELD_LIST, request);
 		
 		ModelAndView mav = new ModelAndView(Navigation.USER_CUSTOM_FIELD_LIST.getPath());
 		
@@ -110,7 +110,7 @@ public class UserCustomFieldController extends BaseController<UserCustomField> {
 	@SecuredEnum(UserPermission.USER_CUSTOM_FIELD_CREATE)
 	@RequestMapping(value = "new", method = RequestMethod.GET)
 	public ModelAndView create(HttpServletRequest request) {
-		breadCrumbService.addNode(MessageBundle.getMessageBundle("breadcrumb.userCustomField.new"), 1, request);
+		breadCrumbService.addNode(Navigation.USER_CUSTOM_FIELD_NEW, request);
 		
 		ModelAndView mav = new ModelAndView(Navigation.USER_CUSTOM_FIELD_NEW.getPath());
 		
@@ -132,7 +132,7 @@ public class UserCustomFieldController extends BaseController<UserCustomField> {
 	@SecuredEnum(UserPermission.USER_CUSTOM_FIELD_EDIT)
 	@RequestMapping(value = "edit/{id}", method = RequestMethod.GET)
 	public ModelAndView edit(@PathVariable Long id, HttpServletRequest request) {
-		breadCrumbService.addNode(MessageBundle.getMessageBundle("breadcrumb.userCustomField.edit"), 2, request);
+		breadCrumbService.addNode(Navigation.USER_CUSTOM_FIELD_EDIT, request);
 		
 		ModelAndView mav = new ModelAndView(Navigation.USER_CUSTOM_FIELD_EDIT.getPath());
 		
@@ -204,7 +204,7 @@ public class UserCustomFieldController extends BaseController<UserCustomField> {
 	@SecuredEnum({UserPermission.USER_CUSTOM_FIELD_VIEW, UserPermission.USER_CUSTOM_FIELD_LIST})
 	@RequestMapping(value = "view/{id}", method = RequestMethod.GET)
 	public ModelAndView view(@PathVariable Long id, HttpServletRequest request) {
-		breadCrumbService.addNode(MessageBundle.getMessageBundle("breadcrumb.userCustomField"), 2, request);
+		breadCrumbService.addNode(Navigation.USER_CUSTOM_FIELD_VIEW, request);
 		
 		ModelAndView mav = new ModelAndView(Navigation.USER_CUSTOM_FIELD_VIEW.getPath());
 		
@@ -224,15 +224,29 @@ public class UserCustomFieldController extends BaseController<UserCustomField> {
 	}
 	
 	@SecuredEnum(UserPermission.USER_CUSTOM_FIELD_LIST)
+	@RequestMapping(value = "search/{pageNumber}", method = RequestMethod.GET)
+	public ModelAndView search(@PathVariable Integer pageNumber, HttpServletRequest request) {
+		return search(pageNumber, "", request);
+	}
+	
+	@SecuredEnum(UserPermission.USER_CUSTOM_FIELD_LIST)
 	@RequestMapping(value = "search/{searchParameter}/{pageNumber}", method = RequestMethod.GET)
 	public ModelAndView search(@PathVariable Integer pageNumber, @PathVariable String searchParameter, HttpServletRequest request) {
-		breadCrumbService.addNode(MessageBundle.getMessageBundle("breadcrumb.userCustomField.list"), 2, request);
+		breadCrumbService.addNode(Navigation.USER_CUSTOM_FIELD_LIST, request);
 		
 		ModelAndView mav = new ModelAndView(Navigation.USER_CUSTOM_FIELD_LIST.getPath());
 		
 		Page<UserCustomField> page = userCustomFieldService.search(pageNumber, searchParameter);
 		
-		configurePageable(mav, page, "/user-custom-field/search/"+searchParameter);
+		String url = "";
+		
+		if (searchParameter == null || "".equalsIgnoreCase(searchParameter)) {
+			url = "/user-custom-field/search";
+		} else {
+			url = "/user-custom-field/search/"+searchParameter;
+		}
+		
+		configurePageable(mav, page, url);
 		
 		mav.addObject("searchParameter", searchParameter);
 		
@@ -247,7 +261,7 @@ public class UserCustomFieldController extends BaseController<UserCustomField> {
 	@SecuredEnum(UserPermission.USER_CUSTOM_FIELD_LIST)
 	@RequestMapping(value = "search-form", method = RequestMethod.GET)
 	public ModelAndView searchForm(HttpServletRequest request) {
-		breadCrumbService.addNode(MessageBundle.getMessageBundle("breadcrumb.userCustomField.search"), 1, request);
+		breadCrumbService.addNode(Navigation.USER_CUSTOM_FIELD_SEARCH, request);
 		
 		ModelAndView mav = new ModelAndView(Navigation.USER_CUSTOM_FIELD_SEARCH.getPath());
 		

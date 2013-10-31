@@ -3,15 +3,17 @@ package br.apolo.common.config;
 import java.util.EnumSet;
 import java.util.Set;
 
-import javax.servlet.*;
+import javax.servlet.DispatcherType;
+import javax.servlet.FilterRegistration;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRegistration;
 
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.servlet.DispatcherServlet;
-
-import br.apolo.web.enums.Navigation;
 
 public class WebAppInitializer implements WebApplicationInitializer {
 
@@ -32,7 +34,7 @@ public class WebAppInitializer implements WebApplicationInitializer {
 
 		ServletRegistration.Dynamic appServlet = servletContext.addServlet("appServlet", new DispatcherServlet(mvcContext));
 		appServlet.setLoadOnStartup(1);
-		Set<String> mappingConflicts = appServlet.addMapping(Navigation.HOME.getPath());
+		Set<String> mappingConflicts = appServlet.addMapping("/");
 
 		if (!mappingConflicts.isEmpty()) {
 			throw new IllegalStateException("'appServlet' cannot be mapped to '/' under Tomcat versions <= 7.0.14");

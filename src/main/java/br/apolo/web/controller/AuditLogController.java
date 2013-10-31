@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import br.apolo.business.service.AuditLogService;
-import br.apolo.common.util.MessageBundle;
 import br.apolo.data.enums.UserPermission;
 import br.apolo.data.model.AuditLog;
 import br.apolo.security.SecuredEnum;
@@ -37,7 +36,7 @@ public class AuditLogController extends BaseController<AuditLog> {
 	@SecuredEnum(UserPermission.ADMIN)
 	@RequestMapping(value = "list/{pageNumber}", method = RequestMethod.GET)
 	public ModelAndView list(@PathVariable Integer pageNumber, HttpServletRequest request) {
-		breadCrumbService.addNode(MessageBundle.getMessageBundle("breadcrumb.auditlog.list"), 1, request);
+		breadCrumbService.addNode(Navigation.AUDIT_LOG_LIST, request);
 		
 		ModelAndView mav = new ModelAndView(Navigation.AUDIT_LOG_LIST.getPath());
 		
@@ -61,15 +60,29 @@ public class AuditLogController extends BaseController<AuditLog> {
 	}
 	
 	@SecuredEnum(UserPermission.ADMIN)
+	@RequestMapping(value = "search/{pageNumber}", method = RequestMethod.GET)
+	public ModelAndView search(@PathVariable Integer pageNumber, HttpServletRequest request) {
+		return search(pageNumber, "", request);
+	}
+	
+	@SecuredEnum(UserPermission.ADMIN)
 	@RequestMapping(value = "search/{searchParameter}/{pageNumber}", method = RequestMethod.GET)
 	public ModelAndView search(@PathVariable Integer pageNumber, @PathVariable String searchParameter, HttpServletRequest request) {
-		breadCrumbService.addNode(MessageBundle.getMessageBundle("breadcrumb.user.list"), 2, request);
+		breadCrumbService.addNode(Navigation.AUDIT_LOG_LIST, request);
 		
 		ModelAndView mav = new ModelAndView(Navigation.AUDIT_LOG_LIST.getPath());
 		
 		Page<AuditLog> page = auditLogService.search(pageNumber, searchParameter);
 		
-		configurePageable(mav, page, "/auditlog/search/"+searchParameter);
+		String url = "";
+		
+		if (searchParameter == null || "".equalsIgnoreCase(searchParameter)) {
+			url = "/auditlog/search";
+		} else {
+			url = "/auditlog/search/"+searchParameter;
+		}
+		
+		configurePageable(mav, page, url);
 		
 		mav.addObject("searchParameter", searchParameter);
 		

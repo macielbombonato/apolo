@@ -91,7 +91,7 @@ public class UserGroupController extends BaseController<UserGroup> {
 	@SecuredEnum(UserPermission.USER_PERMISSION_LIST)
 	@RequestMapping(value = "list/{pageNumber}", method = RequestMethod.GET)
 	public ModelAndView list(@PathVariable Integer pageNumber, HttpServletRequest request) {
-		breadCrumbService.addNode(MessageBundle.getMessageBundle("breadcrumb.usergroup.list"), 1, request);
+		breadCrumbService.addNode(Navigation.USER_PERMISSION_LIST, request);
 		
 		ModelAndView mav = new ModelAndView(Navigation.USER_PERMISSION_LIST.getPath());
 		
@@ -111,7 +111,7 @@ public class UserGroupController extends BaseController<UserGroup> {
 	@SecuredEnum(UserPermission.USER_PERMISSION_CREATE)
 	@RequestMapping(value = "new", method = RequestMethod.GET)
 	public ModelAndView create(HttpServletRequest request) {
-		breadCrumbService.addNode(MessageBundle.getMessageBundle("breadcrumb.usergroup.new"), 1, request);
+		breadCrumbService.addNode(Navigation.USER_PERMISSION_NEW, request);
 		
 		ModelAndView mav = new ModelAndView(Navigation.USER_PERMISSION_NEW.getPath());
 		
@@ -133,7 +133,7 @@ public class UserGroupController extends BaseController<UserGroup> {
 	@SecuredEnum(UserPermission.USER_PERMISSION_EDIT)
 	@RequestMapping(value = "edit/{id}", method = RequestMethod.GET)
 	public ModelAndView edit(@PathVariable Long id, HttpServletRequest request) {
-		breadCrumbService.addNode(MessageBundle.getMessageBundle("breadcrumb.usergroup.edit"), 2, request);
+		breadCrumbService.addNode(Navigation.USER_PERMISSION_EDIT, request);
 		
 		ModelAndView mav = new ModelAndView(Navigation.USER_PERMISSION_EDIT.getPath());
 		
@@ -210,7 +210,7 @@ public class UserGroupController extends BaseController<UserGroup> {
 	@SecuredEnum({UserPermission.USER_PERMISSION_VIEW, UserPermission.USER_PERMISSION_LIST, UserPermission.USER_LIST})
 	@RequestMapping(value = "view/{id}", method = RequestMethod.GET)
 	public ModelAndView view(@PathVariable Long id, HttpServletRequest request) {
-		breadCrumbService.addNode(MessageBundle.getMessageBundle("breadcrumb.usergroup"), 2, request);
+		breadCrumbService.addNode(Navigation.USER_PERMISSION_VIEW, request);
 		
 		ModelAndView mav = new ModelAndView(Navigation.USER_PERMISSION_VIEW.getPath());
 		
@@ -229,15 +229,29 @@ public class UserGroupController extends BaseController<UserGroup> {
 	}
 	
 	@SecuredEnum(UserPermission.USER_PERMISSION_LIST)
+	@RequestMapping(value = "search/{pageNumber}", method = RequestMethod.GET)
+	public ModelAndView search(@PathVariable Integer pageNumber, HttpServletRequest request) {
+		return search(pageNumber, "", request);
+	}
+	
+	@SecuredEnum(UserPermission.USER_PERMISSION_LIST)
 	@RequestMapping(value = "search/{searchParameter}/{pageNumber}", method = RequestMethod.GET)
 	public ModelAndView search(@PathVariable Integer pageNumber, @PathVariable String searchParameter, HttpServletRequest request) {
-		breadCrumbService.addNode(MessageBundle.getMessageBundle("breadcrumb.usergroup.list"), 2, request);
+		breadCrumbService.addNode(Navigation.USER_PERMISSION_LIST, request);
 		
 		ModelAndView mav = new ModelAndView(Navigation.USER_PERMISSION_LIST.getPath());
 		
 		Page<UserGroup> page = userGroupService.search(pageNumber, searchParameter);
 		
-		configurePageable(mav, page, "/user-group/search/"+searchParameter);
+		String url = "";
+		
+		if (searchParameter == null || "".equalsIgnoreCase(searchParameter)) {
+			url = "/user-group/search";
+		} else {
+			url = "/user-group/search/"+searchParameter;
+		}
+		
+		configurePageable(mav, page, url);
 		
 		mav.addObject("searchParameter", searchParameter);
 		
@@ -252,7 +266,7 @@ public class UserGroupController extends BaseController<UserGroup> {
 	@SecuredEnum(UserPermission.USER_PERMISSION_LIST)
 	@RequestMapping(value = "search-form", method = RequestMethod.GET)
 	public ModelAndView searchForm(HttpServletRequest request) {
-		breadCrumbService.addNode(MessageBundle.getMessageBundle("breadcrumb.usergroup.search"), 1, request);
+		breadCrumbService.addNode(Navigation.USER_PERMISSION_SEARCH, request);
 		
 		ModelAndView mav = new ModelAndView(Navigation.USER_PERMISSION_SEARCH.getPath());
 		

@@ -42,8 +42,8 @@ public class IndexController {
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String index(Model model, HttpServletRequest request) {
-		breadCrumbService.addNode(MessageBundle.getMessageBundle("breadcrumb.home"), 0, request);
-		return Navigation.INDEX.getPath();
+		breadCrumbService.addNode(Navigation.HOME, request);
+		return Navigation.HOME.getPath();
 	}
 	
 	/**
@@ -57,7 +57,7 @@ public class IndexController {
 		ModelAndView mav = new ModelAndView(Navigation.INSTALL_NEW.getPath());
 		
 		if (hasSystemAdministrator()) {
-			mav.setViewName(Navigation.INDEX.getPath());
+			mav.setViewName(Navigation.HOME.getPath());
 			mav.addObject("error", true);
 			mav.addObject("message", MessageBundle.getMessageBundle("install.msg.error.system.installed"));
 		} else {
@@ -80,7 +80,7 @@ public class IndexController {
 		ModelAndView mav = new ModelAndView();
 		
 		if (hasSystemAdministrator()) {
-			mav.setViewName(Navigation.INDEX.getPath());
+			mav.setViewName(Navigation.HOME.getPath());
 			mav.addObject("error", true);
 			mav.addObject("message", MessageBundle.getMessageBundle("install.msg.error.system.installed"));
 		} else {
@@ -124,7 +124,7 @@ public class IndexController {
 					}				
 				}
 				
-				mav.setViewName(Navigation.INDEX.getPath());
+				mav.setViewName(Navigation.HOME.getPath());
 				
 				if (success) {
 					mav.addObject("msg", true);

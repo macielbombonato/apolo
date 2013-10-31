@@ -21,12 +21,6 @@
 					</li>
 					<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_LIST">
 						<li>
-							<a href='<s:url value="/user/search-form"></s:url>'>
-								<i class="glyphicon glyphicon-search"></i>
-								<s:message code="common.search" />
-							</a>
-						</li>
-						<li>
 							<a href='<s:url value="/user/list"></s:url>'>
 								<i class="glyphicon glyphicon-th-list"></i>
 								<s:message code="user.list" />
@@ -55,14 +49,6 @@
 					<li class="dropdown-header">
 						<s:message code="user.groups.short" />
 					</li>
-					<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_PERMISSION_LIST">
-						<li>
-							<a href='<s:url value="/user-group/search-form"></s:url>'>
-								<i class="glyphicon glyphicon-search"></i>
-								<s:message code="common.search" />
-							</a>
-						</li>
-					</security:authorize>
 					<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_PERMISSION_LIST">
 						<li>
 							<a href='<s:url value="/user-group/list"></s:url>'>
@@ -96,12 +82,6 @@
 					</security:authorize>
 					
 					<security:authorize  ifAnyGranted="ROLE_ADMIN, ROLE_USER_CUSTOM_FIELD_LIST">
-						<li>
-							<a href='<s:url value="/user-custom-field/search-form"></s:url>'>
-								<i class="glyphicon glyphicon-search"></i>
-								<s:message code="user.custom.field.search" />
-							</a>
-						</li>
 						<li>
 							<a href='<s:url value="/user-custom-field/list"></s:url>'>
 								<i class="glyphicon glyphicon-th-list"></i>

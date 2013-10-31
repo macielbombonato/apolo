@@ -62,7 +62,7 @@ public class UserController extends BaseController<User> {
 	@PreAuthorize("isAuthenticated()")
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public ModelAndView index(HttpServletRequest request) {
-		breadCrumbService.addNode(MessageBundle.getMessageBundle("breadcrumb.user"), 1, request);
+		breadCrumbService.addNode(Navigation.USER_INDEX, request);
 		
 		ModelAndView mav = new ModelAndView(Navigation.USER_INDEX.getPath());
 		
@@ -74,7 +74,7 @@ public class UserController extends BaseController<User> {
 	@PreAuthorize("isAuthenticated()")
 	@RequestMapping(value = "change-password", method = RequestMethod.GET)
 	public ModelAndView changePassword(HttpServletRequest request) {
-		breadCrumbService.addNode(MessageBundle.getMessageBundle("breadcrumb.user.changepassword"), 1, request);
+		breadCrumbService.addNode(Navigation.USER_CHANGE_PASSWORD, request);
 		
 		ModelAndView mav = new ModelAndView(Navigation.USER_CHANGE_PASSWORD.getPath());
 		
@@ -118,7 +118,7 @@ public class UserController extends BaseController<User> {
 	@SecuredEnum(UserPermission.USER_CREATE)
 	@RequestMapping(value = "new", method = RequestMethod.GET)
 	public ModelAndView create(HttpServletRequest request) {
-		breadCrumbService.addNode(MessageBundle.getMessageBundle("breadcrumb.user.new"), 1, request);
+		breadCrumbService.addNode(Navigation.USER_NEW, request);
 		
 		ModelAndView mav = new ModelAndView(Navigation.USER_NEW.getPath());
 		
@@ -142,7 +142,7 @@ public class UserController extends BaseController<User> {
 	@PreAuthorize("isAuthenticated()")
 	@RequestMapping(value = "edit/{id}", method = RequestMethod.GET)
 	public ModelAndView edit(@PathVariable Long id, HttpServletRequest request) {
-		breadCrumbService.addNode(MessageBundle.getMessageBundle("breadcrumb.user.edit"), 2, request);
+		breadCrumbService.addNode(Navigation.USER_EDIT, request);
 		
 		ModelAndView mav = new ModelAndView(Navigation.USER_EDIT.getPath());
 		
@@ -169,7 +169,7 @@ public class UserController extends BaseController<User> {
 	@PreAuthorize("isAuthenticated()")
 	@RequestMapping(value = "view/{id}", method = RequestMethod.GET)
 	public ModelAndView view(@PathVariable Long id, HttpServletRequest request) {
-		breadCrumbService.addNode(MessageBundle.getMessageBundle("breadcrumb.user"), 2, request);
+		breadCrumbService.addNode(Navigation.USER_VIEW, request);
 		
 		ModelAndView mav = new ModelAndView(Navigation.USER_VIEW.getPath());
 		
@@ -387,7 +387,7 @@ public class UserController extends BaseController<User> {
 	@SecuredEnum(UserPermission.USER_MANAGER)
 	@RequestMapping(value = "list-locked/{pageNumber}", method = RequestMethod.GET)
 	public ModelAndView listLocked(@PathVariable Integer pageNumber, HttpServletRequest request) {
-		breadCrumbService.addNode(MessageBundle.getMessageBundle("breadcrumb.user.list"), 1, request);
+		breadCrumbService.addNode(Navigation.USER_LIST, request);
 		
 		ModelAndView mav = new ModelAndView(Navigation.USER_LIST.getPath());
 		
@@ -413,7 +413,7 @@ public class UserController extends BaseController<User> {
 	@SecuredEnum(UserPermission.USER_LIST)
 	@RequestMapping(value = "list/{pageNumber}", method = RequestMethod.GET)
 	public ModelAndView list(@PathVariable Integer pageNumber, HttpServletRequest request) {
-		breadCrumbService.addNode(MessageBundle.getMessageBundle("breadcrumb.user.list"), 1, request);
+		breadCrumbService.addNode(Navigation.USER_LIST, request);
 		
 		ModelAndView mav = new ModelAndView(Navigation.USER_LIST.getPath());
 		
@@ -437,15 +437,29 @@ public class UserController extends BaseController<User> {
 	}
 	
 	@SecuredEnum(UserPermission.USER_LIST)
+	@RequestMapping(value = "search/{pageNumber}", method = RequestMethod.GET)
+	public ModelAndView search(@PathVariable Integer pageNumber, HttpServletRequest request) {
+		return search(pageNumber, "", request);
+	}
+	
+	@SecuredEnum(UserPermission.USER_LIST)
 	@RequestMapping(value = "search/{searchParameter}/{pageNumber}", method = RequestMethod.GET)
 	public ModelAndView search(@PathVariable Integer pageNumber, @PathVariable String searchParameter, HttpServletRequest request) {
-		breadCrumbService.addNode(MessageBundle.getMessageBundle("breadcrumb.user.list"), 2, request);
+		breadCrumbService.addNode(Navigation.USER_LIST, request);
 		
 		ModelAndView mav = new ModelAndView(Navigation.USER_LIST.getPath());
 		
 		Page<User> page = userService.search(pageNumber, searchParameter);
 		
-		configurePageable(mav, page, "/user/search/"+searchParameter);
+		String url = "";
+		
+		if (searchParameter == null || "".equalsIgnoreCase(searchParameter)) {
+			url = "/user/search";
+		} else {
+			url = "/user/search/"+searchParameter;
+		}
+		
+		configurePageable(mav, page, url);
 		
 		mav.addObject("searchParameter", searchParameter);
 		
@@ -459,7 +473,7 @@ public class UserController extends BaseController<User> {
 	@SecuredEnum(UserPermission.USER_LIST)
 	@RequestMapping(value = "search-form", method = RequestMethod.GET)
 	public ModelAndView searchForm(HttpServletRequest request) {
-		breadCrumbService.addNode(MessageBundle.getMessageBundle("breadcrumb.user.search"), 1, request);
+		breadCrumbService.addNode(Navigation.USER_SEARCH, request);
 		
 		ModelAndView mav = new ModelAndView(Navigation.USER_SEARCH.getPath());
 		

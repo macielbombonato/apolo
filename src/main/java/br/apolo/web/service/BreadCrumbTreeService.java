@@ -2,6 +2,8 @@ package br.apolo.web.service;
 
 import javax.servlet.http.HttpServletRequest;
 
+import br.apolo.web.enums.Navigation;
+
 public interface BreadCrumbTreeService {
 	 
     /**
@@ -11,7 +13,7 @@ public interface BreadCrumbTreeService {
      * is a root and last number ex: 3 is a leaf.
      * @param request
      */
-    void addNode(String nodeName, int level, HttpServletRequest request);
+    void addNode(Navigation navigation, HttpServletRequest request);
     
     /**
      * Return the nodes tree size

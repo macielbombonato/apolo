@@ -9,7 +9,7 @@
 		<c:when test="${breadcrumb == null || breadcrumb.tree == null || empty breadcrumb.tree}">
 			<li>
 				<a id="first" href="<s:url value="/"></s:url>">
-					<s:message code="breadcrumb.home" />
+					<i class="glyphicon glyphicon-home"></i>
 				</a>
 			</li>
 		</c:when>
@@ -19,7 +19,7 @@
 					<c:when test="${status.index==0}">
 						<li>
 							<a id="first" href="<s:url value="/"></s:url>">
-								<s:message code="breadcrumb.home" />
+								<i class="glyphicon glyphicon-home"></i>
 							</a>
 						</li>
 					</c:when>
@@ -30,7 +30,9 @@
 					</c:when>
 					<c:otherwise>
 						<li class="active">
-							${bc.name}
+							<a href="${bc.value}">
+								${bc.name}
+							</a>
 						</li> 
 					</c:otherwise>
 				</c:choose>
@@ -44,7 +46,6 @@
 				data-placement="left" 
 				data-toggle="popover" 
 				class="btn btn-link btn-xs applyPopoverHover" 
-				href="#" 
 				data-html="true">
 			<s:message code="system.version" />:&nbsp; ${fn:substring(version, 0, 15)}
 		</button>

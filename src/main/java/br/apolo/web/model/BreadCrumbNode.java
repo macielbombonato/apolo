@@ -1,10 +1,16 @@
 package br.apolo.web.model;
 
-public class BreadCrumbNode {
+import java.io.Serializable;
 
-	private String name;
+import br.apolo.web.enums.Navigation;
+
+public class BreadCrumbNode implements Serializable {
+
+	private static final long serialVersionUID = 2751070342668448599L;
+	
+	private Navigation navigation;
+	
 	private String url;
-	private int level;
 
 	/**
 	 * Node constructor
@@ -13,18 +19,13 @@ public class BreadCrumbNode {
 	 * @param value of the node
 	 * @param level in the breadcrumb ex root 0 menu 1 sub-menu 2 etc...
 	 */
-	public BreadCrumbNode(String name, String value, int level) {
-		this.name = name;
-		this.url = value;
-		this.level = level;
+	public BreadCrumbNode(Navigation navigation, String url) {
+		this.navigation = navigation;
+		this.url = url;
 	}
 
 	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
+		return this.navigation.getNodeName();
 	}
 
 	public String getValue() {
@@ -36,11 +37,15 @@ public class BreadCrumbNode {
 	}
 
 	public int getLevel() {
-		return level;
+		return this.navigation.getNodeLevel();
 	}
 
-	public void setLevel(int level) {
-		this.level = level;
+	public Navigation getNavigation() {
+		return navigation;
+	}
+
+	public void setNavigation(Navigation navigation) {
+		this.navigation = navigation;
 	}
 
 }

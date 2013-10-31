@@ -124,14 +124,17 @@ public abstract class BaseController<E extends BaseEntity> {
 	protected String getRedirectionPath(HttpServletRequest request, Navigation firstOption, Navigation secondOption) {
 		String referer = request.getHeader("referer");
 		String redirectionPath = "";
+		Navigation navChoice;
 		if (referer != null && referer.contains(firstOption.getPath())) {
 			redirectionPath = firstOption.getPath();
+			navChoice = firstOption;
 		} else {
 			redirectionPath = secondOption.getPath();
+			navChoice = secondOption;
 		}
 		
         if (referer == null || !referer.endsWith("save")) {
-        	breadCrumbService.addNode(MessageBundle.getMessageBundle("breadcrumb.changeinprogress"), breadCrumbService.getTreeSize(request), request);        	
+        	breadCrumbService.addNode(navChoice, request);        	
         }
 		
 		return redirectionPath;
