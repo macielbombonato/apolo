@@ -24,7 +24,7 @@ import br.apolo.web.enums.Navigation;
 import br.apolo.web.service.BreadCrumbTreeService;
 
 @Controller
-public class IndexController {
+public class AppController {
 	
 	private static final Logger log = LoggerFactory.getLogger(BaseController.class);
 	
@@ -44,6 +44,12 @@ public class IndexController {
 	public String index(Model model, HttpServletRequest request) {
 		breadCrumbService.addNode(Navigation.HOME, request);
 		return Navigation.HOME.getPath();
+	}
+	
+	@RequestMapping(value = "/about", method = RequestMethod.GET)
+	public String about(Model model, HttpServletRequest request) {
+		breadCrumbService.addNode(Navigation.ABOUT, request);
+		return Navigation.ABOUT.getPath();
 	}
 	
 	/**

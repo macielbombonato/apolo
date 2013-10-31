@@ -27,6 +27,27 @@ public enum Navigation {
 			return path + "index";
 		}
 	}, 
+	ABOUT("/about") {
+		@Override
+		public String getNodeName() {
+			return MessageBundle.getMessageBundle("breadcrumb.about");
+		}
+
+		@Override
+		public int getNodeLevel() {
+			return 1;
+		}
+
+		@Override
+		public String getUrl(HttpServletRequest request) {
+			return getDefaultUrl(request);
+		}
+		
+		@Override
+		public String getPath() {
+			return path + "/index";
+		}
+	},
 	INSTALL("/install") {
 		@Override
 		public String getNodeName() {

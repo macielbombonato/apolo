@@ -14,7 +14,7 @@
 					<div class="col-md-4">
 						<img class="img-responsive" src='<c:url value="/resources/app/img/favicon.png" />' />
 					</div>
-					<div class="media-body col-md-8">
+					<div class="media-body col-md-8" style="text-align: justify">
 						<h4 class="media-heading">
 							<s:message code="view.index.apolo.title" />
 						</h4>

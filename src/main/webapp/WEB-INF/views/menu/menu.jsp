@@ -25,6 +25,7 @@
 	<!-- Collect the nav links, forms, and other content for toggling -->
 	<div class="collapse navbar-collapse navbar-ex1-collapse">
 		<jsp:include page='_system-admin.jsp'></jsp:include>
+		<jsp:include page='_about.jsp'></jsp:include>
 		<jsp:include page='_user.jsp'></jsp:include>
 	</div>
 </nav>
