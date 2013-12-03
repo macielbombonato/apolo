@@ -18,10 +18,6 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import org.apache.commons.io.FilenameUtils;
-import org.artofsolving.jodconverter.OfficeDocumentConverter;
-import org.artofsolving.jodconverter.office.DefaultOfficeManagerConfiguration;
-import org.artofsolving.jodconverter.office.OfficeManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +30,7 @@ import br.apolo.common.exception.GenericException;
 import br.apolo.common.util.MessageBundle;
 import br.apolo.data.model.BaseEntity;
 
+@SuppressWarnings("rawtypes")
 @Service("fileService")
 public class FileServiceImpl<E extends BaseEntity> implements FileService<E> {
 	
@@ -122,58 +119,6 @@ public class FileServiceImpl<E extends BaseEntity> implements FileService<E> {
 			log.error(e.getMessage(), e);
 		}
 
-	}
-	
-	private OfficeManager getOfficeManager() {
-		OfficeManager officeManager = null;
-
-		DefaultOfficeManagerConfiguration configuration = new DefaultOfficeManagerConfiguration();
-		
-		officeManager = configuration.buildOfficeManager();
-		
-		return officeManager;
-	}
-	
-	public void convertMSOfficeFilesToPDF(E entity, String sourceName) {
-		
-		String filePath = applicationProperties.getUploadedFilesPath() + 
-				entity.getClass().getSimpleName() + 
-				File.separator +
-				entity.getId();
-		
-		String sourceFilePath = filePath +
-				File.separator +
-				sourceName;
-		
-		String destFilePath = filePath +
-				File.separator +
-				entity.getId() + ".pdf"; 
-
-		File inputFile = new File(sourceFilePath);
-		File outputFile = new File(destFilePath);
-		
-		String extension = FilenameUtils.getExtension(inputFile.getName());
-		
-		OfficeManager officeManager = getOfficeManager();
-		
-		OfficeDocumentConverter converter = new OfficeDocumentConverter(officeManager);
-		
-		long startTime = System.currentTimeMillis();
-		try {
-			officeManager.start();
-		} catch (Exception exception) {
-			log.error(exception.getMessage(), exception);
-		}
-		
-		try {
-			converter.convert(inputFile, outputFile);
-		} catch (Exception exception) {
-			log.error(String.format("failed conversion: %s [%db] to %s; %s; input file: %s", extension, inputFile.length(), ".pdf", exception, inputFile.getName()));
-		} finally {
-			officeManager.stop();
-			long conversionTime = System.currentTimeMillis() - startTime;
-			log.info(String.format("conversion time: %s [%db] to %s in %dms", extension, inputFile.length(), ".pdf", conversionTime));
-		}
 	}
 	
 	public int convertPDFToImages(E entity) {

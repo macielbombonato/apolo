@@ -1,67 +1,56 @@
 package br.apolo.data.model;
 
+import javax.persistence.*;
 import java.io.Serializable;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.Transient;
-
-import org.hibernate.Hibernate;
-
+/**
+ * Base entity class to be extended by all JPA entities.
+ * User: rmberne
+ * Date: 27/11/13
+ */
 @MappedSuperclass
-public abstract class BaseEntity implements Serializable {
-	
-	private static final long serialVersionUID = -5925658342836351396L;
+public abstract class BaseEntity<ID extends Serializable> implements Serializable {
 
+	private static final long serialVersionUID = 1L;
+	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", nullable = false)
-	private Long id;
-	
-	public Long getId() {
-		return id;
-	}
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "ID", nullable = false)
+    private ID id;
 
-	public void setId(Long newId) {
-		this.id = newId;
-	}
+    public ID getId() {
+        return id;
+    }
 
-	@Transient
-	public Boolean isPersisted() {
-		return this.getId() != null && this.getId() != 0L;
-	}
+    public void setId(ID id) {
+        this.id = id;
+    }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((this.id == null) ? 0 : this.id.hashCode());
-		return result;
-	}
+    @Transient
+    public Boolean isPersisted() {
+        return this.getId() != null;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
 
-		if (obj == null || (Hibernate.getClass(this) != Hibernate.getClass(obj))) {
-			return false;
-		}
+        if (obj == null || (this.getClass() != obj.getClass())) {
+            return false;
+        }
 
-		BaseEntity other = (BaseEntity) obj;
+        BaseEntity<?> other = (BaseEntity<?>) obj;
 
-		if (this.getId() == null && other.getId() == null) {
-			return false;
-		} else if (this.getId() == null && other.getId() != null) {
-			return false;
-		} else if (!this.getId().equals(other.getId())) {
-			return false;
-		}
+        if (this.getId() == null && other.getId() == null) {
+            return false;
+        } else if (this.getId() == null && other.getId() != null) {
+            return false;
+        } else if (!this.getId().equals(other.getId())) {
+            return false;
+        }
 
-		return true;
-	}
+        return true;
+    }
 }

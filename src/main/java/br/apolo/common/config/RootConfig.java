@@ -1,8 +1,14 @@
 package br.apolo.common.config;
 
-import org.springframework.context.annotation.*;
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.core.io.ClassPathResource;
+
+import br.apolo.common.config.PersistenceConfig;
+import br.apolo.common.config.SecurityConfig;
 
 @Configuration
 @ComponentScan(basePackages = { "br.apolo" })

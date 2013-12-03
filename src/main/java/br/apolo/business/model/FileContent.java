@@ -1,8 +1,12 @@
 package br.apolo.business.model;
 
+import java.io.Serializable;
+
 import org.springframework.web.multipart.MultipartFile;
 
-public class FileContent {
+public class FileContent implements Serializable {
+
+	private static final long serialVersionUID = 8665901982422935475L;
 
 	private String name;
 

@@ -50,7 +50,7 @@ public class UserCustomField extends AuditableBaseEntity {
 	@Size(min = 0, max = InputLength.MEMO)
 	private String defaultValue;
 	
-	@OneToMany(orphanRemoval = true, mappedBy = "userCustomField", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+	@OneToMany(mappedBy = "userCustomField", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@OrderBy("value")
 	private Set<UserCustomFieldOption> options;

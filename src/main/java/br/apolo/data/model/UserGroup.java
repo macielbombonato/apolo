@@ -42,7 +42,7 @@ public class UserGroup extends AuditableBaseEntity {
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@CollectionTable(name = "group_permission", 
 			joinColumns = @JoinColumn(name = "group_id", referencedColumnName = "user_group_id", insertable = true, updatable = true, nullable = false), 
-			uniqueConstraints = @UniqueConstraint(columnNames = {"group_id", "permission_name" }, name = "uq_group_permission")
+			uniqueConstraints = @UniqueConstraint(columnNames = {"group_id", "permission_name" })
 	)
 	@Type(type = "br.apolo.data.enums.usertype.UserPermissionUserType")
 	@Column(name = "permission_name")

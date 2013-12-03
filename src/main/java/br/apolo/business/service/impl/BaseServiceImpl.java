@@ -9,6 +9,7 @@ import br.apolo.data.model.BaseEntity;
 import br.apolo.data.model.User;
 import br.apolo.security.CurrentUser;
 
+@SuppressWarnings("rawtypes")
 public abstract class BaseServiceImpl<E extends BaseEntity> implements BaseService<E> {
 	
 	protected static final Logger log = LoggerFactory.getLogger(BaseService.class);

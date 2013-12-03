@@ -1,10 +1,15 @@
 package br.apolo.business.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 import br.apolo.data.model.BaseEntity;
 
-public class SearchResult<E extends BaseEntity> {
+@SuppressWarnings("rawtypes")
+public class SearchResult<E extends BaseEntity> implements Serializable {
+
+	private static final long serialVersionUID = 4372321043136915950L;
+
 	private List<E> results;
 
 	private long pageCount;

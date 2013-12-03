@@ -15,6 +15,8 @@ import org.springframework.web.context.support.AnnotationConfigWebApplicationCon
 import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.servlet.DispatcherServlet;
 
+import br.apolo.common.config.RootConfig;
+
 public class WebAppInitializer implements WebApplicationInitializer {
 
 	@Override

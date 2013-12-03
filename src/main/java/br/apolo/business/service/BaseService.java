@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import br.apolo.data.model.BaseEntity;
 import br.apolo.data.model.User;
 
+@SuppressWarnings("rawtypes")
 public interface BaseService<E extends BaseEntity> {
 	
 	E find(Long id);

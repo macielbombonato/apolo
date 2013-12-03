@@ -17,7 +17,7 @@ import br.apolo.data.enums.DatabaseTransactionType;
 @Entity
 @Table(name = "audit_log")
 @AttributeOverride(name = "id", column = @Column(name = "audit_id"))
-public class AuditLog extends BaseEntity {
+public class AuditLog extends BaseEntity<Long> {
 	
 	private static final long serialVersionUID = -2751247878900350794L;
 	

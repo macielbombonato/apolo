@@ -16,7 +16,7 @@ import br.apolo.data.model.interfaces.IAuditableEntity;
 
 @MappedSuperclass
 @EntityListeners(value = AuditListener.class)
-public abstract class AuditableBaseEntity extends BaseEntity implements IAuditableEntity {
+public abstract class AuditableBaseEntity extends BaseEntity<Long> implements IAuditableEntity {
 	private static final long serialVersionUID = 7982765512946321298L;
 
 	@Column(name = "creation_dt")

@@ -7,6 +7,7 @@ import java.io.InputStream;
 import br.apolo.business.model.FileContent;
 import br.apolo.data.model.BaseEntity;
 
+@SuppressWarnings("rawtypes")
 public interface FileService<E extends BaseEntity> {
 	
 	String uploadFile(E entity, FileContent file, InputStream inputStream);
@@ -22,8 +23,6 @@ public interface FileService<E extends BaseEntity> {
 	void convertTextFileToHtmlFile(E entity, String sourceName, String destName);
 	
 	void delete(File directory) throws IOException;
-	
-	void convertMSOfficeFilesToPDF(E entity, String sourceName);
 	
 	int convertPDFToImages(E entity);
 	

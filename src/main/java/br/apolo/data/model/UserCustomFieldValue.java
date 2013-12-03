@@ -12,7 +12,7 @@ import br.apolo.common.util.InputLength;
 @Entity
 @Table(name = "user_custom_field_value")
 @AttributeOverride(name = "id", column = @Column(name = "user_custom_field_value_id"))
-public class UserCustomFieldValue extends BaseEntity {
+public class UserCustomFieldValue extends BaseEntity<Long> {
 
 	private static final long serialVersionUID = 7470619953861313459L;
 	

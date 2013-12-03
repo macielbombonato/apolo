@@ -31,6 +31,7 @@ import br.apolo.data.model.User;
 import br.apolo.web.enums.Navigation;
 import br.apolo.web.service.BreadCrumbTreeService;
 
+@SuppressWarnings("rawtypes")
 public abstract class BaseController<E extends BaseEntity> { 
 	
 	protected static final Logger log = LoggerFactory.getLogger(BaseController.class);
