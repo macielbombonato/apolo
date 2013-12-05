@@ -15,9 +15,7 @@ Após ter instalado o git, para pegar sua cópia basta utilizar o seguinte coman
 $ git clone https://bitbucket.org/olimpo/apolo-base.git
 ```
 
-Para usuário Windows, eu indico o seguinte client git: [http://msysgit.github.com/](http://msysgit.github.com/)
-
-Há algum tempo eu fiz um "tutorialzinho" de alguns comandos git e para que eles servem: [http://macielbombonato.blogspot.com.br/2012/02/utilizando-git-versionador-local.html](http://macielbombonato.blogspot.com.br/2012/02/utilizando-git-versionador-local.html)
+Há algum tempo eu fiz um "tutorialzinho" de alguns comandos git e para que eles servem: [http://macielbombonato.blogspot.com.br/2012/02/utilizando-git-versionador-local.html](http://macielbombonato.blogspot.com.br/2012/02/utilizando-git-versionador-local.html), Este tutorial deve ajudar um pouco para realizar operações via linha de comando.
 
 ## Crie seu Fork deste projeto
 
