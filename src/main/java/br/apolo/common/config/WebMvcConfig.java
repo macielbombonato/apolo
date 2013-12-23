@@ -54,9 +54,6 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
 	@Value("${uploadedfiles.path}")
 	private String uploadedFilesPath;
 	
-	@Value("${filesHandler.path}")
-	private String filesHandler;
-	
 	@Value("${pdfimageextractor.executable.path}")
 	private String pdfImageExtractorExecutablePath;
 	
@@ -68,7 +65,6 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
     	ApplicationProperties result = new ApplicationProperties();
     	
     	result.setUploadedFilesPath(uploadedFilesPath);
-    	result.setFilesHandler(filesHandler);
     	result.setPdfImageExtractorExecutablePath(pdfImageExtractorExecutablePath);
     	result.setVideoConverterExecutablePath(videoConverterExecutablePath);
     	
@@ -121,9 +117,7 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
 	protected void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry.addResourceHandler(RESOURCES_HANDLER).addResourceLocations(RESOURCES_LOCATION).setCachePeriod(175316);
 		
-		if (isValidFilesLocation()) {
-			registry.addResourceHandler(filesHandler).addResourceLocations("file:/" + uploadedFilesPath).setCachePeriod(0);	
-		}
+		isValidFilesLocation();
 	}
 	
 	private boolean isValidFilesLocation() {

@@ -4,8 +4,6 @@ public class ApplicationProperties {
 	
 	private String uploadedFilesPath;
 	
-	private String filesHandler;
-	
 	private String pdfImageExtractorExecutablePath;
 	
 	private String videoConverterExecutablePath;
@@ -33,14 +31,6 @@ public class ApplicationProperties {
 
 	public void setVideoConverterExecutablePath(String videoConverterExecutablePath) {
 		this.videoConverterExecutablePath = videoConverterExecutablePath;
-	}
-
-	public String getFilesHandler() {
-		return filesHandler;
-	}
-
-	public void setFilesHandler(String filesHandler) {
-		this.filesHandler = filesHandler;
 	}
 
 }
