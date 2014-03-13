@@ -9,12 +9,6 @@ Este projeto é uma iniciativa open source para que os desenvolvedores ganhem te
 
 O apolo é versionado com git, portanto, para fazer sua cópia do código e controlá-la, será necessário ter o git em sua máquina.
 
-Após ter instalado o git, para pegar sua cópia basta utilizar o seguinte comando:
-
-```
-$ git clone https://bitbucket.org/olimpo/apolo-base.git
-```
-
 Há algum tempo eu fiz um "tutorialzinho" de alguns comandos git e para que eles servem: [http://macielbombonato.blogspot.com.br/2012/02/utilizando-git-versionador-local.html](http://macielbombonato.blogspot.com.br/2012/02/utilizando-git-versionador-local.html), Este tutorial deve ajudar um pouco para realizar operações via linha de comando.
 
 ## Crie seu Fork deste projeto
