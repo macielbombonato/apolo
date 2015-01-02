@@ -1,0 +1,162 @@
+body {
+	padding-bottom: 40px;
+}
+
+.sidebar-nav {
+	padding: 9px 0;
+}
+
+label {
+	font-weight: bold;
+}
+
+caption {
+	font-weight: bold;
+}
+
+.popover {
+	max-width: 800px;
+	width: auto;
+}
+
+.flag-selector {
+	display:inline-block;
+	width:35px;
+	height:35px;
+	cursor:pointer;
+	margin:3px 0 -5px 5px;
+}
+
+.flag-selector img {
+	margin-top: 7px;
+}
+
+p {
+	overflow: auto;
+}
+
+input[type=checkbox] {
+	opacity: 1 !important;
+	position: inherit !important;
+}
+
+input[type=radio] {
+	opacity: 1 !important;
+	position: inherit !important;
+}
+
+@media (max-width: 480px) {
+	#header {
+		height:0px;
+	}
+	
+	.onlyBigWindows {
+		visibility: hidden;
+	}
+	
+	.loginForm {
+		margin-left: 0%; 
+		margin-right: 0%;
+	}
+	
+	.loginForm form {
+		margin-left: 5%; 
+		margin-right: 5%;
+	}
+}
+
+@media (max-width: 767px) {
+	#header {
+		height:0px;
+	}
+	
+	.onlyBigWindows {
+		visibility: hidden;
+	}
+	
+	.loginForm {
+		margin-left: 5%; 
+		margin-right: 5%;
+	}
+	
+	.loginForm form {
+		margin-left: 5%; 
+		margin-right: 5%;
+	}
+}
+
+@media (min-width: 768px) and (max-width: 979px) {
+	#header {
+		height:0px;
+	}
+	
+	.onlyBigWindows {
+		visibility: hidden;
+	}
+	
+	.loginForm {
+		margin-left: 15%; 
+		margin-right: 15%;
+	}
+	
+	.loginForm form {
+		margin-left: 5%; 
+		margin-right: 5%;
+	}
+}
+
+@media (min-width: 980px) {
+	.footer {
+	    width: 100%; // Don't change
+	    background-image: none;
+	    background-repeat: repeat;
+	    background-attachment: scroll;
+	    background-position: 0% 0%;
+	    background-color: #FFFFFF;
+	    position: fixed;
+	    bottom: 0pt;
+	}
+	
+	.footer_contents {
+	    width: 1000px; // Visible width of footer
+	    margin:auto;
+	}
+	
+	.loginForm {
+		margin-left: 20%; 
+		margin-right: 20%;
+	}
+	
+	.loginForm form {
+		margin-left: 5%; 
+		margin-right: 5%;
+	}
+}
+
+@media (min-width: 1200px) {
+	.footer {
+	    width: 100%; // Don't change
+	    background-image: none;
+	    background-repeat: repeat;
+	    background-attachment: scroll;
+	    background-position: 0% 0%;
+	    background-color: #FFFFFF;
+	    position: fixed;
+	    bottom: 0pt;
+	}
+	
+	.footer_contents {
+	    width: 1000px; // Visible width of footer
+	    margin:auto;
+	}
+	
+	.loginForm {
+		margin-left: 25%; 
+		margin-right: 25%;
+	}
+	
+	.loginForm form {
+		margin-left: 5%; 
+		margin-right: 5%;
+	}
+}
