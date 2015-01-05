@@ -7,7 +7,7 @@ import apolo.data.model.UserCustomFieldOption;
 import apolo.data.repository.UserCustomFieldRepository;
 
 import java.util.Date;
-import java.util.HapoloSet;
+import java.util.HashSet;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,14 +23,12 @@ public class UserCustomFieldServiceImpl extends BaseServiceImpl<UserCustomField>
 	@Autowired
 	private UserCustomFieldRepository userCustomFieldRepository;
 	
-	@Override
 	public List<UserCustomField> list(Tenant tenant) {
 		List<UserCustomField> result = userCustomFieldRepository.findByTenantOrderByNameAsc(tenant);
 		
 		return result;
 	}
 	
-	@Override
 	public Page<UserCustomField> list(Tenant tenant, Integer pageNumber) {
 		if (pageNumber < 1) {
 			pageNumber = 1;
@@ -43,12 +41,10 @@ public class UserCustomFieldServiceImpl extends BaseServiceImpl<UserCustomField>
 		return result;
 	}
 
-	@Override
 	public UserCustomField find(Tenant tenant, Long id) {
 		return userCustomFieldRepository.findByTenantAndId(tenant, id);
 	}
 
-	@Override
 	@Transactional
 	public UserCustomField save(UserCustomField userCustomField) {
 		if (userCustomField != null) {
@@ -58,7 +54,7 @@ public class UserCustomFieldServiceImpl extends BaseServiceImpl<UserCustomField>
 			if (userCustomField.getOptionsStringList() != null 
 					&& !userCustomField.getOptionsStringList().isEmpty()) {
 				if (userCustomField.getOptions() == null) {
-					userCustomField.setOptions(new HapoloSet<UserCustomFieldOption>());
+					userCustomField.setOptions(new HashSet<UserCustomFieldOption>());
 				} else {
 					userCustomField.getOptions().clear();
 				}
@@ -72,7 +68,7 @@ public class UserCustomFieldServiceImpl extends BaseServiceImpl<UserCustomField>
 					userCustomField.getOptions().add(option);
 				}
 			} else {
-				userCustomField.setOptions(new HapoloSet<UserCustomFieldOption>());
+				userCustomField.setOptions(new HashSet<UserCustomFieldOption>());
 			}
 		}
 		
@@ -80,13 +76,11 @@ public class UserCustomFieldServiceImpl extends BaseServiceImpl<UserCustomField>
 		return userCustomFieldRepository.saveAndFlush(userCustomField);
 	}
 
-	@Override
 	@Transactional
 	public void remove(UserCustomField userCustomField) {
 		userCustomFieldRepository.delete(userCustomField);
 	}
 
-	@Override
 	public Page<UserCustomField> search(Tenant tenant, Integer pageNumber, String param) {
 		if (pageNumber < 1) {
 			pageNumber = 1;

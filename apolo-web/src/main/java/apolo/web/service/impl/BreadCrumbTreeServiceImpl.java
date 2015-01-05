@@ -17,7 +17,6 @@ public class BreadCrumbTreeServiceImpl implements BreadCrumbTreeService {
 
 	protected static final Logger LOG = LoggerFactory.getLogger(BaseService.class);
 	
-	@Override
 	public void addNode(Navigation navigation, HttpServletRequest request) {
         try {
 			BreadCrumbTree breadCrumb = (BreadCrumbTree) request.getSession().getAttribute("breadcrumb");
@@ -71,7 +70,6 @@ public class BreadCrumbTreeServiceImpl implements BreadCrumbTreeService {
 		}
 	}
 	
-	@Override
 	public int getTreeSize(HttpServletRequest request) {
 		int result = 0;
 		

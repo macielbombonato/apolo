@@ -4,7 +4,7 @@ import apolo.data.entitylistener.AuditLogListener;
 import apolo.data.enums.FieldType;
 import apolo.data.util.InputLength;
 
-import java.util.HapoloSet;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.AttributeOverride;
@@ -105,7 +105,7 @@ public class UserCustomField extends AuditableBaseEntity {
 	public Set<String> getOptionsStringList() {
 		if (options != null 
 				&& !options.isEmpty()) {
-			optionsStringList = new HapoloSet<String>();
+			optionsStringList = new HashSet<String>();
 			
 			for (UserCustomFieldOption option : options) {
 				optionsStringList.add(option.getValue());

@@ -31,7 +31,6 @@ public class UserAuthenticationProvider implements AuthenticationProvider {
 	@Autowired
 	private ApplicationProperties applicationProperties;
 	
-	@Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 		User user = userService.loadByUsernameAndPassword(
 				authentication.getName(), 
@@ -74,7 +73,6 @@ public class UserAuthenticationProvider implements AuthenticationProvider {
 	}
 
 	@SuppressWarnings("rawtypes")
-	@Override
 	public boolean supports(Class authentication) {
 		return (UsernamePasswordAuthenticationToken.class
 				.isAssignableFrom(authentication));

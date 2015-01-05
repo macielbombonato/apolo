@@ -7,7 +7,7 @@ import apolo.data.model.UserCustomFieldOption;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMap.Builder;
 
-import java.util.HapoloMap;
+import java.util.HashMap;
 import java.util.Map;
 
 public enum FieldType {
@@ -161,7 +161,7 @@ public enum FieldType {
 				result.append("<input type=\"hidden\" name=\"customFields[" + index + "].user.id\" class=\"form-control\" value=\"" + user.getId() + "\"  />");
 			} 
 			
-			Map<String, String> values = new HapoloMap<String, String>();
+			Map<String, String> values = new HashMap<String, String>();
 			if (fieldMap.get(field.getId()) != null) {
 				String[] valuesStr = fieldMap.get(field.getId()).split(",");
 				for (String value : valuesStr) {

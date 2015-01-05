@@ -12,9 +12,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 @Component
-public class apoloCrypt {
+public class ApoloCrypt {
 	
-	private static final Logger LOG = LoggerFactory.getLogger(apoloCrypt.class);
+	private static final Logger LOG = LoggerFactory.getLogger(ApoloCrypt.class);
 	
 	private String algorithm = "AES";
 	private String transformation = "AES/CBC/NoPadding";

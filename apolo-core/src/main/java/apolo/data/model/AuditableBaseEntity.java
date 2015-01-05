@@ -35,42 +35,34 @@ public abstract class AuditableBaseEntity extends BaseEntity<Long> implements IA
 	@JoinColumn(name = "last_updated_by")
 	private User lastUpdatedBy;
 
-	@Override
 	public Date getCreationDate() {
 		return creationDate;
 	}
 
-	@Override
 	public void setCreationDate(Date newCreationDate) {
 		this.creationDate = newCreationDate;
 	}
 
-	@Override
 	public User getCreatedBy() {
 		return createdBy;
 	}
 
-	@Override
 	public void setCreatedBy(User newCreatedBy) {
 		this.createdBy = newCreatedBy;
 	}
 
-	@Override
 	public Date getLastUpdateDate() {
 		return lastUpdateDate;
 	}
 
-	@Override
 	public void setLastUpdateDate(Date newLastUpdateDate) {
 		this.lastUpdateDate = newLastUpdateDate;
 	}
 
-	@Override
 	public User getLastUpdatedBy() {
 		return lastUpdatedBy;
 	}
 
-	@Override
 	public void setLastUpdatedBy(User newLastUpdatedBy) {
 		this.lastUpdatedBy = newLastUpdatedBy;
 	}

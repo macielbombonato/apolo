@@ -15,12 +15,10 @@ public class UserPermissionUserType extends ImmutableUserType {
 	
 	private static final long serialVersionUID = 1L;
 
-	@Override
 	public int[] sqlTypes() {
 		return new int[] { Types.VARCHAR };
 	}
 
-	@Override
 	public Class<?> returnedClass() {
 		return UserPermission.class;
 	}
@@ -36,7 +34,6 @@ public class UserPermissionUserType extends ImmutableUserType {
 		}
 	}
 
-	@Override
 	public void nullSafeSet(PreparedStatement st, Object value, int index, SessionImplementor session)
 			throws HibernateException, SQLException {
 		if (value == null) {

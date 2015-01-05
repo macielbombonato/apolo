@@ -39,7 +39,6 @@ public class FileServiceImpl<E extends BaseEntity> implements FileService<E> {
 	@Autowired
 	private ApplicationProperties applicationProperties;
 	
-	@Override
 	public String uploadFile(Tenant tenant, E entity, FileContent file, InputStream inputStream) {
 		String fileName = entity.getId() + extractFileExtension(file.getFile().getOriginalFilename());
 		

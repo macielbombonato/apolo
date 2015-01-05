@@ -6,7 +6,7 @@ import apolo.data.enums.UserStatus;
 import apolo.data.util.InputLength;
 import apolo.security.UserPermission;
 
-import java.util.HapoloSet;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -109,7 +109,7 @@ public class User extends AuditableBaseEntity {
 	
 	public Set<UserPermission> getPermissions() {
 		if ((permissions == null || permissions.isEmpty()) && groups != null) {
-			permissions = new HapoloSet<UserPermission>();
+			permissions = new HashSet<UserPermission>();
 			for (UserGroup ug : groups) {
 				if (ug.getPermissions() != null && !ug.getPermissions().isEmpty()) {
 					permissions.addAll(ug.getPermissions());

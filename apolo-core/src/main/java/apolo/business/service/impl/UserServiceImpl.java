@@ -26,7 +26,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HapoloSet;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -59,7 +59,6 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 	@Autowired
 	private TenantService tenantService;
 	
-	@Override
 	public List<User> list(Tenant tenant) {
 		PageRequest request = new PageRequest(1, PAGE_SIZE, Sort.Direction.ASC, "name");
 		
@@ -72,7 +71,6 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 		return result.getContent();
 	}
 	
-	@Override
 	public Page<User> list(Tenant tenant, Integer pageNumber) {
 		if (pageNumber < 1) {
 			pageNumber = 1;
@@ -89,22 +87,18 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 		return result;
 	}
 
-	@Override
 	public User find(Long id) {
 		return userRepository.findOne(id);
 	}
 	
-	@Override
 	public User find(Tenant tenant, Long id) {
 		return userRepository.findByTenantAndId(tenant, id);
 	}
 
-	@Override
 	public User findByLogin(String login) {
 		return userRepository.findUserByEmail(login);
 	}
 
-	@Override
 	public User loadByUsernameAndPassword(String username, String password) {
 		Md5PasswordEncoder encoder = new Md5PasswordEncoder();
 		User user = userRepository.findByEmailAndPassword(username, encoder.encodePassword(password, null));
@@ -117,7 +111,6 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 		return user;
 	}
 	
-	@Override
 	@Transactional
 	public User save(User entity) {
 		if (entity != null) {
@@ -128,7 +121,6 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 		return save(entity, false, null);
 	}
 
-	@Override
 	@Transactional
 	public User save(User user, boolean changePassword, FileContent file) {
 		if (UserStatus.ADMIN.equals(user.getStatus()) 
@@ -181,7 +173,6 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 		return userRepository.saveAndFlush(user);
 	}
 	
-	@Override
 	@Transactional
 	public void remove(User user) {
 		if (!user.getStatus().isChangeable()) {
@@ -217,7 +208,6 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 		return result;
 	}
 
-	@Override
 	public Page<User> search(Tenant tenant, Integer pageNumber, String param) {
 		if (pageNumber < 1) {
 			pageNumber = 1;
@@ -239,7 +229,6 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 		return result;
 	}
 
-	@Override
 	public User lock(User user) {
 		if (!user.getStatus().isChangeable()) {
 			String message = MessageBundle.getMessageBundle("error.403.4");
@@ -256,7 +245,6 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 		return userRepository.save(user);
 	}
 
-	@Override
 	public User unlock(User user) {
 		if (!user.getStatus().isChangeable()) {
 			String message = MessageBundle.getMessageBundle("error.403.4");
@@ -270,7 +258,6 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 		return userRepository.save(user);
 	}
 	
-	@Override
 	public Page<User> listLocked(Tenant tenant, Integer pageNumber) {
 		if (pageNumber < 1) {
 			pageNumber = 1;
@@ -281,7 +268,6 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 		return userRepository.findByTenantAndUserStatus(tenant, UserStatus.LOCKED, request);
 	}
 
-	@Override
 	public User getSystemAdministrator() {
 		User user = null;
 		
@@ -294,7 +280,6 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 		return user;
 	}
 
-	@Override
 	@Transactional
 	public boolean systemSetup(InstallFormModel formModel, FileContent file) {
 		boolean result = false;
@@ -356,7 +341,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 					adminUserGroup.setName(MessageBundle.getMessageBundle("user.permission.ADMIN"));
 					adminUserGroup.setStatus(UserStatus.ADMIN);
 					
-					Set<UserPermission> perms = new HapoloSet<UserPermission>();
+					Set<UserPermission> perms = new HashSet<UserPermission>();
 					perms.add(UserPermission.ADMIN);
 					
 					adminUserGroup.setPermissions(perms);
@@ -369,7 +354,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 				}
 				
 				// Admin groups
-				Set<UserGroup> adminGroups = new HapoloSet<UserGroup>();
+				Set<UserGroup> adminGroups = new HashSet<UserGroup>();
 				adminGroups.add(adminUserGroup);
 				
 				formModel.getUser().setGroups(adminGroups);

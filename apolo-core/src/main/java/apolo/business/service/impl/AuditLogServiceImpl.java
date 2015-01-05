@@ -35,7 +35,6 @@ public class AuditLogServiceImpl implements AuditLogService {
 		return auditLogRepository.saveAndFlush(entity);
 	}
 
-	@Override
 	public List<AuditLog> list() {
 		Page<AuditLog> result = null;
 		
@@ -50,7 +49,6 @@ public class AuditLogServiceImpl implements AuditLogService {
 		return result.getContent();
 	}
 	
-	@Override
 	public Page<AuditLog> list(Integer pageNumber) {
 		if (pageNumber < 1) {
 			pageNumber = 1;
@@ -67,7 +65,6 @@ public class AuditLogServiceImpl implements AuditLogService {
 		return result;
 	}
 
-	@Override
 	public AuditLog find(Long id) {
 		AuditLog result = null;
 		
@@ -76,7 +73,6 @@ public class AuditLogServiceImpl implements AuditLogService {
 		return result;
 	}
 
-	@Override
 	public Page<AuditLog> search(Integer pageNumber, String param) {
 		if (pageNumber < 1) {
 			pageNumber = 1;

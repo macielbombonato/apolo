@@ -60,15 +60,6 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
 	@Value("${uploadedfiles.path}")
 	private String uploadedFilesPath;
 	
-	@Value("${pdfimageextractor.executable.path}")
-	private String pdfImageExtractorExecutablePath;
-	
-	@Value("${video.converter.executable.path}")
-	private String videoConverterExecutablePath;
-	
-	@Value("${token.mandatory}")
-	private boolean mandatoryToken;
-	
     @Bean
     public ApplicationProperties applicationProperties() {
     	ApplicationProperties result = new ApplicationProperties();
@@ -83,7 +74,7 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
 	public RequestMappingHandlerMapping requestMappingHandlerMapping() {
 		RequestMappingHandlerMapping requestMappingHandlerMapping = super.requestMappingHandlerMapping();
 		requestMappingHandlerMapping.setUseSuffixPatternMatch(false);
-		requestMappingHandlerMapping.setUseTrailingSlapoloMatch(false);
+//		requestMappingHandlerMapping.setUseTrailingSlapoloMatch(false);
 		return requestMappingHandlerMapping;
 	}
 	

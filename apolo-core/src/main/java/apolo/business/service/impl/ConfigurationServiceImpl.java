@@ -22,14 +22,12 @@ public class ConfigurationServiceImpl extends BaseServiceImpl<Configuration> imp
 	@Autowired
 	private ConfigurationRepository configurationRepository;
 	
-	@Override
 	public List<Configuration> list(Tenant tenant) {
 		List<Configuration> result = configurationRepository.findByTenantOrderByFieldAsc(tenant);
 		
 		return result;
 	}
 	
-	@Override
 	public Page<Configuration> list(Tenant tenant, Integer pageNumber) {
 		if (pageNumber < 1) {
 			pageNumber = 1;
@@ -42,12 +40,10 @@ public class ConfigurationServiceImpl extends BaseServiceImpl<Configuration> imp
 		return result;
 	}
 
-	@Override
 	public Configuration find(Tenant tenant, Long id) {
 		return configurationRepository.findByTenantAndId(tenant, id);
 	}
 
-	@Override
 	@Transactional
 	public Configuration save(Configuration configuration) {
 		if (configuration != null) {
@@ -58,13 +54,11 @@ public class ConfigurationServiceImpl extends BaseServiceImpl<Configuration> imp
 		return configurationRepository.saveAndFlush(configuration);
 	}
 
-	@Override
 	@Transactional
 	public void remove(Configuration configuration) {
 		configurationRepository.delete(configuration);
 	}
 
-	@Override
 	public Configuration find(Tenant tenant, ConfigField field) {
 		return configurationRepository.findByTenantAndField(tenant, field);
 	}

@@ -14,12 +14,10 @@ import org.hibernate.engine.spi.SessionImplementor;
 public class FieldTypeUserType extends ImmutableUserType {
 	private static final long serialVersionUID = 1L;
 
-	@Override
 	public int[] sqlTypes() {
 		return new int[] { Types.VARCHAR };
 	}
 
-	@Override
 	public Class<?> returnedClass() {
 		return FieldType.class;
 	}
@@ -35,7 +33,6 @@ public class FieldTypeUserType extends ImmutableUserType {
 		}
 	}
 
-	@Override
 	public void nullSafeSet(PreparedStatement st, Object value, int index, SessionImplementor session)
 			throws HibernateException, SQLException {
 		if (value == null) {

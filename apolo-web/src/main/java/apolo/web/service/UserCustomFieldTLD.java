@@ -4,7 +4,7 @@ import apolo.data.model.User;
 import apolo.data.model.UserCustomField;
 import apolo.data.model.UserCustomFieldValue;
 
-import java.util.HapoloMap;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -34,7 +34,7 @@ public class UserCustomFieldTLD extends TagSupport {
 		
 		JspWriter out = pageContext.getOut();
 		try {
-			Map<Long, String> fieldMap = new HapoloMap<Long, String>();
+			Map<Long, String> fieldMap = new HashMap<Long, String>();
 			if (user != null && user.getCustomFields() != null && !user.getCustomFields().isEmpty()) {
 				for (UserCustomFieldValue field : user.getCustomFields()) {
 					fieldMap.put(field.getUserCustomField().getId(), field.getValue());

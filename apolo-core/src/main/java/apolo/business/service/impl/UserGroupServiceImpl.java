@@ -27,7 +27,6 @@ public class UserGroupServiceImpl extends BaseServiceImpl<UserGroup> implements 
 	@Autowired
 	private UserGroupRepository userGroupRepository;
 	
-	@Override
 	public List<UserGroup> list(Tenant tenant) {
 		Sort request = new Sort(new Sort.Order(Sort.Direction.ASC, "name"));
 		
@@ -50,7 +49,6 @@ public class UserGroupServiceImpl extends BaseServiceImpl<UserGroup> implements 
 		return result;
 	}
 	
-	@Override
 	public Page<UserGroup> list(Tenant tenant, Integer pageNumber) {
 		if (pageNumber < 1) {
 			pageNumber = 1;
@@ -77,17 +75,14 @@ public class UserGroupServiceImpl extends BaseServiceImpl<UserGroup> implements 
 		return result;
 	}
 
-	@Override
 	public UserGroup find(Long id) {
 		return userGroupRepository.findOne(id);
 	}
 	
-	@Override
 	public UserGroup find(Tenant tenant, Long id) {
 		return userGroupRepository.findByTenantAndId(tenant, id);
 	}
 
-	@Override
 	@Transactional
 	public UserGroup save(UserGroup userGroup) throws AccessDeniedException {
 		if (userGroup != null && UserStatus.ADMIN.equals(userGroup.getStatus()) && userGroup.getId() != null) {
@@ -104,7 +99,6 @@ public class UserGroupServiceImpl extends BaseServiceImpl<UserGroup> implements 
 		}
 	}
 
-	@Override
 	@Transactional
 	public void remove(UserGroup userGroup) throws AccessDeniedException {
 		if (userGroup != null && UserStatus.ADMIN.equals(userGroup.getStatus()) && userGroup.getId() != null) {
@@ -114,7 +108,6 @@ public class UserGroupServiceImpl extends BaseServiceImpl<UserGroup> implements 
 		}
 	}
 
-	@Override
 	public Page<UserGroup> search(Tenant tenant, Integer pageNumber, String param) {
 		if (pageNumber < 1) {
 			pageNumber = 1;
@@ -131,7 +124,6 @@ public class UserGroupServiceImpl extends BaseServiceImpl<UserGroup> implements 
 		return result;
 	}
 
-	@Override
 	public List<UserPermission> getUserPermissionList() {
 		List<UserPermission> permissions = new ArrayList<UserPermission>();
 		
@@ -151,7 +143,6 @@ public class UserGroupServiceImpl extends BaseServiceImpl<UserGroup> implements 
 		return permissions;
 	}
 	
-	@Override
 	public UserGroup lock(UserGroup entity) {
 		if (!entity.getStatus().isChangeable()) {
 			String message = MessageBundle.getMessageBundle("error.403.4");
@@ -162,7 +153,6 @@ public class UserGroupServiceImpl extends BaseServiceImpl<UserGroup> implements 
 		return userGroupRepository.save(entity);
 	}
 
-	@Override
 	public UserGroup unlock(UserGroup entity) {
 		if (!entity.getStatus().isChangeable()) {
 			String message = MessageBundle.getMessageBundle("error.403.4");

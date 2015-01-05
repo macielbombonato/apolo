@@ -34,12 +34,10 @@ public class TenantServiceImpl extends BaseServiceImpl<Tenant> implements Tenant
 	@Autowired
 	private ApplicationProperties applicationProperties;
 	
-	@Override
 	public List<Tenant> list() {
 		return tenantRepository.findAll();
 	}
 	
-	@Override
 	public Page<Tenant> list(Integer pageNumber) {
 		if (pageNumber < 1) {
 			pageNumber = 1;
@@ -50,7 +48,6 @@ public class TenantServiceImpl extends BaseServiceImpl<Tenant> implements Tenant
 		return tenantRepository.findAll(request);
 	}
 
-	@Override
 	public Tenant find(Long id) {
 		Tenant result = null;
 		
@@ -67,18 +64,15 @@ public class TenantServiceImpl extends BaseServiceImpl<Tenant> implements Tenant
 		return result;
 	}
 	
-	@Override
 	public Tenant find(Tenant tenant, Long id) {
 		return find(id);
 	}
 
-	@Override
 	@Transactional
 	public Tenant save(Tenant entity) {
 		return save(entity, null);
 	}
 	
-	@Override
 	@Transactional
 	public Tenant save(Tenant tenant, FileContent file) {
 		
@@ -111,13 +105,11 @@ public class TenantServiceImpl extends BaseServiceImpl<Tenant> implements Tenant
 		return tenantRepository.saveAndFlush(tenant);
 	}
 
-	@Override
 	@Transactional
 	public void remove(Tenant entity) {
 		tenantRepository.delete(entity);
 	}
 
-	@Override
 	public Page<Tenant> search(Integer pageNumber, String param) {
 		if (pageNumber < 1) {
 			pageNumber = 1;
@@ -132,7 +124,6 @@ public class TenantServiceImpl extends BaseServiceImpl<Tenant> implements Tenant
 		return tenantRepository.findByUrlLikeOrNameLikeOrderByNameAsc(param, param, request);
 	}
 	
-	@Override
 	public Tenant findByUrl(String url) {
 		Tenant result = null;
 		
@@ -166,19 +157,16 @@ public class TenantServiceImpl extends BaseServiceImpl<Tenant> implements Tenant
 		return result;
 	}
 
-	@Override
 	public List<Tenant> list(Tenant tenant) {
 		// not used in this service
 		return list();
 	}
 
-	@Override
 	public Page<Tenant> list(Tenant tenant, Integer pageNumber) {
 		// not used in this service
 		return list(pageNumber);
 	}
 
-	@Override
 	public Tenant lock(Tenant entity) {
 		if (getAuthenticatedUser().getTenant().equals(entity)) {
 			String message = MessageBundle.getMessageBundle("error.403.6");
@@ -192,7 +180,6 @@ public class TenantServiceImpl extends BaseServiceImpl<Tenant> implements Tenant
 		}
 	}
 
-	@Override
 	public Tenant unlock(Tenant entity) {
 		entity.setStatus(Status.ACTIVE);
 		return tenantRepository.save(entity);
