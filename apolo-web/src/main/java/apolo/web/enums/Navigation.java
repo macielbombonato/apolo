@@ -3,6 +3,17 @@ package apolo.web.enums;
 
 public enum Navigation {
 	
+	INDEX("/index") {
+		@Override
+		public String getNodeName() {
+			return "view.index";
+		}
+
+		@Override
+		public int getNodeLevel() {
+			return 1;
+		}
+	},
 	VERSION("/version") {
 		@Override
 		public String getNodeName() {

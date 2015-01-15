@@ -18,8 +18,6 @@ import org.springframework.web.context.ContextLoader;
 
 public class SystemAdministratorTLD extends TagSupport {
 	
-	private static final long serialVersionUID = 1L;
-	
 	private static final Logger log = LoggerFactory.getLogger(SystemAdministratorTLD.class);
 	
 	@Autowired

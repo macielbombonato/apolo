@@ -37,7 +37,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         		.disable()
         	.authorizeRequests()
                 .antMatchers(
-                        "/resources/**", 
+                		"/resources/**", 
                         "/error/**",
                         "/install/**",
                         "/change-locale/**",
@@ -45,6 +45,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/auth/loginfailed",
                         "/auth/validate-token",
                         "/auth/logout",
+                        "/index",
                         "/login").permitAll()
                 .antMatchers("/auth/second-factor")
                 	.hasAnyRole(
@@ -65,7 +66,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	                .passwordParameter("password")
 	                .loginPage("/auth/login")
 	                .loginProcessingUrl("/login")
-                	.defaultSuccessUrl("/auth/second-factor", true)
+                	.defaultSuccessUrl("/user", true)
                 	.failureUrl("/auth/loginfailed")
                 		.permitAll()
             .and()

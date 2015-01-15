@@ -16,12 +16,13 @@
         <artifactId>apolo</artifactId>
         <version>3.0.0</version>
     </parent>
+    
 
     <dependencies>
     	<dependency>
     		<groupId>apolo.core.custom</groupId>
     		<artifactId>apolo-core-custom</artifactId>
-    		<version>3.0.0</version>
+    		<version>${apolo.version}</version>
     	</dependency>
     	<dependency>
     		<groupId>org.springframework</groupId>
@@ -36,10 +37,11 @@
     		<groupId>org.springframework</groupId>
     		<artifactId>spring-webmvc</artifactId>
     	</dependency>
-    	<dependency>
-    		<groupId>org.hibernate.javax.persistence</groupId>
-    		<artifactId>hibernate-jpa-2.1-api</artifactId>
-    	</dependency>
+		<dependency>
+			<groupId>org.hibernate.javax.persistence</groupId>
+			<artifactId>hibernate-jpa-2.1-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
     	<dependency>
     		<groupId>org.hibernate</groupId>
     		<artifactId>hibernate-core</artifactId>
@@ -47,6 +49,13 @@
     	<dependency>
     		<groupId>br.com.insula</groupId>
     		<artifactId>opes</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-api</artifactId>
+				</exclusion>
+			</exclusions>
     	</dependency>
     </dependencies>
+    
 </project>
