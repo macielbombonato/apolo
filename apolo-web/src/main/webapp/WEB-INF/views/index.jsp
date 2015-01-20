@@ -9,13 +9,9 @@
 		<div id="overlay" class="transparent"></div>
 	
 		<div id="wrapper" class="preload">
-			<jsp:include page='/WEB-INF/views/fragment/_contentheader.jsp'></jsp:include>
-				
 			<div id="main-container">
 				
-				<jsp:include page='/WEB-INF/views/fragment/_breadcrumb.jsp'></jsp:include>
-					
-				<jsp:include page='/WEB-INF/views/fragment/_message.jsp'></jsp:include>		<div class="container ">
+				<div class="container ">
 					
 				<div class="row ">
 					<div class="media">
@@ -35,9 +31,6 @@
 				</div>
 			</div>
 			</div>
-			
-			<jsp:include page='/WEB-INF/views/fragment/_contentfooter.jsp'></jsp:include>
-			<jsp:include page='/WEB-INF/views/fragment/_pagefooter.jsp'></jsp:include>			
 		</div>
 	</body>
 </html>

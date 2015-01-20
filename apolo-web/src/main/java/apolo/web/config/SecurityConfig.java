@@ -46,12 +46,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/auth/validate-token",
                         "/auth/logout",
                         "/index",
+                        "/",
                         "/login").permitAll()
-                .antMatchers("/auth/second-factor")
-                	.hasAnyRole(
-                			UserPermission.BEFORE_AUTH_USER.getCode(),
-                			UserPermission.AFTER_AUTH_USER.getCode()
-                		)
                 .anyRequest()
                 	.hasAnyRole(
                 			UserPermission.ADMIN.getCode(), 

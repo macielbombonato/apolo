@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+    <head th:fragment="headTag">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+        <title sec:authorize="hasRole('ROLE_AFTER_AUTH_USER')"
+               th:if="${currentUser != null} and ${currentUser.tenant != null} and ${currentUser.tenant.name != null}"
+               th:text="#{${currentUser.tenant.name}}"
+                >
+        </title>
+        <title sec:authorize="hasRole('ROLE_AFTER_AUTH_USER')"
+               th:if="${currentUser != null} and ${currentUser.tenant != null} and ${currentUser.tenant.name == null}"
+               th:text="#{app.title}"
+                >
+        </title>
+        <title sec:authorize="isAnonymous()"
+               th:text="#{app.title}"
+                >
+        </title>
+
+        <link rel="icon" type="image/png" th:href="@{/resources/app/img/favicon.ico}" />
+
+        <link th:href="@{/resources/plugin/bootstrap/default-skin/css/bootstrap.min.css}" rel="stylesheet" media="screen"/>
+        <link th:href="@{/resources/plugin/bootstrap/default-skin/css/bootstrap-theme.min.css}" rel="stylesheet" media="screen"/>
+
+        <link th:href="@{/resources/plugin/mediaelement/mediaelementplayer.min.css}" rel="stylesheet" media="screen"/>
+
+        <link th:href="@{/resources/plugin/dropdown/css/jquery.dropdown.css}" rel="stylesheet" />
+
+        <link th:href="@{/resources/app/css/app.css}" rel="stylesheet" media="screen"/>
+
+
+        <!-- The HTML5 shim, for IE6-8 support of HTML5 elements -->
+        <!--[if lt IE 9]>
+        <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+    </head>
+
+    <body>
+    </body>
+
+</html>

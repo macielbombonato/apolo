@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<taglib>
+	<tlibversion>1.0</tlibversion>
+	<jspversion>1.1</jspversion>
+	<shortname>apolo</shortname>
+	<info>Tag Libs from apolo</info>
+	
+	<tag>
+		<name>sysadmin</name>
+		<tagclass>apolo.web.service.SystemAdministratorTLD</tagclass>
+		<info>System Administrator ContactLink</info>
+	</tag>
+	
+	<tag>
+		<name>customField</name>
+		<tagclass>apolo.web.service.UserCustomFieldTLD</tagclass>
+		<info>Custom fields From User</info>
+
+		<attribute>  
+			<name>readOnly</name>  
+			<required>true</required>  
+			<rtexprvalue>true</rtexprvalue>  
+		</attribute>
+		
+		<attribute>  
+			<name>user</name>  
+			<required>true</required>  
+			<rtexprvalue>true</rtexprvalue>  
+		</attribute>
+		
+		<attribute>  
+			<name>fieldList</name>  
+			<required>true</required>  
+			<rtexprvalue>true</rtexprvalue>  
+		</attribute>
+	</tag>
+</taglib> 

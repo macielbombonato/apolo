@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <head>
+    </head>
+    <body th:fragment="header">
+
+        <nav id="menu" class="navbar navbar-default" role="navigation">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" th:href="${currentUser != null} ? @{/${currentUser.tenant.url}/user} : @{'/'}">
+                    <strong style="font-family: monospace; font-size: xx-large;" class="menu-title">
+                        <div th:switch="${currentUser != null} and ${currentUser.tenant != null} and ${currentUser.tenant.logo != null}">
+                            <img th:case="'true'"
+                                 th:href="@{${'/'} + ${currentUser.tenant.url} + ${'/uploadedfiles/Tenant/'} + ${currentUser.tenant.id} + ${'/'} + ${currentUser.tenant.logo}}"
+                                 th:width="${currentUser.tenant.logoWidth}"
+                                 th:height="${currentUser.tenant.logoHeight}"
+                                 th:style="${'width: '} + ${currentUser.tenant.logoWidth} + ${'px; height: '} + ${currentUser.tenant.logoHeight} + ${'px;'}"
+                                 th:text="#{app.title}"
+                                />
+                            <img th:case="*"
+                                 th:href="@{'/resources/app/img/logo.png'}"
+                                 th:width="${'25'}"
+                                 th:height="${'25'}"
+                                 style="width: 25px; height: 25px;"
+                                 th:text="#{app.title}"
+                                />
+                        </div>
+                    </strong>
+                </a>
+
+                <div class="collapse navbar-collapse navbar-ex1-collapse">
+                </div>
+            </div>
+        </nav>
+    </body>
+</html>

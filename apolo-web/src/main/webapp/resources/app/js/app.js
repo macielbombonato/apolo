@@ -96,7 +96,41 @@ $(document).ready(function() {
 	});
 });
 
-$('#header').height($('#menu').height() + 5);
+$.fn.is_on_screen = function(){
+	var win = $(window);
+	var viewport = {
+		top : win.scrollTop(),
+		left : win.scrollLeft()
+	};
+	viewport.right = viewport.left + win.width();
+	viewport.bottom = viewport.top + win.height();
+
+	var bounds = this.offset();
+	bounds.right = bounds.left + this.outerWidth();
+	bounds.bottom = bounds.top + this.outerHeight();
+
+	return (!(viewport.right < bounds.left || viewport.left > bounds.right || viewport.bottom < bounds.top || viewport.top > bounds.bottom));
+};
+
+function updateMenuVisibility() {
+	if( $('#menu').length > 0 ) { // if target element exists in DOM
+		var position = 5;
+
+		if ($(document).scrollTop() > position) {
+			$('#menu').addClass('menu-top');
+			$('#menu').addClass('navbar-fixed-top');
+		} else if ($('#menu').is_on_screen()
+				&& $('#menu').hasClass('menu-top')
+				&& $(document).scrollTop() <= position) {
+			$('#menu').removeClass('menu-top');
+			$('#menu').removeClass('navbar-fixed-top');
+		}
+	}
+}
+
+$(window).scroll(function(){ // bind window scroll event
+	updateMenuVisibility();
+});
 
 $('video').mediaelementplayer({
 	success: function(media, node, player) {

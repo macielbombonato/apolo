@@ -27,6 +27,7 @@
         <cglib-version>2.2.2</cglib-version>
         <org.slf4j-version>1.5.10</org.slf4j-version>
         <postgresql-version>9.2-1002.jdbc4</postgresql-version>
+		<jackson.version>2.2.0</jackson.version>
     </properties>
 
     <modules>
@@ -392,12 +393,22 @@
 	            <artifactId>jstl</artifactId>
 	            <version>1.2</version>
 	        </dependency>
-	         <!-- JSON -->
-	        <dependency>
-	            <groupId>org.codehaus.jackson</groupId>
-	            <artifactId>jackson-mapper-asl</artifactId>
-	            <version>1.9.9</version>
-	        </dependency>
+			<!-- JSON -->
+			<dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-core</artifactId>
+				<version>${jackson.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-databind</artifactId>
+				<version>${jackson.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-annotations</artifactId>
+				<version>${jackson.version}</version>
+			</dependency>
 	        <!-- Test -->
 	        <dependency>
 	            <groupId>junit</groupId>
@@ -528,6 +539,39 @@
 	            <artifactId>mail</artifactId>
 	            <version>1.4.6-rc1</version>
 	        </dependency>
+			<!-- Thymeleaf -->
+			<dependency>
+				<groupId>org.thymeleaf</groupId>
+				<artifactId>thymeleaf</artifactId>
+				<version>2.1.2.RELEASE</version>
+				<exclusions>
+					<exclusion>
+						<artifactId>javassist</artifactId>
+						<groupId>org.javassist</groupId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			<dependency>
+				<groupId>org.thymeleaf</groupId>
+				<artifactId>thymeleaf-spring3</artifactId>
+				<version>2.1.2.RELEASE</version>
+			</dependency>
+			<dependency>
+				<groupId>org.thymeleaf.extras</groupId>
+				<artifactId>thymeleaf-extras-springsecurity3</artifactId>
+				<version>2.1.1.RELEASE</version>
+			</dependency>
+			<dependency>
+				<groupId>ognl</groupId>
+				<artifactId>ognl</artifactId>
+				<version>3.0.6</version>
+				<exclusions>
+					<exclusion>
+						<artifactId>javassist</artifactId>
+						<groupId>javassist</groupId>
+					</exclusion>
+				</exclusions>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 	

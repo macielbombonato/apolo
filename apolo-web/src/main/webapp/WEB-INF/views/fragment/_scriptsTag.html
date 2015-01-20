@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+    <head>
+    </head>
+
+    <body th:fragment="scriptsTag">
+
+        <script type="text/javascript">
+            var App = function() {
+                return {
+                    contextPath : '[[${#pageContext.request.contextPath}]]',
+                    locale : '[[${#sessionScope["org.springframework.web.servlet.i18n.SessionLocaleResolver.LOCALE"]}]]',
+                    readOnly : [[${#readOnly != null ? #readOnly : false }]]
+                };
+            }();
+        </script>
+
+        <script th:src="@{/resources/plugin/jquery/jquery-1.11.2.min.js}"></script>
+        <script th:src="@{/resources/plugin/bootstrap/default-skin/js/bootstrap.min.js}"></script>
+
+        <script th:src="@{/resources/plugin/mediaelement/mediaelement-and-player.min.js}"></script>
+
+        <script th:src="@{/resources/app/js/app.js}"></script>
+
+    </body>
+
+</html>

@@ -2,6 +2,22 @@ body {
 	padding-bottom: 40px;
 }
 
+.footer {
+	background-image: none;
+	background-repeat: repeat;
+	background: none repeat scroll 0 0 rgba(0, 0, 0, 0.4);
+	z-index: 999;
+	width: 100%;
+}
+
+.menu-top {
+	background: none repeat scroll 0 0 rgba(0, 0, 0, 0.4);
+}
+
+.menu-title {
+	color: #000000;
+}
+
 .sidebar-nav {
 	padding: 9px 0;
 }
@@ -106,20 +122,17 @@ input[type=radio] {
 }
 
 @media (min-width: 980px) {
-	.footer {
-	    width: 100%; // Don't change
-	    background-image: none;
-	    background-repeat: repeat;
-	    background-attachment: scroll;
-	    background-position: 0% 0%;
-	    background-color: #FFFFFF;
-	    position: fixed;
-	    bottom: 0pt;
-	}
-	
+
 	.footer_contents {
 	    width: 1000px; // Visible width of footer
 	    margin:auto;
+	}
+
+	.footer {
+		bottom: 0px;
+		margin: 0px;
+		position: fixed;
+		padding: 0px;
 	}
 	
 	.loginForm {
@@ -135,14 +148,10 @@ input[type=radio] {
 
 @media (min-width: 1200px) {
 	.footer {
-	    width: 100%; // Don't change
-	    background-image: none;
-	    background-repeat: repeat;
-	    background-attachment: scroll;
-	    background-position: 0% 0%;
-	    background-color: #FFFFFF;
-	    position: fixed;
-	    bottom: 0pt;
+		bottom: 0px;
+		margin: 0px;
+		position: fixed;
+		padding: 0px;
 	}
 	
 	.footer_contents {

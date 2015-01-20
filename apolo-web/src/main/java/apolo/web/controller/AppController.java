@@ -51,12 +51,6 @@ public class AppController extends BaseController<User> {
 	@Autowired
 	private AuthController authController;
 	
-	/**
-	 * System login page
-	 * @param model
-	 * @param request
-	 * @return String
-	 */
 	@RequestMapping(value = "/change-locale/{locale}", method = RequestMethod.GET)
 	public ModelAndView changeLocale(
 				@PathVariable("locale") String locale,
@@ -87,12 +81,6 @@ public class AppController extends BaseController<User> {
 		return mav;
 	}
 	
-	/**
-	 * System welcome page
-	 * @param model
-	 * @param request
-	 * @return String
-	 */
 	@RequestMapping(value = "/change-locale/{tenant}/{locale}", method = RequestMethod.GET)
 	public ModelAndView authenticatedChangeLocale(
 				@PathVariable("tenant") String tenant,
@@ -231,6 +219,11 @@ public class AppController extends BaseController<User> {
 		
 		mav.addObject("readOnly", true);
 		return mav;
+	}
+
+	@RequestMapping(value = "/", method = RequestMethod.GET)
+	public ModelAndView home(HttpServletRequest request) {
+		return index(request);
 	}
 	
 	/**

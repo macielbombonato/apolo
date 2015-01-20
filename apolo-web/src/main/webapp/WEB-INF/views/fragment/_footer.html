@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:apolo="@{/WEB-INF/taglib/apolo.tld}"
+        >
+
+    <head>
+    </head>
+    <body th:fragment="footer">
+
+        <footer class="footer">
+            <small th:text="#{footer.message}" data-htmlEscape="false">
+                <s:message code="footer.message" htmlEscape="false"/>
+            </small>
+            <small>
+                | <apolo:sysadmin />
+            </small>
+        </footer>
+
+        <noscript>
+            <div class="alert alert-block">
+                <h4 class="alert-heading">Warning!</h4>
+                <p>
+                    You need to have <a href="http://en.wikipedia.org/wiki/JavaScript" target="_blank">JavaScript</a> enabled to use this site.
+                </p>
+            </div>
+        </noscript>
+
+        <div th:remove="tag" th:include="@{fragment/_loadingDialog} :: loadingDialog"></div>
+
+        <!-- BEGIN ConfirmDialog -->
+        <div id="confirmationDialog" class="dialog-modal" th:title="#{common.remove}" style="display: none;">
+            <p>
+                <span class="ui-icon ui-icon-alert" style="float:left; margin:10px 10px 20px 0;"></span>
+                <span th:utext="#{common.remove.msg}">Are you sure you want to remove this register? <br/>This operation cannot be undone.</span>
+            </p>
+        </div>
+        <!-- END ConfirmDialog -->
+
+        <div th:remove="tag" th:include="@{fragment/_scriptsTag} :: scriptsTag"></div>
+
+    </body>
+</html>
