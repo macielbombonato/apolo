@@ -1,20 +1,45 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-      <head th:include="@{fragment/_headTag} :: headTag">
+      <head th:include="@{_fragment/_headTag} :: headTag">
       </head>
       <body>
-            <div th:remove="tag" th:include="@{fragment/_header} :: header"></div>
+            <div th:remove="tag" th:include="@{_fragment/_header} :: header"></div>
 
-            <p>
-                  1. Teste <br/>
-                  2. Teste <br/>
-                  3. Teste <br/>
-                  Teste <br/>
-                  Teste <br/>
-                  Teste <br/>Teste <br/>Teste <br/>Teste <br/>Teste <br/>Teste <br/>Teste <br/>Teste <br/>Teste <br/>Teste <br/>Teste <br/>Teste <br/>Teste <br/>Teste <br/>Teste <br/>Teste <br/>Teste <br/>Teste <br/>Teste <br/>Teste <br/>Teste <br/>Teste <br/>Teste <br/>Teste <br/>Teste <br/>Teste <br/>Teste <br/>Teste <br/>Teste <br/>Teste <br/>Teste <br/>Teste <br/>
-            </p>
+            <div th:remove="tag" th:include="@{_fragment/_message} :: message"></div>
 
-            <div th:remove="tag" th:include="@{fragment/_footer} :: footer"></div>
+            <div class="container ">
+                  <div class="row ">
+                        <div class="media">
+                              <div class="col-md-4">
+                                    <img class="img-responsive" th:src="@{'/resources/app/img/favicon.png'}" />
+                              </div>
+                              <div class="media-body col-md-8" style="text-align: justify">
+                                    <h4 class="media-heading" th:text="#{view.index.apolo.title}" />
+                                    <p th:text="#{view.index.hello}" data-htmlEscape="false" />
+                              </div>
+                        </div>
+                  </div>
+                  <div class="row ">
+                        <p>
+                              Teste <br/>
+                              Teste <br/>
+                              Teste <br/>
+                              Teste <br/>
+                              Teste <br/>
+                              Teste <br/>
+                              Teste <br/>
+                              Teste <br/>
+                              Teste <br/>
+                              Teste <br/>
+                              Teste <br/>
+                              Teste <br/>
+                              Teste <br/>
+                              Teste <br/>
+                        </p>
+                  </div>
+            </div>
+
+            <div th:remove="tag" th:include="@{_fragment/_footer} :: footer"></div>
       </body>
 </html>

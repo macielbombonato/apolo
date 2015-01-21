@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+    <head>
+    </head>
+    <body th:fragment="menu-user">
+        <div th:with="dashboard=${'/'} + ${#authentication.systemUser.tenant.url} + ${'/user'},
+                    profile=${'/'} + ${#authentication.systemUser.tenant.url} + ${'/user/view/'} + ${#authentication.systemUser.id},
+                    changePassword=${'/'} + ${#authentication.systemUser.tenant.url} + ${'/user/change-password'}
+        " >
+            <ul class="nav navbar-nav navbar-right">
+                <li sec:authorize="hasAnyRole('ROLE_AFTER_AUTH_USER')">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <div class="menu-text menu-text-default">
+                            <span><i class="fa fa-user"></i></span>
+                            <strong th:text="${#authentication.systemUser.name}" />
+                            <span><i class="fa fa-chevron-down"></i></span>
+                        </div>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a th:href="@{${dashboard}}" >
+                                <i class="fa fa-tachometer"></i>
+                                <span th:text="#{user.dashboard}" />
+                            </a>
+                        </li>
+                        <li>
+                            <a th:href='@{${profile}}'>
+                                <i class="fa fa-user"></i>
+                                <span th:text="#{user.profile}" />
+                            </a>
+                        </li>
+                        <li>
+                            <a th:href='@{${changePassword}}'>
+                                <i class="fa fa-pencil-square-o"></i>
+                                <span th:text="#{user.change.password}" />
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a th:href='@{/auth/logout}'>
+                                <i class="fa fa-power-off"></i>
+                                <span th:text="#{user.logout}" />
+                            </a>
+                        </li>
+                    </ul>
+
+                </li>
+
+                <li sec:authorize="!isAuthenticated()">
+                    <a th:href="@{/auth/login}">
+                        <div class="menu-text menu-text-default">
+                            <span><i class="fa fa-lock"></i></span>
+                            <strong th:text="#{user.restricted.area.access}" />
+                            <span><i class="fa fa-hover fa-chevron-down"></i></span>
+                        </div>
+                    </a>
+                </li>
+
+                <li sec:authorize="hasAnyRole('ROLE_BEFORE_AUTH_USER')">
+                    <a th:href="@{/auth/login}">
+                        <div class="menu-text menu-text-default">
+                            <span><i class="fa fa-lock"></i></span>
+                            <strong th:text="#{user.restricted.area.access}" />
+                            <span><i class="fa fa-hover fa-chevron-down"></i></span>
+                        </div>
+                    </a>
+                </li>
+
+            </ul>
+        </div>
+    </body>
+</html>

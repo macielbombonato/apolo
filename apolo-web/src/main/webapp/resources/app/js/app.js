@@ -113,24 +113,52 @@ $.fn.is_on_screen = function(){
 };
 
 function updateMenuVisibility() {
-	if( $('#menu').length > 0 ) { // if target element exists in DOM
+	if( $('#menu').length > 0 ) {
 		var position = 5;
 
 		if ($(document).scrollTop() > position) {
+			if ($('.menu-text').parent().parent().parent().parent().parent().hasClass('menu-header')) {
+				$('.menu-text').removeClass('menu-text-default');
+				$('.menu-text').addClass('menu-text-white');
+			}
+
 			$('#menu').addClass('menu-top');
 			$('#menu').addClass('navbar-fixed-top');
+
+			$('#menuTitle').removeClass('menu-title');
+			$('#menuTitle').addClass('menu-title-top');
+
+			$('.navbar-header').removeClass('menu-header');
+			$('.navbar-header').addClass('menu-header-top');
+
+			$('#menu-space').show();
 		} else if ($('#menu').is_on_screen()
 				&& $('#menu').hasClass('menu-top')
 				&& $(document).scrollTop() <= position) {
+			if ($('.menu-text').parent().parent().parent().parent().parent().hasClass('menu-header-top')) {
+				$('.menu-text').addClass('menu-text-default');
+				$('.menu-text').removeClass('menu-text-white');
+			}
+
 			$('#menu').removeClass('menu-top');
 			$('#menu').removeClass('navbar-fixed-top');
+
+			$('#menuTitle').addClass('menu-title');
+			$('#menuTitle').removeClass('menu-title-top');
+
+			$('.navbar-header').addClass('menu-header');
+			$('.navbar-header').removeClass('menu-header-top');
+
+			$('#menu-space').hide();
 		}
 	}
 }
 
-$(window).scroll(function(){ // bind window scroll event
+$(window).scroll(function(){
 	updateMenuVisibility();
 });
+
+$('#menu-space').height($('#menu').height() + 5);
 
 $('video').mediaelementplayer({
 	success: function(media, node, player) {

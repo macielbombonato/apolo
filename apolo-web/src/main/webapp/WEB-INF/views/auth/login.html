@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <head th:include="@{_fragment/_headTag} :: headTag">
+    </head>
+    <body class="overflow-hidden">
+        <div id="overlay" class="transparent"></div>
+
+        <div class="login-wrapper">
+            <div th:remove="tag" th:include="@{_fragment/_message} :: message"></div>
+
+            <div class="login-widget">
+                <div class="panel panel-default">
+                    <div class="panel-heading clearfix">
+                        <div class="col-sm-4 pull-left">
+                            <img class="img-responsive" th:src='@{/resources/app/img/logo.png}' width="15" style="width: 15px;" />
+                        </div>
+                        <div class="col-sm-8 pull-left" th:text="#{user.login.title}" />
+                    </div>
+                    <div class="panel-body">
+                        <form id="login_form" th:action="@{/login}" method="post" role="form" class="form-login">
+                            <div class="form-group">
+                                <div class="input-group">
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-user"></span>
+                                        </span>
+                                    <input type="email"
+                                           id="username"
+                                           name="username"
+                                           class="form-control input-sm focus"
+                                           th:placeholder='#{user.name}'
+                                            />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                        <span class="input-group-addon">
+                                            <span class="fa fa-key"></span>
+                                        </span>
+                                    <input type="password"
+                                           id="password"
+                                           name="password"
+                                           class="form-control input-sm"
+                                           th:placeholder='#{user.password}'
+                                            />
+                                </div>
+                            </div>
+                            <hr/>
+
+                            <button type="submit" id="login_button" class="btn btn-success btn-sm pull-right">
+                                <i class="fa fa-sign-in" />
+                                <span th:text="#{user.login}" />
+                            </button>
+                        </form>
+                    </div>
+                </div><!-- /panel -->
+            </div>
+
+            <div th:remove="tag" th:include="@{_fragment/_footer} :: footer"></div>
+        </div>
+    </body>
+</html>

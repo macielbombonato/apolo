@@ -9,9 +9,7 @@
     <body th:fragment="footer">
 
         <footer class="footer">
-            <small th:text="#{footer.message}" data-htmlEscape="false">
-                <s:message code="footer.message" htmlEscape="false"/>
-            </small>
+            <small th:text="#{footer.message}" data-htmlEscape="false" />
             <small>
                 | <apolo:sysadmin />
             </small>
@@ -26,7 +24,7 @@
             </div>
         </noscript>
 
-        <div th:remove="tag" th:include="@{fragment/_loadingDialog} :: loadingDialog"></div>
+        <div th:remove="tag" th:include="@{_fragment/_loadingDialog} :: loadingDialog"></div>
 
         <!-- BEGIN ConfirmDialog -->
         <div id="confirmationDialog" class="dialog-modal" th:title="#{common.remove}" style="display: none;">
@@ -37,7 +35,7 @@
         </div>
         <!-- END ConfirmDialog -->
 
-        <div th:remove="tag" th:include="@{fragment/_scriptsTag} :: scriptsTag"></div>
+        <div th:remove="tag" th:include="@{_fragment/_scriptsTag} :: scriptsTag"></div>
 
     </body>
 </html>

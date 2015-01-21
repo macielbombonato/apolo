@@ -92,11 +92,24 @@ public class AuditLogListener {
 		}
 
 		if (user != null) {
+			long userId = 0L;
+			long tenantId = 0L;
+
+			if (user != null) {
+				if (user.getId() != null) {
+					userId = user.getId();
+				}
+
+				if (user.getTenant() != null && user.getTenant().getId() != null ) {
+					tenantId = user.getTenant().getId();
+				}
+			}
+
 			auditLog.setTransactionType(transactionType);
-			auditLog.setTenantId(user.getTenant().getId());
+			auditLog.setTenantId(tenantId);
 			auditLog.setEntityName(entityName);
 			auditLog.setRegistryId(e.getId());
-			auditLog.setExecutedById(user.getId());
+			auditLog.setExecutedById(userId);
 			auditLog.setOperationDate(new Date());
 
 			try {

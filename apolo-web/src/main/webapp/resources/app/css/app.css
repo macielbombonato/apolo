@@ -8,6 +8,25 @@ body {
 	background: none repeat scroll 0 0 rgba(0, 0, 0, 0.4);
 	z-index: 999;
 	width: 100%;
+	color: #FCFCFC;
+}
+
+.menu-header {
+	width: 100%;
+	color: #000000;
+}
+
+.menu-header-top {
+	width: 100%;
+	color: #FCFCFC;
+}
+
+.menu-text-default {
+	color: #000000;
+}
+
+.menu-text-white {
+	color: #FCFCFC;
 }
 
 .menu-top {
@@ -16,6 +35,10 @@ body {
 
 .menu-title {
 	color: #000000;
+}
+
+.menu-title-top {
+	color: #FCFCFC;
 }
 
 .sidebar-nav {
@@ -59,6 +82,41 @@ input[type=checkbox] {
 input[type=radio] {
 	opacity: 1 !important;
 	position: inherit !important;
+}
+
+.login-wrapper {
+	position: absolute;
+	top: 50px;
+	width: 100%;
+	margin-left: 0;
+	animation: bounceInDownSmall 1s ease;
+	-webkit-animation: bounceInDownSmall 1s ease;
+	-moz-animation: bounceInDownSmall 1s ease;
+	-ms-animation: bounceInDownSmall 1s ease;
+	-o-animation: bounceInDownSmall 1s ease;
+}
+.login-wrapper.fadeOutUp {
+	animation: fadeOutUp 0.5s ease-out;
+	-webkit-animation: fadeOutUp 0.5s ease-out;
+	-moz-animation: fadeOutUp 0.5s ease-out;
+	-ms-animation: fadeOutUp 0.5s ease-out;
+	-o-animation: fadeOutUp 0.5s ease-out;
+	opacity: 0;
+}
+.login-wrapper .login-widget {
+	margin: 0 auto;
+	width: 400px;
+	margin-top: 20px;
+}
+@media (max-width: 480px) {
+	.login-wrapper .login-widget {
+		width: 100%;
+	}
+}
+.login-wrapper .login-widget .widget {
+	box-shadow: 0 1px 15px -4px #000000;
+	-moz-box-shadow: 0 1px 15px -4px #000000;
+	-webkit-box-shadow: 0 1px 15px -4px #000000;
 }
 
 @media (max-width: 480px) {
