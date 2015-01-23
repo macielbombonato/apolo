@@ -8,12 +8,12 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
         <title sec:authorize="hasRole('ROLE_AFTER_AUTH_USER')"
-               th:if="${currentUser != null} and ${currentUser.tenant != null} and ${currentUser.tenant.name != null}"
-               th:text="#{${currentUser.tenant.name}}"
+               th:if="${#authentication.systemUser != null} and ${#authentication.systemUser.tenant != null} and ${#authentication.systemUser.tenant.name != null}"
+               th:text="${#authentication.systemUser.tenant.name}"
                 >
         </title>
         <title sec:authorize="hasRole('ROLE_AFTER_AUTH_USER')"
-               th:if="${currentUser != null} and ${currentUser.tenant != null} and ${currentUser.tenant.name == null}"
+               th:if="${#authentication.systemUser != null} and ${#authentication.systemUser.tenant != null} and ${#authentication.systemUser.tenant.name == null}"
                th:text="#{app.title}"
                 >
         </title>
@@ -22,7 +22,7 @@
                 >
         </title>
 
-        <link rel="icon" type="image/png" th:href="@{/resources/app/img/favicon.ico}" />
+        <link rel="icon" type="image/png" th:href="@{/resources/app/img/favicon.png}" />
 
         <link th:href="@{/resources/plugin/bootstrap/default-skin/css/bootstrap.min.css}" rel="stylesheet" media="screen"/>
         <link th:href="@{/resources/plugin/bootstrap/default-skin/css/bootstrap-theme.min.css}" rel="stylesheet" media="screen"/>
