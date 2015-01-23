@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <head th:include="@{_fragment/_headTag} :: headTag">
+    </head>
+    <body>
+        <div th:remove="tag" th:include="@{_fragment/_header} :: header"></div>
+
+        <div id="wrapper" class="preload">
+
+            <div th:remove="tag" th:include="@{_fragment/_message} :: message"></div>
+
+            <div class="container ">
+                <div class="row ">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <center>
+                                <strong th:text="#{user.index.title}" />
+                            </center>
+                        </div>
+                        <div class="panel-body" th:text="#{user.index.body}" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div th:remove="tag" th:include="@{_fragment/_footer} :: footer"></div>
+    </body>
+</html>

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+</head>
+<body th:fragment="user-form">
+
+    <input type="hidden" id="id" name="id" th:value="${user.id}"/>
+    <input type="hidden" id="status" name="status" th:value="${user.status}"/>
+    <input type="hidden" id="pictureOriginalName" name="pictureOriginalName" th:value="${user.pictureOriginalName}"/>
+    <input type="hidden" id="pictureGeneratedName" name="pictureGeneratedName" th:value="${user.pictureGeneratedName}"/>
+    <input type="hidden" id="tenant.id" name="tenant.id" th:value="${user.tenant.id}"/>
+    <input type="hidden" id="tenant.name" name="tenant.name" th:value="${user.tenant.name}"/>
+    <input type="hidden" id="tenant.url" name="tenant.url" th:value="${user.tenant.url}"/>
+
+    <ul class="nav nav-tabs" id="formTab">
+        <li class="active">
+            <a href="#home">
+                <span class="fa fa-tasks"></span>
+            </a>
+        </li>
+        <li th:if="${readOnly}">
+            <a href="#authorShipTab">
+                <span class="fa fa-user"></span>
+            </a>
+        </li>
+    </ul>
+
+    <div class="tab-content">
+        <div class="tab-pane active" id="home">
+            <div class="form-group">
+                <label for="name" class="control-label" th:text="#{user.name}" />
+                <input type="text" id="name" name="name" class="form-control" th:value="${user.name}"
+                        th:readonly="${readOnly}"
+                    />
+            </div>
+            <div class="form-group">
+                <label for="email" class="control-label" th:text="#{user.email}"/>
+                <input type="email" id="email" name="email" class="form-control" th:value="${user.email}"
+                       th:readonly="${readOnly}"
+                    />
+            </div>
+            <div class="form-group">
+                <label for="mobile" class="control-label" th:text="#{user.mobile}"/>
+                <input type="number" id="mobile" name="mobile" class="form-control" th:value="${user.mobile}"
+                       th:readonly="${readOnly}"
+                    />
+            </div>
+
+            <div th:if="${!readOnly}">
+                <div th:if="${editing}">
+                    <div class="form-group">
+                        <label class="control-label">
+                            <input type="checkbox" id="changePassword" name="changePassword" value="true" onchange="$('#passwordFields').toggle();"/>
+                            <span th:text="#{user.change-password.title}" />
+                        </label>
+                    </div>
+                </div>
+                <div th:if="${!editing}">
+                    <div class="form-group">
+                        <input type="checkbox" id="changePassword" name="changePassword" value="true" checked="checked" style="display:none;"/>
+                    </div>
+                </div>
+
+                <div th:if="${editing}" id="passwordFields">
+                    <div class="form-group">
+                        <label for="password" class="control-label">
+                            <span th:text="#{user.password}" />
+                        </label>
+                        <div class="input-append">
+                            <input type="password" id="password" name="password" class="form-control"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="passwordConfirmation" class="control-label">
+                            <span th:text="#{user.password.confirmation}" />
+                        </label>
+                        <div class="input-append">
+                            <input type="password" id="passwordConfirmation" name="passwordConfirmation" class="form-control"/>
+                        </div>
+                    </div>
+                </div>
+                <div th:if="${!editing}" id="passwordFields" style="display: none;">
+                    <div class="form-group">
+                        <label for="password" class="control-label">
+                            <span th:text="#{user.password}" />
+                        </label>
+                        <div class="input-append">
+                            <input type="password" id="password" name="password" class="form-control"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="passwordConfirmation" class="control-label">
+                            <span th:text="#{user.password.confirmation}" />
+                        </label>
+                        <div class="input-append">
+                            <input type="password" id="passwordConfirmation" name="passwordConfirmation" class="form-control"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div th:if="${changePassword}">
+                <input type="checkbox" id="changePassword" name="changePassword" value="true" checked="checked" style="display:none;"/>
+
+                <div class="form-group">
+                    <label for="password" class="control-label">
+                        <span th:text="#{user.password}" />
+                    </label>
+                    <div class="input-append">
+                        <input type="password" id="password" name="password" class="form-control"/>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="passwordConfirmation" class="control-label">
+                        <span th:text="#{user.password.confirmation}" />
+                    </label>
+                    <input type="password" id="passwordConfirmation" name="passwordConfirmation" class="form-control"/>
+                </div>
+            </div>
+
+            <div th:if="${!readOnly}">
+                <div class="form-group">
+                    <label for="name"
+                           class="control-label"
+                           sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_USER_CREATE', 'ROLE_USER_EDIT')"
+                           th:text="#{user.groups}"
+                            />
+
+                    <div sec:authorize="!hasAnyRole('ROLE_ADMIN', 'ROLE_USER_CREATE', 'ROLE_USER_EDIT')">
+                        <select name="groups" id="listTo" size="5" multiple="multiple"
+                                style="display:none"
+                                th:disabled="${readOnly}"
+                                th:data-placeholder='#{common.select}' >
+                            <option th:each="group : ${groupList}"
+                                    th:value="${group.id}"
+                                    th:text="${group.name}" />
+                        </select>
+                    </div>
+
+                    <div sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_USER_CREATE', 'ROLE_USER_EDIT')">
+                        <select name="groups" id="listTo" size="5" multiple="multiple"
+                                style="display:none"
+                                class="form-control chzn-select"
+                                th:disabled="${readOnly}"
+                                th:data-placeholder='#{common.select}' >
+                            <option th:each="group : ${#authentication.systemUser.permissions}"
+                                    th:value="${group.id}"
+                                    th:text="${group.name}" />
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div th:if="${readOnly}">
+                <div class="form-group">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <strong th:text="#{user.groups}" />
+                        </div>
+                        <ul class="list-group">
+                            <li th:each="group : ${#authentication.systemUser.groups}"
+                                class="list-group-item">
+
+                                <a sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_USER_LIST', 'ROLE_USER_PERMISSION_LIST', 'ROLE_USER_PERMISSION_VIEW')"
+                                   th:href='@{|/${#authentication.systemUser.tenant.url}/user-group/view/${group.id}|}'
+                                        th:text="${group.name}"
+                                        />
+
+                                <span sec:authorize="!hasAnyRole('ROLE_ADMIN', 'ROLE_USER_LIST', 'ROLE_USER_PERMISSION_LIST', 'ROLE_USER_PERMISSION_VIEW')"
+                                      th:text="${group.name}"
+                                        />
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane" id="authorShipTab">
+            <div th:remove="tag" th:include="@{_fragment/_authorship} :: authorship (entity=${user}, entityName=${'user'})"></div>
+        </div>
+    </div>
+    <div id="overlay" class="transparent"></div>
+
+    <div id="menu-space" style="display:none;">&nbsp;</div>
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:include="@{_fragment/_headTag} :: headTag">
+</head>
+<body>
+<div th:remove="tag" th:include="@{_fragment/_header} :: header"></div>
+
+<div id="wrapper" class="preload">
+
+    <div th:remove="tag" th:include="@{_fragment/_message} :: message"></div>
+
+    <div class="container ">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <strong th:text="#{user.view.title}" />
+            </div>
+            <div class="panel-body">
+                <div class="col-sm-2">
+                    <center>
+                        <img th:if="${user.pictureGeneratedName != null}"
+                                class="img-thumbnail"
+                                th:src="@{|/${#authentication.systemUser.tenant.url}/uploadedfiles/User/${user.id}/${user.pictureGeneratedName}|}"
+                            />
+                        <i th:if="${user.pictureGeneratedName == null}" class="fa fa-user fa-5x" />
+                    </center>
+                </div>
+
+                <div class="col-sm-10">
+                    <div th:remove="tag" th:include="@{user/_form} :: user-form"></div>
+
+                    <div class="form-actions">
+                        <div sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_USER_EDIT')">
+                            <a th:href='@{|/${#authentication.systemUser.tenant.url}/user/edit/${user.id}|}' class="btn btn-default">
+                                <i class="fa fa-pencil-square-o"></i>
+                                <span th:text="#{common.edit}" />
+                            </a>
+                        </div>
+                        <div sec:authorize="!hasAnyRole('ROLE_ADMIN', 'ROLE_USER_EDIT')">
+                            <a th:if="${#authentication.systemUser.id == user.id}"
+                                    th:href='@{|/${#authentication.systemUser.tenant.url}/user/edit/${user.id}|}' class="btn btn-default">
+                                <i class="fa fa-pencil-square-o"></i>
+                                <span th:text="#{common.edit}" />
+                            </a>
+                        </div>
+
+                        <div sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_USER_MANAGER')">
+                            <div th:if="${user.status.changeable}">
+                                <a th:if="${user.status == 'ACTIVE'}"
+                                        th:href='@{|/${#authentication.systemUser.tenant.url}/user/lock/${user.id}|}' class="btn btn-danger">
+                                    <i class="fa fa-eye-slash"></i>
+                                    <span th:text="#{common.lock}" />
+                                </a>
+                                <a th:if="${user.status != 'ACTIVE'}"
+                                        th:href='@{|/${#authentication.systemUser.tenant.url}/user/unlock/${user.id}|}' class="btn btn-success">
+                                    <i class="fa fa-eye"></i>
+                                    <span th:text="#{common.unlock}" />
+                                </a>
+                            </div>
+                        </div>
+
+                        <div>
+                            <a href='#' class="btn btn-default back" >
+                                <i class="fa fa-backward"></i>
+                                <span th:text="#{common.back}" />
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:remove="tag" th:include="@{_fragment/_footer} :: footer "></div>
+</body>
+</html>

@@ -301,11 +301,13 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 			
 			tenant.setName(applicationProperties.getDefaultTenant());
 			tenant.setLogoHeight(20);
-			tenant.setLogoWidth(80);
+			tenant.setLogoWidth(15);
 			tenant.setUrl(applicationProperties.getDefaultTenant());
 			tenant.setSkin(Skin.SKIN_5);
 			tenant.setLanguage(Language.BR);
 			tenant.setStatus(Status.ACTIVE);
+
+			formModel.getUser().setTenant(tenant);
 			
 			tenantService.save(tenant);
 		}

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+</head>
+<body th:fragment="authorship (entity, entityName)">
+
+    <div th:with="style=${!readOnly ? 'display: none;' : 'display: block;' },
+                datePattern=#{common.datePattern}">
+        <div class="row">
+            <div class="form-group col-sm-6" th:style="${style}" >
+                <label th:for="${entityName}+.createdBy.id" class="control-label" th:text="#{common.author}" />
+
+                <input type="hidden"
+                       th:id="${entityName}+.createdBy.id"
+                       th:name="${entityName}+.createdBy.id"
+                       th:value="${entity.createdBy.id}"
+                        />
+
+                <p th:text="${entity.createdBy.name}" />
+            </div>
+
+            <div class="form-group col-sm-6 " th:style="${style}" >
+                <label th:for="${entityName}+.creationDate" class="control-label" th:text="#{common.creationDate}"/>
+
+                <input type="hidden"
+                       th:id="${entityName}+.creationDate"
+                       th:name="${entityName}+.creationDate"
+                       th:value="${entity.creationDate}"
+                    />
+
+                <p th:text="${#calendars.format(entity.creationDate, datePattern)}" />
+            </div>
+
+            <div class="form-group col-sm-6 " th:if="${entity.lastUpdatedBy != null}">
+                <label th:for="${entityName}+.lastUpdatedBy.id" class="control-label" th:text="#{common.lastUpdatedBy}" />
+
+                <input type="hidden"
+                       th:id="${entityName}+.lastUpdatedBy.id"
+                       th:name="${entityName}+.lastUpdatedBy.id"
+                       th:value="${entity.lastUpdatedBy.id}"
+                        />
+
+                <p text="${entity.lastUpdatedBy.name}" />
+            </div>
+
+            <div class="form-group col-sm-6 " th:if="${entity.lastUpdateDate != null}">
+                <label th:for="${entityName}+.lastUpdateDate" class="control-label" th:text="#{common.lastUpdateDate}" />
+
+                <input type="hidden"
+                       th:id="${entityName}+.lastUpdateDate"
+                       th:name="${entityName}+.lastUpdateDate"
+                       th:value="${entity.lastUpdateDate}"
+                        />
+
+                <p th:text="${#calendars.format(entity.lastUpdateDate, datePattern)}" />
+            </div>
+        </div>
+    </div>
+</body>
+</html>

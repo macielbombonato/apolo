@@ -240,6 +240,7 @@ public class UserController extends BaseController<User> {
 		
 		if (user != null
 				&& authenticatedUserHasPermission(userService, user, UserPermission.USER_LIST, false)) {
+			user.getPermissions();
 			mav.addObject("user", user);
 			mav.addObject("customFieldList", userCustomFieldService.list(user.getTenant()));
 			mav.addObject("readOnly", true);

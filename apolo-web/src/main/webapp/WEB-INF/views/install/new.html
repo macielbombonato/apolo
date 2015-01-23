@@ -11,9 +11,7 @@
 
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <strong>
-                        <s:message code="install.title" />
-                    </strong>
+                    <strong th:text="#{install.title}" />
                 </div>
                 <div class="panel-body">
                     <p th:text="#{install.msg.instructions}" />
@@ -22,20 +20,17 @@
 
                         <div class="form-group">
                             <label for="name" class="control-label" th:text="#{user.name}" />
-                            <input type="text" id="user.name" name="user.name" class="form-control" value="${install.user.name}" />
+                            <input type="text" id="user.name" name="user.name" class="form-control" />
                         </div>
 
                         <div class="form-group">
                             <label for="email" class="control-label" th:text="#{user.email}" />
-                            <input type="text" id="user.email" name="user.email" class="form-control" value="${install.user.email}" />
-                            <p>
-                                [<span th:text="${admemail}" />] <span th:text="#{install.msg.dont.use.this.email}" htmlEscape="false"/>
-                            </p>
+                            <input type="text" id="user.email" name="user.email" class="form-control" />
                         </div>
 
                         <div class="form-group">
                             <label for="email" class="control-label" th:text="#{user.mobile}" />
-                            <input type="text" id="user.mobile" name="user.mobile" class="form-control" value="${install.user.mobile}" placeholder="ex: 5511998991234"/>
+                            <input type="text" id="user.mobile" name="user.mobile" class="form-control" placeholder="ex: 5511998991234"/>
                         </div>
 
                         <div class="form-group">

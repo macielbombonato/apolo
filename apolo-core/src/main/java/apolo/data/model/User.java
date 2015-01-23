@@ -52,9 +52,8 @@ public class User extends AuditableBaseEntity {
 	@Column(name = "encrypted_password", length = InputLength.MEDIUM, nullable = false)
 	private String password;
 	
-	@Column(name = "mobile", unique = false, length = InputLength.NAME, nullable = false)
-	@NotNull
-	@Size(min = 1, max = InputLength.NAME)
+	@Column(name = "mobile", unique = false, length = InputLength.NAME, nullable = true)
+	@Size(max = InputLength.NAME)
 	private String mobile;
 	
 	@Column(name = "status", nullable = false)

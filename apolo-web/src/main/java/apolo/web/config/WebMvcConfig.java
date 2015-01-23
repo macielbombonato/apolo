@@ -76,7 +76,6 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
 	public RequestMappingHandlerMapping requestMappingHandlerMapping() {
 		RequestMappingHandlerMapping requestMappingHandlerMapping = super.requestMappingHandlerMapping();
 		requestMappingHandlerMapping.setUseSuffixPatternMatch(false);
-//		requestMappingHandlerMapping.setUseTrailingSlapoloMatch(false);
 		return requestMappingHandlerMapping;
 	}
 	
@@ -86,14 +85,6 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
 		messageSource.setBasenames(MESSAGE_SOURCE, VERSION_SOURCE);
 		messageSource.setCacheSeconds(5);
 		return messageSource;
-	}
-	
-	@Bean
-	public ViewResolver configureViewResolver() {
-        InternalResourceViewResolver resolver = new InternalResourceViewResolver();
-        resolver.setPrefix("/WEB-INF/views/");
-        resolver.setSuffix(".jsp");
-        return resolver;
 	}
 	
     @Bean(name = "localeResolver")
