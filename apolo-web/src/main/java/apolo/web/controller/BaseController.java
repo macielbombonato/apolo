@@ -21,6 +21,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -285,5 +286,13 @@ public abstract class BaseController<E extends BaseEntity> {
 		mav.addObject("exception", ex);
 		
 		return mav;
+	}
+
+	@InitBinder
+	protected void initBinder(WebDataBinder binder) {
+		//Create a custom binder that will convert a String with pattern dd/MM/yyyy to an appropriate Date object.
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
+		binder.registerCustomEditor(Date.class, "creationDate", new CustomDateEditor(dateFormat, false));
+		binder.registerCustomEditor(Date.class, "lastUpdateDate", new CustomDateEditor(dateFormat, false));
 	}
 }

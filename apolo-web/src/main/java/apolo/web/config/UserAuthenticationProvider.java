@@ -56,9 +56,7 @@ public class UserAuthenticationProvider implements AuthenticationProvider {
 			authorities = userService.loadUserAuthorities(user);
 			
 			ThreadLocalContextUtil.setTenantId(user.getTenant().getUrl());
-			
-			ThreadLocalContextUtil.setLanguage(user.getLanguage());
-			
+
 			return new CurrentUser(
 					user.getId(), 
 					user.getEmail(), 

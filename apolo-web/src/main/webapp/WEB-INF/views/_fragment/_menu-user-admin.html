@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+    <head>
+    </head>
+    <body th:fragment="menu-user-admin">
+        <ul class="nav navbar-nav">
+            <li sec:authorize="hasAnyRole('ROLE_AFTER_AUTH_USER')">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    <div class="menu-text menu-text-default">
+                        <span><i class="fa fa-users"></i></span>
+                        <strong th:text="#{sysadmin.menu.header}" />
+                        <span><i class="fa fa-chevron-down"></i></span>
+                    </div>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-top">
+                    <li class="dropdown-header menu-item menu-item-text-default"
+                            th:text="#{users}" />
+                    <li class="divider"></li>
+
+                    <li sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_USER_LIST')">
+                        <a th:href='@{|/${#authentication.systemUser.tenant.url}/user/list|}' >
+                            <div class="menu-item menu-item-text-default">
+                                <i class="glyphicon glyphicon-th-list"></i>
+                                <span th:text="#{user.list}" />
+                            </div>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a th:href="@{|/${#authentication.systemUser.tenant.url}/user|}" >
+                            <div class="menu-item menu-item-text-default">
+                                <i class="fa fa-tachometer"></i>
+                                <span th:text="#{user.dashboard}" />
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a th:href='@{|/${#authentication.systemUser.tenant.url}/user/view/${#authentication.systemUser.id}|}'>
+                            <div class="menu-item menu-item-text-default">
+                                <i class="fa fa-user"></i>
+                                <span th:text="#{user.profile}" />
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a th:href='@{|/${#authentication.systemUser.tenant.url}/user/change-password|}'>
+                            <div class="menu-item menu-item-text-default">
+                                <i class="fa fa-pencil-square-o"></i>
+                                <span th:text="#{user.change.password}" />
+                            </div>
+                        </a>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <a th:href='@{/auth/logout}'>
+                            <div id="sair" class="menu-item menu-item-text-default">
+                                <i class="fa fa-power-off"></i>
+                                <span th:text="#{user.logout}" />
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+
+            </li>
+
+            <li sec:authorize="!isAuthenticated()">
+                <a th:href="@{/auth/login}">
+                    <div class="menu-text menu-text-default">
+                        <span><i class="fa fa-lock"></i></span>
+                        <strong th:text="#{user.restricted.area.access}" />
+                        <span><i class="fa fa-hover fa-chevron-down"></i></span>
+                    </div>
+                </a>
+            </li>
+
+            <li sec:authorize="hasAnyRole('ROLE_BEFORE_AUTH_USER')">
+                <a th:href="@{/auth/login}">
+                    <div class="menu-text menu-text-default">
+                        <span><i class="fa fa-lock"></i></span>
+                        <strong th:text="#{user.restricted.area.access}" />
+                        <span><i class="fa fa-hover fa-chevron-down"></i></span>
+                    </div>
+                </a>
+            </li>
+
+        </ul>
+    </body>
+</html>

@@ -55,11 +55,6 @@ public class Tenant extends AuditableBaseEntity {
 	@NotNull
 	private Skin skin;
 	
-	@Column(name = "language", nullable = false)
-	@Type(type = "apolo.data.enums.usertype.LanguageUserType")
-	@NotNull
-	private Language language;
-	
 	@Column(name = "status", nullable = false)
 	@Type(type = "apolo.data.enums.usertype.StatusUserType")
 	@NotNull
@@ -131,14 +126,4 @@ public class Tenant extends AuditableBaseEntity {
 	public void setLogoFile(List<MultipartFile> logoFile) {
 		this.logoFile = logoFile;
 	}
-
-	public Language getLanguage() {
-		return this.language;
-	}
-
-	public void setLanguage(Language language) {
-		this.language = language;
-	}
-	
-
 }

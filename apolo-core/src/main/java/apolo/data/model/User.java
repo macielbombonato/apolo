@@ -77,11 +77,6 @@ public class User extends AuditableBaseEntity {
 	@ManyToOne
 	private Tenant tenant;
 	
-	@Column(name = "language", nullable = false)
-	@Type(type = "apolo.data.enums.usertype.LanguageUserType")
-	@NotNull
-	private Language language;
-	
 	@Column(name = "pic_original_name", length = InputLength.MEDIUM, nullable = true)
 	private String pictureOriginalName;
 
@@ -210,11 +205,4 @@ public class User extends AuditableBaseEntity {
 		this.dbTenant = dbTenant;
 	}
 
-	public Language getLanguage() {
-		return this.language;
-	}
-
-	public void setLanguage(Language language) {
-		this.language = language;
-	}
 }

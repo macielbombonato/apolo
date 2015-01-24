@@ -2,22 +2,28 @@ body {
 	padding-bottom: 40px;
 }
 
+.menu-top {
+	background: none repeat scroll 0 0 rgba(0, 0, 0, 0.5);
+}
+
+.dropdown-menu-top-alternative-style {
+	background: none repeat scroll 0 0 rgba(0, 0, 0, 0.5);
+}
+
 .footer {
 	background-image: none;
 	background-repeat: repeat;
-	background: none repeat scroll 0 0 rgba(0, 0, 0, 0.4);
+	background: none repeat scroll 0 0 rgba(0, 0, 0, 0.5);
 	z-index: 999;
 	width: 100%;
 	color: #FCFCFC;
 }
 
 .menu-header {
-	width: 100%;
 	color: #000000;
 }
 
 .menu-header-top {
-	width: 100%;
 	color: #FCFCFC;
 }
 
@@ -29,8 +35,12 @@ body {
 	color: #FCFCFC;
 }
 
-.menu-top {
-	background: none repeat scroll 0 0 rgba(0, 0, 0, 0.4);
+.menu-item-text-default {
+	color: #000000;
+}
+
+.menu-item-text-white {
+	color: #FCFCFC;
 }
 
 .menu-title {

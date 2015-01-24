@@ -4,6 +4,8 @@
     <head th:include="@{_fragment/_headTag} :: headTag">
     </head>
     <body class="overflow-hidden">
+        <div th:remove="tag" th:include="@{_fragment/_header-clean} :: header"></div>
+
         <div id="overlay" class="transparent"></div>
 
         <div class="login-wrapper">

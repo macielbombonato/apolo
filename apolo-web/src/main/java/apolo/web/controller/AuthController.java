@@ -70,13 +70,6 @@ public class AuthController extends BaseController {
 		ModelAndView mav = new ModelAndView(Navigation.AUTH_SECOND_FACTOR.getPath());
 		
 		if (userService.getAuthenticatedUser() != null) {
-			appController.authenticatedChangeLocale(
-					userService.getAuthenticatedUser().getTenant().getUrl(), 
-					userService.getAuthenticatedUser().getLanguage().getCode(), 
-					request, 
-					response
-				);
-			
 			if (userService.getAuthenticatedUser().getPermissions() != null
 					&& !userService.getAuthenticatedUser().getPermissions().isEmpty()
 					&& userService.getAuthenticatedUser().getPermissions().contains(UserPermission.AFTER_AUTH_USER)) {

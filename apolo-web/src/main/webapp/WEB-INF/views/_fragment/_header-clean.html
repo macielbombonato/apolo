@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <head>
+    </head>
+    <body th:fragment="header">
+
+        <nav id="menu" class="navbar navbar-default" role="navigation">
+            <div class="navbar-header menu-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" th:href="${#authorization.expression('isAuthenticated()') == true} ? @{|/${#authentication.systemUser.tenant.url}/user|} : @{'/'}">
+                    <strong id="menuTitle" style="font-family: monospace; font-size: xx-large;" class="menu-title">
+                        <img th:if="${#authorization.expression('isAuthenticated()') == true} and ${#authentication.systemUser.tenant.logo != null}"
+                             th:src="@{|/${#authentication.systemUser.tenant.url}/uploadedfiles/Tenant/${#authentication.systemUser.tenant.id}/${#authentication.systemUser.tenant.logo}|}"
+                             th:width="${#authentication.systemUser.tenant.logoWidth}"
+                             th:height="${#authentication.systemUser.tenant.logoHeight}"
+                             th:style="${'width: '} + ${#authentication.systemUser.tenant.logoWidth} + ${'px; height: '} + ${#authentication.systemUser.tenant.logoHeight} + ${'px;'}"
+                             th:text="#{app.title}"
+                            />
+                        <img th:if="${#authorization.expression('isAuthenticated()') == false} or ${#authentication.systemUser.tenant.logo == null}"
+                             th:src="@{'/resources/app/img/logo.png'}"
+                             width="15"
+                             height="20"
+                             style="width: 15px; height: 20px;"
+                             th:text="#{app.title}"
+                            />
+                    </strong>
+                </a>
+            </div>
+        </nav>
+        <div id="overlay" class="transparent"></div>
+
+        <div id="menu-space" style="display:none;">&nbsp;</div>
+    </body>
+</html>

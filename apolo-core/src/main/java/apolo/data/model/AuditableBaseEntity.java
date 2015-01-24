@@ -2,6 +2,7 @@ package apolo.data.model;
 
 import apolo.data.entitylistener.AuditListener;
 import apolo.data.model.interfaces.IAuditableEntity;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -21,6 +22,7 @@ public abstract class AuditableBaseEntity extends BaseEntity<Long> implements IA
 
 	@Column(name = "creation_dt")
 	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss.S")
 	private Date creationDate;
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -29,6 +31,7 @@ public abstract class AuditableBaseEntity extends BaseEntity<Long> implements IA
 
 	@Column(name = "last_update_dt")
 	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss.S")
 	private Date lastUpdateDate;
 
 	@ManyToOne(fetch = FetchType.LAZY)

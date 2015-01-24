@@ -166,7 +166,6 @@ public class UserController extends BaseController<User> {
 		
 		// The tenant language is used as a reference
 		user.setTenant(tenant);
-		user.setLanguage(tenant.getLanguage());
 		
 		mav.addObject("user", user);
 		mav.addObject("groupList", userGroupService.list(tenant));
@@ -698,7 +697,7 @@ public class UserController extends BaseController<User> {
 		
 		return hasErrors;
 	}
-	
+
     @InitBinder
     protected void initBinder(WebDataBinder binder) {
         binder.registerCustomEditor(Set.class, "groups", new CustomCollectionEditor(Set.class) {
@@ -721,6 +720,8 @@ public class UserController extends BaseController<User> {
                 return id != null ? userGroupService.find(id) : null;
             }
           });
+
+		super.initBinder(binder);
     }
 
 }

@@ -100,7 +100,6 @@ public class TenantController extends BaseController<Tenant> {
 		
 		tenant.setLastUpdatedBy(tenantService.getAuthenticatedUser());
 		tenant.setLastUpdateDate(new Date());
-		tenant.setLanguage(Language.BR);
 		
 		mav.addObject("tenant", tenant);
 		mav.addObject("skinList", Skin.values());

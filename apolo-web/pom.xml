@@ -25,12 +25,12 @@
 		<dependency>
 			<groupId>apolo.core.custom</groupId>
 			<artifactId>apolo-core-custom</artifactId>
-			<version>${apolo.version}</version>
+            <version>${project.parent.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>apolo.core</groupId>
 			<artifactId>apolo-core</artifactId>
-			<version>${apolo.version}</version>
+            <version>${project.parent.version}</version>
 		</dependency>
     
         <!-- Data base Driver -->
@@ -385,7 +385,7 @@
         </dependency>
         <dependency>
             <groupId>org.thymeleaf</groupId>
-            <artifactId>thymeleaf-spring3</artifactId>
+            <artifactId>thymeleaf-spring4</artifactId>
         </dependency>
         <dependency>
             <groupId>org.thymeleaf.extras</groupId>

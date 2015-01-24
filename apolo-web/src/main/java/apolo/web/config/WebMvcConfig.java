@@ -16,6 +16,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.core.MethodParameter;
+import org.springframework.format.datetime.DateFormatter;
+import org.springframework.format.datetime.DateFormatterRegistrar;
+import org.springframework.format.number.NumberFormatAnnotationFormatterFactory;
+import org.springframework.format.support.DefaultFormattingConversionService;
+import org.springframework.format.support.FormattingConversionService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.Validator;
@@ -170,5 +175,26 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
 			Authentication auth = (Authentication) webRequest.getUserPrincipal();
 			return auth != null && auth.getPrincipal() instanceof UserDetails ? auth.getPrincipal() : null;
 		}
+	}
+
+	@Bean
+	public FormattingConversionService conversionService() {
+
+		// Use the DefaultFormattingConversionService but do not register defaults
+		DefaultFormattingConversionService conversionService = new DefaultFormattingConversionService(false);
+
+		// Ensure @NumberFormat is still supported
+		conversionService.addFormatterForFieldAnnotation(new NumberFormatAnnotationFormatterFactory());
+
+		// Register date conversion with a specific global format
+		DateFormatterRegistrar invertedDate = new DateFormatterRegistrar();
+		invertedDate.setFormatter(new DateFormatter("yyyyMMdd"));
+		invertedDate.registerFormatters(conversionService);
+
+		DateFormatterRegistrar sqlDateFormat = new DateFormatterRegistrar();
+		sqlDateFormat.setFormatter(new DateFormatter("yyyy-MM-dd HH:mm:ss.S"));
+		sqlDateFormat.registerFormatters(conversionService);
+
+		return conversionService;
 	}
 }

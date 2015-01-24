@@ -14,30 +14,38 @@
                         <span><i class="fa fa-chevron-down"></i></span>
                     </div>
                 </a>
-                <ul class="dropdown-menu">
+                <ul class="dropdown-menu dropdown-menu-top">
                     <li>
                         <a th:href="@{|/${#authentication.systemUser.tenant.url}/user|}" >
-                            <i class="fa fa-tachometer"></i>
-                            <span th:text="#{user.dashboard}" />
+                            <div class="menu-item menu-item-text-default">
+                                <i class="fa fa-tachometer"></i>
+                                <span th:text="#{user.dashboard}" />
+                            </div>
                         </a>
                     </li>
                     <li>
                         <a th:href='@{|/${#authentication.systemUser.tenant.url}/user/view/${#authentication.systemUser.id}|}'>
-                            <i class="fa fa-user"></i>
-                            <span th:text="#{user.profile}" />
+                            <div class="menu-item menu-item-text-default">
+                                <i class="fa fa-user"></i>
+                                <span th:text="#{user.profile}" />
+                            </div>
                         </a>
                     </li>
                     <li>
                         <a th:href='@{|/${#authentication.systemUser.tenant.url}/user/change-password|}'>
-                            <i class="fa fa-pencil-square-o"></i>
-                            <span th:text="#{user.change.password}" />
+                            <div class="menu-item menu-item-text-default">
+                                <i class="fa fa-pencil-square-o"></i>
+                                <span th:text="#{user.change.password}" />
+                            </div>
                         </a>
                     </li>
                     <li class="divider"></li>
                     <li>
                         <a th:href='@{/auth/logout}'>
-                            <i class="fa fa-power-off"></i>
-                            <span th:text="#{user.logout}" />
+                            <div id="sair" class="menu-item menu-item-text-default">
+                                <i class="fa fa-power-off"></i>
+                                <span th:text="#{user.logout}" />
+                            </div>
                         </a>
                     </li>
                 </ul>

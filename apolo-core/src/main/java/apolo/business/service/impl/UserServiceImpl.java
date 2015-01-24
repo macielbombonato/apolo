@@ -304,7 +304,6 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 			tenant.setLogoWidth(15);
 			tenant.setUrl(applicationProperties.getDefaultTenant());
 			tenant.setSkin(Skin.SKIN_5);
-			tenant.setLanguage(Language.BR);
 			tenant.setStatus(Status.ACTIVE);
 
 			formModel.getUser().setTenant(tenant);
@@ -365,8 +364,6 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 				
 				formModel.getUser().setCreatedBy(formModel.getUser());
 				formModel.getUser().setCreationDate(new Date());
-				
-				formModel.getUser().setLanguage(tenant.getLanguage());
 				
 				/*
 				 * Save system administrator and get your ID

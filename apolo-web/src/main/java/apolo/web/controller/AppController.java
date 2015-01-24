@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -50,51 +51,6 @@ public class AppController extends BaseController<User> {
 	
 	@Autowired
 	private AuthController authController;
-	
-	@RequestMapping(value = "/change-locale/{locale}", method = RequestMethod.GET)
-	public ModelAndView changeLocale(
-				@PathVariable("locale") String locale,
-				HttpServletRequest request,
-				HttpServletResponse response
-			) {
-		
-		localeResolver.setLocale(
-				request, 
-				response, 
-				Language.fromCode(locale).getLocale()
-			);
-		
-		ThreadLocalContextUtil.setLanguage(Language.fromCode(locale));
-		
-		if (request != null
-				&& request.getCookies() != null 
-				&& request.getCookies().length > 0) {
-			for (Cookie lang : request.getCookies()) {
-				if ("lang".equals(lang.getName())) {
-					lang.setValue(locale);
-				}
-			}
-		}
-		
-		ModelAndView mav = new ModelAndView(Navigation.AUTH_LOGIN.getPath());
-		
-		return mav;
-	}
-	
-	@RequestMapping(value = "/change-locale/{tenant}/{locale}", method = RequestMethod.GET)
-	public ModelAndView authenticatedChangeLocale(
-				@PathVariable("tenant") String tenant,
-				@PathVariable("locale") String locale,
-				HttpServletRequest request,
-				HttpServletResponse response
-			) {
-		
-		ModelAndView mav = changeLocale(locale, request, response); 
-		
-		mav = userController.index(tenant, request);
-		
-		return mav;
-	}
 	
 	/**
 	 * System installation (setup) page
@@ -217,6 +173,19 @@ public class AppController extends BaseController<User> {
 	public ModelAndView index(HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView(Navigation.INDEX.getPath());
 		
+		mav.addObject("readOnly", true);
+		return mav;
+	}
+
+	@RequestMapping(value = "/{tenant-url}", method = RequestMethod.GET)
+	public ModelAndView indexTenant(@PathVariable("tenant-url") String tenant, HttpServletRequest request) {
+		ModelAndView mav = new ModelAndView(Navigation.INDEX.getPath());
+
+		if (getDBTenant(tenant) == null) {
+			String message = MessageBundle.getMessageBundle("tenant.not.found");
+			throw new AccessDeniedException(message);
+		}
+
 		mav.addObject("readOnly", true);
 		return mav;
 	}
