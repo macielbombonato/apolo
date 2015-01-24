@@ -65,26 +65,6 @@
 
             </li>
 
-            <li sec:authorize="!isAuthenticated()">
-                <a th:href="@{/auth/login}">
-                    <div class="menu-text menu-text-default">
-                        <span><i class="fa fa-lock"></i></span>
-                        <strong th:text="#{user.restricted.area.access}" />
-                        <span><i class="fa fa-hover fa-chevron-down"></i></span>
-                    </div>
-                </a>
-            </li>
-
-            <li sec:authorize="hasAnyRole('ROLE_BEFORE_AUTH_USER')">
-                <a th:href="@{/auth/login}">
-                    <div class="menu-text menu-text-default">
-                        <span><i class="fa fa-lock"></i></span>
-                        <strong th:text="#{user.restricted.area.access}" />
-                        <span><i class="fa fa-hover fa-chevron-down"></i></span>
-                    </div>
-                </a>
-            </li>
-
         </ul>
     </body>
 </html>
