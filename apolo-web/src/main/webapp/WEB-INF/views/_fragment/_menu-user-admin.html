@@ -6,61 +6,43 @@
     </head>
     <body th:fragment="menu-user-admin">
         <ul class="nav navbar-nav">
-            <li sec:authorize="hasAnyRole('ROLE_AFTER_AUTH_USER')">
+            <li sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_USER_LIST', 'ROLE_USER_MANAGER', 'ROLE_USER_CREATE')">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                     <div class="menu-text menu-text-default">
                         <span><i class="fa fa-users"></i></span>
-                        <strong th:text="#{sysadmin.menu.header}" />
+                        <strong th:text="#{sysadmin.menu.user}" />
                         <span><i class="fa fa-chevron-down"></i></span>
                     </div>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-top">
-                    <li class="dropdown-header menu-item menu-item-text-default"
-                            th:text="#{users}" />
-                    <li class="divider"></li>
-
                     <li sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_USER_LIST')">
                         <a th:href='@{|/${#authentication.systemUser.tenant.url}/user/list|}' >
                             <div class="menu-item menu-item-text-default">
-                                <i class="glyphicon glyphicon-th-list"></i>
-                                <span th:text="#{user.list}" />
+                                <i class="fa fa-list"></i>
+                                <span th:text="#{user.list}">user.list</span>
                             </div>
                         </a>
                     </li>
 
-                    <li>
-                        <a th:href="@{|/${#authentication.systemUser.tenant.url}/user|}" >
+                    <li sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_USER_MANAGER')">
+                        <a th:href='@{|/${#authentication.systemUser.tenant.url}/user/list-locked|}' class="submenu-label">
                             <div class="menu-item menu-item-text-default">
-                                <i class="fa fa-tachometer"></i>
-                                <span th:text="#{user.dashboard}" />
+                                <i class="fa fa-user-secret"></i>
+                                <span th:text="#{user.list.locked}">user.list.locked</span>
                             </div>
                         </a>
                     </li>
-                    <li>
-                        <a th:href='@{|/${#authentication.systemUser.tenant.url}/user/view/${#authentication.systemUser.id}|}'>
+
+                    <li sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_USER_CREATE')">
+                        <a th:href='@{|/${#authentication.systemUser.tenant.url}/user/new|}' class="submenu-label">
                             <div class="menu-item menu-item-text-default">
-                                <i class="fa fa-user"></i>
-                                <span th:text="#{user.profile}" />
+                                <i class="fa fa-user-plus"></i>
+                                <span th:text="#{user.new}">user.new</span>
                             </div>
                         </a>
                     </li>
-                    <li>
-                        <a th:href='@{|/${#authentication.systemUser.tenant.url}/user/change-password|}'>
-                            <div class="menu-item menu-item-text-default">
-                                <i class="fa fa-pencil-square-o"></i>
-                                <span th:text="#{user.change.password}" />
-                            </div>
-                        </a>
-                    </li>
-                    <li class="divider"></li>
-                    <li>
-                        <a th:href='@{/auth/logout}'>
-                            <div id="sair" class="menu-item menu-item-text-default">
-                                <i class="fa fa-power-off"></i>
-                                <span th:text="#{user.logout}" />
-                            </div>
-                        </a>
-                    </li>
+
+
                 </ul>
 
             </li>

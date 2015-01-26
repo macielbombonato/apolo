@@ -48,7 +48,7 @@
             </div>
 
             <div th:if="${!readOnly}">
-                <div th:if="${editing}">
+                <div th:if="${editing != null} and ${editing}">
                     <div class="form-group">
                         <label class="control-label">
                             <input type="checkbox"
@@ -82,7 +82,7 @@
                         </div>
                     </div>
                 </div>
-                <div th:if="${!editing}">
+                <div th:if="${editing == null} or ${!editing}">
                     <div class="form-group">
                         <input type="checkbox"
                                id="changePassword"
@@ -90,10 +90,11 @@
                                value="true"
                                th:checked="${true}"
                                onchange="$('#passwordFields').toggle();"
+                               style="display: none;"
                                 />
                     </div>
 
-                    <div id="passwordFields" style="display: none;">
+                    <div id="passwordFields">
                         <div class="form-group">
                             <label for="password" class="control-label">
                                 <span th:text="#{user.password}" />
@@ -155,11 +156,18 @@
                             multiple="multiple"
                             class="form-control chosen-select"
                             th:disabled="${readOnly}"
-                            th:data-placeholder='#{common.select}'
+                            th:attr="data-placeholder=#{common.select}"
                             th:with="style=${#authorization.expression('hasAnyRole(''ROLE_ADMIN'', ''ROLE_USER_CREATE'', ''ROLE_USER_EDIT'')') == false ? 'display: none;' : 'display: block;' }"
                             th:style="${style}"
                             >
-                        <option th:each="group : ${groupList}"
+                        <option th:if="${groupList != null} and ${user != null} and ${user.getGroups() == null}"
+                                th:each="group : ${groupList}"
+                                th:value="${group.id}"
+                                th:text="${group.name}"
+                                />
+
+                        <option th:if="${groupList != null} and ${user != null} and ${user.getGroups() != null}"
+                                th:each="group : ${groupList}"
                                 th:value="${group.id}"
                                 th:text="${group.name}"
                                 th:selected="${#lists.contains(user.getGroups(), group)}"
