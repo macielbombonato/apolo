@@ -42,7 +42,16 @@
                         </a>
                     </li>
 
-
+                    <li sec:authorize="hasAnyRole('ROLE_ADMIN')">
+                        <a th:href='@{|/${#authentication.systemUser.tenant.url}/auditlog/list|}' class="submenu-label">
+                            <div class="menu-item menu-item-text-default">
+                                <i class="fa fa-list-alt"></i>
+                                <span th:text="#{auditlog.list}">
+                                    auditlog.list
+                                </span>
+                            </div>
+                        </a>
+                    </li>
                 </ul>
 
             </li>
