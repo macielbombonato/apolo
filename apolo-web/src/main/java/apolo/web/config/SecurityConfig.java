@@ -33,21 +33,28 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-    	http.csrf()
-        		.disable()
+    	http.csrf().disable()
         	.authorizeRequests()
                 .antMatchers(
-                		"/resources/**", 
+                        "/monitoring/**",
+                        "/monitoring",
+                        "/version/**",
+                        "/version"
+                    ).hasRole(
+                            UserPermission.ADMIN.getCode()
+                        )
+                .antMatchers(
+                        "/resources/**",
                         "/error/**",
                         "/install/**",
-                        "/change-locale/**",
+                        "/install",
                         "/auth/login",
                         "/auth/loginfailed",
-                        "/auth/validate-token",
                         "/auth/logout",
                         "/index",
                         "/",
-                        "/login").permitAll()
+                        "/login"
+                    ).permitAll()
                 .anyRequest()
                 	.hasAnyRole(
                 			UserPermission.ADMIN.getCode(), 

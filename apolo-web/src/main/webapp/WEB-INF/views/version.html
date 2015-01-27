@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:include="@{_fragment/_headTag} :: headTag">
+</head>
+<body>
+<div th:remove="tag" th:include="@{_fragment/_header} :: header"></div>
+
+<div id="wrapper" class="preload">
+
+    <div th:remove="tag" th:include="@{_fragment/_message} :: message"></div>
+
+    <div class="container ">
+        <div class="row ">
+            <div class="col-md-12">
+                <h3 style="text-align: center;">
+                    <span th:text="#{view.build.package}">
+                        view.build.package
+                    </span>
+                </h3>
+            </div>
+        </div>
+        <div class="row ">
+            <div class="col-sm-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <span th:text="#{view.version}">
+                            view.version
+                        </span>
+                    </div>
+                    <div class="panel-body" >
+                        <p th:text="#{version}">
+                            version
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <span th:text="#{view.generated.war}">
+                            view.generated.war
+                        </span>
+                    </div>
+                    <div class="panel-body">
+                        <p th:text="#{generated.war}">
+                            generated.war
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <span th:text="#{view.java.version}">
+                            view.java.version
+                        </span>
+                    </div>
+                    <div class="panel-body">
+                        <p th:text="#{java.version}">
+                            java.version
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <span th:text="#{view.java.vendor}">
+                            view.java.vendor
+                        </span>
+                    </div>
+                    <div class="panel-body">
+                        <p th:text="#{java.vendor}">
+                            java.vendor
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <span th:text="#{view.java.vendor.url}">
+                            view.java.vendor.url
+                        </span>
+                    </div>
+                    <div class="panel-body">
+                        <p th:text="#{java.vendor.url}">
+                            java.vendor.url
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <span th:text="#{view.java.home}">
+                            view.java.home
+                        </span>
+                    </div>
+                    <div class="panel-body">
+                        <p th:text="#{java.home}">
+                            java.home
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <span th:text="#{view.java.vm.specification.version}">
+                            view.java.vm.specification.version
+                        </span>
+                    </div>
+                    <div class="panel-body">
+                        <p th:text="#{java.vm.specification.version}">
+                            java.vm.specification.version
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <span th:text="#{view.java.vm.specification.vendor}">
+                            view.java.vm.specification.vendor
+                        </span>
+                    </div>
+                    <div class="panel-body">
+                        <p th:text="#{java.vm.specification.vendor}">
+                            java.vm.specification.vendor
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <span th:text="#{view.java.vm.specification.name}">
+                            view.java.vm.specification.name
+                        </span>
+                    </div>
+                    <div class="panel-body">
+                        <p th:text="#{java.vm.specification.name}">
+                            java.vm.specification.name
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <span th:text="#{view.java.vm.version}">
+                            view.java.vm.version
+                        </span>
+                    </div>
+                    <div class="panel-body">
+                        <p th:text="#{java.vm.version}">
+                            java.vm.version
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <span th:text="#{view.java.vm.vendor}">
+                            view.java.vm.vendor
+                        </span>
+                    </div>
+                    <div class="panel-body">
+                        <p th:text="#{java.vm.vendor}">
+                            java.vm.vendor
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <span th:text="#{view.java.vm.name}">
+                            view.java.vm.name
+                        </span>
+                    </div>
+                    <div class="panel-body">
+                        <p th:text="#{java.vm.name}">
+                            java.vm.name
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <span th:text="#{view.java.specification.version}">
+                            view.java.specification.version
+                        </span>
+                    </div>
+                    <div class="panel-body">
+                        <p th:text="#{java.specification.version}">
+                            java.specification.version
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <span th:text="#{view.java.specification.vendor}">
+                            view.java.specification.vendor
+                        </span>
+                    </div>
+                    <div class="panel-body">
+                        <p th:text="#{java.specification.vendor}">
+                            java.specification.vendor
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <span th:text="#{view.java.specification.name}">
+                            view.java.specification.name
+                        </span>
+                    </div>
+                    <div class="panel-body">
+                        <p th:text="#{java.specification.name}">
+                            java.specification.name
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <span th:text="#{view.java.class.version}">
+                            view.java.class.version
+                        </span>
+                    </div>
+                    <div class="panel-body">
+                        <p th:text="#{java.class.version}">
+                            java.class.version
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <span th:text="#{view.java.class.path}">
+                            view.java.class.path
+                        </span>
+                    </div>
+                    <div class="panel-body">
+                        <p th:text="#{java.class.path}">
+                            java.class.path
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <span th:text="#{view.java.ext.dirs}">
+                            view.java.ext.dirs
+                        </span>
+                    </div>
+                    <div class="panel-body">
+                        <p th:text="#{java.ext.dirs}">
+                            java.ext.dirs
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <span th:text="#{view.os.name}">
+                            view.os.name
+                        </span>
+                    </div>
+                    <div class="panel-body">
+                        <p th:text="#{os.name}">
+                            os.name
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <span th:text="#{view.os.arch}">
+                            view.os.arch
+                        </span>
+                    </div>
+                    <div class="panel-body">
+                        <p th:text="#{os.arch}">
+                            os.arch
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <span th:text="#{view.os.version}">
+                            view.os.version
+                        </span>
+                    </div>
+                    <div class="panel-body">
+                        <p th:text="#{os.version}">
+                            os.version
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <span th:text="#{view.file.separator}">
+                            view.file.separator
+                        </span>
+                    </div>
+                    <div class="panel-body">
+                        <p th:text="#{file.separator}">
+                            file.separator
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <span th:text="#{view.path.separator}">
+                            view.path.separator
+                        </span>
+                    </div>
+                    <div class="panel-body">
+                        <p th:text="#{path.separator}">
+                            path.separator
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <span th:text="#{view.line.separator}">
+                            view.line.separator
+                        </span>
+                    </div>
+                    <div class="panel-body">
+                        <p th:text="#{line.separator}">
+                            line.separator
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <span th:text="#{view.build.user.name}">
+                            view.build.user.name
+                        </span>
+                    </div>
+                    <div class="panel-body">
+                        <p th:text="#{build.user.name}">
+                            build.user.name
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <span th:text="#{view.build.user.home}">
+                            view.build.user.home
+                        </span>
+                    </div>
+                    <div class="panel-body">
+                        <p th:text="#{build.user.home}">
+                            build.user.home
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <span th:text="#{view.build.user.dir}">
+                            view.build.user.dir
+                        </span>
+                    </div>
+                    <div class="panel-body">
+                        <p th:text="#{build.user.dir}">
+                            build.user.dir
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<div th:remove="tag" th:include="@{_fragment/_footer} :: footer"></div>
+</body>
+</html>
