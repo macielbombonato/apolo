@@ -25,6 +25,7 @@
         </noscript>
 
         <div th:remove="tag" th:include="@{_fragment/_loadingDialog} :: loadingDialog"></div>
+        <div th:remove="tag" th:include="@{_fragment/_removeConfirmationDialog} :: removeConfirmationDialog"></div>
 
         <!-- BEGIN ConfirmDialog -->
         <div id="confirmationDialog" class="dialog-modal" th:title="#{common.remove}" style="display: none;">

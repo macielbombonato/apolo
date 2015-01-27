@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+</head>
+<body th:fragment="removeConfirmationDialog">
+
+<div id="removeConfirmationDialog" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 th:text="#{common.remove}">
+                    common.remove
+                </h4>
+            </div>
+
+            <div class="modal-body">
+                <p th:text="#{common.remove.msg}">
+                    common.remove.msg
+                </p>
+                <input type="hidden" id="removeConfirmationUrl" />
+                <input type="hidden" id="removeConfirmationObjectId" />
+            </div>
+
+            <div class="modal-footer">
+                <a href="#" class="btn btn-default" data-dismiss="modal">
+                    <i class="glyphicon glyphicon-remove-circle"></i>
+                    <span th:text="#{common.cancel}">
+                        common.cancel
+                    </span>
+                </a>
+                <a href="#" class="btn btn-danger" onclick="callRemove();">
+                    <i class="glyphicon glyphicon-remove"></i>
+                    <s:message code="common.remove" />
+                    <span th:text="#{common.remove}">
+                        common.remove
+                    </span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="removeMsgDialog" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 th:text="#{common.remove}">
+                    common.remove
+                </h4>
+            </div>
+
+            <div class="modal-body">
+                <p id="removeMsg"></p>
+            </div>
+
+            <div class="modal-footer">
+                <a href="#" class="btn btn-default" data-dismiss="modal">
+                    <i class="glyphicon glyphicon-check"></i>
+                    <span th:text="#{common.ok}">
+                        common.ok
+                    </span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="removeRedirectionConfirmationDialog" class="modal hide fade" tabindex="-1" data-role="dialog">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 th:text="#{common.remove}">
+            common.remove
+        </h4>
+    </div>
+
+    <div class="modal-body">
+        <p th:text="#{common.remove.msg}">
+            common.remove.msg
+        </p>
+        <input type="hidden" id="removeRedirectionConfirmationUrl" />
+        <input type="hidden" id="removeRedirectionConfirmationObjectId" />
+    </div>
+
+    <div class="modal-footer">
+        <a href="#" class="btn" data-dismiss="modal">
+            <span th:text="#{common.cancel}">
+                common.cancel
+            </span>
+        </a>
+        <a id="btnCallRemove" href="#" class="btn btn-danger">
+            <span th:text="#{common.remove}">
+                common.remove
+            </span>
+        </a>
+    </div>
+</div>
+</body>
+</html>

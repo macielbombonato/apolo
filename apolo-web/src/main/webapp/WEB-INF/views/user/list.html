@@ -60,7 +60,7 @@
                         </thead>
 
                         <tbody>
-                        <tr id="user_${user.id}" th:each="user : ${userList}">
+                        <tr th:id="${'user_'} + ${user.id}" th:each="user : ${userList}">
                             <td>
                                 <center>
                                     <img th:if="${user.pictureGeneratedName != null} and ${user.pictureGeneratedName != ''}"
@@ -121,7 +121,8 @@
                                             th:if="${#authentication.systemUser.id != user.id}"
                                             href='#'
                                             class="btn btn-default"
-                                            onclick="removeConfirmationDialogOpen('@{|/${#authentication.systemUser.tenant.url}/user/remove/${user.id}|}', 'user_${user.id}');"
+                                            th:with="removeAction=${'removeConfirmationDialogOpen('''} + ${'/'} + ${#authentication.systemUser.tenant.url} + ${'/user/remove/'} + ${user.id} + ${''', ''user_'} + ${user.id} + ${''');'}"
+                                            th:onclick="${removeAction}"
                                             data-toggle="tooltip"
                                             th:title="#{common.remove}">
                                         <i class="fa fa-user-times"></i>
