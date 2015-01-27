@@ -7,6 +7,7 @@ import apolo.common.exception.AccessDeniedException;
 import apolo.common.util.MessageBundle;
 import apolo.common.util.ThreadLocalContextUtil;
 import apolo.data.enums.Status;
+import apolo.data.enums.UserStatus;
 import apolo.data.model.User;
 import apolo.security.CurrentUser;
 
@@ -44,8 +45,11 @@ public class UserAuthenticationProvider implements AuthenticationProvider {
 		}
 
 		if (user != null) {
-			if (user.getTenant() != null
-					&& user.getTenant().getStatus().equals(Status.LOCKED)) {
+			if (UserStatus.LOCKED.equals(user.getStatus())) {
+				String message = MessageBundle.getMessageBundle("error.403.2");
+				throw new BadCredentialsException(message, new AccessDeniedException(0, message));
+			} else if (user.getTenant() != null
+					&& Status.LOCKED.equals(user.getTenant().getStatus())) {
 				String message = MessageBundle.getMessageBundle("error.403.0");
 				throw new BadCredentialsException(message, new AccessDeniedException(0, message));
 			}
