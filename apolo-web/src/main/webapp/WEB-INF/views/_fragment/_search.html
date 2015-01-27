@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+</head>
+<body th:fragment="search (searchUrl, placeholderTerm)">
+    <form id="searchForm"
+          class="form-search form-inline col-sm-12"
+          role="form"
+          th:action="@{${searchUrl}}"
+          method="post"
+       >
+        <div class="form-group col-sm-12">
+            <div class="input-group col-sm-12">
+                <input type="text"
+                       id="searchParameter"
+                       name="searchParameter"
+                       th:value="${searchParameter}"
+                       class="search-query form-control col-sm-10"
+                       th:placeholder='#{${placeholderTerm}}'
+                        />
+                <div class="input-group-btn">
+                    <button type="submit" class="btn btn-info col-sm-12">
+                        <i class="fa fa-search"></i>
+                        <span th:text="#{common.search}">
+                            common.search
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+</body>
+</html>

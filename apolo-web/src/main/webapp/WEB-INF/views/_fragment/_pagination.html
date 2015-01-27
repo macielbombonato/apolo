@@ -19,24 +19,24 @@
         <li th:if="${currentIndex == 1}"
                 class="disabled">
             <a href="#">
-                <i class="glyphicon glyphicon-fast-backward"></i>
+                <i class="fa fa-fast-backward"></i>
             </a>
         </li>
         <li th:if="${currentIndex == 1}"
                 class="disabled">
             <a href="#">
-                <i class="glyphicon glyphicon-step-backward"></i>
+                <i class="fa fa-step-backward"></i>
             </a>
         </li>
 
         <li th:if="${currentIndex != 1}">
             <a th:href="@{${firstUrl}}">
-                <i class="glyphicon glyphicon-fast-backward"></i>
+                <i class="fa fa-fast-backward"></i>
             </a>
         </li>
         <li th:if="${currentIndex != 1}">
             <a th:href="@{${prevUrl}}">
-                <i class="glyphicon glyphicon-step-backward"></i>
+                <i class="fa fa-step-backward"></i>
             </a>
         </li>
 
@@ -56,26 +56,26 @@
         <li th:if="${currentIndex == page.totalPages}"
                 class="disabled">
             <a href="#">
-                <i class="glyphicon glyphicon-step-forward"></i>
+                <i class="fa fa-step-forward"></i>
             </a>
         </li>
         <li th:if="${currentIndex == page.totalPages}"
                 class="disabled">
             <a href="#">
-                <i class="glyphicon glyphicon-fast-forward"></i>
+                <i class="fa fa-fast-forward"></i>
             </a>
         </li>
 
         <li th:if="${currentIndex != page.totalPages}"
                 >
             <a th:href="@{${nextUrl}}">
-                <i class="glyphicon glyphicon-step-forward"></i>
+                <i class="fa fa-step-forward"></i>
             </a>
         </li>
         <li th:if="${currentIndex != page.totalPages}"
                 >
             <a th:href="@{${lastUrl}}">
-                <i class="glyphicon glyphicon-fast-forward"></i>
+                <i class="fa fa-fast-forward"></i>
             </a>
         </li>
     </ul>

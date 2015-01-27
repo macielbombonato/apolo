@@ -17,7 +17,17 @@
             </div>
             <div class="panel-body">
 
-                <!--jsp:include page='_search-form.jsp'></jsp:include-->
+                <div th:with="searchUrlParam=${'/'} + ${#authentication.systemUser.tenant.url} + ${'/user/search'}">
+                    <div th:remove="tag"
+                         th:include="@{_fragment/_search} ::
+                            search (
+                                    searchUrl=${searchUrlParam},
+                                    placeholderTerm=${'user.search.field'}
+                                    )"
+                            >
+                        search Form
+                    </div>
+                </div>
 
                 <br />
                 <center>
