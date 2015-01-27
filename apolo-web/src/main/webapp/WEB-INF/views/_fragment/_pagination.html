@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+</head>
+<body th:fragment="pagination">
+
+<div th:with="firstUrl=${url} + ${'/1'},
+                lastUrl=${url} + ${'/'} + ${page.totalPages},
+                prevUrl=${url} + ${'/'} + ${currentIndex - 1},
+                nextUrl=${url} + ${'/'} + ${currentIndex + 1}
+                "
+        >
+
+    <ul th:if="${page != null} and ${page.content != null}"
+            class="pagination pagination-sm">
+
+        <!-- backward flags -->
+        <li th:if="${currentIndex == 1}"
+                class="disabled">
+            <a href="#">
+                <i class="glyphicon glyphicon-fast-backward"></i>
+            </a>
+        </li>
+        <li th:if="${currentIndex == 1}"
+                class="disabled">
+            <a href="#">
+                <i class="glyphicon glyphicon-step-backward"></i>
+            </a>
+        </li>
+
+        <li th:if="${currentIndex != 1}">
+            <a th:href="@{${firstUrl}}">
+                <i class="glyphicon glyphicon-fast-backward"></i>
+            </a>
+        </li>
+        <li th:if="${currentIndex != 1}">
+            <a th:href="@{${prevUrl}}">
+                <i class="glyphicon glyphicon-step-backward"></i>
+            </a>
+        </li>
+
+
+        <!-- Page number of index -->
+        <li th:each="i : ${#numbers.sequence(beginIndex, endIndex)}"
+            th:with="pageUrl=${url} + ${'/'} + ${i}"
+                th:class="${i == currentIndex} ? ${'active'} : ${'none'}"
+                class="active">
+            <a th:href="@{${pageUrl}}" th:text="${i}">
+                i
+            </a>
+        </li>
+
+
+        <!-- forward flags -->
+        <li th:if="${currentIndex == page.totalPages}"
+                class="disabled">
+            <a href="#">
+                <i class="glyphicon glyphicon-step-forward"></i>
+            </a>
+        </li>
+        <li th:if="${currentIndex == page.totalPages}"
+                class="disabled">
+            <a href="#">
+                <i class="glyphicon glyphicon-fast-forward"></i>
+            </a>
+        </li>
+
+        <li th:if="${currentIndex != page.totalPages}"
+                >
+            <a th:href="@{${nextUrl}}">
+                <i class="glyphicon glyphicon-step-forward"></i>
+            </a>
+        </li>
+        <li th:if="${currentIndex != page.totalPages}"
+                >
+            <a th:href="@{${lastUrl}}">
+                <i class="glyphicon glyphicon-fast-forward"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+</body>
+</html>

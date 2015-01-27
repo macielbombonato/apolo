@@ -21,7 +21,7 @@
 
                 <br />
                 <center>
-                    <!--jsp:include page='/WEB-INF/views/fragment/_pagination.jsp'></jsp:include-->
+                    <div th:remove="tag" th:include="@{_fragment/_pagination} :: pagination"></div>
                 </center>
                 <div class="table-responsive" th:if="${userList != null} and ${!userList.isEmpty()}">
                     <table class="table table-striped table-hover table-bordered">
@@ -128,7 +128,7 @@
                     </p>
                 </div>
                 <center>
-                    <!--jsp:include page='/WEB-INF/views/fragment/_pagination.jsp'></jsp:include-->
+                    <div th:remove="tag" th:include="@{_fragment/_pagination} :: pagination"></div>
                 </center>
             </div>
         </div>
