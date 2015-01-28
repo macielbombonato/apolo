@@ -10,11 +10,12 @@
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                     <div class="menu-text menu-text-default">
                         <span><i class="fa fa-users"></i></span>
-                        <strong th:text="#{sysadmin.menu.user}" />
+                        <strong th:text="#{menu.sysadmin.user}" />
                         <span><i class="fa fa-chevron-down"></i></span>
                     </div>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-top">
+
                     <li sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_USER_LIST')">
                         <a th:href='@{|/${#authentication.systemUser.tenant.url}/user/list|}' >
                             <div class="menu-item menu-item-text-default">
@@ -42,20 +43,32 @@
                         </a>
                     </li>
 
-                    <li sec:authorize="hasAnyRole('ROLE_ADMIN')">
-                        <a th:href='@{|/${#authentication.systemUser.tenant.url}/auditlog/list|}' class="submenu-label">
+                    <li sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_USER_CUSTOM_FIELD_LIST', 'ROLE_USER_CUSTOM_FIELD_CREATE')"
+                            class="divider"></li>
+
+                    <li sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_USER_CUSTOM_FIELD_LIST')">
+                        <a th:href='@{|/${#authentication.systemUser.tenant.url}/user-custom-field/list|}' class="submenu-label">
                             <div class="menu-item menu-item-text-default">
-                                <i class="fa fa-list-alt"></i>
-                                <span th:text="#{auditlog.list}">
-                                    auditlog.list
+                                <i class="fa fa-list"></i>
+                                <span th:text="#{user.custom.field.list}">
+                                    user.custom.field.list
                                 </span>
                             </div>
                         </a>
                     </li>
+
+                    <li sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_USER_CUSTOM_FIELD_CREATE')">
+                        <a th:href='@{|/${#authentication.systemUser.tenant.url}/user-custom-field/new|}' class="submenu-label">
+                            <span class="submenu-label">
+                                <i class="fa fa-plus"></i>
+                                <span th:text="#{user.custom.field.new}">
+                                    user.custom.field.new
+                                </span>
+                            </span>
+                        </a>
+                    </li>
                 </ul>
-
             </li>
-
         </ul>
     </body>
 </html>

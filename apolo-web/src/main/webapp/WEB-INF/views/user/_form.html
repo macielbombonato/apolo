@@ -160,17 +160,17 @@
                             th:with="style=${#authorization.expression('hasAnyRole(''ROLE_ADMIN'', ''ROLE_USER_CREATE'', ''ROLE_USER_EDIT'')') == false ? 'display: none;' : 'display: block;' }"
                             th:style="${style}"
                             >
-                        <option th:if="${groupList != null} and ${user != null} and ${user.getGroups() == null}"
+                        <option th:if="${groupList != null} and ${user != null} and ${user.groups == null}"
                                 th:each="group : ${groupList}"
                                 th:value="${group.id}"
                                 th:text="${group.name}"
                                 />
 
-                        <option th:if="${groupList != null} and ${user != null} and ${user.getGroups() != null}"
+                        <option th:if="${groupList != null} and ${user != null} and ${user.groups != null}"
                                 th:each="group : ${groupList}"
                                 th:value="${group.id}"
                                 th:text="${group.name}"
-                                th:selected="${#lists.contains(user.getGroups(), group)}"
+                                th:selected="${#lists.contains(user.groups, group)}"
                                 />
                     </select>
                 </div>
