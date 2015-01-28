@@ -59,12 +59,12 @@
 
                     <li sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_USER_CUSTOM_FIELD_CREATE')">
                         <a th:href='@{|/${#authentication.systemUser.tenant.url}/user-custom-field/new|}' class="submenu-label">
-                            <span class="submenu-label">
+                            <div class="menu-item menu-item-text-default">
                                 <i class="fa fa-plus"></i>
                                 <span th:text="#{user.custom.field.new}">
                                     user.custom.field.new
                                 </span>
-                            </span>
+                            </div>
                         </a>
                     </li>
                 </ul>

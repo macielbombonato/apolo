@@ -67,6 +67,7 @@
                                             class="img-thumbnail"
                                             th:src="@{|/${#authentication.systemUser.tenant.url}/uploadedfiles/User/${user.id}/${user.pictureGeneratedName}|}"
                                             style="width: 40px;"
+                                            width="40"
                                         />
                                     <i th:if="${user.pictureGeneratedName == null} or ${user.pictureGeneratedName == ''}" class="fa fa-user fa-3x" />
                                 </center>

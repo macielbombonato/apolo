@@ -9,7 +9,16 @@
             <li sec:authorize="hasAnyRole('ROLE_AFTER_AUTH_USER')">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                     <div class="menu-text menu-text-default">
-                        <span><i class="fa fa-user"></i></span>
+                        <img th:if="${#authentication.systemUser.pictureGeneratedName != null} and ${#authentication.systemUser.pictureGeneratedName != ''}"
+                             class="img-circle"
+                             th:src="@{|/${#authentication.systemUser.tenant.url}/uploadedfiles/User/${#authentication.systemUser.id}/${#authentication.systemUser.pictureGeneratedName}|}"
+                             style="width: 20px; height: 20px;"
+                             width="20"
+                             height="20"
+                                />
+                        <i th:if="${#authentication.systemUser == null} or ${#authentication.systemUser.pictureGeneratedName == null} or ${#authentication.systemUser.pictureGeneratedName == ''}"
+                           class="fa fa-user" />
+
                         <strong th:text="${#authentication.systemUser.name}" />
                         <span><i class="fa fa-chevron-down"></i></span>
                     </div>
