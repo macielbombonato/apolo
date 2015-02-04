@@ -3,15 +3,13 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 </head>
-<body th:fragment="user-form">
+<body th:fragment="user-group-form">
 
-<input type="hidden" id="id" name="id" th:value="${user.id}"/>
-<input type="hidden" id="status" name="status" th:value="${user.status}"/>
-<input type="hidden" id="pictureOriginalName" name="pictureOriginalName" th:value="${user.pictureOriginalName}"/>
-<input type="hidden" id="pictureGeneratedName" name="pictureGeneratedName" th:value="${user.pictureGeneratedName}"/>
-<input type="hidden" id="tenant.id" name="tenant.id" th:value="${user.tenant.id}"/>
-<input type="hidden" id="tenant.name" name="tenant.name" th:value="${user.tenant.name}"/>
-<input type="hidden" id="tenant.url" name="tenant.url" th:value="${user.tenant.url}"/>
+<input type="hidden" id="id" name="id" th:value="${userGroup.id}"/>
+<input type="hidden" id="status" name="status" th:value="${userGroup.status}"/>
+<input type="hidden" id="tenant.id" name="tenant.id" th:value="${userGroup.tenant.id}"/>
+<input type="hidden" id="tenant.name" name="tenant.name" th:value="${userGroup.tenant.name}"/>
+<input type="hidden" id="tenant.url" name="tenant.url" th:value="${userGroup.tenant.url}"/>
 
 <ul class="nav nav-tabs" id="formTab" th:with="style=${!readOnly ? 'display: none;' : 'display: block;' }">
     <li class="active">
@@ -85,13 +83,12 @@
                     </strong>
                 </div>
                 <ul class="list-group">
-                    <c:forEach items="${userGroup.permissions}" var="permission">
-                        <li class="list-group-item"
-                            th:with="permissionName=${'user.permission.'} + ${permission}"
-                                th:text="#{permissionName}">
-                            user.permission.${permission}
-                        </li>
-                    </c:forEach>
+                    <li class="list-group-item"
+                        th:each="permission : ${userGroup.permissions}"
+                        th:with="permissionName=${'user.permission.'} + ${permission}"
+                            th:text="#{${permissionName}}">
+                        user.permission.${permission}
+                    </li>
                 </ul>
             </div>
         </div>
@@ -100,7 +97,7 @@
     </div>
 
     <div class="tab-pane" id="authorShipTab">
-        <div th:remove="tag" th:include="@{_fragment/_authorship} :: authorship (entity=${user})"></div>
+        <div th:remove="tag" th:include="@{_fragment/_authorship} :: authorship (entity=${userGroup})"></div>
     </div>
 </div>
 <div id="overlay" class="transparent"></div>

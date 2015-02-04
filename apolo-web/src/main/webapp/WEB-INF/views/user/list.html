@@ -60,7 +60,8 @@
                         </thead>
 
                         <tbody>
-                        <tr th:id="${'user_'} + ${user.id}" th:each="user : ${userList}">
+                        <tr th:each="user : ${userList}"
+                            th:id="${'user_'} + ${user.id}">
                             <td>
                                 <center>
                                     <img th:if="${user.pictureGeneratedName != null} and ${user.pictureGeneratedName != ''}"
