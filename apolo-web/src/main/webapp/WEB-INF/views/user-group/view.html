@@ -21,7 +21,7 @@
 
                     <div class="btn-group" role="group">
                         <a sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_USER_EDIT')"
-                           th:href='@{|/${#authentication.systemUser.tenant.url}/user/edit/${userGroup.id}|}' class="btn btn-default">
+                           th:href='@{|/${#authentication.systemUser.tenant.url}/user-group/edit/${userGroup.id}|}' class="btn btn-default">
                             <i class="fa fa-pencil-square-o"></i>
                             <span th:text="#{common.edit}" />
                         </a>

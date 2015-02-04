@@ -7,12 +7,12 @@
 
     <body th:fragment="scriptsTag">
 
-        <script type="text/javascript">
+        <script th:inline="javascript">
             var App = function() {
                 return {
-                    contextPath : '[[${#pageContext.request.contextPath}]]',
-                    locale : '[[${#sessionScope["org.springframework.web.servlet.i18n.SessionLocaleResolver.LOCALE"]}]]',
-                    readOnly : [[${#readOnly != null ? #readOnly : false }]]
+                    contextPath : /*'[[${#pageContext.request.contextPath}]]'*/ 'error',
+                    locale : /*'[[${#sessionScope["org.springframework.web.servlet.i18n.SessionLocaleResolver.LOCALE"]}]]'*/ 'error',
+                    readOnly : /*[[${readOnly != null} ? ${readOnly} : false]]*/ 'error'
                 };
             }();
         </script>

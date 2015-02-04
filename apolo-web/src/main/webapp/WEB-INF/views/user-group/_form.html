@@ -61,14 +61,14 @@
                         th:each="permission : ${permissionList}"
                         th:value="${permission}"
                         th:with="permissionName=${'user.permission.'} + ${permission}"
-                        th:text="#{permissionName}"
+                        th:text="#{${permissionName}}"
                         />
 
                 <option th:if="${permissionList != null} and ${userGroup != null} and ${userGroup.permissions != null}"
                         th:each="permission : ${permissionList}"
                         th:value="${permission}"
                         th:with="permissionName=${'user.permission.'} + ${permission}"
-                        th:text="#{permissionName}"
+                        th:text="#{${permissionName}}"
                         th:selected="${#lists.contains(userGroup.permissions, permission)}"
                         />
             </select>
