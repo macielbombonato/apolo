@@ -17,7 +17,7 @@
             </div>
             <div class="panel-body">
                 <form id="userForm" th:action="@{|/${#authentication.systemUser.tenant.url}/user-group/save|}" role="form" method="post" enctype="multipart/form-data">
-                    <div th:remove="tag" th:include="@{user/_form} :: user-form"></div>
+                    <div th:remove="tag" th:include="@{user-group/_form} :: user-group-form"></div>
 
                     <div class="form-actions">
                         <button type="submit" class="btn btn-primary">
