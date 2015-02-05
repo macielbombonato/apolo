@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:include="@{_fragment/_headTag} :: headTag">
+</head>
+<body>
+<div th:remove="tag" th:include="@{_fragment/_header} :: header"></div>
+
+<div id="wrapper" class="preload">
+
+    <div th:remove="tag" th:include="@{_fragment/_message} :: message"></div>
+
+    <div class="container ">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <strong th:text="#{tenant.new.title}">
+                    tenant.new.title
+                </strong>
+            </div>
+            <div class="panel-body">
+                <form id="form" th:action="@{|/tenant/save|}" role="form" method="post" enctype="multipart/form-data">
+                    <div th:remove="tag" th:include="@{tenant/_form} :: tenant-form"></div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fa fa-floppy-o"></i>
+                            <span th:text="#{common.save}" />
+                        </button>
+
+                        <a th:if="${tenant.id != null}"
+                           th:href='@{|/tenant/view/${tenant.id}|}' class="btn btn-default">
+                            <i class="fa fa-times"></i>
+                            <span th:text="#{common.cancel}" />
+                        </a>
+                        <a th:if="${tenant.id == null}"
+                           th:href='@{|/tenant/list|}' class="btn btn-default">
+                            <i class="fa fa-times"></i>
+                            <span th:text="#{common.cancel}" />
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:remove="tag" th:include="@{_fragment/_footer} :: footer "></div>
+</body>
+</html>

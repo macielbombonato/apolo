@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+</head>
+<body th:fragment="tenant-form">
+
+<input type="hidden" id="id" name="id" th:value="${tenant.id}" />
+<input type="hidden" id="status" name="status" th:value="${tenant.status}" />
+<input type="hidden" id="logo" name="logo" th:value="${tenant.logo}" />
+
+<ul class="nav nav-tabs" id="formTab" th:with="style=${!readOnly ? 'display: none;' : 'display: block;' }">
+    <li class="active">
+        <a href="#home">
+            <span class="fa fa-tasks"></span>
+        </a>
+    </li>
+    <li th:style="${style}">
+        <a href="#authorShipTab">
+            <span class="fa fa-user"></span>
+        </a>
+    </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane active" id="home">
+        <div class="form-group">
+            <label for="skin" class="control-label" th:text="#{tenant.skin}">
+                tenant.skin
+            </label>
+
+            <div class="row">
+                <div class="col-sm-3" th:each="skin : ${skinList}">
+                    <label class="control-label">
+                        <input type="radio"
+                               id="skin"
+                               name="skin"
+                               th:value="${skin}"
+                               th:checked="${skin eq tenant.skin}"
+                               th:disabled="${readOnly}"
+                        />
+                        <span class="theme-color" style="background:${skin.color}"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="name" class="control-label" th:text="#{tenant.name}">
+                tenant.name
+            </label>
+            <input class="form-control"
+                   type="text"
+                   id="name"
+                   name="name"
+                   th:value="${tenant.name}"
+                   th:readonly="${readOnly}"
+            />
+        </div>
+
+        <div class="form-group">
+            <label for="url" class="control-label" th:text="#{tenant.url}">
+                tenant.url
+            </label>
+            <input class="form-control"
+                   type="text"
+                   id="url"
+                   name="url"
+                   th:value="${tenant.url}"
+                   th:readonly="${readOnly}"
+            />
+        </div>
+
+        <div class="form-group">
+            <label for="logoWidth" class="control-label" th:text="#{tenant.logoWidth}">
+                tenant.logoWidth
+            </label>
+            <input class="form-control"
+                   type="number"
+                   id="logoWidth"
+                   name="logoWidth"
+                   th:value="${tenant.logoWidth}"
+                   th:readonly="${readOnly}"
+            />
+        </div>
+
+        <div class="form-group">
+            <label for="logoHeight" class="control-label" th:text="#{tenant.logoHeight}">
+                tenant.logoHeight
+            </label>
+            <input class="form-control"
+                   type="number"
+                   id="logoHeight"
+                   name="logoHeight"
+                   th:value="${tenant.logoHeight}"
+                   th:readonly="${readOnly}"
+            />
+        </div>
+
+        <div class="form-group" th:if="${!readOnly}">
+            <label for="logoFile" class="control-label" th:text="#{tenant.logo}">
+                tenant.logo
+            </label>
+            <input type="file" class="form-control" name="logoFile[0]" />
+        </div>
+    </div>
+
+    <div class="tab-pane" id="authorShipTab">
+        <div th:remove="tag" th:include="@{_fragment/_authorship} :: authorship (entity=${tenant})"></div>
+    </div>
+</div>
+<div id="overlay" class="transparent"></div>
+
+<div id="menu-space" style="display:none;">&nbsp;</div>
+</body>
+</html>
