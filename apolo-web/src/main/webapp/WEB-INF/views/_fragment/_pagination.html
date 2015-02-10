@@ -43,6 +43,7 @@
 
         <!-- Page number of index -->
         <li th:each="i : ${#numbers.sequence(beginIndex, endIndex)}"
+            th:if="${beginIndex >= endIndex} and ${i > 0}"
             th:with="pageUrl=${url} + ${'/'} + ${i}"
                 th:class="${i == currentIndex} ? ${'active'} : ${'none'}"
                 class="active">
@@ -53,26 +54,34 @@
 
 
         <!-- forward flags -->
-        <li th:if="${currentIndex == page.totalPages}"
+        <li th:if="${currentIndex == page.totalPages}
+                    or ${page == null}
+                    or ${page.totalPages == 0} "
                 class="disabled">
             <a href="#">
                 <i class="fa fa-step-forward"></i>
             </a>
         </li>
-        <li th:if="${currentIndex == page.totalPages}"
+        <li th:if="${currentIndex == page.totalPages}
+                    or ${page == null}
+                    or ${page.totalPages == 0} "
                 class="disabled">
             <a href="#">
                 <i class="fa fa-fast-forward"></i>
             </a>
         </li>
 
-        <li th:if="${currentIndex != page.totalPages}"
+        <li th:if="${page != null}
+                    and ${page.totalPages > 0}
+                    and ${currentIndex != page.totalPages}"
                 >
             <a th:href="@{${nextUrl}}">
                 <i class="fa fa-step-forward"></i>
             </a>
         </li>
-        <li th:if="${currentIndex != page.totalPages}"
+        <li th:if="${page != null}
+                    and ${page.totalPages > 0}
+                    and ${currentIndex != page.totalPages}"
                 >
             <a th:href="@{${lastUrl}}">
                 <i class="fa fa-fast-forward"></i>

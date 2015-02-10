@@ -20,7 +20,7 @@
                              th:width="${#authentication.systemUser.tenant.logoWidth}"
                              th:height="${#authentication.systemUser.tenant.logoHeight}"
                              th:style="${'width: '} + ${#authentication.systemUser.tenant.logoWidth} + ${'px; height: '} + ${#authentication.systemUser.tenant.logoHeight} + ${'px;'}"
-                             th:text="#{app.title}"
+                             th:text="${#authentication.systemUser.tenant.name}"
                             />
                         <img th:if="${#authorization.expression('isAuthenticated()') == false} or ${#authentication.systemUser.tenant.logo == null}"
                              th:src="@{'/resources/app/img/logo.png'}"

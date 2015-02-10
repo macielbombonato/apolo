@@ -10,6 +10,11 @@
 
         <footer class="footer">
             <center>
+                <img th:src="@{|/resources/app/img/flags/#{language.flag}|}"
+                     width="15"
+                     height="15"
+                     class="img"
+                        />
                 <small th:text="#{footer.message}" data-htmlEscape="false">
                     footer.message
                 </small>
