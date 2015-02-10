@@ -1,4 +1,4 @@
-# Apolo-Base
+# Apolo
 ============
 
 # Arquitetura Apolo
@@ -7,7 +7,7 @@ Este projeto é uma iniciativa open source para que os desenvolvedores ganhem te
 
 ## Faça sua cópia
 
-O apolo é versionado com git, portanto, para fazer sua cópia do código e controlá-la, será necessário ter o git em sua máquina.
+O Apolo é versionado com git, portanto, para fazer sua cópia do código e controlá-la, será necessário ter o git em sua máquina.
 
 Há algum tempo eu fiz um "tutorialzinho" de alguns comandos git e para que eles servem: [http://macielbombonato.blogspot.com.br/2012/02/utilizando-git-versionador-local.html](http://macielbombonato.blogspot.com.br/2012/02/utilizando-git-versionador-local.html), Este tutorial deve ajudar um pouco para realizar operações via linha de comando.
 
@@ -20,5 +20,5 @@ Espero que este projeto lhe seja útil e tendo sugestões ou encontrando problem
 # Licença
 ---------
 
-Apolo-Base é um software de código aberto, você pode redistribuí-lo e/ou
+Apolo é um software de código aberto, você pode redistribuí-lo e/ou
 modificá-lo conforme a licença Apache versão 2.0. Veja o arquivo LICENSE-Apache.txt
