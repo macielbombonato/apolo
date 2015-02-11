@@ -10,7 +10,17 @@
 
         <footer class="footer">
             <center>
+                <a sec:authorize="hasRole('ROLE_ADMIN')"
+                   th:href='@{|/version|}'
+                   class="btn">
+                    <img th:src="@{|/resources/app/img/flags/#{language.flag}|}"
+                         width="15"
+                         height="15"
+                         class="img"
+                            />
+                </a>
                 <img th:src="@{|/resources/app/img/flags/#{language.flag}|}"
+                     sec:authorize="!hasRole('ROLE_ADMIN')"
                      width="15"
                      height="15"
                      class="img"
