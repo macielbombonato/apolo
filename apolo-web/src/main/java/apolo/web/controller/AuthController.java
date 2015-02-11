@@ -3,6 +3,7 @@ package apolo.web.controller;
 import apolo.business.service.UserService;
 import apolo.common.config.model.ApplicationProperties;
 import apolo.common.util.MessageBundle;
+import apolo.data.model.Tenant;
 import apolo.security.SecuredEnum;
 import apolo.security.UserPermission;
 import apolo.web.enums.Navigation;
@@ -15,6 +16,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.ContextLoader;
@@ -22,7 +24,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 @SuppressWarnings("rawtypes")
 @Controller
-@RequestMapping(value = "/auth")
 public class AuthController extends BaseController {
 	
 	@Autowired
@@ -37,8 +38,13 @@ public class AuthController extends BaseController {
 	@Autowired 
 	private AppController appController;
 
-	@RequestMapping(value = "login", method = RequestMethod.GET)
-	public ModelAndView login(HttpServletRequest request) {
+    @RequestMapping(value = "/auth/login", method = RequestMethod.GET)
+    public ModelAndView login(HttpServletRequest request) {
+        return login(applicationProperties.getDefaultTenant(), request);
+    }
+
+	@RequestMapping(value = "/{tenant-url}/auth/login", method = RequestMethod.GET)
+	public ModelAndView login(@PathVariable("tenant-url") String tenant, HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView(Navigation.AUTH_LOGIN.getPath());
 		
 		if (userService.getAuthenticatedUser() != null
@@ -57,33 +63,17 @@ public class AuthController extends BaseController {
 		
 		return mav;
 	}
-	
-	@SecuredEnum({
-			UserPermission.BEFORE_AUTH_USER, 
-			UserPermission.AFTER_AUTH_USER
-		})
-	@RequestMapping(value = "second-factor", method = RequestMethod.GET)
-	public ModelAndView secondFactor(
-			HttpServletRequest request,
-			HttpServletResponse response) {
 
-		ModelAndView mav = new ModelAndView(Navigation.AUTH_SECOND_FACTOR.getPath());
-		
-		if (userService.getAuthenticatedUser() != null) {
-			if (userService.getAuthenticatedUser().getPermissions() != null
-					&& !userService.getAuthenticatedUser().getPermissions().isEmpty()
-					&& userService.getAuthenticatedUser().getPermissions().contains(UserPermission.AFTER_AUTH_USER)) {
-				
-				mav = userController.index(userService.getAuthenticatedUser().getTenant().getUrl(), request);
-			}
-		}
-		
-		return mav;
-	}
+    @RequestMapping(value = "/auth/loginfailed", method = RequestMethod.GET)
+    public ModelAndView loginFailed(HttpServletRequest request, ModelMap model) {
+        return loginFailed(applicationProperties.getDefaultTenant(), request, model);
+    }
 
-
-	@RequestMapping(value = "loginfailed", method = RequestMethod.GET)
-	public ModelAndView loginFailed(HttpServletRequest request, ModelMap model) {
+	@RequestMapping(value = "/{tenant-url}/auth/loginfailed", method = RequestMethod.GET)
+	public ModelAndView loginFailed(
+            @PathVariable("tenant-url") String tenant,
+            HttpServletRequest request,
+            ModelMap model) {
 		ModelAndView mav = new ModelAndView(Navigation.AUTH_LOGIN.getPath(), model);
 		
 		String message = MessageBundle.getMessageBundle("error.403.1");
@@ -102,51 +92,20 @@ public class AuthController extends BaseController {
 		return mav;
 	}
 
-	@RequestMapping(value = "logout", method = RequestMethod.GET)
+	@RequestMapping(value = "/auth/logout", method = RequestMethod.GET)
 	public ModelAndView logout(HttpServletRequest request, ModelMap model) {
-		ModelAndView mav = new ModelAndView(Navigation.AUTH_LOGIN.getPath(), model);
-		return mav;
+		return logout(applicationProperties.getDefaultTenant(), request, model);
 	}
+
+    @RequestMapping(value = "/{tenant-url}/auth/logout", method = RequestMethod.GET)
+    public ModelAndView logout(
+            @PathVariable("tenant-url") String tenant,
+            HttpServletRequest request,
+            ModelMap model) {
+        ModelAndView mav = new ModelAndView(Navigation.AUTH_LOGIN.getPath(), model);
+        return mav;
+    }
 	
-//	@SecuredEnum(UserPermission.BEFORE_AUTH_USER)
-//	@RequestMapping(value = "validate-token", method = RequestMethod.POST)
-//	public ModelAndView validateToken(
-//				@ModelAttribute("token") String token,
-//				BindingResult result, 
-//				HttpServletRequest request
-//			) {
-//		ModelAndView mav = null;
-//		
-//		TokenStatus tokenValidation = asaWsCall.callValidateToken(
-//				userService.getAuthenticatedUser().getEmail(), 
-//				token
-//			);
-//		
-//		if (TokenStatus.VALID.equals(tokenValidation)) {
-//			login();
-//			mav = userController.index("apolo", request);
-//		} else {
-//			logout();
-//			mav = new ModelAndView(Navigation.AUTH_LOGIN.getPath());
-//			mav.addObject("error", true);
-//			mav.addObject("message", MessageBundle.getMessageBundle("user.auth.msg.error.invalid.token"));
-//		}
-//		
-//		return mav;
-//	}
-	
-//    private void login() {
-//        Collection<GrantedAuthority> authorities = userService.loadUserAuthorities(userService.getAuthenticatedUser());
-//        Authentication newAuth = new CurrentUser(
-//        		userService.getAuthenticatedUser().getId(), 
-//        		userService.getAuthenticatedUser().getEmail(), 
-//        		userService.getAuthenticatedUser().getPassword(), 
-//        		userService.getAuthenticatedUser(), 
-//        		authorities
-//        	);
-//        SecurityContextHolder.getContext().setAuthentication(newAuth);
-//    }
-    
     private void logout() {
     	SecurityContextHolder.getContext().setAuthentication(null);
     }

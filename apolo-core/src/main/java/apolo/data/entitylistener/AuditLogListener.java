@@ -63,22 +63,16 @@ public class AuditLogListener {
 			userService = (UserService) ctx.getBean("userService");
 		}
 
-		User user = null;
-		
-		Long executorId = null;
+		User executor = null;
 		
 		try {
-			executorId = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
+			executor = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
 		} catch(Throwable errorId) {
-			executorId = null;
+			executor = null;
 		}
 		
-		if (executorId != null) {
-			user = userService.find(executorId);
-		} 
-		
-		if (user == null) {
-			user = userService.find(1L);
+		if (executor == null) {
+            executor = userService.find(1L);
 		}
 		
 		AuditLog auditLog = new AuditLog();
@@ -91,17 +85,18 @@ public class AuditLogListener {
 			entityName = e.getClass().getSimpleName();
 		}
 
-		if (user != null) {
+		if (executor != null) {
 			long userId = 0L;
 			long tenantId = 0L;
 
-			if (user != null) {
-				if (user.getId() != null) {
-					userId = user.getId();
+			if (executor != null) {
+				if (executor.getId() != null) {
+					userId = executor.getId();
 				}
 
-				if (user.getTenant() != null && user.getTenant().getId() != null ) {
-					tenantId = user.getTenant().getId();
+				if (executor.getTenant() != null
+                        && executor.getTenant().getId() != null ) {
+					tenantId = executor.getTenant().getId();
 				}
 			}
 
@@ -113,7 +108,7 @@ public class AuditLogListener {
 			auditLog.setOperationDate(new Date());
 
 			try {
-				auditLogService.save(user.getTenant(), auditLog);
+				auditLogService.save(executor.getTenant(), auditLog);
 			} catch (Throwable e1) {
 				LOG.error("===> Error on auditing log method.", e1);
 			}			

@@ -1,9 +1,9 @@
 package apolo.web.config;
 
+import apolo.common.config.model.ApplicationProperties;
 import apolo.security.UserPermission;
-
-import javax.inject.Inject;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -12,6 +12,9 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.web.context.ContextLoader;
+
+import javax.inject.Inject;
 
 @Configuration
 @EnableWebSecurity
@@ -20,6 +23,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Inject
     private UserAuthenticationProvider userAuthenticationProvider;
+
+    @Autowired
+    private ApplicationProperties applicationProperties;
 
     @Inject
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
@@ -33,6 +39,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+		/*
+		 * This class is created by jpa engine and because this is necessary get dependencies in spring context.
+		 */
+        if (applicationProperties == null) {
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+
+            applicationProperties = (ApplicationProperties) ctx.getBean("applicationProperties");
+        }
+
     	http.csrf().disable()
         	.authorizeRequests()
                 .antMatchers(
@@ -49,17 +64,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/install/**",
                         "/install",
                         "/auth/login",
+                        "**/auth/login",
                         "/auth/loginfailed",
+                        "**/auth/loginfailed",
                         "/auth/logout",
+                        "**/auth/logout",
                         "/index",
                         "/",
                         "/login"
                     ).permitAll()
                 .anyRequest()
                 	.hasAnyRole(
-                			UserPermission.ADMIN.getCode(), 
-                			UserPermission.AFTER_AUTH_USER.getCode()
-                		)
+                            UserPermission.ADMIN.getCode(),
+                            UserPermission.AFTER_AUTH_USER.getCode()
+                    )
             .and()
 	            .exceptionHandling()
 	                .accessDeniedPage("/error/403")
@@ -67,13 +85,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	            .formLogin()
 	                .usernameParameter("username")
 	                .passwordParameter("password")
-	                .loginPage("/auth/login")
+	                .loginPage("/" + applicationProperties.getDefaultTenant() + "/auth/login")
 	                .loginProcessingUrl("/login")
                 	//.defaultSuccessUrl("/", true)
-                	.failureUrl("/auth/loginfailed")
-                		.permitAll()
+                	.failureUrl("/" + applicationProperties.getDefaultTenant() + "/auth/loginfailed")
+                .permitAll()
             .and()
-	            .logout()
+                .logout()
 	            	.logoutUrl("/auth/logout")
 	            		.permitAll();
     }
