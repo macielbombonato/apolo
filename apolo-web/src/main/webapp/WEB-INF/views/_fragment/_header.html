@@ -15,13 +15,20 @@
                 </button>
                 <a class="navbar-brand" th:href="${#authorization.expression('isAuthenticated()') == true} ? @{|/${#authentication.systemUser.tenant.url}/user|} : @{'/'}">
                     <strong id="menuTitle" style="font-family: monospace; font-size: xx-large;" class="menu-title">
-                        <img th:if="${#authorization.expression('isAuthenticated()') == true} and ${#authentication.systemUser.tenant.logo != null}"
+                        <img th:if="${#authorization.expression('isAuthenticated()') == true}
+                                        and ${#authentication.systemUser.tenant.logo != null}"
                              th:src="@{|/${#authentication.systemUser.tenant.url}/uploadedfiles/Tenant/${#authentication.systemUser.tenant.id}/${#authentication.systemUser.tenant.logo}|}"
                              th:width="${#authentication.systemUser.tenant.logoWidth}"
                              th:height="${#authentication.systemUser.tenant.logoHeight}"
                              th:style="${'width: '} + ${#authentication.systemUser.tenant.logoWidth} + ${'px; height: '} + ${#authentication.systemUser.tenant.logoHeight} + ${'px;'}"
-                             th:text="${#authentication.systemUser.tenant.name}"
                             />
+                        <span th:if="${#authorization.expression('isAuthenticated()') == true}
+                                        and ${#authentication.systemUser.tenant != null}
+                                        and ${#authentication.systemUser.tenant.showName == true}
+                                        and ${#authentication.systemUser.tenant.name != null}"
+                                th:text="${#authentication.systemUser.tenant.name}">
+
+                        </span>
                         <img th:if="${#authorization.expression('isAuthenticated()') == false} or ${#authentication.systemUser.tenant.logo == null}"
                              th:src="@{'/resources/app/img/logo.png'}"
                              width="15"

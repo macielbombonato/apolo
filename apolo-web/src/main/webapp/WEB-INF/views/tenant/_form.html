@@ -57,6 +57,19 @@
                    th:readonly="${readOnly}"
             />
         </div>
+        <div class="form-group">
+            <label for="name" class="control-label" th:text="#{tenant.showName}">
+                tenant.hasShowName
+            </label>
+            <input class="form-control"
+                   type="checkbox"
+                   id="showName"
+                   name="showName"
+                   value="true"
+                   th:disabled="${readOnly}"
+                   th:checked="${tenant.showName}"
+                    />
+        </div>
 
         <div class="form-group">
             <label for="url" class="control-label" th:text="#{tenant.url}">
@@ -69,6 +82,12 @@
                    th:value="${tenant.url}"
                    th:readonly="${readOnly}"
             />
+            <blockquote th:with="visible=${readOnly ? 'display: none;' : 'display: block;' }"
+                    th:style="${visible}" >
+                <footer th:text="#{tenant.url.change.advice}">
+                    tenant.url.change.advice
+                </footer>
+            </blockquote>
         </div>
 
         <div class="form-group">

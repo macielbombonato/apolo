@@ -34,9 +34,9 @@ public class Tenant extends AuditableBaseEntity {
 	@Size(min = 1, max = InputLength.TINY)
 	private String url;
 	
-	@Column(name = "name", length = InputLength.NAME, nullable = false)
-	@NotNull
-	@Size(min = 1, max = InputLength.NAME)
+	@Column(name = "name", length = InputLength.CODE, nullable = false)
+    @NotNull
+    @Size(min = 1, max = InputLength.CODE)
 	private String name;
 	
 	@Column(name = "logo", length = InputLength.MEDIUM, nullable = true)
@@ -59,6 +59,10 @@ public class Tenant extends AuditableBaseEntity {
 	@Type(type = "apolo.data.enums.usertype.StatusUserType")
 	@NotNull
 	private Status status;
+
+    @Column(name = "has_show_name", nullable = true)
+    @Type(type="yes_no")
+    private Boolean showName;
 	
 	@Transient
 	private List<MultipartFile> logoFile;
@@ -126,4 +130,16 @@ public class Tenant extends AuditableBaseEntity {
 	public void setLogoFile(List<MultipartFile> logoFile) {
 		this.logoFile = logoFile;
 	}
+
+    public Boolean isShowName() {
+        return this.showName;
+    }
+
+    public Boolean getShowName() {
+        return this.showName;
+    }
+
+    public void setShowName(Boolean showName) {
+        this.showName = showName;
+    }
 }
