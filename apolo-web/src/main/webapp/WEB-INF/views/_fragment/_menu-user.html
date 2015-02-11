@@ -11,7 +11,7 @@
                     <div class="menu-text menu-text-default">
                         <img th:if="${#authentication.systemUser.pictureGeneratedName != null} and ${#authentication.systemUser.pictureGeneratedName != ''}"
                              class="img-circle"
-                             th:src="@{|/${#authentication.systemUser.tenant.url}/uploadedfiles/User/${#authentication.systemUser.id}/${#authentication.systemUser.pictureGeneratedName}|}"
+                             th:src="@{|/${#authentication.systemUser.dbTenant.url}/uploadedfiles/User/${#authentication.systemUser.id}/${#authentication.systemUser.pictureGeneratedName}|}"
                              style="width: 20px; height: 20px;"
                              width="20"
                              height="20"
@@ -33,7 +33,7 @@
                         </a>
                     </li>
                     <li>
-                        <a th:href='@{|/${#authentication.systemUser.tenant.url}/user/view/${#authentication.systemUser.id}|}'>
+                        <a th:href='@{|/${#authentication.systemUser.dbTenant.url}/user/view/${#authentication.systemUser.id}|}'>
                             <div class="menu-item menu-item-text-default">
                                 <i class="fa fa-user"></i>
                                 <span th:text="#{user.profile}" />
@@ -41,7 +41,7 @@
                         </a>
                     </li>
                     <li>
-                        <a th:href='@{|/${#authentication.systemUser.tenant.url}/user/change-password|}'>
+                        <a th:href='@{|/${#authentication.systemUser.dbTenant.url}/user/change-password|}'>
                             <div class="menu-item menu-item-text-default">
                                 <i class="fa fa-pencil-square-o"></i>
                                 <span th:text="#{user.change.password}" />
