@@ -18,9 +18,14 @@ public interface TenantRepository extends JpaRepository<Tenant, Long>, TenantRep
 	
 	Tenant findByUrl(String url);
 	
-	Page<Tenant> findByStatus(
+	Page<Tenant> findByStatusOrderByNameAsc(
 				Status status, 
 				Pageable page
 			);
+
+    Page<Tenant> findByStatusNotOrderByNameAsc(
+            Status status,
+            Pageable page
+    );
 	
 }

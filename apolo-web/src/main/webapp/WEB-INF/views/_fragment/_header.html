@@ -18,8 +18,8 @@
                         <img th:if="${#authorization.expression('isAuthenticated()') == true}
                                         and ${#authentication.systemUser.tenant.logo != null}"
                              th:src="@{|/${#authentication.systemUser.tenant.url}/uploadedfiles/Tenant/${#authentication.systemUser.tenant.id}/${#authentication.systemUser.tenant.logo}|}"
-                             th:width="${#authentication.systemUser.tenant.logoWidth}"
-                             th:height="${#authentication.systemUser.tenant.logoHeight}"
+                             th:width="${#authentication.systemUser.tenant.logoWidth} + ${'px'}"
+                             th:height="${#authentication.systemUser.tenant.logoHeight} + ${'px'}"
                              th:style="${'width: '} + ${#authentication.systemUser.tenant.logoWidth} + ${'px; height: '} + ${#authentication.systemUser.tenant.logoHeight} + ${'px;'}"
                             />
                         <span th:if="${#authorization.expression('isAuthenticated()') == true}

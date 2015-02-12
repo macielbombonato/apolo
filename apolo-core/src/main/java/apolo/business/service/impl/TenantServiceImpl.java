@@ -35,7 +35,14 @@ public class TenantServiceImpl extends BaseServiceImpl<Tenant> implements Tenant
 	private ApplicationProperties applicationProperties;
 	
 	public List<Tenant> list() {
-		return tenantRepository.findAll();
+        PageRequest request = new PageRequest(1, PAGE_SIZE, Sort.Direction.ASC, "name");
+
+        Page<Tenant> result = tenantRepository.findByStatusOrderByNameAsc(
+                Status.LOCKED,
+                request
+        );
+
+        return result.getContent();
 	}
 	
 	public Page<Tenant> list(Integer pageNumber) {
@@ -43,7 +50,7 @@ public class TenantServiceImpl extends BaseServiceImpl<Tenant> implements Tenant
 			pageNumber = 1;
 		}
 		
-		PageRequest request = new PageRequest(pageNumber - 1, PAGE_SIZE);
+		PageRequest request = new PageRequest(pageNumber - 1, PAGE_SIZE, Sort.Direction.ASC, "name");
 		
 		return tenantRepository.findAll(request);
 	}
