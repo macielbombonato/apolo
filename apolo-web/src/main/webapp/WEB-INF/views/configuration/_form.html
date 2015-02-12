@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+</head>
+<body th:fragment="configuration-form">
+
+<input type="hidden" id="id" name="id" th:value="${configuration.id}" />
+<input type="hidden" id="tenant.id" name="tenant.id" th:value="${configuration.tenant.id}" />
+<input type="hidden" id="tenant.name" name="tenant.name" th:value="${configuration.tenant.name}" />
+<input type="hidden" id="tenant.url" name="tenant.url" th:value="${configuration.tenant.url}" />
+
+<ul class="nav nav-tabs" id="formTab" th:with="style=${!readOnly ? 'display: none;' : 'display: block;' }">
+    <li class="active">
+        <a href="#home">
+            <span class="fa fa-tasks"></span>
+        </a>
+    </li>
+    <li th:style="${style}">
+        <a href="#authorShipTab">
+            <span class="fa fa-user"></span>
+        </a>
+    </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane active" id="home">
+        <div class="form-group">
+            <label for="name" class="control-label" th:text="#{configuration.field}">
+                configuration.field
+            </label>
+
+            <select id="field"
+                    name="field"
+                    class="form-control chzn-select"
+                    th:disabled="${readOnly}"
+                    th:attr="data-placeholder=#{common.select}"
+                    onchange="if ($('#field').val() == 'EMAIL_USE_TLS') {$('#value').val('true');}"
+                    >
+                <option th:if="${configFieldList != null} and ${configuration != null} and ${configuration.field == null}"
+                        th:each="field : ${configFieldList}"
+                        th:value="${field}"
+                        th:with="fieldName=${'configuration.field.'} + ${field}"
+                        th:text="#{${fieldName}}"
+                        />
+
+                <option th:if="${configFieldList != null} and ${configuration != null} and ${configuration.field != null}"
+                        th:each="field : ${configFieldList}"
+                        th:value="${field}"
+                        th:with="fieldName=${'configuration.field.'} + ${field}"
+                        th:text="#{${fieldName}}"
+                        th:selected="${configuration.field == field}"
+                        />
+            </select>
+        </div>
+
+        <div class="form-group"
+                th:with="crypted=${configuration != null}
+                                and ${configuration.field != null}
+                                and ${configuration.field.cryptedValue}
+                                    ? true
+                                    : false
+                        "
+                    >
+            <label for="value" class="control-label" th:text="#{configuration.value}">
+                configuration.value
+            </label>
+
+            <input th:if="${crypted}"
+                   type="password"
+                   th:value="${configuration.value}"
+                   id="value"
+                   name="value"
+                   class="form-control"
+                   th:readonly="${readOnly}"
+                />
+
+            <input th:if="${!crypted}"
+                   type="text"
+                   th:value="${configuration.value}"
+                   id="value"
+                   name="value"
+                   class="form-control"
+                   th:readonly="${readOnly}"
+                />
+        </div>
+    </div>
+
+    <div class="tab-pane" id="authorShipTab">
+        <div th:remove="tag" th:include="@{_fragment/_authorship} :: authorship (entity=${configuration})"></div>
+    </div>
+</div>
+<div id="overlay" class="transparent"></div>
+
+<div id="menu-space" style="display:none;">&nbsp;</div>
+</body>
+</html>
