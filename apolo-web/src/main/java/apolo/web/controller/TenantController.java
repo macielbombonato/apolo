@@ -6,6 +6,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import apolo.data.enums.Spinner;
 import net.sf.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -103,6 +104,7 @@ public class TenantController extends BaseController<Tenant> {
 		
 		mav.addObject("tenant", tenant);
 		mav.addObject("skinList", Skin.values());
+        mav.addObject("spinnerList", Spinner.values());
 		mav.addObject("readOnly", false);
 		
 		return mav;
@@ -124,6 +126,7 @@ public class TenantController extends BaseController<Tenant> {
 		
 		mav.addObject("tenant", tenant);
 		mav.addObject("skinList", Skin.values());
+        mav.addObject("spinnerList", Spinner.values());
 		mav.addObject("readOnly", false);
 		mav.addObject("editing", true);
 		
@@ -155,6 +158,7 @@ public class TenantController extends BaseController<Tenant> {
 		
 		mav.addObject("tenant", tenant);
 		mav.addObject("skinList", Skin.values());
+        mav.addObject("spinnerList", Spinner.values());
 		mav.addObject("readOnly", true);
 		
 		return mav;
@@ -282,6 +286,7 @@ public class TenantController extends BaseController<Tenant> {
 				);
 			mav.addObject("tenant", entity);
 			mav.addObject("skinList", Skin.values());
+            mav.addObject("spinnerList", Spinner.values());
 			mav.addObject("readOnly", false);
 			mav.addObject("error", true);
 			

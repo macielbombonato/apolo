@@ -3,6 +3,7 @@ package apolo.data.model;
 import apolo.data.entitylistener.AuditLogListener;
 import apolo.data.enums.Language;
 import apolo.data.enums.Skin;
+import apolo.data.enums.Spinner;
 import apolo.data.enums.Status;
 import apolo.data.util.InputLength;
 
@@ -59,6 +60,11 @@ public class Tenant extends AuditableBaseEntity {
 	@Type(type = "apolo.data.enums.usertype.StatusUserType")
 	@NotNull
 	private Status status;
+
+    @Column(name = "spinner", nullable = false)
+    @Type(type = "apolo.data.enums.usertype.SpinnerUserType")
+    @NotNull
+    private Spinner spinner;
 
     @Column(name = "has_show_name", nullable = true)
     @Type(type="yes_no")
@@ -141,5 +147,13 @@ public class Tenant extends AuditableBaseEntity {
 
     public void setShowName(Boolean showName) {
         this.showName = showName;
+    }
+
+    public Spinner getSpinner() {
+        return spinner;
+    }
+
+    public void setSpinner(Spinner spinner) {
+        this.spinner = spinner;
     }
 }
