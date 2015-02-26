@@ -248,30 +248,55 @@ public class TenantController extends BaseController<Tenant> {
 		
 		ModelAndView mav = new ModelAndView();
 		
-		MultipartFile objectFile = null;
-		
-		List<MultipartFile> files = null;
+		MultipartFile logoFileToUpload = null;
+
+		List<MultipartFile> logoFileList = null;
 		
 		if (entity.getLogoFile() != null) {
-			files = entity.getLogoFile();
+			logoFileList = entity.getLogoFile();
 		}
 		
-		if(files != null && !files.isEmpty()) {
-			for (MultipartFile multipartFile : files) {
+		if(logoFileList != null && !logoFileList.isEmpty()) {
+			for (MultipartFile multipartFile : logoFileList) {
 				if (multipartFile != null
 						&& multipartFile.getOriginalFilename() != null
 						&& !multipartFile.getOriginalFilename().isEmpty()) {
-					objectFile = multipartFile;	
+					logoFileToUpload = multipartFile;
 				}
 			}
 		}
-		
-		if (objectFile != null 
-				&& objectFile.getOriginalFilename() != null 
-				&& !objectFile.getOriginalFilename().isEmpty()) {
-			entity.setLogo(objectFile.getOriginalFilename());
+
+		if (logoFileToUpload != null
+				&& logoFileToUpload.getOriginalFilename() != null
+				&& !logoFileToUpload.getOriginalFilename().isEmpty()) {
+			entity.setLogo(logoFileToUpload.getOriginalFilename());
 		}
-		
+
+
+        MultipartFile iconFileToUpload = null;
+
+        List<MultipartFile> iconFileList = null;
+
+        if (entity.getIconFile() != null) {
+            iconFileList = entity.getIconFile();
+        }
+
+        if(iconFileList != null && !iconFileList.isEmpty()) {
+            for (MultipartFile multipartFile : iconFileList) {
+                if (multipartFile != null
+                        && multipartFile.getOriginalFilename() != null
+                        && !multipartFile.getOriginalFilename().isEmpty()) {
+                    iconFileToUpload = multipartFile;
+                }
+            }
+        }
+
+        if (iconFileToUpload != null
+                && iconFileToUpload.getOriginalFilename() != null
+                && !iconFileToUpload.getOriginalFilename().isEmpty()) {
+            entity.setIcon(iconFileToUpload.getOriginalFilename());
+        }
+
 		/*
 		 * Object validation
 		 */
@@ -313,14 +338,19 @@ public class TenantController extends BaseController<Tenant> {
 		} 
 		
 		if (entity != null) {
-			FileContent file = null;
-			
-			if (objectFile != null) {
-				file = new FileContent();
-				file.setFile(objectFile);
+			FileContent logo = null;
+			if (logoFileToUpload != null) {
+				logo = new FileContent();
+				logo.setFile(logoFileToUpload);
 			}
+
+            FileContent icon = null;
+            if (iconFileToUpload != null) {
+                icon = new FileContent();
+                icon.setFile(iconFileToUpload);
+            }
 			
-			tenantService.save(entity, file);
+			tenantService.save(entity, logo, icon);
 			
 			if (tenantService.getAuthenticatedUser().getTenant().getId().equals(entity.getId())) {
 				tenantService.getAuthenticatedUser().setTenant(entity);

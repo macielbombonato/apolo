@@ -7,13 +7,18 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
+        <!-- title selection -->
         <title sec:authorize="hasRole('ROLE_AFTER_AUTH_USER')"
-               th:if="${#authentication.systemUser != null} and ${#authentication.systemUser.tenant != null} and ${#authentication.systemUser.tenant.name != null}"
+               th:if="${#authentication.systemUser != null}
+                    and ${#authentication.systemUser.tenant != null}
+                    and ${#authentication.systemUser.tenant.name != null}"
                th:text="${#authentication.systemUser.tenant.name}"
                 >
         </title>
         <title sec:authorize="hasRole('ROLE_AFTER_AUTH_USER')"
-               th:if="${#authentication.systemUser != null} and ${#authentication.systemUser.tenant != null} and ${#authentication.systemUser.tenant.name == null}"
+               th:if="${#authentication.systemUser != null}
+                    and ${#authentication.systemUser.tenant != null}
+                    and ${#authentication.systemUser.tenant.name == null}"
                th:text="#{app.title}"
                 >
         </title>
@@ -22,7 +27,30 @@
                 >
         </title>
 
-        <link rel="icon" type="image/png" th:href="@{/resources/app/img/favicon.png}" />
+        <!-- icon selection -->
+        <link sec:authorize="hasRole('ROLE_AFTER_AUTH_USER')"
+              th:if="${#authorization.expression('isAuthenticated()') == true}
+                         and ${#authentication.systemUser.tenant != null}
+                         and ${#authentication.systemUser.tenant.icon != null}"
+              rel="icon"
+              type="image/png"
+              th:src="@{|/${#authentication.systemUser.tenant.url}/uploadedfiles/Tenant/${#authentication.systemUser.tenant.id}/${#authentication.systemUser.tenant.icon}|}"
+          />
+        <link sec:authorize="hasRole('ROLE_AFTER_AUTH_USER')"
+              th:if="${#authorization.expression('isAuthenticated()') == true}
+                         and (
+                            ${#authentication.systemUser.tenant == null}
+                            or ${#authentication.systemUser.tenant.icon == null}
+                         )"
+              rel="icon"
+              type="image/png"
+              th:href="@{|/resources/app/img/favicon.png|}"
+          />
+        <link sec:authorize="isAnonymous()"
+              rel="icon"
+              type="image/png"
+              th:href="@{|/resources/app/img/favicon.png|}"
+          />
 
         <link th:href="@{/resources/plugin/bootstrap/default-skin/css/bootstrap.min.css}" rel="stylesheet" />
         <link th:href="@{/resources/plugin/bootstrap/default-skin/css/bootstrap-theme.min.css}" rel="stylesheet" />

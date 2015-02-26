@@ -146,6 +146,13 @@
             </label>
             <input type="file" class="form-control" name="logoFile[0]" />
         </div>
+
+        <div class="form-group" th:if="${!readOnly}">
+            <label for="iconFile" class="control-label" th:text="#{tenant.icon}">
+                tenant.icon
+            </label>
+            <input type="file" class="form-control" name="iconFile[0]" />
+        </div>
     </div>
 
     <div class="tab-pane" id="authorShipTab">

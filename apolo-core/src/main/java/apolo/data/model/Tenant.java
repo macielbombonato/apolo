@@ -42,6 +42,9 @@ public class Tenant extends AuditableBaseEntity {
 	
 	@Column(name = "logo", length = InputLength.MEDIUM, nullable = true)
 	private String logo;
+
+    @Column(name = "icon", length = InputLength.MEDIUM, nullable = true)
+    private String icon;
 	
 	@Column(name = "logo_width", nullable = true)
 	@Max(160)
@@ -72,6 +75,9 @@ public class Tenant extends AuditableBaseEntity {
 	
 	@Transient
 	private List<MultipartFile> logoFile;
+
+    @Transient
+    private List<MultipartFile> iconFile;
 
 	public String getUrl() {
 		return this.url;
@@ -155,5 +161,21 @@ public class Tenant extends AuditableBaseEntity {
 
     public void setSpinner(Spinner spinner) {
         this.spinner = spinner;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+
+    public List<MultipartFile> getIconFile() {
+        return iconFile;
+    }
+
+    public void setIconFile(List<MultipartFile> iconFile) {
+        this.iconFile = iconFile;
     }
 }

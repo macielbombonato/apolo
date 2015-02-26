@@ -153,7 +153,8 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 							fileService.uploadFile(
 									user.getTenant(), 
 									user, 
-									file, 
+									file,
+                                    "picture",
 									file.getFile().getInputStream()
 								)
 						);

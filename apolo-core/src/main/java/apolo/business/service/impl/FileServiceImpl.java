@@ -39,8 +39,8 @@ public class FileServiceImpl<E extends BaseEntity> implements FileService<E> {
 	@Autowired
 	private ApplicationProperties applicationProperties;
 	
-	public String uploadFile(Tenant tenant, E entity, FileContent file, InputStream inputStream) {
-		String fileName = entity.getId() + extractFileExtension(file.getFile().getOriginalFilename());
+	public String uploadFile(Tenant tenant, E entity, FileContent file, String filename, InputStream inputStream) {
+        filename = filename + extractFileExtension(file.getFile().getOriginalFilename());
 		
 		byte[] buffer = new byte[8 * 1024];
 		
@@ -50,7 +50,7 @@ public class FileServiceImpl<E extends BaseEntity> implements FileService<E> {
 			/*
 			 * @see validateFileName javadoc
 			 */
-			fileName = validateFileName(fileName);
+            filename = validateFileName(filename);
 
 			String filePath = 
 					applicationProperties.getUploadedFilesPath() + 
@@ -61,7 +61,7 @@ public class FileServiceImpl<E extends BaseEntity> implements FileService<E> {
 					entity.getId();
 
 			f = createAndValidateFile(filePath, true);
-			f = createAndValidateFile(filePath + File.separator + fileName, false);
+			f = createAndValidateFile(filePath + File.separator + filename, false);
 
 			OutputStream output = new FileOutputStream(f);
 			int bytesRead;
@@ -70,7 +70,7 @@ public class FileServiceImpl<E extends BaseEntity> implements FileService<E> {
 			}
 			output.close();
 
-			return fileName;
+			return filename;
 
 		} catch (IOException e) {
 			String message = MessageBundle.getMessageBundle("commons.errorUploadingFile");
@@ -148,15 +148,7 @@ public class FileServiceImpl<E extends BaseEntity> implements FileService<E> {
 	private File createAndValidateFile(String name, boolean isDirectory) {
 		File file = new File(name);
 
-		if (isDirectory && file.exists()) {
-			try {
-				delete(file);
-				
-				file.mkdirs();
-			} catch (IOException e) {
-				log.error(e.getMessage(), e);
-			}
-		} else if (isDirectory && !file.exists()) {
+		if (isDirectory) {
 			file.mkdirs();
 		}
 

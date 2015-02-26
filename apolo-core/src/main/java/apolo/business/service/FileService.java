@@ -11,7 +11,7 @@ import java.io.InputStream;
 @SuppressWarnings("rawtypes")
 public interface FileService<E extends BaseEntity> {
 	
-	String uploadFile(Tenant tenant, E entity, FileContent file, InputStream inputStream);
+	String uploadFile(Tenant tenant, E entity, FileContent file, String filename, InputStream inputStream);
 	
 	String extractFileExtension(String fileName);
 	

@@ -17,15 +17,32 @@ import apolo.security.SecuredEnum;
 import apolo.security.UserPermission;
 
 @Controller
-@RequestMapping(value = "/{tenant}/uploadedfiles")
 public class UploadedFilesController extends BaseController<User> {
 
 	@Autowired
 	ApplicationProperties applicationProperties;
-	
+
+    @SuppressWarnings("rawtypes")
+    @SecuredEnum(UserPermission.AFTER_AUTH_USER)
+    @RequestMapping(value = "/uploadedfiles/{entity}/{id}/{fileName}.{extension}" , method = RequestMethod.GET)
+    public ResponseEntity<FileSystemResource> getFile(
+            @PathVariable("entity") String entity,
+            @PathVariable("id") String id,
+            @PathVariable("fileName") String fileName,
+            @PathVariable("extension") String extension
+    ) {
+        return getFile(
+                applicationProperties.getDefaultTenant(),
+                entity,
+                id,
+                fileName,
+                extension
+        );
+    }
+
 	@SuppressWarnings("rawtypes")
 	@SecuredEnum(UserPermission.AFTER_AUTH_USER)
-	@RequestMapping(value = "{entity}/{id}/{fileName}.{extension}" , method = RequestMethod.GET) 
+	@RequestMapping(value = "/{tenant}/uploadedfiles/{entity}/{id}/{fileName}.{extension}" , method = RequestMethod.GET)
     public ResponseEntity<FileSystemResource> getFile(
     		@PathVariable("tenant") String tenant,
     		@PathVariable("entity") String entity,

@@ -21,7 +21,7 @@ public interface TenantService extends BaseService<Tenant> {
 	
 	List<Tenant> list();
 	
-	Tenant save(Tenant tenant, FileContent file);
+	Tenant save(Tenant tenant, FileContent logo, FileContent icon);
 	
 	Tenant lock(Tenant entity);
 	

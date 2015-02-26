@@ -77,38 +77,62 @@ public class TenantServiceImpl extends BaseServiceImpl<Tenant> implements Tenant
 
 	@Transactional
 	public Tenant save(Tenant entity) {
-		return save(entity, null);
+		return save(entity, null, null);
 	}
 	
 	@Transactional
-	public Tenant save(Tenant tenant, FileContent file) {
+	public Tenant save(Tenant tenant, FileContent logo, FileContent icon) {
 		
-		if (file != null) {
-			if (file != null 
-					&& file.getFile() != null 
-					&& file.getFile().getOriginalFilename() != null 
-					&& !file.getFile().getOriginalFilename().isEmpty()) {
-				
-				if (tenant.getId() == null) {
-					tenantRepository.saveAndFlush(tenant);	
-				}
-				
-				try {
-					tenant.setLogo(
-							fileService.uploadFile(
-									tenant, 
-									tenant, 
-									file, 
-									file.getFile().getInputStream()
-								)
-						);
-				} catch (IOException e) {
-					String message = MessageBundle.getMessageBundle("error.500.5");
-					throw new BusinessException(5, message);
-				}
-			}
-		}
-		
+        if (logo != null
+                && logo.getFile() != null
+                && logo.getFile().getOriginalFilename() != null
+                && !logo.getFile().getOriginalFilename().isEmpty()) {
+
+            if (tenant.getId() == null) {
+                tenantRepository.saveAndFlush(tenant);
+            }
+
+            try {
+                tenant.setLogo(
+                        fileService.uploadFile(
+                                tenant,
+                                tenant,
+                                logo,
+                                "logo",
+                                logo.getFile().getInputStream()
+                            )
+                    );
+            } catch (IOException e) {
+                String message = MessageBundle.getMessageBundle("error.500.5");
+                throw new BusinessException(5, message);
+            }
+        }
+
+        if (icon != null
+                && icon.getFile() != null
+                && icon.getFile().getOriginalFilename() != null
+                && !icon.getFile().getOriginalFilename().isEmpty()) {
+
+            if (tenant.getId() == null) {
+                tenantRepository.saveAndFlush(tenant);
+            }
+
+            try {
+                tenant.setIcon(
+                        fileService.uploadFile(
+                                tenant,
+                                tenant,
+                                icon,
+                                "icon",
+                                icon.getFile().getInputStream()
+                        )
+                );
+            } catch (IOException e) {
+                String message = MessageBundle.getMessageBundle("error.500.5");
+                throw new BusinessException(5, message);
+            }
+        }
+
 		return tenantRepository.saveAndFlush(tenant);
 	}
 
