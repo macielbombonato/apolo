@@ -6,27 +6,37 @@
       <body th:fragment="apolo-template">
             <div th:remove="tag" th:include="@{_fragment/_header} :: header"></div>
 
-            <div id="wrapper" class="preload container">
+            <div id="wrapper" class="preload">
 
-                  <div th:remove="tag" th:include="@{_fragment/_message} :: message"></div>
+                <div th:remove="tag" th:include="@{_fragment/_message} :: message"></div>
 
-                  <div class="clearfix"></div>
+                <div class="clearfix"></div>
 
-                  <section id="main" class="p-relative" role="main">
-                      <div class="row ">
-                          <div th:remove="tag" th:include="@{_fragment/_menu} :: menu"></div>
+                <div sec:authorize="isAuthenticated()"
+                     th:remove="tag" th:include="@{_fragment/_menu} :: menu">
 
-                          <div id="content" class="col-sm-8">
-                              <div class="row">
-                                  <div id="content-location">
-                                  </div>
-                              </div>
-                          </div>
-                          <div class="col-sm-2">
-                              <div th:remove="tag" th:include="@{_fragment/_add-vertical} :: add-vertical"></div>
-                          </div>
-                      </div>
-                  </section>
+                </div>
+
+                <section id="main"
+                         class="p-relative container"
+                         role="main"
+                         th:with="contentSize=${#authorization.expression('isAuthenticated()') == true ? 8 : 10},
+                                contentSize=${contentSize} + ${#authorization.expression('isAuthenticated()') == true and #authentication.systemUser.tenant.showAdds != true ? 2 : 0}"
+                        >
+                    <div class="row ">
+                        <div id="content" th:class="${'col-sm-'} + ${contentSize}">
+                            <div class="row">
+                                <div id="content-location">
+                                </div>
+                            </div>
+                        </div>
+                        <div th:if="${#authorization.expression('isAuthenticated()') == true and #authentication.systemUser.tenant.showAdds == true or #authorization.expression('isAuthenticated()') != true}"
+                             class="col-sm-2">
+                            <div th:remove="tag" th:include="@{_fragment/_add-vertical} :: add-vertical"></div>
+                        </div>
+
+                    </div>
+                </section>
             </div>
 
             <div th:remove="tag" th:include="@{_fragment/_footer} :: footer"></div>

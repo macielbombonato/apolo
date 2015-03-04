@@ -72,6 +72,10 @@ public class Tenant extends AuditableBaseEntity {
     @Column(name = "has_show_name", nullable = true)
     @Type(type="yes_no")
     private Boolean showName;
+
+    @Column(name = "has_show_adds", nullable = true)
+    @Type(type="yes_no")
+    private Boolean showAdds;
 	
 	@Transient
 	private List<MultipartFile> logoFile;
@@ -153,6 +157,18 @@ public class Tenant extends AuditableBaseEntity {
 
     public void setShowName(Boolean showName) {
         this.showName = showName;
+    }
+
+    public Boolean isShowAdds() {
+        return this.showAdds;
+    }
+
+    public Boolean getShowAdds() {
+        return this.showAdds;
+    }
+
+    public void setShowAdds(Boolean showAdds) {
+        this.showAdds = showAdds;
     }
 
     public Spinner getSpinner() {

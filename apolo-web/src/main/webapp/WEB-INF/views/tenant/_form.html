@@ -82,7 +82,7 @@
             />
         </div>
         <div class="form-group">
-            <label for="name" class="control-label" th:text="#{tenant.showName}">
+            <label for="showName" class="control-label" th:text="#{tenant.showName}">
                 tenant.hasShowName
             </label>
             <input class="form-control"
@@ -92,6 +92,20 @@
                    value="true"
                    th:disabled="${readOnly}"
                    th:checked="${tenant.showName}"
+                    />
+        </div>
+
+        <div class="form-group">
+            <label for="showAdds" class="control-label" th:text="#{tenant.showAdds}">
+                tenant.showAdds
+            </label>
+            <input class="form-control"
+                   type="checkbox"
+                   id="showAdds"
+                   name="showAdds"
+                   value="true"
+                   th:disabled="${readOnly}"
+                   th:checked="${tenant.showAdds}"
                     />
         </div>
 

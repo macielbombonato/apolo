@@ -7,7 +7,8 @@
 
         <header id="menu" class="navbar navbar-default" role="navigation">
             <div class="navbar-header menu-header">
-                <button type="button"
+                <button th:if="${#authorization.expression('isAuthenticated()') == true}"
+                        type="button"
                         id="menu-toggle"
                         class="menu-toggle-left-margin"
                         >
