@@ -5,13 +5,16 @@
     </head>
     <body th:fragment="header">
 
-        <nav id="menu" class="navbar navbar-default" role="navigation">
+        <header id="menu" class="navbar navbar-default" role="navigation">
             <div class="navbar-header menu-header">
+                <button type="button"
+                        id="menu-toggle"
+                        class="menu-toggle-left-margin"
+                        >
+                    <i class="fa fa-bars"></i>
+                </button>
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
+                    <i class="fa fa-bars"></i>
                 </button>
                 <a class="navbar-brand" th:href="${#authorization.expression('isAuthenticated()') == true} ? @{|/${#authentication.systemUser.tenant.url}/user|} : @{'/'}">
                     <strong id="menuTitle" style="font-family: monospace; font-size: xx-large;" class="menu-title">
@@ -41,10 +44,8 @@
             </div>
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <div th:remove="tag" th:include="@{_fragment/_menu-user} :: menu-user"></div>
-                <div th:remove="tag" th:include="@{_fragment/_menu-user-admin} :: menu-user-admin"></div>
-                <div th:remove="tag" th:include="@{_fragment/_menu-system} :: menu-system"></div>
             </div>
-        </nav>
+        </header>
         <div id="overlay" class="transparent"></div>
 
         <div id="menu-space" style="display:none;">&nbsp;</div>

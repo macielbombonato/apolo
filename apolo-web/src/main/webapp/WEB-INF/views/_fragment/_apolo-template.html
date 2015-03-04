@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+      <head th:include="@{_fragment/_headTag} :: headTag">
+      </head>
+      <body th:fragment="apolo-template">
+            <div th:remove="tag" th:include="@{_fragment/_header} :: header"></div>
+
+            <div id="wrapper" class="preload container">
+
+                  <div th:remove="tag" th:include="@{_fragment/_message} :: message"></div>
+
+                  <div class="clearfix"></div>
+
+                  <section id="main" class="p-relative" role="main">
+                      <div class="row ">
+                          <div th:remove="tag" th:include="@{_fragment/_menu} :: menu"></div>
+
+                          <div id="content" class="col-sm-8">
+                              <div class="row">
+                                  <div id="content-location">
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="col-sm-2">
+                              <div th:remove="tag" th:include="@{_fragment/_add-vertical} :: add-vertical"></div>
+                          </div>
+                      </div>
+                  </section>
+            </div>
+
+            <div th:remove="tag" th:include="@{_fragment/_footer} :: footer"></div>
+      </body>
+</html>

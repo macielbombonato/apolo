@@ -5,104 +5,109 @@
 <head>
 </head>
 <body th:fragment="menu-system">
-<ul class="nav navbar-nav">
-    <li sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_CONFIGURATION_LIST', 'ROLE_CONFIGURATION_CREATE', 'ROLE_USER_PERMISSION_CREATE', 'ROLE_USER_PERMISSION_LIST')">
-        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-            <div class="menu-text menu-text-default">
-                <span><i class="fa fa-cogs"></i></span>
-                <strong th:text="#{menu.sysadmin}" />
-                <span><i class="fa fa-chevron-down"></i></span>
-            </div>
+<a href="#menu-system" class="list-group-item" data-toggle="collapse" data-parent="#sidebar">
+    <span><i class="fa fa-cogs"></i></span>
+    <strong th:text="#{menu.sysadmin}" />
+    <span><i class="fa fa-chevron-down"></i></span>
+</a>
+<div class="collapse" id="menu-system">
+    <a href="#menu-user-admin" class="list-group-item" data-toggle="collapse" data-parent="#menu-system">
+        <span><i class="fa fa-users"></i></span>
+        <strong th:text="#{menu.sysadmin.user}" />
+        <span><i class="fa fa-chevron-down"></i></span>
+    </a>
+    <div class="collapse" id="menu-user-admin">
+        <a sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_USER_LIST')"
+           th:href='@{|/${#authentication.systemUser.tenant.url}/user/list|}' class="list-group-item">
+            <i class="fa fa-list"></i>
+            <span th:text="#{user.list}">user.list</span>
         </a>
-        <ul class="dropdown-menu dropdown-menu-top">
-            <li sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_TENANT_LIST')">
-                <a th:href='@{|/tenant/list|}' class="submenu-label">
-                    <div class="menu-item menu-item-text-default">
-                        <i class="glyphicon glyphicon-th-list"></i>
-                        <span th:text="#{tenant.list}">
-                            tenant.list
-                        </span>
-                    </div>
-                </a>
-            </li>
 
-            <li sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_TENANT_CREATE')">
-                <a th:href='@{|/tenant/new|}' class="submenu-label">
-                    <div class="menu-item menu-item-text-default">
-                        <i class="glyphicon glyphicon-plus"></i>
-                        <span th:text="#{tenant.create}">
-                            tenant.create
-                        </span>
-                    </div>
-                </a>
-            </li>
+        <a sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_USER_MANAGER')"
+           th:href='@{|/${#authentication.systemUser.tenant.url}/user/list-locked|}' class="list-group-item">
+            <i class="fa fa-user-secret"></i>
+            <span th:text="#{user.list.locked}">user.list.locked</span>
+        </a>
 
-            <li sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_USER_PERMISSION_LIST', 'ROLE_USER_PERMISSION_CREATE')"
-                    class="divider"></li>
+        <a sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_USER_CREATE')"
+           th:href='@{|/${#authentication.systemUser.tenant.url}/user/new|}' class="list-group-item">
+            <i class="fa fa-user-plus"></i>
+            <span th:text="#{user.new}">user.new</span>
+        </a>
 
-            <li sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_USER_PERMISSION_LIST')">
-                <a th:href='@{|/${#authentication.systemUser.tenant.url}/user-group/list|}' class="submenu-label">
-                    <div class="menu-item menu-item-text-default">
-                        <i class="fa fa-list"></i>
-                        <span th:text="#{user.group.list}">
-                            user.group.list
-                        </span>
-                    </div>
-                </a>
-            </li>
-            <li sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_USER_PERMISSION_CREATE')">
-                <a th:href='@{|/${#authentication.systemUser.tenant.url}/user-group/new|}' class="submenu-label">
-                    <div class="menu-item menu-item-text-default">
-                        <i class="fa fa-plus"></i>
-                        <span th:text="#{user.group.new}">
-                            user.group.new
-                        </span>
-                    </div>
-                </a>
-            </li>
+        <a sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_USER_CUSTOM_FIELD_LIST')"
+           th:href='@{|/${#authentication.systemUser.tenant.url}/user-custom-field/list|}' class="list-group-item">
+            <i class="fa fa-list"></i>
+                <span th:text="#{user.custom.field.list}">
+                    user.custom.field.list
+                </span>
+        </a>
 
-            <li sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_CONFIGURATION_LIST', 'ROLE_CONFIGURATION_CREATE')"
-                    class="divider"></li>
+        <a sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_USER_CUSTOM_FIELD_CREATE')"
+           th:href='@{|/${#authentication.systemUser.tenant.url}/user-custom-field/new|}' class="list-group-item">
+            <i class="fa fa-plus"></i>
+                <span th:text="#{user.custom.field.new}">
+                    user.custom.field.new
+                </span>
+        </a>
+    </div>
 
-            <li sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_CONFIGURATION_LIST')">
-                <a th:href='@{|/${#authentication.systemUser.tenant.url}/configuration/list|}' class="submenu-label">
-                    <div class="menu-item menu-item-text-default">
-                        <i class="fa fa-list"></i>
-                        <span th:text="#{configuration.list}">
-                            configuration.list
-                        </span>
-                    </div>
-                </a>
-            </li>
+    <a sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_TENANT_LIST')"
+        th:href='@{|/tenant/list|}' class="list-group-item">
+        <i class="glyphicon glyphicon-th-list"></i>
+        <span th:text="#{tenant.list}">
+            tenant.list
+        </span>
+    </a>
 
-            <li sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_CONFIGURATION_CREATE')">
-                <a th:href='@{|/${#authentication.systemUser.tenant.url}/configuration/new|}' class="submenu-label">
-                    <div class="menu-item menu-item-text-default">
-                        <i class="fa fa-plus"></i>
-                        <span th:text="#{configuration.new}">
-                            configuration.new
-                        </span>
-                    </div>
-                </a>
-            </li>
+    <a sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_TENANT_CREATE')"
+       th:href='@{|/tenant/new|}' class="list-group-item">
+        <i class="glyphicon glyphicon-plus"></i>
+        <span th:text="#{tenant.create}">
+            tenant.create
+        </span>
+    </a>
 
-            <li sec:authorize="hasAnyRole('ROLE_ADMIN')"
-                    class="divider"></li>
+    <a sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_USER_PERMISSION_LIST')"
+       th:href='@{|/${#authentication.systemUser.tenant.url}/user-group/list|}'
+       class="list-group-item">
+        <i class="fa fa-list"></i>
+        <span th:text="#{user.group.list}">
+            user.group.list
+        </span>
+    </a>
 
-            <li sec:authorize="hasAnyRole('ROLE_ADMIN')">
-                <a th:href='@{|/${#authentication.systemUser.tenant.url}/auditlog/list|}' class="submenu-label">
-                    <div class="menu-item menu-item-text-default">
-                        <i class="fa fa-list-alt"></i>
-                        <span th:text="#{auditlog.list}">
-                            auditlog.list
-                        </span>
-                    </div>
-                </a>
-            </li>
-        </ul>
+    <a sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_USER_PERMISSION_CREATE')"
+       th:href='@{|/${#authentication.systemUser.tenant.url}/user-group/new|}' class="list-group-item">
+        <i class="fa fa-plus"></i>
+        <span th:text="#{user.group.new}">
+            user.group.new
+        </span>
+    </a>
 
-    </li>
+    <a sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_CONFIGURATION_LIST')"
+       th:href='@{|/${#authentication.systemUser.tenant.url}/configuration/list|}' class="list-group-item">
+        <i class="fa fa-list"></i>
+        <span th:text="#{configuration.list}">
+            configuration.list
+        </span>
+    </a>
 
-</ul>
+    <a sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_CONFIGURATION_CREATE')"
+       th:href='@{|/${#authentication.systemUser.tenant.url}/configuration/new|}' class="list-group-item">
+        <i class="fa fa-plus"></i>
+        <span th:text="#{configuration.new}">
+            configuration.new
+        </span>
+    </a>
+
+    <a sec:authorize="hasAnyRole('ROLE_ADMIN')"
+       th:href='@{|/${#authentication.systemUser.tenant.url}/auditlog/list|}' class="list-group-item">
+        <i class="fa fa-list-alt"></i>
+        <span th:text="#{auditlog.list}">
+            auditlog.list
+        </span>
+    </a>
+</div>
 </body>
 </html>

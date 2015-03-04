@@ -1,3 +1,7 @@
+#page-content {
+    display: none;
+}
+
 body {
 	padding-bottom: 40px;
 }
@@ -51,8 +55,92 @@ body {
 	color: #FCFCFC;
 }
 
-.sidebar-nav {
-	padding: 9px 0;
+#menu-toggle {
+    position: relative;
+    float: left;
+    margin-right: 15px;
+    padding: 9px 10px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    background-color: transparent;
+    background-image: none;
+    border: 1px solid transparent;
+    overflow: visible;
+}
+
+.menu-toggle-left-margin {
+    margin-left: 15px;
+}
+
+#content {
+    display: block;
+}
+
+/* Sidebar */
+#sidebar {
+    float: left;
+}
+
+#sidebar .side-menu  {
+    margin: 0;
+}
+
+.menu-toggled .side-menu {
+    overflow: hidden;
+}
+
+.side-menu > li > button {
+    display: inline-block;
+    position: relative;
+    z-index: 10;
+    font-size: 12px;
+    height: 42px;
+    margin-bottom: -4px;
+    text-align: center;
+    opacity: 0.55;
+}
+
+.side-menu .menu-item {
+    white-space: nowrap;
+    z-index: 9;
+    width: 188px;
+    display: block;
+    line-height: normal;
+    text-align: left;
+    -webkit-backface-visibility: hidden;
+}
+
+.side-menu span.menu-item {
+    top: 0;
+    padding: 13px 15px 13px 8px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.side-menu .dropdown span.menu-item {
+    top: 0;
+}
+
+.side-menu ul.menu-item {
+    top: 42px;
+    padding: 5px 0 13px;
+
+}
+
+.side-menu ul li > a {
+    padding: 4px 8px;
+    float: left;
+    width: 100%;
+}
+
+ul.menu-item a.active {
+    color: #FFD600;
+}
+
+.side-widgets {
+    width: 188px;
+    float: left;
+    position: relative;
 }
 
 label {
@@ -154,6 +242,11 @@ input[type=radio] {
     .add-desktop {
         display: none;
     }
+
+    #sidebar {
+        float: left;
+        display: none;
+    }
 }
 
 @media (max-width: 767px) {
@@ -181,6 +274,11 @@ input[type=radio] {
     .add-desktop {
         display: none;
     }
+
+    #sidebar {
+        float: left;
+        display: none;
+    }
 }
 
 @media (min-width: 768px) and (max-width: 979px) {
@@ -206,6 +304,11 @@ input[type=radio] {
         display: none;
     }
     .add-desktop {
+        display: block;
+    }
+
+    #sidebar {
+        float: left;
         display: block;
     }
 }
@@ -240,6 +343,11 @@ input[type=radio] {
     .add-desktop {
         display: block;
     }
+
+    #sidebar {
+        float: left;
+        display: block;
+    }
 }
 
 @media (min-width: 1200px) {
@@ -269,6 +377,11 @@ input[type=radio] {
         display: none;
     }
     .add-desktop {
+        display: block;
+    }
+
+    #sidebar {
+        float: left;
         display: block;
     }
 }

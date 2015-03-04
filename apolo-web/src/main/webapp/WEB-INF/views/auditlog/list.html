@@ -4,101 +4,94 @@
 <head th:include="@{_fragment/_headTag} :: headTag">
 </head>
 <body>
-<div th:remove="tag" th:include="@{_fragment/_header} :: header"></div>
+<div th:remove="tag" th:include="@{_fragment/_apolo-template} :: apolo-template"></div>
 
-<div id="wrapper" class="preload">
+<div id="page-content">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <strong th:text="#{auditlog.list}">
+                auditlog.list
+            </strong>
+        </div>
+        <div class="panel-body">
 
-    <div th:remove="tag" th:include="@{_fragment/_message} :: message"></div>
-
-    <div class="container ">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <strong th:text="#{auditlog.list}">
-                    auditlog.list
-                </strong>
+            <div th:with="searchUrlParam=${'/'} + ${#authentication.systemUser.tenant.url} + ${'/auditlog/search'}">
+                <div th:remove="tag"
+                     th:include="@{_fragment/_search} ::
+                        search (
+                                searchUrl=${searchUrlParam},
+                                placeholderTerm=${'auditlog.search.field'}
+                                )"
+                        >
+                    search Form
+                </div>
             </div>
-            <div class="panel-body">
 
-                <div th:with="searchUrlParam=${'/'} + ${#authentication.systemUser.tenant.url} + ${'/auditlog/search'}">
-                    <div th:remove="tag"
-                         th:include="@{_fragment/_search} ::
-                            search (
-                                    searchUrl=${searchUrlParam},
-                                    placeholderTerm=${'auditlog.search.field'}
-                                    )"
-                            >
-                        search Form
-                    </div>
-                </div>
+            <br />
+            <center>
+                <div th:remove="tag" th:include="@{_fragment/_pagination} :: pagination"></div>
+            </center>
+            <div class="table-responsive" th:if="${auditList != null} and ${!auditList.isEmpty()}">
+                <table class="table table-striped table-hover table-bordered">
+                    <thead>
+                    <tr>
+                        <th th:text="#{auditlog.transactionType}">
+                            auditlog.transactionType
+                        </th>
+                        <th th:text="#{auditlog.tenant.name}">
+                            auditlog.tenant.name
+                        </th>
+                        <th th:text="#{auditlog.entityName}">
+                            auditlog.entityName
+                        </th>
+                        <th th:text="#{auditlog.registryId}">
+                            auditlog.registryId
+                        </th>
+                        <th th:text="#{auditlog.operationDate}">
+                            auditlog.operationDate
+                        </th>
+                        <th th:text="#{auditlog.executedBy}">
+                            auditlog.executedBy
+                        </th>
+                    </tr>
+                    </thead>
 
-                <br />
-                <center>
-                    <div th:remove="tag" th:include="@{_fragment/_pagination} :: pagination"></div>
-                </center>
-                <div class="table-responsive" th:if="${auditList != null} and ${!auditList.isEmpty()}">
-                    <table class="table table-striped table-hover table-bordered">
-                        <thead>
-                        <tr>
-                            <th th:text="#{auditlog.transactionType}">
-                                auditlog.transactionType
-                            </th>
-                            <th th:text="#{auditlog.tenant.name}">
-                                auditlog.tenant.name
-                            </th>
-                            <th th:text="#{auditlog.entityName}">
-                                auditlog.entityName
-                            </th>
-                            <th th:text="#{auditlog.registryId}">
-                                auditlog.registryId
-                            </th>
-                            <th th:text="#{auditlog.operationDate}">
-                                auditlog.operationDate
-                            </th>
-                            <th th:text="#{auditlog.executedBy}">
-                                auditlog.executedBy
-                            </th>
-                        </tr>
-                        </thead>
-
-                        <tbody>
-                        <tr th:id="${'audit_'} + ${audit.id}" th:each="audit : ${auditList}">
-                            <td th:with="transactionType=${'auditlog.databaseTransactionType.'} + ${audit.transactionType}"
-                                    th:text="#{${transactionType}}">
-                                transactionType
-                            </td>
-                            <td th:text="${audit.tenant.name}">
-                                ${audit.tenant.name}
-                            </td>
-                            <td th:text="${audit.entityName}">
-                                ${audit.entityName}
-                            </td>
-                            <td th:text="${audit.registryId}">
-                                ${audit.registryId}
-                            </td>
-                            <td th:with="datePattern=#{common.fullDatePattern}"
-                                    th:text="${#calendars.format(audit.operationDate, datePattern)}">
-                                audit.operationDate
-                            </td>
-                            <td th:text="${audit.executedBy.name}">
-                                ${audit.executedBy.name}
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="panel-body" th:if="${auditList == null} or ${auditList.isEmpty()}">
-                    <p th:text="#{common.nodatafound}">
-                        common.nodatafound
-                    </p>
-                </div>
-                <center>
-                    <div th:remove="tag" th:include="@{_fragment/_pagination} :: pagination"></div>
-                </center>
+                    <tbody>
+                    <tr th:id="${'audit_'} + ${audit.id}" th:each="audit : ${auditList}">
+                        <td th:with="transactionType=${'auditlog.databaseTransactionType.'} + ${audit.transactionType}"
+                                th:text="#{${transactionType}}">
+                            transactionType
+                        </td>
+                        <td th:text="${audit.tenant.name}">
+                            ${audit.tenant.name}
+                        </td>
+                        <td th:text="${audit.entityName}">
+                            ${audit.entityName}
+                        </td>
+                        <td th:text="${audit.registryId}">
+                            ${audit.registryId}
+                        </td>
+                        <td th:with="datePattern=#{common.fullDatePattern}"
+                                th:text="${#calendars.format(audit.operationDate, datePattern)}">
+                            audit.operationDate
+                        </td>
+                        <td th:text="${audit.executedBy.name}">
+                            ${audit.executedBy.name}
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
+            <div class="panel-body" th:if="${auditList == null} or ${auditList.isEmpty()}">
+                <p th:text="#{common.nodatafound}">
+                    common.nodatafound
+                </p>
+            </div>
+            <center>
+                <div th:remove="tag" th:include="@{_fragment/_pagination} :: pagination"></div>
+            </center>
         </div>
     </div>
 </div>
-
-<div th:remove="tag" th:include="@{_fragment/_footer} :: footer "></div>
 </body>
 </html>

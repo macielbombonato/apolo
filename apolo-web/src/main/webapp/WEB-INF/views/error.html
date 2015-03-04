@@ -4,30 +4,24 @@
 <head th:include="@{_fragment/_headTag} :: headTag">
 </head>
 <body>
-<div th:remove="tag" th:include="@{_fragment/_header} :: header"></div>
+<div th:remove="tag" th:include="@{_fragment/_apolo-template} :: apolo-template"></div>
 
-<div id="wrapper" class="preload">
-
-    <div class="container ">
-        <div class="row ">
-            <div class="col-sm-12">
-                <div class="alert alert-danger">
-                    <h2 th:text="#{error.fatal.code}">
-                        error.fatal.code
-                    </h2>
-                    <h3 th:text="#{error.fatal.title}">
-                        error.fatal.title
-                    </h3>
-                    <p th:text="#{error.fatal.message}">
-                        error.fatal.message
-                    </p>
-                </div>
+<div id="page-content">
+    <div class="row ">
+        <div class="col-sm-12">
+            <div class="alert alert-danger">
+                <h2 th:text="#{error.fatal.code}">
+                    error.fatal.code
+                </h2>
+                <h3 th:text="#{error.fatal.title}">
+                    error.fatal.title
+                </h3>
+                <p th:text="#{error.fatal.message}">
+                    error.fatal.message
+                </p>
             </div>
         </div>
     </div>
-
 </div>
-
-<div th:remove="tag" th:include="@{_fragment/_footer} :: footer"></div>
 </body>
 </html>

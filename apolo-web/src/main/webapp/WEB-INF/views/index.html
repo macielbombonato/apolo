@@ -4,31 +4,18 @@
       <head th:include="@{_fragment/_headTag} :: headTag">
       </head>
       <body>
-            <div th:remove="tag" th:include="@{_fragment/_header} :: header"></div>
+            <div th:remove="tag" th:include="@{_fragment/_apolo-template} :: apolo-template"></div>
 
-            <div id="wrapper" class="preload">
-
-                  <div th:remove="tag" th:include="@{_fragment/_message} :: message"></div>
-
-                  <div class="container ">
-                        <div class="row ">
-                              <div class="media">
-                                    <div class="col-sm-4">
-                                          <img class="img-responsive" th:src="@{|/resources/app/img/favicon.png|}" />
-                                    </div>
-                                    <div class="media-body col-sm-7" style="text-align: justify">
-                                          <h4 class="media-heading" th:text="#{view.index.apolo.title}" />
-                                          <p th:text="#{view.index.hello}" data-htmlEscape="false" />
-                                    </div>
-                              </div>
-
-                              <div th:remove="tag" th:include="@{_fragment/_add-vertical} :: add-vertical"></div>
-                        </div>
-
-                  </div>
-
+            <div id="page-content">
+                <div class="media">
+                    <div class="col-sm-4">
+                        <img class="img-responsive" th:src="@{|/resources/app/img/favicon.png|}" />
+                    </div>
+                    <div class="media-body col-sm-7" style="text-align: justify">
+                        <h4 class="media-heading" th:text="#{view.index.apolo.title}" />
+                        <p th:text="#{view.index.hello}" data-htmlEscape="false" />
+                    </div>
+                </div>
             </div>
-
-            <div th:remove="tag" th:include="@{_fragment/_footer} :: footer"></div>
       </body>
 </html>

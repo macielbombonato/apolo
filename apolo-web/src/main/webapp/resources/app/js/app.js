@@ -1,4 +1,8 @@
 $(document).ready(function() {
+    $('#content-location').html($('#page-content').html());
+
+    $('#page-content').remove();
+
 	$('#showPassword').change(function(){
 		var passwordText = $('#password');
 		if($(this).attr('checked') == 'checked'){
@@ -71,31 +75,17 @@ $(document).ready(function() {
 
 	$(".chosen-select").chosen();
 	
-	// set the defaults for the datepicker
-	jQuery(function($){
-		$.datepicker.regional['pt-BR'] = {
-		closeText: 'Fechar',
-		prevText: '&#x3c;Anterior',
-		nextText: 'Pr&oacute;ximo&#x3e;',
-		currentText: 'Hoje',
-		monthNames: ['Janeiro','Fevereiro','Mar&ccedil;o','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'],
-		monthNamesShort: ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'],
-		dayNames: ['Domingo','Segunda-feira','Ter&ccedil;a-feira','Quarta-feira','Quinta-feira','Sexta-feira','S&aacute;bado'],
-		dayNamesShort: ['Dom','Seg','Ter','Qua','Qui','Sex','S&aacute;b'],
-		dayNamesMin: ['Dom','Seg','Ter','Qua','Qui','Sex','S&aacute;b'],
-		weekHeader: 'Sm',
-		dateFormat: 'dd/mm/yy',
-		firstDay: 0,
-		isRTL: false,
-		showMonthAfterYear: false,
-		yearSuffix: ''};
-		$.datepicker.setDefaults($.datepicker.regional['pt-BR']);
-	});
-	
 	$('#formTab a').click(function (e) {
 		e.preventDefault();
 		$(this).tab('show');
 	});
+
+    if ($(window).width() <= 767) {
+        $('#content').removeClass('col-sm-9');
+        $('#content').addClass('col-sm-10');
+
+        $('#sidebar').hide();
+    }
 });
 
 $.fn.is_on_screen = function(){
@@ -141,6 +131,9 @@ function transparentMenuView() {
 	$('#menu').addClass('menu-top');
 	$('#menu').addClass('navbar-fixed-top');
 
+    $('#menu').addClass('col-lg-12');
+    $('#menu-toggle').removeClass('menu-toggle-left-margin')
+
 	$('.menu-text').removeClass('menu-text-default');
 	$('.menu-text').addClass('menu-text-white');
 
@@ -162,6 +155,9 @@ function normalMenuView() {
 	$('#menu').removeClass('menu-top');
 	$('#menu').removeClass('navbar-fixed-top');
 
+    $('#menu').removeClass('col-lg-12');
+    $('#menu-toggle').addClass('menu-toggle-left-margin')
+
 	$('.menu-text').addClass('menu-text-default');
 	$('.menu-text').removeClass('menu-text-white');
 
@@ -178,6 +174,40 @@ function normalMenuView() {
 
 	$('#menu-space').hide();
 }
+
+$('#menu-toggle').click(function(e){
+    if ($('#sidebar').is(':visible')) {
+        $('#content').removeClass('col-sm-8');
+        $('#content').addClass('col-sm-10');
+
+        $('#sidebar').toggle();
+
+    } else {
+        $('#content').removeClass('col-sm-10');
+        $('#content').addClass('col-sm-8');
+
+        $('#sidebar').toggle();
+
+        window.scrollTo(0, 0);
+    }
+});
+
+/* Active Menu */
+$('#sidebar .menu-item').hover(function(){
+    $(this).closest('.dropdown').addClass('hovered');
+}, function(){
+    $(this).closest('.dropdown').removeClass('hovered');
+});
+
+/* Prevent */
+$('.side-menu .dropdown > button').click(function(e){
+    e.preventDefault();
+});
+
+/* Prevent */
+$('.side-menu .dropdown > button').click(function(e){
+    e.preventDefault();
+});
 
 $.fn.invertElement = function() {
 	var prop = 'color';

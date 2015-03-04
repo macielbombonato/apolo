@@ -4,142 +4,135 @@
 <head th:include="@{_fragment/_headTag} :: headTag">
 </head>
 <body>
-<div th:remove="tag" th:include="@{_fragment/_header} :: header"></div>
+<div th:remove="tag" th:include="@{_fragment/_apolo-template} :: apolo-template"></div>
 
-<div id="wrapper" class="preload">
+<div id="page-content">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <strong th:text="#{tenant.list.title}" />
+        </div>
+        <div class="panel-body">
 
-    <div th:remove="tag" th:include="@{_fragment/_message} :: message"></div>
-
-    <div class="container ">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <strong th:text="#{tenant.list.title}" />
-            </div>
-            <div class="panel-body">
-
-                <div th:with="searchUrlParam=${'/tenant/search'}">
-                    <div th:remove="tag"
-                         th:include="@{_fragment/_search} ::
-                            search (
-                                    searchUrl=${searchUrlParam},
-                                    placeholderTerm=${'tenant.search.field'}
-                                    )"
-                            >
-                        search Form
-                    </div>
+            <div th:with="searchUrlParam=${'/tenant/search'}">
+                <div th:remove="tag"
+                     th:include="@{_fragment/_search} ::
+                        search (
+                                searchUrl=${searchUrlParam},
+                                placeholderTerm=${'tenant.search.field'}
+                                )"
+                        >
+                    search Form
                 </div>
+            </div>
 
-                <br />
-                <center>
-                    <div th:remove="tag" th:include="@{_fragment/_pagination} :: pagination"></div>
-                </center>
-                <div class="table-responsive" th:if="${tenantList != null} and ${!tenantList.isEmpty()}">
-                    <table class="table table-striped table-hover table-bordered">
-                        <thead>
-                        <tr>
-                            <th th:text="#{tenant.logo}">
-                                tenant.logo
-                            </th>
-                            <th th:text="#{tenant.name}">
-                                tenant.name
-                            </th>
-                            <th th:text="#{tenant.url}">
-                                tenant.url
-                            </th>
-                            <th th:text="#{user.status}">
-                                user.status
-                            </th>
+            <br />
+            <center>
+                <div th:remove="tag" th:include="@{_fragment/_pagination} :: pagination"></div>
+            </center>
+            <div class="table-responsive" th:if="${tenantList != null} and ${!tenantList.isEmpty()}">
+                <table class="table table-striped table-hover table-bordered">
+                    <thead>
+                    <tr>
+                        <th th:text="#{tenant.logo}">
+                            tenant.logo
+                        </th>
+                        <th th:text="#{tenant.name}">
+                            tenant.name
+                        </th>
+                        <th th:text="#{tenant.url}">
+                            tenant.url
+                        </th>
+                        <th th:text="#{user.status}">
+                            user.status
+                        </th>
 
-                            <th th:text="#{common.actions}"
-                                sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_TENANT_LIST', 'ROLE_TENANT_EDIT', 'ROLE_TENANT_REMOVE', 'ROLE_TENANT_MANAGER')">
-                                common.actions
-                            </th>
-                        </tr>
-                        </thead>
+                        <th th:text="#{common.actions}"
+                            sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_TENANT_LIST', 'ROLE_TENANT_EDIT', 'ROLE_TENANT_REMOVE', 'ROLE_TENANT_MANAGER')">
+                            common.actions
+                        </th>
+                    </tr>
+                    </thead>
 
-                        <tbody>
-                        <tr th:each="tenant : ${tenantList}"
-                            th:id="${'tenant_'} + ${tenant.id}">
-                            <td>
-                                <center>
-                                    <img th:if="${tenant.logo != null} and ${tenant.logo != ''}"
-                                         class="img-thumbnail"
-                                         th:src="@{|/${tenant.url}/uploadedfiles/Tenant/${tenant.id}/${tenant.logo}|}"
-                                         style="width: 40px;"
-                                         width="40"
-                                            />
-                                    <i th:if="${tenant.logo == null} or ${tenant.logo == ''}" class="fa fa-ship fa-2x" />
-                                </center>
-                            </td>
+                    <tbody>
+                    <tr th:each="tenant : ${tenantList}"
+                        th:id="${'tenant_'} + ${tenant.id}">
+                        <td>
+                            <center>
+                                <img th:if="${tenant.logo != null} and ${tenant.logo != ''}"
+                                     class="img-thumbnail"
+                                     th:src="@{|/${tenant.url}/uploadedfiles/Tenant/${tenant.id}/${tenant.logo}|}"
+                                     style="width: 40px;"
+                                     width="40"
+                                        />
+                                <i th:if="${tenant.logo == null} or ${tenant.logo == ''}" class="fa fa-ship fa-2x" />
+                            </center>
+                        </td>
 
-                            <td>
-                                <a th:text="${tenant.name}"
-                                   th:href='@{|/tenant/view/${tenant.id}|}'
-                                   class="btn btn-link">
-                                    ${tenant.name}
+                        <td>
+                            <a th:text="${tenant.name}"
+                               th:href='@{|/tenant/view/${tenant.id}|}'
+                               class="btn btn-link">
+                                ${tenant.name}
+                            </a>
+                        </td>
+
+                        <td th:text="${tenant.url}">
+                            tenant.url
+                        </td>
+
+                        <td th:with="tenantStatus=${'common.status.'} + ${tenant.status}"
+                                th:text="#{${tenantStatus}}">
+                            tenantStatus
+                        </td>
+
+                        <td sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_TENANT_LIST', 'ROLE_TENANT_EDIT', 'ROLE_TENANT_REMOVE', 'ROLE_TENANT_MANAGER')">
+                            <div class="btn-group btn-group-sm">
+                                <a th:href='@{|/tenant/view/${tenant.id}|}'
+                                   class="btn btn-default"
+                                   data-toggle="tooltip"
+                                   th:title="#{common.show}">
+                                    <i class="fa fa-search-plus"></i>
                                 </a>
-                            </td>
+                                <a sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_TENANT_EDIT')"
+                                   th:href='@{|/tenant/edit/${tenant.id}|}'
+                                   class="btn btn-default"
+                                   data-toggle="tooltip"
+                                   th:title="#{common.edit}">
+                                    <i class="fa fa-pencil-square-o"></i>
+                                </a>
+                                <a sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_TENANT_REMOVE')"
+                                   href='#'
+                                   class="btn btn-default"
+                                   th:with="removeAction=${'removeConfirmationDialogOpen('''} + ${'/tenant/remove/'} + ${tenant.id} + ${''', ''tenant_'} + ${tenant.id} + ${''');'}"
+                                   th:onclick="${removeAction}"
+                                   data-toggle="tooltip"
+                                   th:title="#{common.remove}">
+                                    <i class="fa fa-times"></i>
+                                </a>
 
-                            <td th:text="${tenant.url}">
-                                tenant.url
-                            </td>
-
-                            <td th:with="tenantStatus=${'common.status.'} + ${tenant.status}"
-                                    th:text="#{${tenantStatus}}">
-                                tenantStatus
-                            </td>
-
-                            <td sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_TENANT_LIST', 'ROLE_TENANT_EDIT', 'ROLE_TENANT_REMOVE', 'ROLE_TENANT_MANAGER')">
-                                <div class="btn-group btn-group-sm">
-                                    <a th:href='@{|/tenant/view/${tenant.id}|}'
-                                       class="btn btn-default"
-                                       data-toggle="tooltip"
-                                       th:title="#{common.show}">
-                                        <i class="fa fa-search-plus"></i>
-                                    </a>
-                                    <a sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_TENANT_EDIT')"
-                                       th:href='@{|/tenant/edit/${tenant.id}|}'
-                                       class="btn btn-default"
-                                       data-toggle="tooltip"
-                                       th:title="#{common.edit}">
-                                        <i class="fa fa-pencil-square-o"></i>
-                                    </a>
-                                    <a sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_TENANT_REMOVE')"
-                                       href='#'
-                                       class="btn btn-default"
-                                       th:with="removeAction=${'removeConfirmationDialogOpen('''} + ${'/tenant/remove/'} + ${tenant.id} + ${''', ''tenant_'} + ${tenant.id} + ${''');'}"
-                                       th:onclick="${removeAction}"
-                                       data-toggle="tooltip"
-                                       th:title="#{common.remove}">
-                                        <i class="fa fa-times"></i>
-                                    </a>
-
-                                    <a sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_TENANT_MANAGER')"
-                                       th:href='@{|/tenant/change/${tenant.url}|}'
-                                       class="btn btn-default btn-small"
-                                       data-toggle="tooltip"
-                                       th:title="#{tenant.change}">
-                                        <i class="fa fa-exchange"></i>
-                                    </a>
-                                </div>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="panel-body" th:if="${tenantList == null} or ${tenantList.isEmpty()}">
-                    <p th:text="#{common.nodatafound}">
-                        common.nodatafound
-                    </p>
-                </div>
-                <center>
-                    <div th:remove="tag" th:include="@{_fragment/_pagination} :: pagination"></div>
-                </center>
+                                <a sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_TENANT_MANAGER')"
+                                   th:href='@{|/tenant/change/${tenant.url}|}'
+                                   class="btn btn-default btn-small"
+                                   data-toggle="tooltip"
+                                   th:title="#{tenant.change}">
+                                    <i class="fa fa-exchange"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
+            <div class="panel-body" th:if="${tenantList == null} or ${tenantList.isEmpty()}">
+                <p th:text="#{common.nodatafound}">
+                    common.nodatafound
+                </p>
+            </div>
+            <center>
+                <div th:remove="tag" th:include="@{_fragment/_pagination} :: pagination"></div>
+            </center>
         </div>
     </div>
 </div>
-
-<div th:remove="tag" th:include="@{_fragment/_footer} :: footer "></div>
 </body>
 </html>

@@ -4,44 +4,37 @@
 <head th:include="@{_fragment/_headTag} :: headTag">
 </head>
 <body>
-<div th:remove="tag" th:include="@{_fragment/_header} :: header"></div>
+<div th:remove="tag" th:include="@{_fragment/_apolo-template} :: apolo-template"></div>
 
-<div id="wrapper" class="preload">
+<div id="page-content">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <strong th:text="#{user.edit.title}" />
+        </div>
+        <div class="panel-body">
+            <form id="userForm" th:action="@{|/${#authentication.systemUser.tenant.url}/user/save|}" role="form" method="post" enctype="multipart/form-data">
+                <div th:remove="tag" th:include="@{user/_form} :: user-form"></div>
 
-    <div th:remove="tag" th:include="@{_fragment/_message} :: message"></div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fa fa-floppy-o"></i>
+                        <span th:text="#{common.save}" />
+                    </button>
 
-    <div class="container ">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <strong th:text="#{user.edit.title}" />
-            </div>
-            <div class="panel-body">
-                <form id="userForm" th:action="@{|/${#authentication.systemUser.tenant.url}/user/save|}" role="form" method="post" enctype="multipart/form-data">
-                    <div th:remove="tag" th:include="@{user/_form} :: user-form"></div>
-
-                    <div class="form-actions">
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fa fa-floppy-o"></i>
-                            <span th:text="#{common.save}" />
-                        </button>
-
-                        <a th:if="${user.id != null}"
-                                th:href='@{|/${#authentication.systemUser.tenant.url}/user/view/${user.id}|}' class="btn btn-default">
-                            <i class="fa fa-times"></i>
-                            <span th:text="#{common.cancel}" />
-                        </a>
-                        <a th:if="${user.id == null}"
-                                th:href='@{|/${#authentication.systemUser.tenant.url}/user/list|}' class="btn btn-default">
-                            <i class="fa fa-times"></i>
-                            <span th:text="#{common.cancel}" />
-                        </a>
-                    </div>
-                </form>
-            </div>
+                    <a th:if="${user.id != null}"
+                            th:href='@{|/${#authentication.systemUser.tenant.url}/user/view/${user.id}|}' class="btn btn-default">
+                        <i class="fa fa-times"></i>
+                        <span th:text="#{common.cancel}" />
+                    </a>
+                    <a th:if="${user.id == null}"
+                            th:href='@{|/${#authentication.systemUser.tenant.url}/user/list|}' class="btn btn-default">
+                        <i class="fa fa-times"></i>
+                        <span th:text="#{common.cancel}" />
+                    </a>
+                </div>
+            </form>
         </div>
     </div>
 </div>
-
-<div th:remove="tag" th:include="@{_fragment/_footer} :: footer "></div>
 </body>
 </html>
