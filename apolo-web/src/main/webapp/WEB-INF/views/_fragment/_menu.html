@@ -7,8 +7,11 @@
 <body th:fragment="menu">
 
 <div id="sidebar" class="col-sm-2">
-    <div class="list-group panel">
-        <div th:remove="tag" th:include="@{_fragment/_menu-system} :: menu-system"></div>
+    <div class="list-group">
+        <div class="panel">
+            <div th:remove="tag" th:include="@{_fragment/_menu-system} :: menu-system"></div>
+        </div>
+
     </div>
 </div>
 

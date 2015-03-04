@@ -192,6 +192,10 @@ function hideMenu() {
         $('#content').addClass('col-sm-12');
     }
 
+    if ($(window).width() <= 650) {
+        $('#content').show();
+    }
+
     $('#sidebar').toggle();
 }
 
@@ -202,6 +206,10 @@ function showMenu() {
     } else if ($('#content').hasClass('col-sm-12')) {
         $('#content').removeClass('col-sm-12');
         $('#content').addClass('col-sm-10');
+    }
+
+    if ($(window).width() <= 650) {
+        $('#content').hide();
     }
 
     $('#sidebar').toggle();

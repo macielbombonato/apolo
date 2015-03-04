@@ -95,7 +95,7 @@
             </a>
         </div>
 
-        <a href="#menu-configuration" class="list-group-item" data-toggle="collapse" data-parent="#menu-system">
+        <a data-target="menu-configuration" class="list-group-item" data-toggle="collapse" data-parent="#menu-system">
             <span><i class="fa fa-cog"></i></span>
             <strong th:text="#{user.group}" />
             <span><i class="fa fa-chevron-down"></i></span>
@@ -117,9 +117,7 @@
         <a sec:authorize="hasAnyRole('ROLE_ADMIN')"
            th:href='@{|/${#authentication.systemUser.tenant.url}/auditlog/list|}' class="list-group-item">
             <i class="fa fa-list-alt"></i>
-        <span th:text="#{auditlog.list}">
-            auditlog.list
-        </span>
+            <span th:text="#{auditlog.list}">auditlog.list</span>
         </a>
     </div>
 </section>
