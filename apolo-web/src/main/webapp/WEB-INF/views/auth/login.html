@@ -3,57 +3,63 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <head th:include="@{_fragment/_headTag} :: headTag">
     </head>
-    <body class="overflow-hidden">
-        <div th:remove="tag" th:include="@{_fragment/_header-clean} :: header"></div>
+    <body class="overflow-hidden" id="login-page">
 
-        <div id="overlay" class="transparent"></div>
+        <div th:remove="tag" th:include="@{_fragment/_message} :: message"></div>
 
-        <div class="login-wrapper">
-            <div th:remove="tag" th:include="@{_fragment/_message} :: message"></div>
-
-            <div class="login-widget">
-                <div class="panel panel-default">
-                    <div class="panel-heading clearfix">
-                        <div class="col-sm-4 pull-left">
-                            <img class="img-responsive" th:src='@{/resources/app/img/logo.png}' width="15" style="width: 15px;" />
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div id="login-box">
+                        <div id="login-box-holder">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <header id="login-header">
+                                        <div id="login-logo">
+                                            <a th:href="${#authorization.expression('isAuthenticated()') == true} ? @{|/${#authentication.systemUser.tenant.url}/user|} : @{'/'}">
+                                                <img th:if="${#authorization.expression('isAuthenticated()') == false} or ${#authentication.systemUser.tenant.logo == null}"
+                                                     th:src="@{|/resources/app/img/logo.png|}"
+                                                     width="40px"
+                                                     height="50px"
+                                                     style="width: 40px; height: 50px;"
+                                                        />
+                                            </a>
+                                        </div>
+                                    </header>
+                                    <div id="login-box-inner">
+                                        <form th:action="@{/login}" method="post" role="form">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                                <input type="email"
+                                                       id="username"
+                                                       name="username"
+                                                       class="form-control focus"
+                                                       th:placeholder='#{user.name}'
+                                                        />
+                                            </div>
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-key"></i></span>
+                                                <input type="password"
+                                                       id="password"
+                                                       name="password"
+                                                       class="form-control"
+                                                       th:placeholder='#{user.password}'
+                                                        />
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xs-12">
+                                                    <button type="submit" class="btn btn-success col-xs-12">
+                                                        <i class="fa fa-sign-in" />
+                                                        <span th:text="#{user.login}" />
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-sm-8 pull-left" th:text="#{user.login.title}" />
-                    </div>
-                    <div class="panel-body">
-                        <form id="login_form" th:action="@{/login}" method="post" role="form" class="form-login">
-                            <div class="form-group">
-                                <div class="input-group">
-                                        <span class="input-group-addon">
-                                            <span class="glyphicon glyphicon-user"></span>
-                                        </span>
-                                    <input type="email"
-                                           id="username"
-                                           name="username"
-                                           class="form-control input-sm focus"
-                                           th:placeholder='#{user.name}'
-                                            />
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="input-group">
-                                        <span class="input-group-addon">
-                                            <span class="fa fa-key"></span>
-                                        </span>
-                                    <input type="password"
-                                           id="password"
-                                           name="password"
-                                           class="form-control input-sm"
-                                           th:placeholder='#{user.password}'
-                                            />
-                                </div>
-                            </div>
-                            <hr/>
 
-                            <button type="submit" id="login_button" class="btn btn-success btn-sm pull-right">
-                                <i class="fa fa-sign-in" />
-                                <span th:text="#{user.login}" />
-                            </button>
-                        </form>
                     </div>
                 </div>
             </div>

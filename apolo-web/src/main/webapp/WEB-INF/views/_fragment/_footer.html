@@ -41,8 +41,8 @@
             </div>
         </center>
 
-        <footer class="footer">
-            <center>
+        <footer id="footer-bar" class="row">
+            <p id="footer-copyright" class="col-xs-12">
                 <a sec:authorize="hasRole('ROLE_ADMIN')"
                    th:href='@{|/version|}'
                    class="btn">
@@ -61,7 +61,7 @@
                 <small th:text="#{footer.message}" data-htmlEscape="false">
                     footer.message
                 </small>
-            </center>
+            </p>
         </footer>
 
         <noscript>

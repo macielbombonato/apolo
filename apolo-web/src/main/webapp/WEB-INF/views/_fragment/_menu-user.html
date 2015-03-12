@@ -5,83 +5,55 @@
     <head>
     </head>
     <body th:fragment="menu-user">
-        <ul class="nav navbar-nav navbar-right">
-            <li sec:authorize="hasAnyRole('ROLE_AFTER_AUTH_USER')">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                    <div class="menu-text menu-text-default">
-                        <img th:if="${#authentication.systemUser.pictureGeneratedName != null}
-                                    and ${#authentication.systemUser.pictureGeneratedName != ''}"
-                             class="img-circle"
-                             th:src="@{|/${#authentication.systemUser.dbTenant.url}/uploadedfiles/User/${#authentication.systemUser.id}/${#authentication.systemUser.pictureGeneratedName}|}"
-                             style="width: 20px; height: 20px;"
-                             width="20"
-                             height="20"
-                                />
-                        <i th:if="${#authentication.systemUser == null} or ${#authentication.systemUser.pictureGeneratedName == null} or ${#authentication.systemUser.pictureGeneratedName == ''}"
-                           class="fa fa-user" />
+    <ul class="nav navbar-nav pull-right">
 
-                        <strong th:text="${#authentication.systemUser.name}" />
-                        <span><i class="fa fa-chevron-down"></i></span>
-                    </div>
-                </a>
-                <ul class="dropdown-menu dropdown-menu-top">
-                    <li>
-                        <a th:href="@{|/${#authentication.systemUser.tenant.url}/user|}" >
-                            <div class="menu-item menu-item-text-default">
-                                <i class="fa fa-tachometer"></i>
-                                <span th:text="#{user.dashboard}" />
-                            </div>
-                        </a>
-                    </li>
-                    <li>
-                        <a th:href='@{|/${#authentication.systemUser.dbTenant.url}/user/view/${#authentication.systemUser.id}|}'>
-                            <div class="menu-item menu-item-text-default">
-                                <i class="fa fa-user"></i>
-                                <span th:text="#{user.profile}" />
-                            </div>
-                        </a>
-                    </li>
-                    <li>
-                        <a th:href='@{|/${#authentication.systemUser.dbTenant.url}/user/change-password|}'>
-                            <div class="menu-item menu-item-text-default">
-                                <i class="fa fa-pencil-square-o"></i>
-                                <span th:text="#{user.change.password}" />
-                            </div>
-                        </a>
-                    </li>
-                    <li class="divider"></li>
-                    <li>
-                        <a th:href='@{/auth/logout}'>
-                            <div id="sair" class="menu-item menu-item-text-default">
-                                <i class="fa fa-power-off"></i>
-                                <span th:text="#{user.logout}" />
-                            </div>
-                        </a>
-                    </li>
-                </ul>
+        <li class="dropdown profile-dropdown" sec:authorize="isAuthenticated()">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                <img th:if="${#authentication.systemUser.pictureGeneratedName != null}
+                                and ${#authentication.systemUser.pictureGeneratedName != ''}"
+                     th:src="@{|/${#authentication.systemUser.dbTenant.url}/uploadedfiles/User/${#authentication.systemUser.id}/${#authentication.systemUser.pictureGeneratedName}|}"
+                        />
+                <span class="hidden-xs" th:text="${#authentication.systemUser.name}">
+                    #authentication.systemUser.name
+                </span>
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-right">
+                <li>
+                    <a th:href="@{|/${#authentication.systemUser.tenant.url}/user|}" >
+                        <i class="fa fa-tachometer"></i>
+                        <span th:text="#{user.dashboard}" />
+                    </a>
+                </li>
+                <li>
+                    <a th:href='@{|/${#authentication.systemUser.dbTenant.url}/user/view/${#authentication.systemUser.id}|}'>
+                        <i class="fa fa-user"></i>
+                        <span th:text="#{user.profile}" />
+                    </a>
+                </li>
+                <li>
+                    <a th:href='@{|/${#authentication.systemUser.dbTenant.url}/user/change-password|}'>
+                        <i class="fa fa-pencil-square-o"></i>
+                        <span th:text="#{user.change.password}" />
+                    </a>
+                </li>
+                <li class="divider"></li>
+                <li>
+                    <a th:href='@{/auth/logout}'>
+                        <i class="fa fa-power-off"></i>
+                        <span th:text="#{user.logout}" />
+                    </a>
+                </li>
+            </ul>
+        </li>
 
-            </li>
-
-            <li sec:authorize="!isAuthenticated()">
-                <a th:href="@{/auth/login}">
-                    <div class="menu-text menu-text-default">
-                        <span><i class="fa fa-lock"></i></span>
-                        <strong th:text="#{user.restricted.area.access}" />
-                        <span><i class="fa fa-hover fa-chevron-down"></i></span>
-                    </div>
-                </a>
-            </li>
-
-            <li sec:authorize="hasAnyRole('ROLE_BEFORE_AUTH_USER')">
-                <a th:href="@{/auth/login}">
-                    <div class="menu-text menu-text-default">
-                        <span><i class="fa fa-lock"></i></span>
-                        <strong th:text="#{user.restricted.area.access}" />
-                        <span><i class="fa fa-hover fa-chevron-down"></i></span>
-                    </div>
-                </a>
-            </li>
-
-        </ul>
+        <li class="dropdown profile-dropdown" sec:authorize="!isAuthenticated()">
+            <a class="dropdown-toggle"
+               th:href="@{/auth/login}">
+                <span><i class="fa fa-lock"></i></span>
+                <strong th:text="#{user.restricted.area.access}" />
+            </a>
+        </li>
+    </ul>
     </body>
 </html>

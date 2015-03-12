@@ -1,44 +1,115 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-      <head th:include="@{_fragment/_headTag} :: headTag">
-      </head>
-      <body th:fragment="apolo-template">
-            <div th:remove="tag" th:include="@{_fragment/_header} :: header"></div>
 
-            <div id="wrapper" class="preload">
+    <head th:include="@{_fragment/_headTag} :: headTag">
+    </head>
+    <body th:fragment="apolo-template">
+    <div id="theme-wrapper">
+        <div th:remove="tag" th:include="@{_fragment/_header} :: header"></div>
 
-                <div th:remove="tag" th:include="@{_fragment/_message} :: message"></div>
+        <div id="page-wrapper" class="container">
+            <div class="row">
+                <div th:remove="tag" th:include="@{_fragment/_menu} :: menu"></div>
 
-                <div class="clearfix"></div>
-
-                <div sec:authorize="isAuthenticated()"
-                     th:remove="tag" th:include="@{_fragment/_menu} :: menu">
-
-                </div>
-
-                <section id="main"
-                         class="p-relative container"
-                         role="main"
-                         th:with="contentSize=${#authorization.expression('isAuthenticated()') == true ? 8 : 10},
-                                contentSize=${contentSize} + ${#authorization.expression('isAuthenticated()') == true and #authentication.systemUser.tenant.showAdds != true ? 2 : 0}"
-                        >
-                    <div class="row ">
-                        <div id="content" th:class="${'col-sm-'} + ${contentSize}">
-                            <div class="row">
-                                <div id="content-location">
-                                </div>
-                            </div>
-                        </div>
-                        <div th:if="${#authorization.expression('isAuthenticated()') == true and #authentication.systemUser.tenant.showAdds == true or #authorization.expression('isAuthenticated()') != true}"
-                             class="col-sm-2">
-                            <div th:remove="tag" th:include="@{_fragment/_add-vertical} :: add-vertical"></div>
-                        </div>
-
+                <div id="content-wrapper">
+                    <div id="content-location" class="col-sm-10">
+                        nononono
                     </div>
-                </section>
+
+                    <div th:remove="tag" th:include="@{_fragment/_add-vertical} :: add-vertical"></div>
+                </div>
             </div>
 
             <div th:remove="tag" th:include="@{_fragment/_footer} :: footer"></div>
-      </body>
+
+            <div id="config-tool" class="closed">
+                <a id="config-tool-cog">
+                    <i class="fa fa-cog"></i>
+                </a>
+                <div id="config-tool-options">
+                    <h4>Layout Options</h4>
+                    <ul>
+                        <li>
+                            <div class="checkbox-nice">
+                                <input type="checkbox" id="config-fixed-header"/>
+                                <label for="config-fixed-header">
+                                    Fixed Header
+                                </label>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="checkbox-nice">
+                                <input type="checkbox" id="config-fixed-sidebar"/>
+                                <label for="config-fixed-sidebar">
+                                    Fixed Left Menu
+                                </label>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="checkbox-nice">
+                                <input type="checkbox" id="config-fixed-footer"/>
+                                <label for="config-fixed-footer">
+                                    Fixed Footer
+                                </label>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="checkbox-nice">
+                                <input type="checkbox" id="config-boxed-layout"/>
+                                <label for="config-boxed-layout">
+                                    Boxed Layout
+                                </label>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="checkbox-nice">
+                                <input type="checkbox" id="config-rtl-layout"/>
+                                <label for="config-rtl-layout">
+                                    Right-to-Left
+                                </label>
+                            </div>
+                        </li>
+                    </ul>
+                    <br/>
+                    <h4>Skin Color</h4>
+                    <ul id="skin-colors" class="clearfix">
+                        <li>
+                            <a class="skin-changer" data-skin="" data-toggle="tooltip" title="Default" style="background-color: #34495e;">
+                            </a>
+                        </li>
+                        <li>
+                            <a class="skin-changer" data-skin="theme-white" data-toggle="tooltip" title="White/Green" style="background-color: #2ecc71;">
+                            </a>
+                        </li>
+                        <li>
+                            <a class="skin-changer blue-gradient" data-skin="theme-blue-gradient" data-toggle="tooltip" title="Gradient">
+                            </a>
+                        </li>
+                        <li>
+                            <a class="skin-changer" data-skin="theme-turquoise" data-toggle="tooltip" title="Green Sea" style="background-color: #1abc9c;">
+                            </a>
+                        </li>
+                        <li>
+                            <a class="skin-changer" data-skin="theme-amethyst" data-toggle="tooltip" title="Amethyst" style="background-color: #9b59b6;">
+                            </a>
+                        </li>
+                        <li>
+                            <a class="skin-changer" data-skin="theme-blue" data-toggle="tooltip" title="Blue" style="background-color: #2980b9;">
+                            </a>
+                        </li>
+                        <li>
+                            <a class="skin-changer" data-skin="theme-red" data-toggle="tooltip" title="Red" style="background-color: #e74c3c;">
+                            </a>
+                        </li>
+                        <li>
+                            <a class="skin-changer" data-skin="theme-whbl" data-toggle="tooltip" title="White/Blue" style="background-color: #3498db;">
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    </body>
 </html>

@@ -5,30 +5,38 @@
     </head>
     <body th:fragment="header">
 
-        <nav id="menu" class="navbar navbar-default" role="navigation">
-            <div class="navbar-header menu-header">
-                <a class="navbar-brand" th:href="${#authorization.expression('isAuthenticated()') == true} ? @{|/${#authentication.systemUser.tenant.url}/user|} : @{'/'}">
-                    <strong id="menuTitle" style="font-family: monospace; font-size: xx-large;" class="menu-title">
-                        <img th:if="${#authorization.expression('isAuthenticated()') == true} and ${#authentication.systemUser.tenant.logo != null}"
+        <header class="navbar" id="header-navbar">
+            <div class="container">
+                <a id="logo" class="navbar-brand" th:href="${#authorization.expression('isAuthenticated()') == true} ? @{|/${#authentication.systemUser.tenant.url}/user|} : @{'/'}">
+                    <strong>
+                        <img class="normal-logo logo-white"
+                             th:if="${#authorization.expression('isAuthenticated()') == true}
+                                        and ${#authentication.systemUser.tenant.logo != null}"
                              th:src="@{|/${#authentication.systemUser.tenant.url}/uploadedfiles/Tenant/${#authentication.systemUser.tenant.id}/${#authentication.systemUser.tenant.logo}|}"
-                             th:width="${#authentication.systemUser.tenant.logoWidth}"
-                             th:height="${#authentication.systemUser.tenant.logoHeight}"
+                             th:width="${#authentication.systemUser.tenant.logoWidth} + ${'px'}"
+                             th:height="${#authentication.systemUser.tenant.logoHeight} + ${'px'}"
                              th:style="${'width: '} + ${#authentication.systemUser.tenant.logoWidth} + ${'px; height: '} + ${#authentication.systemUser.tenant.logoHeight} + ${'px;'}"
-                             th:text="#{app.title}"
-                            />
+                                />
+                        <span th:if="${#authorization.expression('isAuthenticated()') == true}
+                                        and ${#authentication.systemUser.tenant != null}
+                                        and ${#authentication.systemUser.tenant.showName == true}
+                                        and ${#authentication.systemUser.tenant.name != null}"
+                              th:text="${#authentication.systemUser.tenant.name}">
+
+                        </span>
                         <img th:if="${#authorization.expression('isAuthenticated()') == false} or ${#authentication.systemUser.tenant.logo == null}"
                              th:src="@{'/resources/app/img/logo.png'}"
-                             width="15"
-                             height="20"
+                             width="15px"
+                             height="20px"
                              style="width: 15px; height: 20px;"
                              th:text="#{app.title}"
-                            />
+                                />
                     </strong>
                 </a>
-            </div>
-        </nav>
-        <div id="overlay" class="transparent"></div>
 
-        <div id="menu-space" style="display:none;">&nbsp;</div>
+                <div class="clearfix">
+                </div>
+            </div>
+        </header>
     </body>
 </html>
