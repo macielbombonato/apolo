@@ -1,7 +1,7 @@
 $(document).ready(function() {
-    $('#content-location').html($('#page-content').html());
+	$('#content-location').html($('#page-content').html());
 
-    $('#page-content').remove();
+	$('#page-content').remove();
 
 	$('#showPassword').change(function(){
 		var passwordText = $('#password');
@@ -86,6 +86,11 @@ $(document).ready(function() {
 
         $('#sidebar').hide();
     }
+
+	if (!App.readOnly) {
+		$('.focus').trigger('focus');
+	}
+
 });
 
 $.fn.is_on_screen = function(){
@@ -114,22 +119,6 @@ $.fn.invertElement = function() {
 		this.css(prop, 'rgb(' + (255 - color.r) + ',' + (255 - color.g) + ',' + (255 - color.b) + ')');
 	}
 };
-
-$(window).scroll(function(){
-	updateMenuVisibility();
-});
-
-$('#menu-space').height($('#menu').height() + 5);
-
-$('video').mediaelementplayer({
-	success: function(media, node, player) {
-		$('#' + node.id + '-mode').html('mode: ' + media.pluginType);
-	}
-});
-
-if (!App.readOnly) {
-	$('.focus').trigger('focus');
-}
 
 function editDataOpen(fieldName) {
 	$('#dataInput').val($('#'+fieldName).val());

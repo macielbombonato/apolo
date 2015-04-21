@@ -133,7 +133,18 @@ public class TenantServiceImpl extends BaseServiceImpl<Tenant> implements Tenant
             }
         }
 
-		return tenantRepository.saveAndFlush(tenant);
+		Tenant result = null;
+
+		try {
+			result = tenantRepository.saveAndFlush(tenant);
+		} catch (Throwable e) {
+			LOG.error(e.getMessage(), e);
+
+			String message = MessageBundle.getMessageBundle("error.500.6");
+			throw new BusinessException(5, message);
+		}
+
+		return result;
 	}
 
 	@Transactional

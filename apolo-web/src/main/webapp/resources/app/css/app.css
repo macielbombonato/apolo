@@ -1,9 +1,17 @@
 #page-content {
-    display: none;
+
+}
+
+.sidebar .sidebar-header img {
+	max-height: 70px;
 }
 
 body {
 	padding-bottom: 40px;
+}
+
+.center {
+	text-align: center;
 }
 
 .menu-top {
@@ -12,15 +20,6 @@ body {
 
 .dropdown-menu-top-alternative-style {
 	background: none repeat scroll 0 0 rgba(0, 0, 0, 0.5);
-}
-
-.footer {
-	background-image: none;
-	background-repeat: repeat;
-	background: none repeat scroll 0 0 rgba(0, 0, 0, 0.5);
-	z-index: 999;
-	width: 100%;
-	color: #FCFCFC;
 }
 
 .menu-header {
@@ -315,18 +314,6 @@ input[type=radio] {
 
 @media (min-width: 980px) {
 
-	.footer_contents {
-	    width: 1000px; // Visible width of footer
-	    margin:auto;
-	}
-
-	.footer {
-		bottom: 0px;
-		margin: 0px;
-		position: fixed;
-		padding: 0px;
-	}
-	
 	.loginForm {
 		margin-left: 20%; 
 		margin-right: 20%;
@@ -351,18 +338,6 @@ input[type=radio] {
 }
 
 @media (min-width: 1200px) {
-	.footer {
-		bottom: 0px;
-		margin: 0px;
-		position: fixed;
-		padding: 0px;
-	}
-	
-	.footer_contents {
-	    width: 1000px; // Visible width of footer
-	    margin:auto;
-	}
-	
 	.loginForm {
 		margin-left: 25%; 
 		margin-right: 25%;

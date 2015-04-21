@@ -7,11 +7,11 @@
             <div th:remove="tag" th:include="@{_fragment/_apolo-template} :: apolo-template"></div>
 
             <div id="page-content">
-                <div class="media">
+                <div class="row">
                     <div class="col-sm-4">
                         <img class="img-responsive" th:src="@{|/resources/app/img/favicon.png|}" />
                     </div>
-                    <div class="media-body col-sm-7" style="text-align: justify">
+                    <div class="col-sm-8" style="text-align: justify">
                         <h4 class="media-heading" th:text="#{view.index.apolo.title}" />
                         <p th:text="#{view.index.hello}" data-htmlEscape="false" />
                     </div>

@@ -64,7 +64,7 @@ public class Tenant extends AuditableBaseEntity {
 	@NotNull
 	private Status status;
 
-    @Column(name = "spinner", nullable = false)
+    @Column(name = "spinner", nullable = true)
     @Type(type = "apolo.data.enums.usertype.SpinnerUserType")
     @NotNull
     private Spinner spinner;

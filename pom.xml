@@ -560,6 +560,16 @@
 				<version>2.1.1.RELEASE</version>
 			</dependency>
 			<dependency>
+				<groupId>net.sourceforge.nekohtml</groupId>
+				<artifactId>nekohtml</artifactId>
+				<version>1.9.21</version>
+			</dependency>
+			<dependency>
+				<groupId>xml-apis</groupId>
+				<artifactId>xml-apis</artifactId>
+				<version>1.4.01</version>
+			</dependency>
+			<dependency>
 				<groupId>ognl</groupId>
 				<artifactId>ognl</artifactId>
 				<version>3.0.6</version>

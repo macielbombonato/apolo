@@ -3,7 +3,10 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <head th:include="@{_fragment/_headTag} :: headTag">
     </head>
-    <body class="overflow-hidden">
+    <body th:fragment="apolo-template" class="static-sidebar static-header">
+
+        <div th:remove="tag" th:include="@{_fragment/_header-clean} :: header"></div>
+
         <div id="overlay" class="transparent"></div>
 
         <div class="login-wrapper">

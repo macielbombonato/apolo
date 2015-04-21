@@ -9,10 +9,7 @@ import apolo.common.config.model.ApplicationProperties;
 import apolo.common.exception.AccessDeniedException;
 import apolo.common.exception.BusinessException;
 import apolo.common.util.MessageBundle;
-import apolo.data.enums.Language;
-import apolo.data.enums.Skin;
-import apolo.data.enums.Status;
-import apolo.data.enums.UserStatus;
+import apolo.data.enums.*;
 import apolo.data.model.Tenant;
 import apolo.data.model.User;
 import apolo.data.model.UserCustomFieldValue;
@@ -305,6 +302,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 			tenant.setLogoWidth(15);
 			tenant.setUrl(applicationProperties.getDefaultTenant());
 			tenant.setSkin(Skin.SKIN_5);
+			tenant.setSpinner(Spinner.COGS);
 			tenant.setStatus(Status.ACTIVE);
 
 			formModel.getUser().setTenant(tenant);

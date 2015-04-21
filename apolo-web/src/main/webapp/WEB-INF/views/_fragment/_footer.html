@@ -8,60 +8,37 @@
     </head>
     <body th:fragment="footer">
 
-        <center>
-            <div class="container "
-                 th:if="${#authorization.expression('isAuthenticated()') == true and #authentication.systemUser.tenant.showAdds == true or #authorization.expression('isAuthenticated()') != true}">
-                <div class="row ">
-                    <div class="add-mobile">
-                        <script type="text/javascript">
-                            google_ad_client = "ca-pub-3481908664466605";
-                            google_ad_slot = "9229031586";
-                            google_ad_width = 320;
-                            google_ad_height = 100;
-                        </script>
-                        <!-- Banner-Hor-Mobile -->
-                        <script type="text/javascript"
-                                src="//pagead2.googlesyndication.com/pagead/show_ads.js">
-                        </script>
-                    </div>
+        <footer>
 
-                    <div class="add-desktop">
-                        <script type="text/javascript">
-                            google_ad_client = "ca-pub-3481908664466605";
-                            google_ad_slot = "5996363588";
-                            google_ad_width = 728;
-                            google_ad_height = 90;
-                        </script>
-                        <!-- Banner-Hor-Desktop -->
-                        <script type="text/javascript"
-                                src="//pagead2.googlesyndication.com/pagead/show_ads.js">
-                        </script>
-                    </div>
-                </div>
-            </div>
-        </center>
+            <div class="row">
 
-        <footer id="footer-bar" class="row">
-            <p id="footer-copyright" class="col-xs-12">
-                <a sec:authorize="hasRole('ROLE_ADMIN')"
-                   th:href='@{|/version|}'
-                   class="btn">
+                <div class="col-sm-5">
+                    <a sec:authorize="hasRole('ROLE_ADMIN')"
+                       th:href='@{|/version|}'
+                       class="btn">
+                        <img th:src="@{|/resources/app/img/flags/#{language.flag}|}"
+                             width="15"
+                             height="15"
+                             class="img"
+                                />
+                    </a>
                     <img th:src="@{|/resources/app/img/flags/#{language.flag}|}"
+                         sec:authorize="!hasRole('ROLE_ADMIN')"
                          width="15"
                          height="15"
                          class="img"
                             />
-                </a>
-                <img th:src="@{|/resources/app/img/flags/#{language.flag}|}"
-                     sec:authorize="!hasRole('ROLE_ADMIN')"
-                     width="15"
-                     height="15"
-                     class="img"
-                        />
-                <small th:text="#{footer.message}" data-htmlEscape="false">
-                    footer.message
-                </small>
-            </p>
+                    <span th:text="#{footer.message}" data-htmlEscape="false">
+                        footer.message
+                    </span>
+                </div><!--/.col-->
+
+                <div class="col-sm-7 text-right">
+
+                </div><!--/.col-->
+
+            </div><!--/.row-->
+
         </footer>
 
         <noscript>

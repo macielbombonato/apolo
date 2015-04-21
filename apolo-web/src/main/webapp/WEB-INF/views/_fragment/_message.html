@@ -6,8 +6,8 @@
     </head>
     <body th:fragment="message">
         <div th:if="${error} or ${warn} or ${msg}">
-            <div class="container ">
-                <div class="row ">
+            <div class="row ">
+                <div class="col-sm-12 ">
                     <div th:if="${error}" >
                         <div class="alert alert-danger" th:text="${message}"/>
                     </div>

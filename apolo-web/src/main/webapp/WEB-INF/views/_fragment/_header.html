@@ -4,18 +4,22 @@
     <head>
     </head>
     <body th:fragment="header">
-    <header class="navbar" id="header-navbar">
-        <div class="container">
-            <a id="logo" class="navbar-brand" th:href="${#authorization.expression('isAuthenticated()') == true} ? @{|/${#authentication.systemUser.tenant.url}/user|} : @{'/'}">
-                <strong>
-                    <img class="normal-logo logo-white"
-                         th:if="${#authorization.expression('isAuthenticated()') == true}
+
+    <!-- start: Header -->
+    <div class="navbar" role="navigation">
+        <div class="navbar-header">
+            <div class="col-sm-12">
+                <a class="navbar-brand"
+                   th:href="${#authorization.expression('isAuthenticated()') == true} ? @{|/${#authentication.systemUser.tenant.url}/user|} : @{'/'}">
+                    <strong>
+                        <img class="normal-logo logo-white"
+                             th:if="${#authorization.expression('isAuthenticated()') == true}
                                         and ${#authentication.systemUser.tenant.logo != null}"
-                         th:src="@{|/${#authentication.systemUser.tenant.url}/uploadedfiles/Tenant/${#authentication.systemUser.tenant.id}/${#authentication.systemUser.tenant.logo}|}"
-                         th:width="${#authentication.systemUser.tenant.logoWidth} + ${'px'}"
-                         th:height="${#authentication.systemUser.tenant.logoHeight} + ${'px'}"
-                         th:style="${'width: '} + ${#authentication.systemUser.tenant.logoWidth} + ${'px; height: '} + ${#authentication.systemUser.tenant.logoHeight} + ${'px;'}"
-                            />
+                             th:src="@{|/${#authentication.systemUser.tenant.url}/uploadedfiles/Tenant/${#authentication.systemUser.tenant.id}/${#authentication.systemUser.tenant.logo}|}"
+                             th:width="${#authentication.systemUser.tenant.logoWidth} + ${'px'}"
+                             th:height="${#authentication.systemUser.tenant.logoHeight} + ${'px'}"
+                             th:style="${'width: '} + ${#authentication.systemUser.tenant.logoWidth} + ${'px; height: '} + ${#authentication.systemUser.tenant.logoHeight} + ${'px;'}"
+                                />
                         <span th:if="${#authorization.expression('isAuthenticated()') == true}
                                         and ${#authentication.systemUser.tenant != null}
                                         and ${#authentication.systemUser.tenant.showName == true}
@@ -23,37 +27,38 @@
                               th:text="${#authentication.systemUser.tenant.name}">
 
                         </span>
-                    <img class="normal-logo logo-white"
-                         th:if="${#authorization.expression('isAuthenticated()') == false} or ${#authentication.systemUser.tenant.logo == null}"
-                         th:src="@{'/resources/app/img/logo.png'}"
-                         width="15"
-                         height="20"
-                         style="width: 15px; height: 20px;"
-                         th:text="#{app.title}"
+                        <img class="normal-logo logo-white"
+                             th:if="${#authorization.expression('isAuthenticated()') == false} or ${#authentication.systemUser.tenant.logo == null}"
+                             th:src="@{'/resources/app/img/logo.png'}"
+                             width="15"
+                             height="20"
+                             style="width: 15px; height: 20px;"
+                                />
+                    <span th:if="${#authorization.expression('isAuthenticated()') == false} or ${#authentication.systemUser.tenant.logo == null}"
+                          th:text="#{app.title}"
                             />
-                </strong>
-            </a>
-
-            <div class="clearfix">
-                <button class="navbar-toggle" data-target=".navbar-ex1-collapse" data-toggle="collapse" type="button">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="fa fa-bars"></span>
-                </button>
-                <div class="nav-no-collapse navbar-left pull-left hidden-sm hidden-xs">
-                    <ul class="nav navbar-nav pull-left" sec:authorize="isAuthenticated()">
-                        <li>
-                            <a class="btn" id="make-small-nav">
-                                <i class="fa fa-bars"></i>
-                            </a>
-                        </li>
-
-                    </ul>
-                </div>
-                <div class="nav-no-collapse pull-right" id="header-nav">
-                    <div th:remove="tag" th:include="@{_fragment/_menu-user} :: menu-user"></div>
-                </div>
+                    </strong>
+                </a>
             </div>
+
+
         </div>
-    </header>
+        <ul class="nav navbar-nav navbar-actions navbar-left">
+            <li class="visible-md visible-lg"><a href="#" id="main-menu-toggle"><i class="fa fa-bars"></i></a></li>
+            <li class="visible-xs visible-sm"><a href="#" id="sidebar-menu"><i class="fa fa-bars"></i></a></li>
+        </ul>
+
+        <!--ul class="nav navbar-nav navbar-right">
+            <li>
+                <span class="timer visible-md visible-lg">
+                    <i class="fa fa-clock-o"></i>
+                    <span id="clock">
+                    </span>
+                </span>
+            </li>
+        </ul-->
+    </div>
+    <!-- end: Header -->
+
     </body>
 </html>
