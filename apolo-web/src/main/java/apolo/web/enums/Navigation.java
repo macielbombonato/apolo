@@ -288,7 +288,7 @@ public enum Navigation {
 		}
 	},
 	
-	AUTH_LOGIN("auth/login") {
+	AUTH_LOGIN("login") {
 		@Override
 		public String getNodeName() {
 			return null;
@@ -299,18 +299,7 @@ public enum Navigation {
 			return 0;
 		}
 	},
-	AUTH_SECOND_FACTOR("auth/second-factor") {
-		@Override
-		public String getNodeName() {
-			return null;
-		}
-
-		@Override
-		public int getNodeLevel() {
-			return 0;
-		}
-	},
-	AUTH_LOGOUT("auth/logout") {
+	AUTH_LOGOUT("logout") {
 		@Override
 		public String getNodeName() {
 			return null;

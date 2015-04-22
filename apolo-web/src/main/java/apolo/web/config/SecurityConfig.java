@@ -63,12 +63,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/error/**",
                         "/install/**",
                         "/install",
-                        "/auth/login",
-                        "**/auth/login",
-                        "/auth/loginfailed",
-                        "**/auth/loginfailed",
-                        "/auth/logout",
-                        "**/auth/logout",
+                        "/login",
+                        "/loginfailed",
+                        "/logout",
                         "/index",
                         "/",
                         "/login"
@@ -85,14 +82,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	            .formLogin()
 	                .usernameParameter("username")
 	                .passwordParameter("password")
-	                .loginPage("/" + applicationProperties.getDefaultTenant() + "/auth/login")
+	                .loginPage("/login")
 	                .loginProcessingUrl("/login")
                 	//.defaultSuccessUrl("/", true)
-                	.failureUrl("/" + applicationProperties.getDefaultTenant() + "/auth/loginfailed")
+                	.failureUrl("/loginfailed")
                 .permitAll()
             .and()
                 .logout()
-	            	.logoutUrl("/auth/logout")
+	            	.logoutUrl("/logout")
 	            		.permitAll();
     }
 }

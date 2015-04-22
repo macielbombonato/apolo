@@ -3,6 +3,7 @@ package apolo.web.controller;
 import apolo.business.service.BaseService;
 import apolo.business.service.TenantService;
 import apolo.business.service.UserService;
+import apolo.common.config.model.ApplicationProperties;
 import apolo.common.exception.BusinessException;
 import apolo.common.exception.GenericException;
 import apolo.common.util.MessageBundle;
@@ -43,6 +44,9 @@ public abstract class BaseController<E extends BaseEntity> {
 	
 	@Autowired
 	protected UserService userService;
+
+	@Autowired
+	protected ApplicationProperties applicationProperties;
 	
 	@InitBinder
 	protected void dateBinder(WebDataBinder binder) {
@@ -96,6 +100,10 @@ public abstract class BaseController<E extends BaseEntity> {
 		Tenant tenant = null;
 		
 		tenant = tenantService.findByUrl(url);
+
+		if (tenant == null) {
+			tenant = tenantService.findByUrl(applicationProperties.getDefaultTenant());
+		}
 		
 		return tenant;
 	}

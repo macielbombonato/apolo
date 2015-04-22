@@ -168,33 +168,8 @@ public class TenantServiceImpl extends BaseServiceImpl<Tenant> implements Tenant
 	
 	public Tenant findByUrl(String url) {
 		Tenant result = null;
-		
-		// Only users with permission can find anothers tenants, unless, they only can view your own tenant.
-		if (getAuthenticatedUser() != null) {
-			if (getAuthenticatedUser().getTenant().getUrl().equals(url)) {
-				
-				result = getAuthenticatedUser().getTenant();
-			
-			} else if (getAuthenticatedUser().getPermissions().contains(UserPermission.ADMIN)
-					|| getAuthenticatedUser().getPermissions().contains(UserPermission.TENANT_MANAGER)) {
-				
-				result = tenantRepository.findByUrl(url);
-				
-				if (result!= null 
-						&& Status.LOCKED.equals(result.getStatus())) {
-					String message = MessageBundle.getMessageBundle("error.403.2");
-					throw new AccessDeniedException(2, message);
-				}
-			} else {
-				String message = MessageBundle.getMessageBundle("error.403.msg");
-				throw new AccessDeniedException(message);
-			}
-		} else {
-			
-			// when the query is originated by web service, the session don't hava an authenticated user
-			// in this case, the query can be done with permission check
-			result = tenantRepository.findByUrl(url);
-		}
+
+		result = tenantRepository.findByUrl(url);
 		
 		return result;
 	}

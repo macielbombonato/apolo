@@ -26,7 +26,7 @@
                         authentication.systemUser.name
                     </p>
                     <p class="center col-xs-4 col-sm-4 col-md-12 col-lg-12">
-                        <a th:href='@{/auth/logout}'>
+                        <a th:href='@{/logout}'>
                             <i class="fa fa-power-off"></i>
                             <span class="text" th:text="#{user.logout}" />
                         </a>
@@ -69,7 +69,7 @@
                 </li>
 
                 <li sec:authorize="!isAuthenticated()">
-                    <a th:href="@{/auth/login}">
+                    <a th:href="@{/login}">
                         <i class="fa fa-lock"></i>
                         <span class="text" th:text="#{user.restricted.area.access}">
                             user.restricted.area.access

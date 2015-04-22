@@ -1,17 +1,12 @@
 package apolo.web.controller;
 
 import apolo.business.service.UserService;
-import apolo.common.config.model.ApplicationProperties;
 import apolo.common.util.MessageBundle;
-import apolo.data.model.Tenant;
-import apolo.security.SecuredEnum;
 import apolo.security.UserPermission;
 import apolo.web.enums.Navigation;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -21,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
 
 @SuppressWarnings("rawtypes")
 @Controller
@@ -33,17 +30,16 @@ public class AuthController extends BaseController {
 	private UserController userController;
 	
 	@Autowired
-	private ApplicationProperties applicationProperties;
-	
-	@Autowired 
 	private AppController appController;
 
-    @RequestMapping(value = "/auth/login", method = RequestMethod.GET)
+	@PreAuthorize("permitAll")
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
     public ModelAndView login(HttpServletRequest request) {
-        return login(applicationProperties.getDefaultTenant(), request);
+		return login(null, request);
     }
 
-	@RequestMapping(value = "/{tenant-url}/auth/login", method = RequestMethod.GET)
+	@PreAuthorize("permitAll")
+	@RequestMapping(value = "/{tenant-url}/login", method = RequestMethod.GET)
 	public ModelAndView login(@PathVariable("tenant-url") String tenant, HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView(Navigation.AUTH_LOGIN.getPath());
 		
@@ -51,7 +47,7 @@ public class AuthController extends BaseController {
 				&& userService.getAuthenticatedUser().getPermissions() != null
 				&& !userService.getAuthenticatedUser().getPermissions().isEmpty()
 				&& userService.getAuthenticatedUser().getPermissions().contains(UserPermission.AFTER_AUTH_USER)) {
-			mav = userController.index("apolo", request);
+			mav = userController.index(tenant, request);
 		}
 
 		// The session ID is stored in spring context to be used in services call
@@ -60,16 +56,23 @@ public class AuthController extends BaseController {
 				"sessionId", 
 				request.getSession().getId()
 			);
+
+		ContextLoader.getCurrentWebApplicationContext().getServletContext().setAttribute(
+				"tenant",
+				getDBTenant(tenant)
+		);
 		
 		return mav;
 	}
 
-    @RequestMapping(value = "/auth/loginfailed", method = RequestMethod.GET)
+	@Secured("permitAll")
+    @RequestMapping(value = "/loginfailed", method = RequestMethod.GET)
     public ModelAndView loginFailed(HttpServletRequest request, ModelMap model) {
         return loginFailed(applicationProperties.getDefaultTenant(), request, model);
     }
 
-	@RequestMapping(value = "/{tenant-url}/auth/loginfailed", method = RequestMethod.GET)
+	@Secured("permitAll")
+	@RequestMapping(value = "/{tenant-url}/loginfailed", method = RequestMethod.GET)
 	public ModelAndView loginFailed(
             @PathVariable("tenant-url") String tenant,
             HttpServletRequest request,
@@ -92,12 +95,14 @@ public class AuthController extends BaseController {
 		return mav;
 	}
 
-	@RequestMapping(value = "/auth/logout", method = RequestMethod.GET)
+	@Secured("isAuthenticated()")
+	@RequestMapping(value = "/logout", method = RequestMethod.GET)
 	public ModelAndView logout(HttpServletRequest request, ModelMap model) {
 		return logout(applicationProperties.getDefaultTenant(), request, model);
 	}
 
-    @RequestMapping(value = "/{tenant-url}/auth/logout", method = RequestMethod.GET)
+	@Secured("isAuthenticated()")
+    @RequestMapping(value = "/{tenant-url}/logout", method = RequestMethod.GET)
     public ModelAndView logout(
             @PathVariable("tenant-url") String tenant,
             HttpServletRequest request,

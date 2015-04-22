@@ -22,6 +22,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -58,6 +60,7 @@ public class AppController extends BaseController<User> {
 	 * @param request
 	 * @return ModelAndView
 	 */
+	@PreAuthorize("permitAll")
 	@RequestMapping(value = "/install", method = RequestMethod.GET)
 	public ModelAndView install(Model model, HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView(Navigation.INSTALL_NEW.getPath());
@@ -82,6 +85,7 @@ public class AppController extends BaseController<User> {
 	 * @param install
 	 * @return ModelAndView
 	 */
+	@PreAuthorize("permitAll")
 	@RequestMapping(value = "/install/save", method = RequestMethod.POST)
 	public ModelAndView save(
 				@ModelAttribute("install") InstallFormModel install, 
@@ -153,7 +157,7 @@ public class AppController extends BaseController<User> {
 			}
 		}
 		
-		mav = authController.login(request);
+		mav = authController.login(null, request);
 		
 		return mav;
 	}
@@ -168,7 +172,8 @@ public class AppController extends BaseController<User> {
 		mav.addObject("readOnly", true);
 		return mav;
 	}
-	
+
+	@PreAuthorize("permitAll")
 	@RequestMapping(value = "/index", method = RequestMethod.GET)
 	public ModelAndView index(HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView(Navigation.INDEX.getPath());
@@ -177,6 +182,7 @@ public class AppController extends BaseController<User> {
 		return mav;
 	}
 
+	@PreAuthorize("permitAll")
 	@RequestMapping(value = "/{tenant-url}", method = RequestMethod.GET)
 	public ModelAndView indexTenant(@PathVariable("tenant-url") String tenant, HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView(Navigation.INDEX.getPath());
@@ -190,6 +196,7 @@ public class AppController extends BaseController<User> {
 		return mav;
 	}
 
+	@PreAuthorize("permitAll")
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView home(HttpServletRequest request) {
 		return index(request);
