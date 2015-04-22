@@ -1,20 +1,18 @@
 package apolo.business.service.impl;
 
 import apolo.business.service.ConfigurationService;
-import apolo.data.enums.ConfigField;
 import apolo.data.model.Configuration;
 import apolo.data.model.Tenant;
 import apolo.data.repository.ConfigurationRepository;
-
-import java.util.Date;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Date;
+import java.util.List;
 
 @Service("configurationService")
 public class ConfigurationServiceImpl extends BaseServiceImpl<Configuration> implements ConfigurationService {
@@ -23,7 +21,7 @@ public class ConfigurationServiceImpl extends BaseServiceImpl<Configuration> imp
 	private ConfigurationRepository configurationRepository;
 	
 	public List<Configuration> list(Tenant tenant) {
-		List<Configuration> result = configurationRepository.findByTenantOrderByFieldAsc(tenant);
+		List<Configuration> result = configurationRepository.findByTenant(tenant);
 		
 		return result;
 	}
@@ -35,13 +33,13 @@ public class ConfigurationServiceImpl extends BaseServiceImpl<Configuration> imp
 		
 		PageRequest request = new PageRequest(pageNumber - 1, PAGE_SIZE, Sort.Direction.ASC, "field");
 		
-		Page<Configuration> result = configurationRepository.findByTenantOrderByFieldAsc(tenant, request);
+		Page<Configuration> result = configurationRepository.findByTenant(tenant, request);
 		
 		return result;
 	}
 
 	public Configuration find(Tenant tenant, Long id) {
-		return configurationRepository.findByTenantAndId(tenant, id);
+		return null; // TODO configurationRepository.findByTenant(tenant, id);
 	}
 
 	@Transactional
@@ -59,7 +57,7 @@ public class ConfigurationServiceImpl extends BaseServiceImpl<Configuration> imp
 		configurationRepository.delete(configuration);
 	}
 
-	public Configuration find(Tenant tenant, ConfigField field) {
-		return configurationRepository.findByTenantAndField(tenant, field);
+	public Configuration find(Tenant tenant) {
+		return null;//TODO configurationRepository.findByTenant(tenant);
 	}
 }

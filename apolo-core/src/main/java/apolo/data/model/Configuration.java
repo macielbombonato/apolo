@@ -1,19 +1,10 @@
 package apolo.data.model;
 
 import apolo.data.entitylistener.AuditLogListener;
-import apolo.data.enums.ConfigField;
 import apolo.data.util.InputLength;
-
-import javax.persistence.AttributeOverride;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
 import org.hibernate.annotations.Type;
+
+import javax.persistence.*;
 
 @Entity
 @EntityListeners(value = AuditLogListener.class)
@@ -25,16 +16,22 @@ public class Configuration extends AuditableBaseEntity {
 
 	@ManyToOne
 	private Tenant tenant;
-	
-	@Column(name = "type", nullable = false)
-	@Type(type = "apolo.data.enums.usertype.ConfigFieldUserType")
-	@NotNull
-	private ConfigField field;
-	
-	@Column(name = "value", length = InputLength.MEMO, nullable = false)
-	@NotNull
-	@Size(min = 1, max = InputLength.MEMO)
-	private String value;
+
+	@Column(name = "email_from", length = InputLength.NAME, nullable = true)
+	private String emailFrom;
+
+	@Column(name = "email_password", length = InputLength.NAME, nullable = true)
+	private String emailPassword;
+
+	@Column(name = "smtp_host", length = InputLength.NAME, nullable = true)
+	private String smtpHost;
+
+	@Column(name = "smtp_port", length = InputLength.NAME, nullable = true)
+	private String smtpPort;
+
+	@Column(name = "use_tls", nullable = true)
+	@Type(type="yes_no")
+	private boolean useTLS;
 
 	public Tenant getTenant() {
 		return this.tenant;
@@ -44,20 +41,43 @@ public class Configuration extends AuditableBaseEntity {
 		this.tenant = tenant;
 	}
 
-	public ConfigField getField() {
-		return this.field;
+	public String getEmailFrom() {
+		return emailFrom;
 	}
 
-	public void setField(ConfigField field) {
-		this.field = field;
+	public void setEmailFrom(String emailFrom) {
+		this.emailFrom = emailFrom;
 	}
 
-	public String getValue() {
-		return this.value;
+	public String getEmailPassword() {
+		return emailPassword;
 	}
 
-	public void setValue(String value) {
-		this.value = value;
+	public void setEmailPassword(String emailPassword) {
+		this.emailPassword = emailPassword;
 	}
 
+	public String getSmtpHost() {
+		return smtpHost;
+	}
+
+	public void setSmtpHost(String smtpHost) {
+		this.smtpHost = smtpHost;
+	}
+
+	public String getSmtpPort() {
+		return smtpPort;
+	}
+
+	public void setSmtpPort(String smtpPort) {
+		this.smtpPort = smtpPort;
+	}
+
+	public boolean isUseTLS() {
+		return useTLS;
+	}
+
+	public void setUseTLS(boolean useTLS) {
+		this.useTLS = useTLS;
+	}
 }

@@ -20,11 +20,17 @@
                 <table class="table table-striped table-hover table-bordered">
                     <thead>
                     <tr>
-                        <th th:text="#{configuration.field}">
-                            configuration.field
+                        <th>
+                            emailFrom
                         </th>
-                        <th th:text="#{configuration.value}">
-                            configuration.value
+                        <th>
+                            smtpHost
+                        </th>
+                        <th>
+                            smtpPort
+                        </th>
+                        <th>
+                            useTLS
                         </th>
 
                         <th th:text="#{common.actions}"
@@ -38,28 +44,17 @@
                     <tr th:each="conf : ${configurationList}"
                         th:id="${'configuration_'} + ${conf.id}">
 
-                        <td>
-                            <a th:with="confField=${'configuration.field.'} + ${conf.field}"
-                               th:text="#{${confField}}"
-                               sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_CONFIGURATION_VIEW')"
-                               th:href='@{|/${#authentication.systemUser.tenant.url}/configuration/view/${conf.id}|}'
-                               class="btn btn-link">
-                                conf.field
-                            </a>
-                            <span th:with="confField=${'configuration.field.'} + ${conf.field}"
-                                  th:text="#{${confField}}"
-                                  sec:authorize="!hasAnyRole('ROLE_ADMIN', 'ROLE_CONFIGURATION_VIEW')">
-                                conf.field
-                            </span>
+                        <td th:text="${conf.emailFrom}">
+                            xxx
                         </td>
-                        <td>
-                            <span th:if="${conf.field.cryptedValue}">
-                                xxx
-                            </span>
-                            <span th:if="${!conf.field.cryptedValue}"
-                                    th:text="${conf.value}">
-                                xxx
-                            </span>
+                        <td th:text="${conf.smtpHost}">
+                            xxx
+                        </td>
+                        <td th:text="${conf.smtpPort}">
+                            xxx
+                        </td>
+                        <td th:text="${conf.useTLS}">
+                            xxx
                         </td>
 
                         <td sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_CONFIGURATION_VIEW', 'ROLE_CONFIGURATION_EDIT', 'ROLE_CONFIGURATION_REMOVE')">

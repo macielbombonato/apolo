@@ -1,34 +1,26 @@
 package apolo.web.controller;
 
-import java.util.Date;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-
+import apolo.business.service.ConfigurationService;
+import apolo.common.exception.AccessDeniedException;
+import apolo.common.util.MessageBundle;
+import apolo.data.model.Configuration;
+import apolo.data.model.Tenant;
+import apolo.security.SecuredEnum;
+import apolo.security.UserPermission;
+import apolo.web.enums.Navigation;
 import net.sf.json.JSONObject;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import apolo.business.service.ConfigurationService;
-import apolo.web.enums.Navigation;
-import apolo.common.exception.AccessDeniedException;
-import apolo.common.util.MessageBundle;
-import apolo.data.enums.ConfigField;
-import apolo.data.model.Configuration;
-import apolo.data.model.Tenant;
-import apolo.security.SecuredEnum;
-import apolo.security.UserPermission;
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import java.util.Date;
 
 @Controller
 @RequestMapping(value = "/{tenant-url}/configuration")
@@ -72,7 +64,6 @@ public class ConfigurationController extends BaseController<Configuration> {
 				);
 			
 			mav.addObject("configuration", entity);
-			mav.addObject("configFieldList", ConfigField.values());
 			mav.addObject("readOnly", false);
 			mav.addObject("error", true);
 			
@@ -178,7 +169,6 @@ public class ConfigurationController extends BaseController<Configuration> {
 		configuration.setTenant(getDBTenant(tenant));
 		
 		mav.addObject("configuration", configuration);
-		mav.addObject("configFieldList", ConfigField.values());
 		mav.addObject("readOnly", false);
 		
 		return mav;
@@ -204,7 +194,6 @@ public class ConfigurationController extends BaseController<Configuration> {
 		configuration.setLastUpdateDate(new Date());
 		
 		mav.addObject("configuration", configuration);
-		mav.addObject("configFieldList", ConfigField.values());
 		mav.addObject("readOnly", false);
 		
 		return mav;
@@ -300,7 +289,6 @@ public class ConfigurationController extends BaseController<Configuration> {
 		Configuration configuration = configurationService.find(getDBTenant(tenant), id);
 		
 		mav.addObject("configuration", configuration);
-		mav.addObject("configFieldList", ConfigField.values());
 		mav.addObject("readOnly", true);
 		
 		return mav;
@@ -333,7 +321,7 @@ public class ConfigurationController extends BaseController<Configuration> {
     private boolean validateField(Tenant tenant, Configuration entity) {
     	boolean hasError = false;
     	
-    	Configuration result = configurationService.find(tenant, entity.getField());
+    	Configuration result = configurationService.find(tenant);
 		
 		if(result != null 
 				&& !result.getId().equals(entity.getId())){

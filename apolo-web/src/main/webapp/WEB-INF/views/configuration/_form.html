@@ -25,65 +25,77 @@
 
 <div class="tab-content">
     <div class="tab-pane active" id="home">
+
         <div class="form-group">
-            <label for="name" class="control-label" th:text="#{configuration.field}">
-                configuration.field
+            <label for="emailFrom" class="control-label" >
+                emailFrom
             </label>
 
-            <select id="field"
-                    name="field"
-                    class="form-control chzn-select"
-                    th:disabled="${readOnly}"
-                    th:attr="data-placeholder=#{common.select}"
-                    onchange="if ($('#field').val() == 'EMAIL_USE_TLS') {$('#value').val('true');}"
-                    >
-                <option th:if="${configFieldList != null} and ${configuration != null} and ${configuration.field == null}"
-                        th:each="field : ${configFieldList}"
-                        th:value="${field}"
-                        th:with="fieldName=${'configuration.field.'} + ${field}"
-                        th:text="#{${fieldName}}"
-                        />
-
-                <option th:if="${configFieldList != null} and ${configuration != null} and ${configuration.field != null}"
-                        th:each="field : ${configFieldList}"
-                        th:value="${field}"
-                        th:with="fieldName=${'configuration.field.'} + ${field}"
-                        th:text="#{${fieldName}}"
-                        th:selected="${configuration.field == field}"
-                        />
-            </select>
+            <input type="text"
+                   id="emailFrom"
+                   name="emailFrom"
+                   class="form-control focus"
+                   th:value="${configuration.emailFrom}"
+                   th:readonly="${readOnly}"
+                    />
         </div>
 
-        <div class="form-group"
-                th:with="crypted=${configuration != null}
-                                and ${configuration.field != null}
-                                and ${configuration.field.cryptedValue}
-                                    ? true
-                                    : false
-                        "
-                    >
-            <label for="value" class="control-label" th:text="#{configuration.value}">
-                configuration.value
+        <div class="form-group">
+            <label for="emailPassword" class="control-label" >
+                emailPassword
             </label>
 
-            <input th:if="${crypted}"
-                   type="password"
-                   th:value="${configuration.value}"
-                   id="value"
-                   name="value"
-                   class="form-control"
+            <input type="password"
+                   id="emailPassword"
+                   name="emailPassword"
+                   class="form-control focus"
+                   th:value="${configuration.emailPassword}"
                    th:readonly="${readOnly}"
-                />
-
-            <input th:if="${!crypted}"
-                   type="text"
-                   th:value="${configuration.value}"
-                   id="value"
-                   name="value"
-                   class="form-control"
-                   th:readonly="${readOnly}"
-                />
+                    />
         </div>
+
+        <div class="form-group">
+            <label for="smtpHost" class="control-label" >
+                smtpHost
+            </label>
+
+            <input type="text"
+                   id="smtpHost"
+                   name="smtpHost"
+                   class="form-control focus"
+                   th:value="${configuration.smtpHost}"
+                   th:readonly="${readOnly}"
+                    />
+        </div>
+
+        <div class="form-group">
+            <label for="smtpPort" class="control-label" >
+                smtpPort
+            </label>
+
+            <input type="number"
+                   id="smtpPort"
+                   name="smtpPort"
+                   class="form-control focus"
+                   th:value="${configuration.smtpPort}"
+                   th:readonly="${readOnly}"
+                    />
+        </div>
+
+        <div class="form-group">
+            <label for="useTLS" class="control-label" >
+                useTLS
+            </label>
+
+            <input type="checkbox"
+                   id="useTLS"
+                   name="useTLS"
+                   class="form-control focus"
+                   th:value="${configuration.useTLS}"
+                   th:readonly="${readOnly}"
+                    />
+        </div>
+
     </div>
 
     <div class="tab-pane" id="authorShipTab">
