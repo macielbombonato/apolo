@@ -36,6 +36,14 @@
             </div>
         </center>
 
+        <!--
+            This wait of a second is necessary because at this moment jQuery no loaded yet
+            but, in one second we imagine that this will occur.
+            We put this code here and not in app.js, for example, because, this page can change
+            the content location of the app, but only when it was used. So, to minimize maintanence
+            operations, we try this.
+            If you have some production problems with this, first try to change the time below.
+         -->
         <script>
             setTimeout(function() {
                 $('#content-panel').removeClass('col-sm-12');
