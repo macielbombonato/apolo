@@ -80,13 +80,6 @@ $(document).ready(function() {
 		$(this).tab('show');
 	});
 
-    if ($(window).width() <= 767) {
-        $('#content').removeClass('col-sm-8');
-        $('#content').addClass('col-sm-10');
-
-        $('#sidebar').hide();
-    }
-
 	if (!App.readOnly) {
 		$('.focus').trigger('focus');
 	}

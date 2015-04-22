@@ -1,0 +1,40 @@
+Este arquivo possui uma configuração de exemplo para apache.
+A ideia é configurar o apache de forma que o multitenancy seja bem representado.
+
+
+<VirtualHost apolo.com.br:80>
+    ServerName apolo.com.br
+    # Forca acesso com WWW
+    RewriteEngine On
+    RewriteCond %{HTTP_HOST} !^www\.
+    RewriteRule ^(.*)$ http://www.%{HTTP_HOST}/$1 [R=301,L]
+</VirtualHost>
+
+<VirtualHost www.apolo.com.br:80>
+    ServerName www.apolo.com.br
+    # Forca SSL
+    RewriteEngine On
+    RewriteCond %{HTTPS} !=on [NC]
+    RewriteRule ^ https://%{SERVER_NAME}%{REQUEST_URI} [R,L]
+</VirtualHost>
+
+<VirtualHost www.apolo.com.br:443>
+    ServerName www.apolo.com.br
+    SSLEngine on
+    SSLCertificateFile      "/etc/apache_front/ssl/apache_apolo.pem"
+    SSLCertificateKeyFile   "/etc/apache_front/ssl/apache_apolo.key"
+
+    DocumentRoot "/etc/apache_front/htdocs/apolo.com.br"
+    ErrorLog     "logs/apolo.net-error_log"
+    CustomLog    "logs/apolo.net-access_log" common
+    LogLevel     "warn"
+
+    ProxyPass /apolo/ http://0.0.0.0:8080/apolo/
+    ProxyPassReverse /apolo/ http://0.0.0.0:8080/apolo/
+</VirtualHost>
+
+
+
+conteúdo do arquivo index.html em DocumentRoot
+
+<html><head><META http-equiv="refresh" content="0;URL=/apolo/index.html"></head><body></body></html>
