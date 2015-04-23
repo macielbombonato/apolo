@@ -6,6 +6,25 @@
     <body th:fragment="add-vertical">
 
     <div th:if="${ (#authorization.expression('isAuthenticated()') == true and #authentication.systemUser.tenant.showAdds == true) or #authorization.expression('isAuthenticated()') != true}">
+
+        <!--
+            This wait of a second is necessary because at this moment jQuery no loaded yet
+            but, in one second we imagine that this will occur.
+            We put this code here and not in app.js, for example, because, this page can change
+            the content location of the app, but only when it was used. So, to minimize maintanence
+            operations, we try this.
+            If you have some production problems with this, first try to change the time below.
+         -->
+        <script>
+            setTimeout(function() {
+                        $('#content-panel').removeClass('col-sm-12');
+                        $('#content-panel').addClass('col-sm-10');
+                    },
+                    1000
+            );
+
+        </script>
+
         <center>
             <div class="row ">
                 <div class="add-mobile">
@@ -35,24 +54,6 @@
                 </div>
             </div>
         </center>
-
-        <!--
-            This wait of a second is necessary because at this moment jQuery no loaded yet
-            but, in one second we imagine that this will occur.
-            We put this code here and not in app.js, for example, because, this page can change
-            the content location of the app, but only when it was used. So, to minimize maintanence
-            operations, we try this.
-            If you have some production problems with this, first try to change the time below.
-         -->
-        <script>
-            setTimeout(function() {
-                $('#content-panel').removeClass('col-sm-12');
-                $('#content-panel').addClass('col-sm-10');
-            },
-            1000
-            );
-
-        </script>
     </div>
     </body>
 </html>
