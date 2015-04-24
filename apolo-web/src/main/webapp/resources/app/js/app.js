@@ -84,6 +84,38 @@ $(document).ready(function() {
 		$('.focus').trigger('focus');
 	}
 
+	$('.google-vertical-ad').ready(function() {
+		$('#content-panel').removeClass('col-sm-12');
+		$('#content-panel').addClass('col-sm-10');
+	});
+
+	if (!$('.ad-desktop').is(':visible')) {
+		$('.ad-desktop').remove();
+	}
+
+	if (!$('.ad-mobile').is(':visible')) {
+		$('.ad-mobile').remove();
+	}
+
+	$('.google-ad').html(
+		'<ins class="adsbygoogle" ' +
+			'style="display:inline-block;width:' + $('.google-ad').data('google-ad-width') + 'px;height:' + $('.google-ad').data('google-ad-height') + 'px" ' +
+			'data-ad-client="' + $('.google-ad').data('google-ad-client') + '" ' +
+			'data-ad-slot="' + $('.google-ad').data('google-ad-slot') + '"></ins> ' +
+		'<script> ' +
+			'(adsbygoogle = window.adsbygoogle || []).push({}); ' +
+		'</script> '
+	);
+
+	$('.google-ad-sync').html(
+		'<script type="text/javascript"> ' +
+			'google_ad_client = "' + $('.google-ad').data('google-ad-client') + '"; ' +
+			'google_ad_slot = "' + $('.google-ad').data('google-ad-slot') + '"; ' +
+			'google_ad_width = ' + $('.google-ad').data('google-ad-width') + '; ' +
+			'google_ad_height = ' + $('.google-ad').data('google-ad-height') + '; ' +
+		'</script> '
+	);
+
 });
 
 $.fn.is_on_screen = function(){

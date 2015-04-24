@@ -3,7 +3,7 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <head th:include="@{_fragment/_headTag} :: headTag">
     </head>
-    <body th:fragment="apolo-template" class="login">
+    <body class="login">
 
         <div th:remove="tag" th:include="@{_fragment/_message} :: message"></div>
 
@@ -68,8 +68,23 @@
 
                 </div>
 
-                <div th:remove="tag" th:include="@{_fragment/_add-vertical} :: add-vertical"></div>
+                <div class="row">
+                    &nbsp;
+                    <br />
+                </div>
+
+                <div class="col-sm-12" th:remove="tag" th:include="@{_fragment/_add-horizontal} :: add-horizontal"></div>
+
+                <div class="row">
+                    &nbsp;
+                    <br />
+                    <br />
+                    <br />
+                </div>
+
             </div>
         </div>
+
+        <div th:remove="tag" th:include="@{_fragment/_footer} :: footer"></div>
     </body>
 </html>

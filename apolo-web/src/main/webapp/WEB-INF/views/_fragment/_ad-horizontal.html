@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <head>
+    </head>
+    <body th:fragment="ad-horizontal">
+
+    <div th:if="${ (#authorization.expression('isAuthenticated()') == true and #authentication.systemUser.tenant.showAdds == true) or #authorization.expression('isAuthenticated()') != true}">
+
+        <div class="row">
+
+            <center>
+                <div class="google-ad ad-mobile"
+                     data-google-ad-client="ca-pub-3481908664466605"
+                     data-google-ad-slot="9229031586"
+                     data-google-ad-width="320"
+                     data-google-ad-height="100">
+                </div>
+
+                <div class="google-ad ad-desktop"
+                     data-google-ad-client="ca-pub-3481908664466605"
+                     data-google-ad-slot="5996363588"
+                     data-google-ad-width="728"
+                     data-google-ad-height="90">
+                </div>
+            </center>
+
+        </div>
+    </div>
+    </body>
+</html>
