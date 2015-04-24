@@ -84,10 +84,10 @@ $(document).ready(function() {
 		$('.focus').trigger('focus');
 	}
 
-	$('.google-vertical-ad').ready(function() {
+	if ($('.google-vertical-ad').is(':visible')) {
 		$('#content-panel').removeClass('col-sm-12');
 		$('#content-panel').addClass('col-sm-10');
-	});
+	}
 
 	if (!$('.ad-desktop').is(':visible')) {
 		$('.ad-desktop').remove();

@@ -5,10 +5,9 @@
     </head>
     <body th:fragment="ad-vertical">
 
-        <div th:if="${ (#authorization.expression('isAuthenticated()') == true and #authentication.systemUser.tenant.showAdds == true) or #authorization.expression('isAuthenticated()') != true}"
-                class="google-vertical-ad">
+        <div th:if="${ (#authorization.expression('isAuthenticated()') == true and #authentication.systemUser.tenant.showAdds == true) or #authorization.expression('isAuthenticated()') != true}">
 
-            <div class="google-ad ad-desktop"
+            <div class="google-ad ad-desktop google-vertical-ad"
                  data-google-ad-client="ca-pub-3481908664466605"
                  data-google-ad-slot="7473096784"
                  data-google-ad-width="160"
