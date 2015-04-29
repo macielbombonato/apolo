@@ -65,13 +65,13 @@ public class AuthController extends BaseController {
 		return mav;
 	}
 
-	@Secured("permitAll")
+	@PreAuthorize("permitAll")
     @RequestMapping(value = "/loginfailed", method = RequestMethod.GET)
     public ModelAndView loginFailed(HttpServletRequest request, ModelMap model) {
         return loginFailed(applicationProperties.getDefaultTenant(), request, model);
     }
 
-	@Secured("permitAll")
+	@PreAuthorize("permitAll")
 	@RequestMapping(value = "/{tenant-url}/loginfailed", method = RequestMethod.GET)
 	public ModelAndView loginFailed(
             @PathVariable("tenant-url") String tenant,
@@ -95,13 +95,13 @@ public class AuthController extends BaseController {
 		return mav;
 	}
 
-	@Secured("isAuthenticated()")
+	@PreAuthorize("isAuthenticated()")
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
 	public ModelAndView logout(HttpServletRequest request, ModelMap model) {
 		return logout(applicationProperties.getDefaultTenant(), request, model);
 	}
 
-	@Secured("isAuthenticated()")
+	@PreAuthorize("isAuthenticated()")
     @RequestMapping(value = "/{tenant-url}/logout", method = RequestMethod.GET)
     public ModelAndView logout(
             @PathVariable("tenant-url") String tenant,

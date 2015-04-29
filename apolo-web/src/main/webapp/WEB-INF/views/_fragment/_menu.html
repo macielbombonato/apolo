@@ -16,9 +16,9 @@
                              th:src="@{|/${#authentication.systemUser.dbTenant.url}/uploadedfiles/User/${#authentication.systemUser.id}/${#authentication.systemUser.pictureGeneratedName}|}"
                                 />
 
-                        <i th:if="${#authentication.systemUser.pictureGeneratedName == null}"
-                           class="fa fa-user fa-3x">
-                        </i>
+                        <span th:if="${#authentication.systemUser.pictureGeneratedName == null or #authentication.systemUser.pictureGeneratedName == ''}"
+                           class="fa fa-user fa-4x">
+                        </span>
                     </p>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12">
@@ -185,32 +185,6 @@
                     </ul>
                 </li>
 
-                <li sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_CONFIGURATION_LIST', 'ROLE_CONFIGURATION_CREATE')">
-                    <a href="#">
-                        <i class="icon fa fa-cog"></i>
-                        <span class="text" th:text="#{menu.sysadmin.config}" >
-                            menu.sysadmin.config
-                        </span>
-                        <span class="indicator"></span>
-                    </a>
-                    <ul>
-                        <li>
-                            <a sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_CONFIGURATION_LIST')"
-                               th:href='@{|/${#authentication.systemUser.tenant.url}/configuration/list|}'>
-                                <i class="icon fa fa-list"></i>
-                                <span class="text" th:text="#{configuration.list}">configuration.list</span>
-                            </a>
-                        </li>
-
-                        <li>
-                            <a sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_CONFIGURATION_CREATE')"
-                               th:href='@{|/${#authentication.systemUser.tenant.url}/configuration/new|}'>
-                                <i class="icon fa fa-plus"></i>
-                                <span class="text" th:text="#{configuration.new}">configuration.new</span>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
                 <li sec:authorize="hasAnyRole('ROLE_ADMIN')">
                     <a sec:authorize="hasAnyRole('ROLE_ADMIN')"
                        th:href='@{|/${#authentication.systemUser.tenant.url}/auditlog/list|}'>

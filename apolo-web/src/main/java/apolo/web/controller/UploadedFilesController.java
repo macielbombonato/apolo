@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,7 +24,7 @@ public class UploadedFilesController extends BaseController<User> {
 	ApplicationProperties applicationProperties;
 
     @SuppressWarnings("rawtypes")
-    @SecuredEnum(UserPermission.AFTER_AUTH_USER)
+	@PreAuthorize("isAuthenticated()")
     @RequestMapping(value = "/uploadedfiles/{entity}/{id}/{fileName}.{extension}" , method = RequestMethod.GET)
     public ResponseEntity<FileSystemResource> getFile(
             @PathVariable("entity") String entity,
@@ -41,7 +42,7 @@ public class UploadedFilesController extends BaseController<User> {
     }
 
 	@SuppressWarnings("rawtypes")
-	@SecuredEnum(UserPermission.AFTER_AUTH_USER)
+	@PreAuthorize("isAuthenticated()")
 	@RequestMapping(value = "/{tenant}/uploadedfiles/{entity}/{id}/{fileName}.{extension}" , method = RequestMethod.GET)
     public ResponseEntity<FileSystemResource> getFile(
     		@PathVariable("tenant") String tenant,

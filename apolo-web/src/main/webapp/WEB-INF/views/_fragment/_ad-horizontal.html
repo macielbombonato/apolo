@@ -5,21 +5,21 @@
     </head>
     <body th:fragment="ad-horizontal">
 
-    <div th:if="${ (#authorization.expression('isAuthenticated()') == true and #authentication.systemUser.tenant.showAdds == true) or #authorization.expression('isAuthenticated()') != true}">
+    <div th:if="${ (#authorization.expression('isAuthenticated()') == true and #authentication.systemUser.tenant.showAdds == true)}">
 
         <div class="row">
 
+            <input type="hidden" id="googleAdClient" th:value="${#authentication.systemUser.tenant.googleAdClient}" />
+            <input type="hidden" id="googleAdSlotTwo" th:value="${#authentication.systemUser.tenant.googleAdSlotTwo}" />
+            <input type="hidden" id="googleAdSlotThree" th:value="${#authentication.systemUser.tenant.googleAdSlotThree}" />
+
             <center>
-                <div class="google-ad ad-mobile"
-                     data-google-ad-client="ca-pub-3481908664466605"
-                     data-google-ad-slot="9229031586"
+                <div id="ad-two" class="google-ad ad-mobile"
                      data-google-ad-width="320"
                      data-google-ad-height="100">
                 </div>
 
-                <div class="google-ad ad-desktop"
-                     data-google-ad-client="ca-pub-3481908664466605"
-                     data-google-ad-slot="5996363588"
+                <div id="ad-three" class="google-ad ad-desktop"
                      data-google-ad-width="728"
                      data-google-ad-height="90">
                 </div>

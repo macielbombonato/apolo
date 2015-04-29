@@ -5,11 +5,12 @@
     </head>
     <body th:fragment="ad-vertical">
 
-        <div th:if="${ (#authorization.expression('isAuthenticated()') == true and #authentication.systemUser.tenant.showAdds == true) or #authorization.expression('isAuthenticated()') != true}">
+        <div th:if="${ (#authorization.expression('isAuthenticated()') == true and #authentication.systemUser.tenant.showAdds == true)}">
 
-            <div class="google-ad ad-desktop google-vertical-ad"
-                 data-google-ad-client="ca-pub-3481908664466605"
-                 data-google-ad-slot="7473096784"
+            <input type="hidden" id="googleAdClient" th:value="${#authentication.systemUser.tenant.googleAdClient}" />
+            <input type="hidden" id="googleAdSlotOne" th:value="${#authentication.systemUser.tenant.googleAdSlotOne}" />
+
+            <div id="ad-one" class="google-ad ad-desktop google-vertical-ad ad-one"
                  data-google-ad-width="160"
                  data-google-ad-height="600">
             </div>

@@ -301,7 +301,6 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 			tenant.setLogoHeight(20);
 			tenant.setLogoWidth(15);
 			tenant.setUrl(applicationProperties.getDefaultTenant());
-			tenant.setSkin(Skin.SKIN_5);
 			tenant.setSpinner(Spinner.COGS);
 			tenant.setStatus(Status.ACTIVE);
 

@@ -25,27 +25,6 @@
 <div class="tab-content">
     <div class="tab-pane active" id="home">
         <div class="form-group">
-            <label for="skin" class="control-label" th:text="#{tenant.skin}">
-                tenant.skin
-            </label>
-
-            <div class="row">
-                <div class="col-sm-3" th:each="skin : ${skinList}">
-                    <label class="control-label">
-                        <input type="radio"
-                               id="skin"
-                               name="skin"
-                               th:value="${skin}"
-                               th:checked="${skin eq tenant.skin}"
-                               th:disabled="${readOnly}"
-                        />
-                        <span class="theme-color" style="background:${skin.color}"></span>
-                    </label>
-                </div>
-            </div>
-        </div>
-
-        <div class="form-group">
             <label for="spinner" class="control-label" th:text="#{tenant.spinner}">
                 tenant.spinner
             </label>
@@ -92,20 +71,6 @@
                    value="true"
                    th:disabled="${readOnly}"
                    th:checked="${tenant.showName}"
-                    />
-        </div>
-
-        <div class="form-group">
-            <label for="showAdds" class="control-label" th:text="#{tenant.showAdds}">
-                tenant.showAdds
-            </label>
-            <input class="form-control"
-                   type="checkbox"
-                   id="showAdds"
-                   name="showAdds"
-                   value="true"
-                   th:disabled="${readOnly}"
-                   th:checked="${tenant.showAdds}"
                     />
         </div>
 
@@ -166,6 +131,146 @@
                 tenant.icon
             </label>
             <input type="file" class="form-control" name="iconFile[0]" />
+        </div>
+
+        <div class="form-group">
+            <label for="emailFrom" class="control-label" >
+                emailFrom
+            </label>
+
+            <input type="text"
+                   id="emailFrom"
+                   name="emailFrom"
+                   class="form-control"
+                   th:value="${tenant.emailFrom}"
+                   th:readonly="${readOnly}"
+                    />
+        </div>
+
+        <div class="form-group">
+            <label for="emailPassword" class="control-label" >
+                emailPassword
+            </label>
+
+            <input type="password"
+                   id="emailPassword"
+                   name="emailPassword"
+                   class="form-control"
+                   th:value="${tenant.emailPassword}"
+                   th:readonly="${readOnly}"
+                    />
+        </div>
+
+        <div class="form-group">
+            <label for="smtpHost" class="control-label" >
+                smtpHost
+            </label>
+
+            <input type="text"
+                   id="smtpHost"
+                   name="smtpHost"
+                   class="form-control"
+                   th:value="${tenant.smtpHost}"
+                   th:readonly="${readOnly}"
+                    />
+        </div>
+
+        <div class="form-group">
+            <label for="smtpPort" class="control-label" >
+                smtpPort
+            </label>
+
+            <input type="number"
+                   id="smtpPort"
+                   name="smtpPort"
+                   class="form-control"
+                   th:value="${tenant.smtpPort}"
+                   th:readonly="${readOnly}"
+                    />
+        </div>
+
+        <div class="form-group">
+            <label for="useTLS" class="control-label" >
+                useTLS
+            </label>
+
+            <input type="checkbox"
+                   id="useTLS"
+                   name="useTLS"
+                   class="form-control"
+                   th:value="${tenant.useTLS}"
+                   th:readonly="${readOnly}"
+                    />
+        </div>
+
+        <div class="form-group">
+            <label for="showAdds" class="control-label" th:text="#{tenant.showAdds}">
+                tenant.showAdds
+            </label>
+            <input class="form-control"
+                   type="checkbox"
+                   id="showAdds"
+                   name="showAdds"
+                   value="true"
+                   th:disabled="${readOnly}"
+                   th:checked="${tenant.showAdds}"
+                    />
+        </div>
+
+        <div class="form-group">
+            <label for="googleAdClient" class="control-label" >
+                googleAdClient
+            </label>
+
+            <input type="text"
+                   id="googleAdClient"
+                   name="googleAdClient"
+                   class="form-control"
+                   th:value="${tenant.googleAdClient}"
+                   th:readonly="${readOnly}"
+                    />
+        </div>
+
+        <div class="form-group">
+            <label for="googleAdSlotOne" class="control-label" >
+                googleAdSlotOne
+            </label>
+
+            <input type="number"
+                   id="googleAdSlotOne"
+                   name="googleAdSlotOne"
+                   class="form-control"
+                   th:value="${tenant.googleAdSlotOne}"
+                   th:readonly="${readOnly}"
+                    />
+        </div>
+
+        <div class="form-group">
+            <label for="googleAdSlotTwo" class="control-label" >
+                googleAdSlotTwo
+            </label>
+
+            <input type="number"
+                   id="googleAdSlotTwo"
+                   name="googleAdSlotTwo"
+                   class="form-control"
+                   th:value="${tenant.googleAdSlotTwo}"
+                   th:readonly="${readOnly}"
+                    />
+        </div>
+
+        <div class="form-group">
+            <label for="googleAdSlotThree" class="control-label" >
+                googleAdSlotThree
+            </label>
+
+            <input type="number"
+                   id="googleAdSlotThree"
+                   name="googleAdSlotThree"
+                   class="form-control"
+                   th:value="${tenant.googleAdSlotThree}"
+                   th:readonly="${readOnly}"
+                    />
         </div>
     </div>
 

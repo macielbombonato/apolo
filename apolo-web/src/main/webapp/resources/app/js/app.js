@@ -97,22 +97,48 @@ $(document).ready(function() {
 		$('.ad-mobile').remove();
 	}
 
-	$('.google-ad').html(
+	$('.google-ad#ad-one').html(
+		'<script async="async" src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script> ' +
 		'<ins class="adsbygoogle" ' +
-			'style="display:inline-block;width:' + $('.google-ad').data('google-ad-width') + 'px;height:' + $('.google-ad').data('google-ad-height') + 'px" ' +
-			'data-ad-client="' + $('.google-ad').data('google-ad-client') + '" ' +
-			'data-ad-slot="' + $('.google-ad').data('google-ad-slot') + '"></ins> ' +
+			'style="display:inline-block;width:' + $('.google-ad').data('#ad-one') + 'px;height:' + $('#ad-one').data('google-ad-height') + 'px" ' +
+			'data-ad-client="' + $('#googleAdClient').val() + '" ' +
+			'data-ad-slot="' + $('#googleAdSlotOne').val() + '"></ins> ' +
 		'<script> ' +
 			'(adsbygoogle = window.adsbygoogle || []).push({}); ' +
 		'</script> '
 	);
 
-	$('.google-ad-sync').html(
+	$('.google-ad#ad-two').html(
+		'<script async="async" src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script> ' +
+		'<ins class="adsbygoogle" ' +
+			'style="display:inline-block;width:' + $('#ad-two').data('google-ad-width') + 'px;height:' + $('#ad-two').data('google-ad-height') + 'px" ' +
+			'data-ad-client="' + $('#googleAdClient').val() + '" ' +
+			'data-ad-slot="' + $('#googleAdSlotTwo').val() + '"></ins> ' +
+		'<script> ' +
+			'(adsbygoogle = window.adsbygoogle || []).push({}); ' +
+		'</script> '
+	);
+
+	$('.google-ad#ad-three').html(
+		'<script async="async" src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script> ' +
+		'<ins class="adsbygoogle" ' +
+			'style="display:inline-block;width:' + $('#ad-three').data('google-ad-width') + 'px;height:' + $('#ad-three').data('google-ad-height') + 'px" ' +
+			'data-ad-client="' + $('#googleAdClient').val() + '" ' +
+			'data-ad-slot="' + $('#googleAdSlotThree').val() + '"></ins> ' +
+		'<script> ' +
+			'(adsbygoogle = window.adsbygoogle || []).push({}); ' +
+		'</script> '
+	);
+
+	$('.google-ad-sync#ad-three').html(
 		'<script type="text/javascript"> ' +
-			'google_ad_client = "' + $('.google-ad').data('google-ad-client') + '"; ' +
-			'google_ad_slot = "' + $('.google-ad').data('google-ad-slot') + '"; ' +
-			'google_ad_width = ' + $('.google-ad').data('google-ad-width') + '; ' +
-			'google_ad_height = ' + $('.google-ad').data('google-ad-height') + '; ' +
+			'google_ad_client = "' + $('#googleAdClient').val() + '"; ' +
+			'google_ad_slot = "' + $('#googleAdSlotThree').val() + '"; ' +
+			'google_ad_width = ' + $('#ad-three').data('google-ad-width') + '; ' +
+			'google_ad_height = ' + $('#ad-three').data('google-ad-height') + '; ' +
+		'</script> ' +
+		'<script type="text/javascript" ' +
+			'src="//pagead2.googlesyndication.com/pagead/show_ads.js"> ' +
 		'</script> '
 	);
 

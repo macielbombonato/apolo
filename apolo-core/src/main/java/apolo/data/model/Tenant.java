@@ -1,26 +1,17 @@
 package apolo.data.model;
 
 import apolo.data.entitylistener.AuditLogListener;
-import apolo.data.enums.Language;
-import apolo.data.enums.Skin;
 import apolo.data.enums.Spinner;
 import apolo.data.enums.Status;
 import apolo.data.util.InputLength;
+import org.hibernate.annotations.Type;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
-
-import javax.persistence.AttributeOverride;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
-import org.hibernate.annotations.Type;
-import org.springframework.web.multipart.MultipartFile;
+import java.util.List;
 
 @Entity
 @EntityListeners(value = AuditLogListener.class)
@@ -54,11 +45,6 @@ public class Tenant extends AuditableBaseEntity {
 	@Max(40)
 	private Integer logoHeight;
 	
-	@Column(name = "skin", nullable = false)
-	@Type(type = "apolo.data.enums.usertype.SkinUserType")
-	@NotNull
-	private Skin skin;
-	
 	@Column(name = "status", nullable = false)
 	@Type(type = "apolo.data.enums.usertype.StatusUserType")
 	@NotNull
@@ -76,12 +62,116 @@ public class Tenant extends AuditableBaseEntity {
     @Column(name = "has_show_adds", nullable = true)
     @Type(type="yes_no")
     private Boolean showAdds;
+
+	@Column(name = "email_from", length = InputLength.NAME, nullable = true)
+	private String emailFrom;
+
+	@Column(name = "email_password", length = InputLength.NAME, nullable = true)
+	private String emailPassword;
+
+	@Column(name = "smtp_host", length = InputLength.NAME, nullable = true)
+	private String smtpHost;
+
+	@Column(name = "smtp_port", length = InputLength.NAME, nullable = true)
+	private String smtpPort;
+
+	@Column(name = "use_tls", nullable = true)
+	@Type(type="yes_no")
+	private Boolean useTLS;
+
+	@Column(name = "google_ad_client", length = InputLength.NAME, nullable = true)
+	private String googleAdClient;
+
+	@Column(name = "google_ad_slot_one", length = InputLength.NAME, nullable = true)
+	private String googleAdSlotOne;
+
+	@Column(name = "google_ad_slot_two", length = InputLength.NAME, nullable = true)
+	private String googleAdSlotTwo;
+
+	@Column(name = "google_ad_slot_three", length = InputLength.NAME, nullable = true)
+	private String googleAdSlotThree;
 	
 	@Transient
 	private List<MultipartFile> logoFile;
 
     @Transient
     private List<MultipartFile> iconFile;
+
+	public String getGoogleAdSlotThree() {
+		return googleAdSlotThree;
+	}
+
+	public void setGoogleAdSlotThree(String googleAdSlotThree) {
+		this.googleAdSlotThree = googleAdSlotThree;
+	}
+
+	public String getEmailFrom() {
+		return emailFrom;
+	}
+
+	public void setEmailFrom(String emailFrom) {
+		this.emailFrom = emailFrom;
+	}
+
+	public String getEmailPassword() {
+		return emailPassword;
+	}
+
+	public void setEmailPassword(String emailPassword) {
+		this.emailPassword = emailPassword;
+	}
+
+	public String getSmtpHost() {
+		return smtpHost;
+	}
+
+	public void setSmtpHost(String smtpHost) {
+		this.smtpHost = smtpHost;
+	}
+
+	public String getSmtpPort() {
+		return smtpPort;
+	}
+
+	public void setSmtpPort(String smtpPort) {
+		this.smtpPort = smtpPort;
+	}
+
+	public Boolean isUseTLS() {
+		return useTLS;
+	}
+
+	public Boolean getUseTLS() {
+		return useTLS;
+	}
+
+	public void setUseTLS(Boolean useTLS) {
+		this.useTLS = useTLS;
+	}
+
+	public String getGoogleAdClient() {
+		return googleAdClient;
+	}
+
+	public void setGoogleAdClient(String googleAdClient) {
+		this.googleAdClient = googleAdClient;
+	}
+
+	public String getGoogleAdSlotOne() {
+		return googleAdSlotOne;
+	}
+
+	public void setGoogleAdSlotOne(String googleAdSlotOne) {
+		this.googleAdSlotOne = googleAdSlotOne;
+	}
+
+	public String getGoogleAdSlotTwo() {
+		return googleAdSlotTwo;
+	}
+
+	public void setGoogleAdSlotTwo(String googleAdSlotTwo) {
+		this.googleAdSlotTwo = googleAdSlotTwo;
+	}
 
 	public String getUrl() {
 		return this.url;
@@ -105,14 +195,6 @@ public class Tenant extends AuditableBaseEntity {
 
 	public void setStatus(Status status) {
 		this.status = status;
-	}
-
-	public Skin getSkin() {
-		return this.skin;
-	}
-
-	public void setSkin(Skin skin) {
-		this.skin = skin;
 	}
 
 	public String getLogo() {
