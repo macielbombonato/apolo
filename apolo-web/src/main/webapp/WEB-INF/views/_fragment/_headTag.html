@@ -9,45 +9,31 @@
         <meta http-equiv="X-Frame-Options" content="allow" />
 
         <!-- title selection -->
-        <title sec:authorize="hasRole('ROLE_AFTER_AUTH_USER')"
-               th:if="${#authentication.systemUser != null}
-                    and ${#authentication.systemUser.tenant != null}
-                    and ${#authentication.systemUser.tenant.name != null}"
+        <title th:if="${#authorization.expression('isAuthenticated()') == true} and ${#authentication.systemUser.tenant.name != null}"
                th:text="${#authentication.systemUser.tenant.name}"
                 >
         </title>
-        <title sec:authorize="hasRole('ROLE_AFTER_AUTH_USER')"
-               th:if="${#authentication.systemUser != null}
-                    and ${#authentication.systemUser.tenant != null}
-                    and ${#authentication.systemUser.tenant.name == null}"
+        <title th:if="${#authorization.expression('isAuthenticated()') == true} and ${#authentication.systemUser.tenant.name == null}"
                th:text="#{app.title}"
                 >
         </title>
-        <title sec:authorize="isAnonymous()"
+        <title th:if="${#authorization.expression('isAuthenticated()') == false}"
                th:text="#{app.title}"
                 >
         </title>
 
         <!-- icon selection -->
-        <link sec:authorize="hasRole('ROLE_AFTER_AUTH_USER')"
-              th:if="${#authorization.expression('isAuthenticated()') == true}
-                         and ${#authentication.systemUser.tenant != null}
-                         and ${#authentication.systemUser.tenant.icon != null}"
+        <link th:if="${#authorization.expression('isAuthenticated()') == true} and ${#authentication.systemUser.tenant.icon != null}"
               rel="icon"
               type="image/png"
               th:src="@{|/${#authentication.systemUser.tenant.url}/uploadedfiles/Tenant/${#authentication.systemUser.tenant.id}/${#authentication.systemUser.tenant.icon}|}"
           />
-        <link sec:authorize="hasRole('ROLE_AFTER_AUTH_USER')"
-              th:if="${#authorization.expression('isAuthenticated()') == true}
-                         and (
-                            ${#authentication.systemUser.tenant == null}
-                            or ${#authentication.systemUser.tenant.icon == null}
-                         )"
+        <link th:if="${#authorization.expression('isAuthenticated()') == true} and ${#authentication.systemUser.tenant.icon == null}"
               rel="icon"
               type="image/png"
               th:href="@{|/resources/app/img/favicon.png|}"
           />
-        <link sec:authorize="isAnonymous()"
+        <link th:if="${#authorization.expression('isAuthenticated()') == false}"
               rel="icon"
               type="image/png"
               th:href="@{|/resources/app/img/favicon.png|}"

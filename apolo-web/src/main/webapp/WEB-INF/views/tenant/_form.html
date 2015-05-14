@@ -87,9 +87,9 @@
             />
             <blockquote th:with="visible=${readOnly ? 'display: none;' : 'display: block;' }"
                     th:style="${visible}" >
-                <footer th:text="#{tenant.url.change.advice}">
+                <small th:text="#{tenant.url.change.advice}">
                     tenant.url.change.advice
-                </footer>
+                </small>
             </blockquote>
         </div>
 
@@ -134,7 +134,7 @@
         </div>
 
         <div class="form-group">
-            <label for="emailFrom" class="control-label" >
+            <label for="emailFrom" class="control-label" th:text="#{tenant.emailFrom}">
                 emailFrom
             </label>
 
@@ -148,7 +148,7 @@
         </div>
 
         <div class="form-group">
-            <label for="emailPassword" class="control-label" >
+            <label for="emailPassword" class="control-label" th:text="#{tenant.emailPassword}">
                 emailPassword
             </label>
 
@@ -162,7 +162,7 @@
         </div>
 
         <div class="form-group">
-            <label for="smtpHost" class="control-label" >
+            <label for="smtpHost" class="control-label" th:text="#{tenant.smtpHost}">
                 smtpHost
             </label>
 
@@ -176,7 +176,7 @@
         </div>
 
         <div class="form-group">
-            <label for="smtpPort" class="control-label" >
+            <label for="smtpPort" class="control-label" th:text="#{tenant.smtpPort}">
                 smtpPort
             </label>
 
@@ -190,7 +190,7 @@
         </div>
 
         <div class="form-group">
-            <label for="useTLS" class="control-label" >
+            <label for="useTLS" class="control-label" th:text="#{tenant.useTLS}">
                 useTLS
             </label>
 
@@ -218,7 +218,7 @@
         </div>
 
         <div class="form-group">
-            <label for="googleAdClient" class="control-label" >
+            <label for="googleAdClient" class="control-label" th:text="#{tenant.googleAdClient}">
                 googleAdClient
             </label>
 
@@ -232,7 +232,7 @@
         </div>
 
         <div class="form-group">
-            <label for="googleAdSlotOne" class="control-label" >
+            <label for="googleAdSlotOne" class="control-label" th:text="#{tenant.googleAdSlotOne}">
                 googleAdSlotOne
             </label>
 
@@ -246,7 +246,7 @@
         </div>
 
         <div class="form-group">
-            <label for="googleAdSlotTwo" class="control-label" >
+            <label for="googleAdSlotTwo" class="control-label" th:text="#{tenant.googleAdSlotTwo}">
                 googleAdSlotTwo
             </label>
 
@@ -260,7 +260,7 @@
         </div>
 
         <div class="form-group">
-            <label for="googleAdSlotThree" class="control-label" >
+            <label for="googleAdSlotThree" class="control-label" th:text="#{tenant.googleAdSlotThree}">
                 googleAdSlotThree
             </label>
 
@@ -269,6 +269,20 @@
                    name="googleAdSlotThree"
                    class="form-control"
                    th:value="${tenant.googleAdSlotThree}"
+                   th:readonly="${readOnly}"
+                    />
+        </div>
+
+        <div class="form-group">
+            <label for="googleAnalyticsUserAccount" class="control-label" th:text="#{tenant.googleAnalyticsUserAccount}">
+                googleAnalyticsUserAccount
+            </label>
+
+            <input type="text"
+                   id="googleAnalyticsUserAccount"
+                   name="googleAnalyticsUserAccount"
+                   class="form-control"
+                   th:value="${tenant.googleAnalyticsUserAccount}"
                    th:readonly="${readOnly}"
                     />
         </div>

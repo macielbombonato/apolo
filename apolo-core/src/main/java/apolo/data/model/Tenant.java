@@ -90,6 +90,9 @@ public class Tenant extends AuditableBaseEntity {
 
 	@Column(name = "google_ad_slot_three", length = InputLength.NAME, nullable = true)
 	private String googleAdSlotThree;
+
+	@Column(name = "google_analytics_user", length = InputLength.NAME, nullable = true)
+	private String googleAnalyticsUserAccount;
 	
 	@Transient
 	private List<MultipartFile> logoFile;
@@ -276,4 +279,12 @@ public class Tenant extends AuditableBaseEntity {
     public void setIconFile(List<MultipartFile> iconFile) {
         this.iconFile = iconFile;
     }
+
+	public String getGoogleAnalyticsUserAccount() {
+		return googleAnalyticsUserAccount;
+	}
+
+	public void setGoogleAnalyticsUserAccount(String googleAnalyticsUserAccount) {
+		this.googleAnalyticsUserAccount = googleAnalyticsUserAccount;
+	}
 }
