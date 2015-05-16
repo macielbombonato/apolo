@@ -49,7 +49,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 @ComponentScan(basePackages = { "apolo" })
 public class WebMvcConfig extends WebMvcConfigurationSupport {
 	
-	protected static final Logger log = LoggerFactory.getLogger(WebMvcConfig.class);
+	private static final Logger log = LoggerFactory.getLogger(WebMvcConfig.class);
 	
 	public WebMvcConfig() {
 		super();
