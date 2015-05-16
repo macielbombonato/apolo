@@ -57,9 +57,36 @@ public class RootConfig {
 				config.setProperty("video.converter.executable.path"  , System.getenv("APOLO_VIDEO_CONVERTER_EXECUTABLE_PATH"));
 				config.setProperty("pdfimageextractor.executable.path", System.getenv("APOLO_PDF_IMAGE_EXTRACTOR_EXECUTABLE_PATH"));
 
-				log.info("uploadedfiles.path:                " + config.getProperty("uploadedfiles.path"));
-				log.info("video.converter.executable.path:   " + config.getProperty("video.converter.executable.path"));
-				log.info("pdfimageextractor.executable.path: " + config.getProperty("pdfimageextractor.executable.path"));
+				config.setProperty("default.tenant", System.getenv("APOLO_DEFAULT_TENANT"));
+
+				config.setProperty("default.emailFrom", System.getenv("APOLO_DEFAULT_emailFrom"));
+				config.setProperty("default.emailPassword", System.getenv("APOLO_DEFAULT_emailPassword"));
+				config.setProperty("default.smtpHost", System.getenv("APOLO_DEFAULT_smtpHost"));
+				config.setProperty("default.smtpPort", System.getenv("APOLO_DEFAULT_smtpPort"));
+				config.setProperty("default.useTLS", System.getenv("APOLO_DEFAULT_useTLS"));
+
+				config.setProperty("default.googleAdClient", System.getenv("APOLO_DEFAULT_GOOGLE_ADCLIENT"));
+				config.setProperty("default.googleAdSlotOne", System.getenv("APOLO_DEFAULT_GOOGLE_ADSLOT_ONE"));
+				config.setProperty("default.googleAdSlotTwo", System.getenv("APOLO_DEFAULT_GOOGLE_ADSLOT_TWO"));
+				config.setProperty("default.googleAdSlotThree", System.getenv("APOLO_DEFAULT_GOOGLE_ADSLOT_THREE"));
+				config.setProperty("default.googleAnalyticsUserAccount", System.getenv("APOLO_DEFAULT_GOOGLE_ANALYTICS_USER_ACCOUNT"));
+
+				log.info("uploadedfiles.path:                 " + config.getProperty("uploadedfiles.path"));
+				log.info("video.converter.executable.path:    " + config.getProperty("video.converter.executable.path"));
+				log.info("pdfimageextractor.executable.path:  " + config.getProperty("pdfimageextractor.executable.path"));
+				log.info("default.tenant:                     " + config.getProperty("default.tenant"));
+
+				log.info("default.emailFrom:                  " + config.getProperty("default.emailFrom"));
+				log.info("default.emailPassword:              " + config.getProperty("default.emailPassword"));
+				log.info("default.smtpHost:                   " + config.getProperty("default.smtpHost"));
+				log.info("default.smtpPort:                   " + config.getProperty("default.smtpPort"));
+				log.info("default.useTLS:                     " + config.getProperty("default.useTLS"));
+
+				log.info("default.googleAdClient:             " + config.getProperty("default.googleAdClient"));
+				log.info("default.googleAdSlotOne:            " + config.getProperty("default.googleAdSlotOne"));
+				log.info("default.googleAdSlotTwo:            " + config.getProperty("default.googleAdSlotTwo"));
+				log.info("default.googleAdSlotThree:          " + config.getProperty("default.googleAdSlotThree"));
+				log.info("default.googleAnalyticsUserAccount: " + config.getProperty("default.googleAnalyticsUserAccount"));
 
 				File configFile = new File(String.valueOf(Thread.currentThread().getContextClassLoader().getResourceAsStream(resourcesLocationArgument + "/config.properties")));
 				FileOutputStream configFOS = new FileOutputStream(configFile);
