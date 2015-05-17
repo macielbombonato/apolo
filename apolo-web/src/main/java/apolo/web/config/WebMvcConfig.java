@@ -2,13 +2,8 @@ package apolo.web.config;
 
 import apolo.common.config.model.ApplicationProperties;
 import apolo.data.enums.Language;
-
-import java.io.File;
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -32,16 +27,13 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.HandlerMapping;
 import org.springframework.web.servlet.LocaleResolver;
-import org.springframework.web.servlet.ViewResolver;
-import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
+import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
-import org.springframework.web.servlet.view.InternalResourceViewResolver;
+
+import java.io.File;
+import java.util.List;
 
 @Configuration
 @EnableWebMvc
@@ -61,19 +53,57 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
 	private static final String RESOURCES_LOCATION = "/resources/";
 	private static final String RESOURCES_HANDLER = RESOURCES_LOCATION + "**";
 	
-	@Value("${default.tenant}")
-	private String defaultTenant;
-	
-	@Value("${uploadedfiles.path}")
-	private String uploadedFilesPath;
-	
     @Bean
     public ApplicationProperties applicationProperties() {
     	ApplicationProperties result = new ApplicationProperties();
-    	
+
+		log.info("*************** Env Variables CONFIG FILE *************** ");
+
+		String defaultTenant = System.getenv("APOLO_DEFAULT_TENANT");
+		String uploadedFilesPath = System.getenv("APOLO_UPLOADED_FILES");
+		String emailFrom = System.getenv("APOLO_DEFAULT_emailFrom");
+		String emailPassword = System.getenv("APOLO_DEFAULT_emailPassword");
+		String smtpHost = System.getenv("APOLO_DEFAULT_smtpHost");
+		String smtpPort = System.getenv("APOLO_DEFAULT_smtpPort");
+		String useTLS = System.getenv("APOLO_DEFAULT_useTLS");
+		String googleAdClient = System.getenv("APOLO_DEFAULT_GOOGLE_ADCLIENT");
+		String googleAdSlotOne = System.getenv("APOLO_DEFAULT_GOOGLE_ADSLOT_ONE");
+		String googleAdSlotTwo = System.getenv("APOLO_DEFAULT_GOOGLE_ADSLOT_TWO");
+		String googleAdSlotThree = System.getenv("APOLO_DEFAULT_GOOGLE_ADSLOT_THREE");
+		String googleAnalyticsUserAccount = System.getenv("APOLO_DEFAULT_GOOGLE_ANALYTICS_USER_ACCOUNT");
+
+		log.info("uploadedfiles.path:                 " + uploadedFilesPath);
+		log.info("default.tenant:                     " + defaultTenant);
+
+		log.info("default.emailFrom:                  " + emailFrom);
+		log.info("default.emailPassword:              " + emailPassword);
+		log.info("default.smtpHost:                   " + smtpHost);
+		log.info("default.smtpPort:                   " + smtpPort);
+		log.info("default.useTLS:                     " + useTLS);
+
+		log.info("default.googleAdClient:             " + googleAdClient);
+		log.info("default.googleAdSlotOne:            " + googleAdSlotOne);
+		log.info("default.googleAdSlotTwo:            " + googleAdSlotTwo);
+		log.info("default.googleAdSlotThree:          " + googleAdSlotThree);
+		log.info("default.googleAnalyticsUserAccount: " + googleAnalyticsUserAccount);
+
     	result.setDefaultTenant(defaultTenant);
     	result.setUploadedFilesPath(uploadedFilesPath);
-    	
+
+		result.setEmailFrom(emailFrom);
+		result.setEmailPassword(emailPassword);
+		result.setSmtpHost(smtpHost);
+		result.setSmtpPort(smtpPort);
+		result.setUseTLS("true".equals(useTLS) ? true : false);
+
+		result.setGoogleAdClient(googleAdClient);
+		result.setGoogleAdSlotOne(googleAdSlotOne);
+		result.setGoogleAdSlotTwo(googleAdSlotTwo);
+		result.setGoogleAdSlotThree(googleAdSlotThree);
+		result.setGoogleAnalyticsUserAccount(googleAnalyticsUserAccount);
+
+		log.info("*************** END Env Variables CONFIG FILE *************** ");
+
     	return result;
     }
     
@@ -139,6 +169,8 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
 		boolean result = false;
 		
 		try {
+			String uploadedFilesPath = System.getenv("APOLO_UPLOADED_FILES");
+
 			File dir = new File(uploadedFilesPath);
 			if (!dir.exists()) {
 				dir.mkdirs();
