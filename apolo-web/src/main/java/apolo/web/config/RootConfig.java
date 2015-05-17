@@ -24,22 +24,22 @@ public class RootConfig {
 
 	private static final Logger log = LoggerFactory.getLogger(RootConfig.class);
 
-	private static final String APOLO_CONFIG_FILE = "/config.properties";
-	private static final String PERSISTENCE_CONFIG_FILE = "/persistence.properties";
-
-	@Bean
-	public static PropertyPlaceholderConfigurer propertyPlaceholderConfigurer() {
-		PropertyPlaceholderConfigurer ppc = new PropertyPlaceholderConfigurer();
-		
-		ClassPathResource applicationConfigLocation = new ClassPathResource(APOLO_CONFIG_FILE);
-		ClassPathResource persistenceConfigLocation = new ClassPathResource(PERSISTENCE_CONFIG_FILE);
-
-		ClassPathResource[] resourcesLocation = new ClassPathResource[2];
-		resourcesLocation[0] = applicationConfigLocation;
-		resourcesLocation[1] = persistenceConfigLocation;
-		
-		ppc.setLocations(resourcesLocation);
-		return ppc;
-	}
+	/*
+	 * If you need more properties files, uncomment this method and use your files.
+	 */
+//	@Bean
+//	public static PropertyPlaceholderConfigurer propertyPlaceholderConfigurer() {
+//		PropertyPlaceholderConfigurer ppc = new PropertyPlaceholderConfigurer();
+//
+//		ClassPathResource applicationConfigLocation = new ClassPathResource("file1.properties");
+//		ClassPathResource persistenceConfigLocation = new ClassPathResource("file2.properties");
+//
+//		ClassPathResource[] resourcesLocation = new ClassPathResource[2];
+//		resourcesLocation[0] = applicationConfigLocation;
+//		resourcesLocation[1] = persistenceConfigLocation;
+//
+//		ppc.setLocations(resourcesLocation);
+//		return ppc;
+//	}
 
 }
