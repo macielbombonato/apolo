@@ -71,7 +71,7 @@ public class UserAuthenticationProvider implements AuthenticationProvider {
 
 			Tenant tenant = tenantService.getValidatedTenant(user.getTenant().getUrl());
 
-			if (tenant.getSendAuthEmail() != null && tenant.getSendAuthEmail() == true) {
+			if (Boolean.TRUE.equals(tenant.getSendAuthEmail())) {
 				emailService.send(
 						tenant,
 						user.getTenant().getName() + ": " + MessageBundle.getMessageBundle("mail.auth.subject"),
