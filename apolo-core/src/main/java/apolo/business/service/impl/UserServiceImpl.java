@@ -9,7 +9,9 @@ import apolo.common.config.model.ApplicationProperties;
 import apolo.common.exception.AccessDeniedException;
 import apolo.common.exception.BusinessException;
 import apolo.common.util.MessageBundle;
-import apolo.data.enums.*;
+import apolo.data.enums.Spinner;
+import apolo.data.enums.Status;
+import apolo.data.enums.UserStatus;
 import apolo.data.model.Tenant;
 import apolo.data.model.User;
 import apolo.data.model.UserCustomFieldValue;
@@ -18,15 +20,6 @@ import apolo.data.repository.UserGroupRepository;
 import apolo.data.repository.UserRepository;
 import apolo.security.CurrentUser;
 import apolo.security.UserPermission;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -37,6 +30,9 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.io.IOException;
+import java.util.*;
 
 @Service("userService")
 public class UserServiceImpl extends BaseServiceImpl<User> implements UserService {
@@ -303,6 +299,18 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 			tenant.setUrl(applicationProperties.getDefaultTenant());
 			tenant.setSpinner(Spinner.COGS);
 			tenant.setStatus(Status.ACTIVE);
+
+			tenant.setEmailFrom(applicationProperties.getEmailFrom());
+			tenant.setEmailPassword(applicationProperties.getEmailPassword());
+			tenant.setSmtpHost(applicationProperties.getSmtpHost());
+			tenant.setSmtpPort(applicationProperties.getSmtpPort());
+			tenant.setUseTLS(applicationProperties.getUseTLS());
+
+			tenant.setGoogleAdClient(applicationProperties.getGoogleAdClient());
+			tenant.setGoogleAdSlotOne(applicationProperties.getGoogleAdSlotOne());
+			tenant.setGoogleAdSlotTwo(applicationProperties.getGoogleAdSlotTwo());
+			tenant.setGoogleAdSlotThree(applicationProperties.getGoogleAdSlotThree());
+			tenant.setGoogleAnalyticsUserAccount(applicationProperties.getGoogleAnalyticsUserAccount());
 
 			formModel.getUser().setTenant(tenant);
 			

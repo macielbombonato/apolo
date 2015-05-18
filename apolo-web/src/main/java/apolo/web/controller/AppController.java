@@ -7,6 +7,7 @@ import apolo.common.config.model.ApplicationProperties;
 import apolo.common.util.MessageBundle;
 import apolo.common.util.ThreadLocalContextUtil;
 import apolo.data.enums.Language;
+import apolo.data.model.Tenant;
 import apolo.data.model.User;
 import apolo.security.SecuredEnum;
 import apolo.security.UserPermission;
@@ -177,21 +178,27 @@ public class AppController extends BaseController<User> {
 	@RequestMapping(value = "/index", method = RequestMethod.GET)
 	public ModelAndView index(HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView(Navigation.INDEX.getPath());
-		
+
+		Tenant tenant = getDBTenant(applicationProperties.getDefaultTenant());
+
+		mav.addObject("tenant", tenant);
 		mav.addObject("readOnly", true);
 		return mav;
 	}
 
 	@PreAuthorize("permitAll")
 	@RequestMapping(value = "/{tenant-url}", method = RequestMethod.GET)
-	public ModelAndView indexTenant(@PathVariable("tenant-url") String tenant, HttpServletRequest request) {
+	public ModelAndView indexTenant(@PathVariable("tenant-url") String tenantUrl, HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView(Navigation.INDEX.getPath());
 
-		if (getDBTenant(tenant) == null) {
+		Tenant tenant = getDBTenant(tenantUrl);
+
+		if (tenant == null) {
 			String message = MessageBundle.getMessageBundle("tenant.not.found");
 			throw new AccessDeniedException(message);
 		}
 
+		mav.addObject("tenant", tenant);
 		mav.addObject("readOnly", true);
 		return mav;
 	}

@@ -25,6 +25,8 @@ public class ApplicationProperties {
 	private String googleAdSlotThree;
 
 	private String googleAnalyticsUserAccount;
+
+	private Boolean sendAuthEmail;
 	
 	public String getUploadedFilesPath() {
 		return uploadedFilesPath;
@@ -120,5 +122,13 @@ public class ApplicationProperties {
 
 	public void setGoogleAnalyticsUserAccount(String googleAnalyticsUserAccount) {
 		this.googleAnalyticsUserAccount = googleAnalyticsUserAccount;
+	}
+
+	public Boolean getSendAuthEmail() {
+		return sendAuthEmail;
+	}
+
+	public void setSendAuthEmail(Boolean sendAuthEmail) {
+		this.sendAuthEmail = sendAuthEmail;
 	}
 }

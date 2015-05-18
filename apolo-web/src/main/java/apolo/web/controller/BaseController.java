@@ -22,7 +22,6 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -99,12 +98,8 @@ public abstract class BaseController<E extends BaseEntity> {
 	protected Tenant getDBTenant(String url) {
 		Tenant tenant = null;
 		
-		tenant = tenantService.findByUrl(url);
+		tenant = tenantService.getValidatedTenant(url);
 
-		if (tenant == null) {
-			tenant = tenantService.findByUrl(applicationProperties.getDefaultTenant());
-		}
-		
 		return tenant;
 	}
 	

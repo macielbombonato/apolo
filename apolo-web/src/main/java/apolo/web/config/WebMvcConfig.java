@@ -71,6 +71,7 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
 		String googleAdSlotTwo = System.getenv("APOLO_DEFAULT_GOOGLE_ADSLOT_TWO");
 		String googleAdSlotThree = System.getenv("APOLO_DEFAULT_GOOGLE_ADSLOT_THREE");
 		String googleAnalyticsUserAccount = System.getenv("APOLO_DEFAULT_GOOGLE_ANALYTICS_USER_ACCOUNT");
+		String sendAuthEmail = System.getenv("APOLO_SEND_AUTH_EMAIL");
 
 		log.info("uploadedfiles.path:                 " + uploadedFilesPath);
 		log.info("default.tenant:                     " + defaultTenant);
@@ -86,6 +87,7 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
 		log.info("default.googleAdSlotTwo:            " + googleAdSlotTwo);
 		log.info("default.googleAdSlotThree:          " + googleAdSlotThree);
 		log.info("default.googleAnalyticsUserAccount: " + googleAnalyticsUserAccount);
+		log.info("sendAuthEmail:                      " + sendAuthEmail);
 
     	result.setDefaultTenant(defaultTenant);
     	result.setUploadedFilesPath(uploadedFilesPath);
@@ -101,6 +103,7 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
 		result.setGoogleAdSlotTwo(googleAdSlotTwo);
 		result.setGoogleAdSlotThree(googleAdSlotThree);
 		result.setGoogleAnalyticsUserAccount(googleAnalyticsUserAccount);
+		result.setSendAuthEmail("true".equals(sendAuthEmail) ? true : false);
 
 		log.info("*************** END Env Variables CONFIG FILE *************** ");
 

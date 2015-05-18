@@ -134,6 +134,20 @@
         </div>
 
         <div class="form-group">
+            <label for="showName" class="control-label" th:text="#{tenant.sendAuthEmail}">
+                tenant.sendAuthEmail
+            </label>
+            <input class="form-control"
+                   type="checkbox"
+                   id="sendAuthEmail"
+                   name="sendAuthEmail"
+                   value="true"
+                   th:disabled="${readOnly}"
+                   th:checked="${tenant.sendAuthEmail}"
+                    />
+        </div>
+
+        <div class="form-group">
             <label for="emailFrom" class="control-label" th:text="#{tenant.emailFrom}">
                 emailFrom
             </label>

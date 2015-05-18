@@ -93,6 +93,10 @@ public class Tenant extends AuditableBaseEntity {
 
 	@Column(name = "google_analytics_user", length = InputLength.NAME, nullable = true)
 	private String googleAnalyticsUserAccount;
+
+	@Column(name = "auth_email", nullable = true)
+	@Type(type="yes_no")
+	private Boolean sendAuthEmail;
 	
 	@Transient
 	private List<MultipartFile> logoFile;
@@ -286,5 +290,13 @@ public class Tenant extends AuditableBaseEntity {
 
 	public void setGoogleAnalyticsUserAccount(String googleAnalyticsUserAccount) {
 		this.googleAnalyticsUserAccount = googleAnalyticsUserAccount;
+	}
+
+	public Boolean getSendAuthEmail() {
+		return sendAuthEmail;
+	}
+
+	public void setSendAuthEmail(Boolean sendAuthEmail) {
+		this.sendAuthEmail = sendAuthEmail;
 	}
 }

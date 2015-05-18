@@ -14,7 +14,7 @@
     <parent>
         <groupId>apolo</groupId>
         <artifactId>apolo</artifactId>
-		<version>3.0.0</version>
+		<version>3.1.0</version>
     </parent>
     
 
@@ -56,6 +56,18 @@
 				</exclusion>
 			</exclusions>
     	</dependency>
+		<dependency>
+			<groupId>org.bouncycastle</groupId>
+			<artifactId>bcmail-jdk15</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>javamail</groupId>
+			<artifactId>javamail</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
+		</dependency>
     </dependencies>
     
 </project>

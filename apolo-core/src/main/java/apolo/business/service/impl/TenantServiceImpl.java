@@ -11,16 +11,15 @@ import apolo.data.enums.Status;
 import apolo.data.model.Tenant;
 import apolo.data.repository.TenantRepository;
 import apolo.security.UserPermission;
-
-import java.io.IOException;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.io.IOException;
+import java.util.List;
 
 @Service("tenantService")
 public class TenantServiceImpl extends BaseServiceImpl<Tenant> implements TenantService {
@@ -200,6 +199,39 @@ public class TenantServiceImpl extends BaseServiceImpl<Tenant> implements Tenant
 	public Tenant unlock(Tenant entity) {
 		entity.setStatus(Status.ACTIVE);
 		return tenantRepository.save(entity);
+	}
+
+	public Tenant getValidatedTenant(String tenantUrl) {
+		Tenant tenant = null;
+
+		tenant = findByUrl(tenantUrl);
+
+		if (tenant == null) {
+			tenant = findByUrl(applicationProperties.getDefaultTenant());
+		}
+
+		if (tenant != null) {
+			if (tenant.getEmailFrom() == null || "".equals(tenant.getEmailFrom())) {
+				tenant.setEmailFrom(applicationProperties.getEmailFrom());
+				tenant.setEmailPassword(applicationProperties.getEmailPassword());
+				tenant.setSmtpHost(applicationProperties.getSmtpHost());
+				tenant.setSmtpPort(applicationProperties.getSmtpPort());
+				tenant.setUseTLS(applicationProperties.getUseTLS());
+			}
+
+			if (tenant.getGoogleAdClient() == null || "".equals(tenant.getGoogleAdClient())) {
+				tenant.setGoogleAdClient(applicationProperties.getGoogleAdClient());
+				tenant.setGoogleAdSlotOne(applicationProperties.getGoogleAdSlotOne());
+				tenant.setGoogleAdSlotTwo(applicationProperties.getGoogleAdSlotTwo());
+				tenant.setGoogleAdSlotThree(applicationProperties.getGoogleAdSlotThree());
+				tenant.setGoogleAnalyticsUserAccount(applicationProperties.getGoogleAnalyticsUserAccount());
+			}
+		} else {
+			String message = MessageBundle.getMessageBundle("tenant.not.found");
+			throw new org.springframework.security.access.AccessDeniedException(message);
+		}
+
+		return tenant;
 	}
 
 }

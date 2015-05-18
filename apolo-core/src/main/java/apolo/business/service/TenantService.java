@@ -2,10 +2,9 @@ package apolo.business.service;
 
 import apolo.business.model.FileContent;
 import apolo.data.model.Tenant;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
-
-import org.springframework.data.domain.Page;
 
 public interface TenantService extends BaseService<Tenant> {
 	
@@ -26,5 +25,7 @@ public interface TenantService extends BaseService<Tenant> {
 	Tenant lock(Tenant entity);
 	
 	Tenant unlock(Tenant entity);
+
+	Tenant getValidatedTenant(String tenantUrl);
 	
 }
