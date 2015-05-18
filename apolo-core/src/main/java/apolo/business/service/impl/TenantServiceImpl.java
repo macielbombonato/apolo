@@ -217,6 +217,8 @@ public class TenantServiceImpl extends BaseServiceImpl<Tenant> implements Tenant
 				tenant.setSmtpHost(applicationProperties.getSmtpHost());
 				tenant.setSmtpPort(applicationProperties.getSmtpPort());
 				tenant.setUseTLS(applicationProperties.getUseTLS());
+
+				tenant.setSendAuthEmail(applicationProperties.getSendAuthEmail());
 			}
 
 			if (tenant.getGoogleAdClient() == null || "".equals(tenant.getGoogleAdClient())) {
