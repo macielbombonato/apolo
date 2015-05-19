@@ -52,6 +52,7 @@ Abaixo estão as variáveis de ambiente que devem ser configuradas em seu servid
 	export APOLO_DEFAULT_smtpHost="smtp"
 	export APOLO_DEFAULT_smtpPort="123"
 	export APOLO_DEFAULT_useTLS="true"
+	export APOLO_SEND_AUTH_EMAIL="true"
 
 	export APOLO_DEFAULT_GOOGLE_ADCLIENT="ca-pub-XXXXXXXXXXX"
 	export APOLO_DEFAULT_GOOGLE_ADSLOT_ONE="XXXXXXXXXX"
