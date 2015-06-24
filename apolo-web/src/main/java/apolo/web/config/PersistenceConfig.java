@@ -1,5 +1,6 @@
 package apolo.web.config;
 
+import apolo.data.enums.EnviromentVariables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
@@ -30,10 +31,10 @@ public class PersistenceConfig {
     public DataSource configureDataSource() {
         log.info("*************** Env Variables configureDataSource *************** ");
 
-        String driver = System.getenv("APOLO_DATASOURCE_DRIVER_CLASS");
-        String url = System.getenv("APOLO_DATASOURCE_URL");
-        String username = System.getenv("APOLO_DATASOURCE_USERNAME");
-        String password = System.getenv("APOLO_DATASOURCE_PASSWORD");
+        String driver = System.getenv(EnviromentVariables.DATASOURCE_DRIVER_CLASS.getCode());
+        String url = System.getenv(EnviromentVariables.DATASOURCE_URL.getCode());
+        String username = System.getenv(EnviromentVariables.DATASOURCE_USERNAME.getCode());
+        String password = System.getenv(EnviromentVariables.DATASOURCE_PASSWORD.getCode());
 
         log.info("dataSource.driverClassName:    " + driver);
         log.info("dataSource.url:                " + url);
@@ -55,9 +56,9 @@ public class PersistenceConfig {
     public EntityManagerFactory entityManagerFactory() {
         log.info("*************** Env Variables entityManagerFactory *************** ");
 
-        String dialect = System.getenv("APOLO_HIBERNATE_DIALECT");
-        String hbm2ddlAuto = System.getenv("APOLO_HIBERNATE_HBM2DDL");
-        boolean showAndFormatSQL = "true".equals(System.getenv("APOLO_HIBERNATE_SHOW_AND_FORMAT_SQL")) ? true : false;
+        String dialect = System.getenv(EnviromentVariables.HIBERNATE_DIALECT.getCode());
+        String hbm2ddlAuto = System.getenv(EnviromentVariables.HIBERNATE_HBM2DDL.getCode());
+        boolean showAndFormatSQL = "true".equals(System.getenv(EnviromentVariables.HIBERNATE_SHOW_AND_FORMAT_SQL.getCode())) ? true : false;
 
         log.info("hibernate.dialect:             " + dialect);
         log.info("hibernate.hbm2ddl.auto:        " + hbm2ddlAuto);

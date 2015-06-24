@@ -1,6 +1,7 @@
 package apolo.web.config;
 
 import apolo.common.config.model.ApplicationProperties;
+import apolo.data.enums.EnviromentVariables;
 import apolo.data.enums.Language;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,22 +60,22 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
 
 		log.info("*************** Env Variables CONFIG FILE *************** ");
 
-		String defaultTenant = System.getenv("APOLO_DEFAULT_TENANT");
-		String uploadedFilesPath = System.getenv("APOLO_UPLOADED_FILES");
-		String emailFrom = System.getenv("APOLO_DEFAULT_emailFrom");
-		String emailPassword = System.getenv("APOLO_DEFAULT_emailPassword");
-		String smtpHost = System.getenv("APOLO_DEFAULT_smtpHost");
-		String smtpPort = System.getenv("APOLO_DEFAULT_smtpPort");
-		String useTLS = System.getenv("APOLO_DEFAULT_useTLS");
-		String googleAdClient = System.getenv("APOLO_DEFAULT_GOOGLE_ADCLIENT");
-		String googleAdSlotOne = System.getenv("APOLO_DEFAULT_GOOGLE_ADSLOT_ONE");
-		String googleAdSlotTwo = System.getenv("APOLO_DEFAULT_GOOGLE_ADSLOT_TWO");
-		String googleAdSlotThree = System.getenv("APOLO_DEFAULT_GOOGLE_ADSLOT_THREE");
-		String googleAnalyticsUserAccount = System.getenv("APOLO_DEFAULT_GOOGLE_ANALYTICS_USER_ACCOUNT");
-		String sendAuthEmail = System.getenv("APOLO_SEND_AUTH_EMAIL");
+		String defaultTenant = System.getenv(EnviromentVariables.DEFAULT_TENANT.getCode());
+		String uploadedFilesPath = System.getenv(EnviromentVariables.UPLOADED_FILES.getCode());
+		String emailFrom = System.getenv(EnviromentVariables.DEFAULT_emailFrom.getCode());
+		String emailPassword = System.getenv(EnviromentVariables.DEFAULT_emailPassword.getCode());
+		String smtpHost = System.getenv(EnviromentVariables.DEFAULT_smtpHost.getCode());
+		String smtpPort = System.getenv(EnviromentVariables.DEFAULT_smtpPort.getCode());
+		String useTLS = System.getenv(EnviromentVariables.DEFAULT_useTLS.getCode());
+		String googleAdClient = System.getenv(EnviromentVariables.DEFAULT_GOOGLE_ADCLIENT.getCode());
+		String googleAdSlotOne = System.getenv(EnviromentVariables.DEFAULT_GOOGLE_ADSLOT_ONE.getCode());
+		String googleAdSlotTwo = System.getenv(EnviromentVariables.DEFAULT_GOOGLE_ADSLOT_TWO.getCode());
+		String googleAdSlotThree = System.getenv(EnviromentVariables.DEFAULT_GOOGLE_ADSLOT_THREE.getCode());
+		String googleAnalyticsUserAccount = System.getenv(EnviromentVariables.DEFAULT_GOOGLE_ANALYTICS_USER_ACCOUNT.getCode());
+		String sendAuthEmail = System.getenv(EnviromentVariables.SEND_AUTH_EMAIL.getCode());
 
-		String secretKey = System.getenv("APOLO_SECRET_KEY");
-		String ivKey = System.getenv("APOLO_IV_KEY");
+		String secretKey = System.getenv(EnviromentVariables.SECRET_KEY.getCode());
+		String ivKey = System.getenv(EnviromentVariables.IV_KEY.getCode());
 
 		log.info("uploadedfiles.path:                 " + uploadedFilesPath);
 		log.info("default.tenant:                     " + defaultTenant);
