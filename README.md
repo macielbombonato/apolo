@@ -42,6 +42,9 @@ A partir da versão 3.1.0 o Apolo passou a utilizar variáveis de ambiente para 
 
 Abaixo estão as variáveis de ambiente que devem ser configuradas em seu servidor.
 
+	export APOLO_SECRET_KEY="1234567890ABCDEF" #max 16 chars
+	export APOLO_IV_KEY="1234567890ABCDEF" #max 16 chars
+
 	export APOLO_UPLOADED_FILES="/your/file/path/"
 	export APOLO_VIDEO_CONVERTER_EXECUTABLE_PATH=""
 	export APOLO_PDF_IMAGE_EXTRACTOR_EXECUTABLE_PATH=""

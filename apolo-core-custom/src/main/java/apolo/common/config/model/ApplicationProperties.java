@@ -2,6 +2,10 @@ package apolo.common.config.model;
 
 public class ApplicationProperties {
 	
+	private String secretKey;
+
+	private String ivKey;
+
 	private String uploadedFilesPath;
 
 	private String defaultTenant;
@@ -130,5 +134,21 @@ public class ApplicationProperties {
 
 	public void setSendAuthEmail(Boolean sendAuthEmail) {
 		this.sendAuthEmail = sendAuthEmail;
+	}
+
+	public String getSecretKey() {
+		return secretKey;
+	}
+
+	public void setSecretKey(String secretKey) {
+		this.secretKey = secretKey;
+	}
+
+	public String getIvKey() {
+		return ivKey;
+	}
+
+	public void setIvKey(String ivKey) {
+		this.ivKey = ivKey;
 	}
 }

@@ -8,6 +8,7 @@ import apolo.business.service.UserService;
 import apolo.common.config.model.ApplicationProperties;
 import apolo.common.exception.AccessDeniedException;
 import apolo.common.exception.BusinessException;
+import apolo.common.util.ApoloCrypt;
 import apolo.common.util.MessageBundle;
 import apolo.data.enums.Spinner;
 import apolo.data.enums.Status;
@@ -20,6 +21,8 @@ import apolo.data.repository.UserGroupRepository;
 import apolo.data.repository.UserRepository;
 import apolo.security.CurrentUser;
 import apolo.security.UserPermission;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -37,6 +40,8 @@ import java.util.*;
 @Service("userService")
 public class UserServiceImpl extends BaseServiceImpl<User> implements UserService {
 
+	private static final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
+
 	@Autowired
 	private UserRepository userRepository;
 	
@@ -51,6 +56,9 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 	
 	@Autowired
 	private TenantService tenantService;
+
+	@Autowired
+	private ApoloCrypt apoloCrypt;
 	
 	public List<User> list(Tenant tenant) {
 		PageRequest request = new PageRequest(1, PAGE_SIZE, Sort.Direction.ASC, "name");
@@ -119,9 +127,22 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 	}
 
 	public User loadByUsernameAndPassword(String username, String password) {
-		Md5PasswordEncoder encoder = new Md5PasswordEncoder();
-		User user = userRepository.findByEmailAndPassword(username, encoder.encodePassword(password, null));
-		
+		User user = null;
+		try {
+			user = userRepository.findByEmailAndPassword(
+                    username,
+                    apoloCrypt.encrypt(
+							password,
+							applicationProperties.getSecretKey(),
+							applicationProperties.getIvKey()
+						)
+                );
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			String message = MessageBundle.getMessageBundle("user.msg.password.encrypt.error");
+			throw new BusinessException(message);
+		}
+
 		if (user == null) {
 			String message = MessageBundle.getMessageBundle("user.msg.no.data.found");
 			throw new UsernameNotFoundException(message);
@@ -150,7 +171,19 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 		
 		if (changePassword) {
 			Md5PasswordEncoder encoder = new Md5PasswordEncoder();
-			user.setPassword(encoder.encodePassword(user.getPassword(), null));			
+			try {
+				user.setPassword(
+                        apoloCrypt.encrypt(
+								user.getPassword(),
+								applicationProperties.getSecretKey(),
+								applicationProperties.getIvKey()
+						)
+                    );
+			} catch (Exception e) {
+				log.error(e.getMessage(), e);
+				String message = MessageBundle.getMessageBundle("user.msg.password.encrypt.error");
+				throw new BusinessException(message);
+			}
 		} else {
 			User dbUser = this.find(user.getId());
 			user.setPassword(dbUser.getPassword());

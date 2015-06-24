@@ -1,15 +1,14 @@
 package apolo.common.util;
 
-import java.security.NoSuchAlgorithmException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
+import java.security.NoSuchAlgorithmException;
 
 @Component
 public class ApoloCrypt {
@@ -22,9 +21,14 @@ public class ApoloCrypt {
 	
 
 	public String encrypt(String text, String secretKey, String iv) throws Exception {
-		IvParameterSpec ivspec = new IvParameterSpec(buildKey(iv.trim()).getBytes(encoding));
+		IvParameterSpec ivspec = new IvParameterSpec(
+				buildKey(iv.trim()).getBytes(encoding)
+			);
 
-		SecretKeySpec keyspec = new SecretKeySpec(buildKey(secretKey.trim()).getBytes(encoding), algorithm);
+		SecretKeySpec keyspec = new SecretKeySpec(
+				buildKey(secretKey.trim()).getBytes(encoding),
+				algorithm
+			);
 
 		Cipher cipher = null;
 		try {
@@ -147,9 +151,9 @@ public class ApoloCrypt {
 			} else {
 				newCode = code.substring(0, 16);
 			}
-		}
 
-		key = newCode;
+			key = newCode;
+		}
 
 		return key;
 	}
