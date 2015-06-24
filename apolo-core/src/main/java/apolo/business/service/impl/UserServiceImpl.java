@@ -102,8 +102,6 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 			user.setCurrentSignInAt(new Date());
 			user.setCurrentSignInIp(userIPAddress);
 
-			user.setDisableAuditLog(true);
-
 			result = user.getSignInCount();
 
 			this.save(user);

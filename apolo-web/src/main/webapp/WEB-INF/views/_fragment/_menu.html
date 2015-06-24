@@ -11,20 +11,26 @@
             <div class="row">
                 <div class="col-lg-6 col-md-6 hidden-sm hidden-xs">
                     <p class="center">
-                        <img th:if="${#authentication.systemUser.avatarFileName != null}
+                        <a th:href='@{|/${#authentication.systemUser.dbTenant.url}/user/view/${#authentication.systemUser.id}|}'>
+                            <img th:if="${#authentication.systemUser.avatarFileName != null}
                                 and ${#authentication.systemUser.avatarFileName != ''}"
-                             th:src="@{|/${#authentication.systemUser.dbTenant.url}/uploadedfiles/User/${#authentication.systemUser.id}/${#authentication.systemUser.avatarFileName}|}"
-                                />
+                                 th:src="@{|/${#authentication.systemUser.dbTenant.url}/uploadedfiles/User/${#authentication.systemUser.id}/${#authentication.systemUser.avatarFileName}|}"
+                                    />
 
-                        <span th:if="${#authentication.systemUser.avatarFileName == null or #authentication.systemUser.avatarFileName == ''}"
-                           class="fa fa-user fa-4x">
-                        </span>
+                            <span th:if="${#authentication.systemUser.avatarFileName == null or #authentication.systemUser.avatarFileName == ''}"
+                                  class="fa fa-user fa-4x">
+                            </span>
+                        </a>
                     </p>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12">
-                    <p class="center small" th:text="${#authentication.systemUser.name}">
-                        authentication.systemUser.name
-                    </p>
+                    <a class="center small" style="text-align: center;"
+                       th:href='@{|/${#authentication.systemUser.dbTenant.url}/user/view/${#authentication.systemUser.id}|}'
+                       >
+                        <p class="center" th:text="${#authentication.systemUser.name}">
+                            authentication.systemUser.name
+                        </p>
+                    </a>
 
                     <p class="center col-xs-4 col-sm-4 col-md-12 col-lg-12">
                         <a th:href='@{/logout}'>

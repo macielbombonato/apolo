@@ -21,6 +21,4 @@ public interface IAuditableEntity {
 	User getUpdatedBy();
 
 	void setUpdatedBy(User newUpdatedBy);
-
-	Boolean isDisableAuditLog();
 }

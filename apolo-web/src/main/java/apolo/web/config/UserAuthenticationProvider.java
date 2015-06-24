@@ -98,7 +98,7 @@ public class UserAuthenticationProvider implements AuthenticationProvider {
 							tenant,
 							user.getTenant().getName() + ": " + MessageBundle.getMessageBundle("mail.auth.subject"),
 							user.getEmail(),
-							MessageBundle.getMessageBundle("mail.auth.message")
+							MessageBundle.getMessageBundle("mail.auth.message", user.getName(), user.getSignInCount())
 					);
 				} catch (Throwable e) {
 					log.error("********* => Error when try to send authentication email");

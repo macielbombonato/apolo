@@ -58,19 +58,13 @@ public class AuditListener {
 				if (currentUser != null) {
 					user.setId(currentUser.getId());
 					
-					if (e != null && (e.isDisableAuditLog() == null || !e.isDisableAuditLog())) {
-						e.setUpdatedBy(user);
-					}
+					e.setUpdatedBy(user);
 				}
 			} else {
-				if (e != null && (e.isDisableAuditLog() == null || !e.isDisableAuditLog())) {
-					e.setUpdatedBy(null);
-				}
+				e.setUpdatedBy(null);
 			}
 
-			if (e != null && (e.isDisableAuditLog() == null || !e.isDisableAuditLog())) {
-				e.setUpdatedAt(new Date());
-			}
+			e.setUpdatedAt(new Date());
 		}
 	}
 }

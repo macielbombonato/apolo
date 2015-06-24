@@ -30,9 +30,6 @@ public abstract class AuditableBaseEntity extends BaseEntity<Long> implements IA
 	@JoinColumn(name = "updated_by")
 	private User updatedBy;
 
-	@Transient
-	private Boolean disableAuditLog;
-
 	public Date getCreatedAt() {
 		return createdAt;
 	}
@@ -63,13 +60,5 @@ public abstract class AuditableBaseEntity extends BaseEntity<Long> implements IA
 
 	public void setUpdatedBy(User updatedBy) {
 		this.updatedBy = updatedBy;
-	}
-
-	public Boolean isDisableAuditLog() {
-		return disableAuditLog;
-	}
-
-	public void setDisableAuditLog(Boolean disableAuditLog) {
-		this.disableAuditLog = disableAuditLog;
 	}
 }
