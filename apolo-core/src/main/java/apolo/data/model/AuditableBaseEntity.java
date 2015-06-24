@@ -4,70 +4,72 @@ import apolo.data.entitylistener.AuditListener;
 import apolo.data.model.interfaces.IAuditableEntity;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.persistence.*;
 import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.EntityListeners;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 @MappedSuperclass
 @EntityListeners(value = AuditListener.class)
 public abstract class AuditableBaseEntity extends BaseEntity<Long> implements IAuditableEntity {
 	private static final long serialVersionUID = 7982765512946321298L;
 
-	@Column(name = "creation_dt")
+	@Column(name = "created_at")
 	@Temporal(TemporalType.TIMESTAMP)
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss.S")
-	private Date creationDate;
+	private Date createdAt;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "created_by")
 	private User createdBy;
 
-	@Column(name = "last_update_dt")
+	@Column(name = "updated_at")
 	@Temporal(TemporalType.TIMESTAMP)
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss.S")
-	private Date lastUpdateDate;
+	private Date updatedAt;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "last_updated_by")
-	private User lastUpdatedBy;
+	@JoinColumn(name = "updated_by")
+	private User updatedBy;
 
-	public Date getCreationDate() {
-		return creationDate;
+	@Transient
+	private Boolean disableAuditLog;
+
+	public Date getCreatedAt() {
+		return createdAt;
 	}
 
-	public void setCreationDate(Date newCreationDate) {
-		this.creationDate = newCreationDate;
+	public void setCreatedAt(Date createdAt) {
+		this.createdAt = createdAt;
 	}
 
 	public User getCreatedBy() {
 		return createdBy;
 	}
 
-	public void setCreatedBy(User newCreatedBy) {
-		this.createdBy = newCreatedBy;
+	public void setCreatedBy(User createdBy) {
+		this.createdBy = createdBy;
 	}
 
-	public Date getLastUpdateDate() {
-		return lastUpdateDate;
+	public Date getUpdatedAt() {
+		return updatedAt;
 	}
 
-	public void setLastUpdateDate(Date newLastUpdateDate) {
-		this.lastUpdateDate = newLastUpdateDate;
+	public void setUpdatedAt(Date updatedAt) {
+		this.updatedAt = updatedAt;
 	}
 
-	public User getLastUpdatedBy() {
-		return lastUpdatedBy;
+	public User getUpdatedBy() {
+		return updatedBy;
 	}
 
-	public void setLastUpdatedBy(User newLastUpdatedBy) {
-		this.lastUpdatedBy = newLastUpdatedBy;
+	public void setUpdatedBy(User updatedBy) {
+		this.updatedBy = updatedBy;
 	}
 
+	public Boolean isDisableAuditLog() {
+		return disableAuditLog;
+	}
+
+	public void setDisableAuditLog(Boolean disableAuditLog) {
+		this.disableAuditLog = disableAuditLog;
+	}
 }

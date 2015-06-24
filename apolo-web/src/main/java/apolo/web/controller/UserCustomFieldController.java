@@ -1,33 +1,26 @@
 package apolo.web.controller;
 
-import java.util.Date;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-
-import net.sf.json.JSONObject;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.support.DefaultMessageSourceResolvable;
-import org.springframework.data.domain.Page;
-import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
-
 import apolo.business.service.UserCustomFieldService;
-import apolo.web.enums.Navigation;
 import apolo.common.exception.AccessDeniedException;
 import apolo.common.util.MessageBundle;
 import apolo.data.enums.FieldType;
 import apolo.data.model.UserCustomField;
 import apolo.security.SecuredEnum;
 import apolo.security.UserPermission;
+import apolo.web.enums.Navigation;
+import net.sf.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
+import org.springframework.data.domain.Page;
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import java.util.Date;
 
 @Controller
 @RequestMapping(value = "/{tenant-url}/user-custom-field")
@@ -155,10 +148,10 @@ public class UserCustomFieldController extends BaseController<UserCustomField> {
 		UserCustomField userCustomField = new UserCustomField();
 		
 		userCustomField.setCreatedBy(userCustomFieldService.getAuthenticatedUser());
-		userCustomField.setCreationDate(new Date());
+		userCustomField.setCreatedAt(new Date());
 		
-		userCustomField.setLastUpdatedBy(userCustomFieldService.getAuthenticatedUser());
-		userCustomField.setLastUpdateDate(new Date());
+		userCustomField.setUpdatedBy(userCustomFieldService.getAuthenticatedUser());
+		userCustomField.setUpdatedAt(new Date());
 		
 		userCustomField.setTenant(getDBTenant(tenant));
 		
@@ -184,8 +177,8 @@ public class UserCustomFieldController extends BaseController<UserCustomField> {
 		
 		UserCustomField userCustomField = userCustomFieldService.find(getDBTenant(tenant), id);
 		
-		userCustomField.setLastUpdatedBy(userCustomFieldService.getAuthenticatedUser());
-		userCustomField.setLastUpdateDate(new Date());
+		userCustomField.setUpdatedBy(userCustomFieldService.getAuthenticatedUser());
+		userCustomField.setUpdatedAt(new Date());
 		
 		mav.addObject("userCustomField", userCustomField);
 		mav.addObject("typeList", FieldType.values());

@@ -42,8 +42,8 @@
                         <th th:text="#{user.email}">
                             user.email
                         </th>
-                        <th th:text="#{user.groups}">
-                            user.groups
+                        <th th:text="#{user.signInCount}">
+                            user.signInCount
                         </th>
                         <th th:text="#{user.status}">
                             user.status
@@ -60,13 +60,13 @@
                         th:id="${'user_'} + ${user.id}">
                         <td>
                             <center>
-                                <img th:if="${user.pictureGeneratedName != null} and ${user.pictureGeneratedName != ''}"
+                                <img th:if="${user.avatarFileName != null} and ${user.avatarFileName != ''}"
                                         class="img-thumbnail"
-                                        th:src="@{|/${#authentication.systemUser.tenant.url}/uploadedfiles/User/${user.id}/${user.pictureGeneratedName}|}"
+                                        th:src="@{|/${#authentication.systemUser.tenant.url}/uploadedfiles/User/${user.id}/${user.avatarFileName}|}"
                                         style="width: 40px;"
                                         width="40"
                                     />
-                                <i th:if="${user.pictureGeneratedName == null} or ${user.pictureGeneratedName == ''}" class="fa fa-user fa-3x" />
+                                <i th:if="${user.avatarFileName == null} or ${user.avatarFileName == ''}" class="fa fa-user fa-3x" />
                             </center>
                         </td>
                         <td>
@@ -79,22 +79,8 @@
                         <td th:text="${user.email}">
                             user.email
                         </td>
-                        <td>
-                            <ul class="list-group">
-                                <li th:each="group : ${user.groups}"
-                                        class="list-group-item">
-                                    <a th:text="${group.name}"
-                                       sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_USER_PERMISSION_VIEW')"
-                                            th:href='@{|/${#authentication.systemUser.tenant.url}/user-group/view/${group.id}|}'
-                                            class="btn btn-link">
-                                        ${group.name}
-                                    </a>
-                                    <span th:text="${group.name}"
-                                          sec:authorize="!hasAnyRole('ROLE_ADMIN', 'ROLE_USER_PERMISSION_VIEW')">
-                                        ${group.name}
-                                    </span>
-                                </li>
-                            </ul>
+                        <td th:text="${user.signInCount}">
+                            user.signInCount
                         </td>
                         <td th:with="i18nterm=${'user.status.'} + ${user.status}"
                                 th:text="#{${i18nterm}}">

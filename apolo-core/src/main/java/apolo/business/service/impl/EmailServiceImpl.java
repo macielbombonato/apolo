@@ -38,7 +38,7 @@ public class EmailServiceImpl<E extends BaseEntity> implements EmailService<E> {
         // Get the session object
         Properties props = new Properties();
 
-        if (Boolean.TRUE.equals(tenant.isUseTLS())) {
+        if (tenant != null && tenant.isUseTLS() != null && Boolean.TRUE.equals(tenant.isUseTLS())) {
             props.put(
                     "mail.smtp.starttls.enable",
                     "true"

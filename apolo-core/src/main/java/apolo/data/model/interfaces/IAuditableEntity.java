@@ -6,19 +6,21 @@ import java.util.Date;
 
 public interface IAuditableEntity {
 
-	public Date getCreationDate();
+	Date getCreatedAt();
 
-	public void setCreationDate(Date newCreationDate);
+	void setCreatedAt(Date newCreatedAt);
 
-	public User getCreatedBy();
+	User getCreatedBy();
 
-	public void setCreatedBy(User newCreatedBy);
+	void setCreatedBy(User newCreatedBy);
 
-	public Date getLastUpdateDate();
+	Date getUpdatedAt();
 
-	public void setLastUpdateDate(Date newLastUpdateDate);
+	void setUpdatedAt(Date newUpdatedAt);
 
-	public User getLastUpdatedBy();
+	User getUpdatedBy();
 
-	public void setLastUpdatedBy(User newLastUpdatedBy);
+	void setUpdatedBy(User newUpdatedBy);
+
+	Boolean isDisableAuditLog();
 }

@@ -5,25 +5,15 @@ import apolo.business.model.InstallFormModel;
 import apolo.business.service.UserService;
 import apolo.common.config.model.ApplicationProperties;
 import apolo.common.util.MessageBundle;
-import apolo.common.util.ThreadLocalContextUtil;
-import apolo.data.enums.Language;
 import apolo.data.model.Tenant;
 import apolo.data.model.User;
 import apolo.security.SecuredEnum;
 import apolo.security.UserPermission;
 import apolo.web.enums.Navigation;
-
-import java.util.List;
-
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -34,6 +24,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Controller
 public class AppController extends BaseController<User> {
@@ -126,8 +119,8 @@ public class AppController extends BaseController<User> {
 			if (objectFile != null 
 					&& objectFile.getOriginalFilename() != null 
 					&& !objectFile.getOriginalFilename().isEmpty()) {
-				install.getUser().setPictureOriginalName(objectFile.getOriginalFilename());
-				install.getUser().setPictureGeneratedName(objectFile.getOriginalFilename());
+				install.getUser().setAvatarOriginalName(objectFile.getOriginalFilename());
+				install.getUser().setAvatarFileName(objectFile.getOriginalFilename());
 			}
 			
 			if (install != null) {

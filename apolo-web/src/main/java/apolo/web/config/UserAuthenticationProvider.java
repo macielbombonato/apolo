@@ -13,6 +13,8 @@ import apolo.data.enums.UserStatus;
 import apolo.data.model.Tenant;
 import apolo.data.model.User;
 import apolo.security.CurrentUser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -20,6 +22,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -27,6 +30,8 @@ import java.util.Collection;
 
 @Component
 public class UserAuthenticationProvider implements AuthenticationProvider {
+
+	private static final Logger log = LoggerFactory.getLogger(UserAuthenticationProvider.class);
 
 	@Autowired
 	private UserService userService;
@@ -61,6 +66,22 @@ public class UserAuthenticationProvider implements AuthenticationProvider {
 				String message = MessageBundle.getMessageBundle("error.403.0");
 				throw new BadCredentialsException(message, new AccessDeniedException(0, message));
 			}
+
+			// Increase the access count
+			try {
+				WebAuthenticationDetails wad = null;
+				String userIPAddress         = null;
+				boolean isAuthenticatedByIP  = false;
+
+				// Get the IP address of the user tyring to use the site
+				wad = (WebAuthenticationDetails) authentication.getDetails();
+				userIPAddress = wad.getRemoteAddress();
+
+				user.setSignInCount(userService.increaseSignInCounter(user.getId(), userIPAddress));
+			} catch (Throwable e) {
+				log.error("********* => Error when try to count the login sequence");
+				log.error(e.getMessage(), e);
+			}
 			
 			// Set permission to see only the code screen.
 			Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
@@ -72,12 +93,17 @@ public class UserAuthenticationProvider implements AuthenticationProvider {
 			Tenant tenant = tenantService.getValidatedTenant(user.getTenant().getUrl());
 
 			if (Boolean.TRUE.equals(tenant.getSendAuthEmail())) {
-				emailService.send(
-						tenant,
-						user.getTenant().getName() + ": " + MessageBundle.getMessageBundle("mail.auth.subject"),
-						user.getEmail(),
-						MessageBundle.getMessageBundle("mail.auth.message")
-				);
+				try {
+					emailService.send(
+							tenant,
+							user.getTenant().getName() + ": " + MessageBundle.getMessageBundle("mail.auth.subject"),
+							user.getEmail(),
+							MessageBundle.getMessageBundle("mail.auth.message")
+					);
+				} catch (Throwable e) {
+					log.error("********* => Error when try to send authentication email");
+					log.error(e.getMessage(), e);
+				}
 			}
 
 			return new CurrentUser(

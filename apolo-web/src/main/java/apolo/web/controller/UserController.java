@@ -13,16 +13,7 @@ import apolo.data.model.User;
 import apolo.security.SecuredEnum;
 import apolo.security.UserPermission;
 import apolo.web.enums.Navigation;
-
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-
 import net.sf.json.JSONObject;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomCollectionEditor;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
@@ -32,15 +23,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 @Controller
 @RequestMapping(value = "/{tenant-url}/user")
@@ -157,10 +148,10 @@ public class UserController extends BaseController<User> {
 		
 		user.setStatus(UserStatus.ACTIVE);
 		user.setCreatedBy(userService.getAuthenticatedUser());
-		user.setCreationDate(new Date());
+		user.setCreatedAt(new Date());
 		
-		user.setLastUpdatedBy(userService.getAuthenticatedUser());
-		user.setLastUpdateDate(new Date());
+		user.setUpdatedBy(userService.getAuthenticatedUser());
+		user.setUpdatedAt(new Date());
 		
 		Tenant tenant = getDBTenant(tenantUrl);
 		
@@ -194,8 +185,8 @@ public class UserController extends BaseController<User> {
 		if (user != null
 				&& authenticatedUserHasPermission(userService, user, UserPermission.USER_EDIT, true)) {
 
-			user.setLastUpdatedBy(userService.getAuthenticatedUser());
-			user.setLastUpdateDate(new Date());
+			user.setUpdatedBy(userService.getAuthenticatedUser());
+			user.setUpdatedAt(new Date());
 			
 			mav.addObject("user", user);
 			mav.addObject("groupList", userGroupService.list(user.getTenant()));
@@ -356,8 +347,8 @@ public class UserController extends BaseController<User> {
 		if (objectFile != null 
 				&& objectFile.getOriginalFilename() != null 
 				&& !objectFile.getOriginalFilename().isEmpty()) {
-			entity.setPictureOriginalName(objectFile.getOriginalFilename());
-			entity.setPictureGeneratedName(objectFile.getOriginalFilename());
+			entity.setAvatarOriginalName(objectFile.getOriginalFilename());
+			entity.setAvatarFileName(objectFile.getOriginalFilename());
 		}
 		
 		/*
@@ -687,10 +678,10 @@ public class UserController extends BaseController<User> {
 	private boolean isValidFileType(User entity) {
 		boolean hasErrors = false;
 		
-		if (entity.getPictureOriginalName() == null 
-				|| (entity.getPictureOriginalName() != null
-					&& entity.getPictureOriginalName().length() > 0
-					&& !ACCEPTED_FILE_TYPE.contains(fileService.extractFileExtension(entity.getPictureOriginalName()))
+		if (entity.getAvatarOriginalName() == null
+				|| (entity.getAvatarOriginalName() != null
+					&& entity.getAvatarOriginalName().length() > 0
+					&& !ACCEPTED_FILE_TYPE.contains(fileService.extractFileExtension(entity.getAvatarOriginalName()))
 				)) {
 			hasErrors = true;
 		}

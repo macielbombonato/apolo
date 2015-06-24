@@ -1,32 +1,25 @@
 package apolo.web.controller;
 
-import java.util.Date;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-
+import apolo.business.service.UserGroupService;
+import apolo.common.exception.AccessDeniedException;
+import apolo.common.util.MessageBundle;
+import apolo.data.model.UserGroup;
+import apolo.security.SecuredEnum;
+import apolo.security.UserPermission;
+import apolo.web.enums.Navigation;
 import net.sf.json.JSONObject;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import apolo.business.service.UserGroupService;
-import apolo.web.enums.Navigation;
-import apolo.common.exception.AccessDeniedException;
-import apolo.common.util.MessageBundle;
-import apolo.data.model.UserGroup;
-import apolo.security.SecuredEnum;
-import apolo.security.UserPermission;
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import java.util.Date;
 
 @Controller
 @RequestMapping(value = "/{tenant-url}/user-group")
@@ -154,10 +147,10 @@ public class UserGroupController extends BaseController<UserGroup> {
 		UserGroup userGroup = new UserGroup();
 		
 		userGroup.setCreatedBy(userGroupService.getAuthenticatedUser());
-		userGroup.setCreationDate(new Date());
+		userGroup.setCreatedAt(new Date());
 		
-		userGroup.setLastUpdatedBy(userGroupService.getAuthenticatedUser());
-		userGroup.setLastUpdateDate(new Date());
+		userGroup.setUpdatedBy(userGroupService.getAuthenticatedUser());
+		userGroup.setUpdatedAt(new Date());
 		
 		userGroup.setTenant(getDBTenant(tenant));
 		
@@ -183,8 +176,8 @@ public class UserGroupController extends BaseController<UserGroup> {
 		
 		UserGroup userGroup = userGroupService.find(getDBTenant(tenant), id);
 		
-		userGroup.setLastUpdatedBy(userGroupService.getAuthenticatedUser());
-		userGroup.setLastUpdateDate(new Date());
+		userGroup.setUpdatedBy(userGroupService.getAuthenticatedUser());
+		userGroup.setUpdatedAt(new Date());
 		
 		mav.addObject("userGroup", userGroup);
 		mav.addObject("permissionList", userGroupService.getUserPermissionList());

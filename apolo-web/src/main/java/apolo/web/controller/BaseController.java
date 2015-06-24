@@ -295,7 +295,11 @@ public abstract class BaseController<E extends BaseEntity> {
 	protected void initBinder(WebDataBinder binder) {
 		//Create a custom binder that will convert a String with pattern dd/MM/yyyy to an appropriate Date object.
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
-		binder.registerCustomEditor(Date.class, "creationDate", new CustomDateEditor(dateFormat, false));
-		binder.registerCustomEditor(Date.class, "lastUpdateDate", new CustomDateEditor(dateFormat, false));
+		binder.registerCustomEditor(Date.class, "createdAt", new CustomDateEditor(dateFormat, false));
+		binder.registerCustomEditor(Date.class, "updatedAt", new CustomDateEditor(dateFormat, false));
+		binder.registerCustomEditor(Date.class, "currentSignInAt", new CustomDateEditor(dateFormat, false));
+		binder.registerCustomEditor(Date.class, "resetPasswordSentAt", new CustomDateEditor(dateFormat, false));
+		binder.registerCustomEditor(Date.class, "lastSignInAt", new CustomDateEditor(dateFormat, false));
+		binder.registerCustomEditor(Date.class, "resetPasswordSentAt", new CustomDateEditor(dateFormat, false));
 	}
 }

@@ -9,17 +9,16 @@ import apolo.data.model.User;
 import apolo.data.model.UserGroup;
 import apolo.data.repository.UserGroupRepository;
 import apolo.security.UserPermission;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @Service("userGroupService")
 public class UserGroupServiceImpl extends BaseServiceImpl<UserGroup> implements UserGroupService {
@@ -92,8 +91,8 @@ public class UserGroupServiceImpl extends BaseServiceImpl<UserGroup> implements 
 				userGroup.setStatus(UserStatus.ACTIVE);
 			}
 			
-			userGroup.setLastUpdatedBy(getAuthenticatedUser());
-			userGroup.setLastUpdateDate(new Date());
+			userGroup.setUpdatedBy(getAuthenticatedUser());
+			userGroup.setUpdatedAt(new Date());
 			
 			return userGroupRepository.saveAndFlush(userGroup);	
 		}

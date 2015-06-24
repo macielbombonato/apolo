@@ -14,11 +14,11 @@
         <div class="panel-body">
             <div class="col-sm-2">
                 <center>
-                    <img th:if="${user.pictureGeneratedName != null} and ${user.pictureGeneratedName != ''}"
+                    <img th:if="${user.avatarFileName != null} and ${user.avatarFileName != ''}"
                             class="img-thumbnail"
-                            th:src="@{|/${#authentication.systemUser.tenant.url}/uploadedfiles/User/${user.id}/${user.pictureGeneratedName}|}"
+                            th:src="@{|/${#authentication.systemUser.tenant.url}/uploadedfiles/User/${user.id}/${user.avatarFileName}|}"
                         />
-                    <i th:if="${user.pictureGeneratedName == null} or ${user.pictureGeneratedName == ''}" class="fa fa-user fa-5x" />
+                    <i th:if="${user.avatarFileName == null} or ${user.avatarFileName == ''}" class="fa fa-user fa-5x" />
                 </center>
             </div>
 

@@ -5,17 +5,16 @@ import apolo.data.model.Tenant;
 import apolo.data.model.UserCustomField;
 import apolo.data.model.UserCustomFieldOption;
 import apolo.data.repository.UserCustomFieldRepository;
-
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
 
 @Service("userCustomFieldService")
 public class UserCustomFieldServiceImpl extends BaseServiceImpl<UserCustomField> implements UserCustomFieldService {
@@ -48,8 +47,8 @@ public class UserCustomFieldServiceImpl extends BaseServiceImpl<UserCustomField>
 	@Transactional
 	public UserCustomField save(UserCustomField userCustomField) {
 		if (userCustomField != null) {
-			userCustomField.setLastUpdatedBy(getAuthenticatedUser());
-			userCustomField.setLastUpdateDate(new Date());
+			userCustomField.setUpdatedBy(getAuthenticatedUser());
+			userCustomField.setUpdatedAt(new Date());
 			
 			if (userCustomField.getOptionsStringList() != null 
 					&& !userCustomField.getOptionsStringList().isEmpty()) {

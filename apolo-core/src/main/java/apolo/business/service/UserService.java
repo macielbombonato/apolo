@@ -4,11 +4,10 @@ import apolo.business.model.FileContent;
 import apolo.business.model.InstallFormModel;
 import apolo.data.model.Tenant;
 import apolo.data.model.User;
-
-import java.util.Collection;
-
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.GrantedAuthority;
+
+import java.util.Collection;
 
 public interface UserService extends BaseService<User> {
 
@@ -96,4 +95,10 @@ public interface UserService extends BaseService<User> {
 	 * @return User
 	 */
 	User find(Long id);
+
+	/**
+	 * Increase user sign in counter
+	 * @param id
+	 */
+	int increaseSignInCounter(Long id, String userIPAddress);
 }

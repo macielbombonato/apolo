@@ -83,7 +83,35 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 	public User find(Long id) {
 		return userRepository.findOne(id);
 	}
-	
+
+	@Override
+	public int increaseSignInCounter(Long id, String userIPAddress) {
+		int result = 0;
+		User user = this.find(id);
+
+		if (user != null) {
+			if (user.getSignInCount() != null) {
+				user.setSignInCount(user.getSignInCount() + 1);
+			} else {
+				user.setSignInCount(1);
+			}
+
+			user.setLastSignInAt(user.getCurrentSignInAt());
+			user.setLastSignInIp(user.getCurrentSignInIp());
+
+			user.setCurrentSignInAt(new Date());
+			user.setCurrentSignInIp(userIPAddress);
+
+			user.setDisableAuditLog(true);
+
+			result = user.getSignInCount();
+
+			this.save(user);
+		}
+
+		return result;
+	}
+
 	public User find(Tenant tenant, Long id) {
 		return userRepository.findByTenantAndId(tenant, id);
 	}
@@ -107,8 +135,8 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 	@Transactional
 	public User save(User entity) {
 		if (entity != null) {
-			entity.setLastUpdatedBy(getAuthenticatedUser());
-			entity.setLastUpdateDate(new Date());			
+			entity.setUpdatedBy(getAuthenticatedUser());
+			entity.setUpdatedAt(new Date());
 		}
 		
 		return save(entity, false, null);
@@ -140,9 +168,9 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 					userRepository.saveAndFlush(user);	
 				}
 				
-				user.setPictureOriginalName(file.getFile().getOriginalFilename());
+				user.setAvatarOriginalName(file.getFile().getOriginalFilename());
 				try {
-					user.setPictureGeneratedName(
+					user.setAvatarFileName(
 							fileService.uploadFile(
 									user.getTenant(), 
 									user, 
@@ -151,6 +179,10 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 									file.getFile().getInputStream()
 								)
 						);
+
+					user.setAvatarFileSize(file.getFile().getSize());
+					user.setAvatarContentType(file.getFile().getContentType());
+					user.setAvatarUpdatedAt(new Date());
 				} catch (IOException e) {
 					String message = MessageBundle.getMessageBundle("commons.errorUploadingFile");
 					throw new BusinessException(message);
@@ -162,6 +194,12 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 			for (UserCustomFieldValue field : user.getCustomFields()) {
 				field.setUser(user);
 			}
+		}
+
+		if (UserStatus.LOCKED.equals(user.getStatus())) {
+			user.setEnabled(false);
+		} else {
+			user.setEnabled(true);
 		}
 		
 		return userRepository.saveAndFlush(user);
@@ -235,6 +273,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 		User dbUser = this.find(user.getId());
 		user.setPassword(dbUser.getPassword());
 		user.setStatus(UserStatus.LOCKED);
+		user.setEnabled(false);
 		
 		return userRepository.save(user);
 	}
@@ -248,6 +287,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 		User dbUser = this.find(user.getId());
 		user.setPassword(dbUser.getPassword());
 		user.setStatus(UserStatus.ACTIVE);
+		user.setEnabled(true);
 		
 		return userRepository.save(user);
 	}
@@ -354,7 +394,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 					adminUserGroup.setPermissions(perms);
 					
 					adminUserGroup.setCreatedBy(formModel.getUser());
-					adminUserGroup.setCreationDate(new Date());
+					adminUserGroup.setCreatedAt(new Date());
 					adminUserGroup.setTenant(tenant);
 					
 					adminUserGroup = userGroupRepository.save(adminUserGroup);
@@ -367,9 +407,10 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 				formModel.getUser().setGroups(adminGroups);
 				
 				formModel.getUser().setStatus(UserStatus.ADMIN);
+				formModel.getUser().setEnabled(true);
 				
 				formModel.getUser().setCreatedBy(formModel.getUser());
-				formModel.getUser().setCreationDate(new Date());
+				formModel.getUser().setCreatedAt(new Date());
 				
 				/*
 				 * Save system administrator and get your ID
@@ -403,7 +444,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 			
 			// insert createdby in tenant
 			tenant.setCreatedBy(dbUser);
-			tenant.setCreationDate(new Date());
+			tenant.setCreatedAt(new Date());
 			
 			tenantService.save(tenant);
 		}

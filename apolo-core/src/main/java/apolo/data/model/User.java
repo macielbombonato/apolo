@@ -1,35 +1,22 @@
 package apolo.data.model;
 
 import apolo.data.entitylistener.AuditLogListener;
-import apolo.data.enums.Language;
 import apolo.data.enums.UserStatus;
 import apolo.data.util.InputLength;
 import apolo.security.UserPermission;
-
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import javax.persistence.AttributeOverride;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.Type;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @EntityListeners(value = AuditLogListener.class)
@@ -51,7 +38,7 @@ public class User extends AuditableBaseEntity {
 	
 	@Column(name = "encrypted_password", length = InputLength.MEDIUM, nullable = false)
 	private String password;
-	
+
 	@Column(name = "mobile", unique = false, length = InputLength.NAME, nullable = true)
 	@Size(max = InputLength.NAME)
 	private String mobile;
@@ -77,17 +64,63 @@ public class User extends AuditableBaseEntity {
 	@ManyToOne
 	private Tenant tenant;
 	
-	@Column(name = "pic_original_name", length = InputLength.MEDIUM, nullable = true)
-	private String pictureOriginalName;
+	@Column(name = "avatar_original_name", length = InputLength.MEDIUM, nullable = true)
+	private String avatarOriginalName;
 
-	@Column(name = "pic_generated_name", length = InputLength.MEDIUM, nullable = true)
-	private String pictureGeneratedName;
+	@Column(name = "avatar_file_name", length = InputLength.MEDIUM, nullable = true)
+	private String avatarFileName;
+
+	@Column(name = "avatar_content_type", length = InputLength.MEDIUM, nullable = true)
+	private String avatarContentType;
+
+	@Column(name = "avatar_file_size", nullable = true)
+	private Long avatarFileSize;
+
+	@Column(name = "avatar_updated_at")
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss.S")
+	private Date avatarUpdatedAt;
+
+	@Column(name = "enabled", nullable = true, columnDefinition = "int default 1")
+	private Boolean enabled;
 	
 	@Transient
 	private List<MultipartFile> picturefiles;
 	
 	@Transient
 	private Tenant dbTenant;
+
+	@Column(name = "reset_password_token", length = InputLength.MEDIUM, nullable = true)
+	private String resetPasswordToken;
+
+	@Column(name = "reset_password_sent_at")
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss.S")
+	private Date resetPasswordSentAt;
+
+	@Column(name = "remember_created_at")
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss.S")
+	private Date rememberCreatedAt;
+
+	@Column(name = "sign_in_count", nullable = true)
+	private Integer signInCount;
+
+	@Column(name = "current_sign_in_at")
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss.S")
+	private Date currentSignInAt;
+
+	@Column(name = "last_sign_in_at")
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss.S")
+	private Date lastSignInAt;
+
+	@Column(name = "current_sign_in_ip", length = InputLength.MEDIUM, nullable = true)
+	private String currentSignInIp;
+
+	@Column(name = "last_sign_in_ip", length = InputLength.MEDIUM, nullable = true)
+	private String lastSignInIp;
 	
 	public Tenant getDbTenant() {
 		Tenant result = null; 
@@ -117,24 +150,8 @@ public class User extends AuditableBaseEntity {
 		return name;
 	}
 
-	public void setName(String value) {
-		name = value;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password1) {
-		this.password = password1;
-	}
-
-	public Set<UserGroup> getGroups() {
-		return groups;
-	}
-
-	public void setGroups(Set<UserGroup> groups1) {
-		this.groups = groups1;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getEmail() {
@@ -145,28 +162,20 @@ public class User extends AuditableBaseEntity {
 		this.email = email;
 	}
 
-	public String getPictureOriginalName() {
-		return pictureOriginalName;
+	public String getPassword() {
+		return password;
 	}
 
-	public void setPictureOriginalName(String pictureOriginalName) {
-		this.pictureOriginalName = pictureOriginalName;
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
-	public String getPictureGeneratedName() {
-		return pictureGeneratedName;
+	public String getMobile() {
+		return mobile;
 	}
 
-	public void setPictureGeneratedName(String pictureGeneratedName) {
-		this.pictureGeneratedName = pictureGeneratedName;
-	}
-
-	public List<MultipartFile> getPicturefiles() {
-		return picturefiles;
-	}
-
-	public void setPicturefiles(List<MultipartFile> picturefiles) {
-		this.picturefiles = picturefiles;
+	public void setMobile(String mobile) {
+		this.mobile = mobile;
 	}
 
 	public UserStatus getStatus() {
@@ -177,6 +186,14 @@ public class User extends AuditableBaseEntity {
 		this.userStatus = userStatus;
 	}
 
+	public Set<UserGroup> getGroups() {
+		return groups;
+	}
+
+	public void setGroups(Set<UserGroup> groups) {
+		this.groups = groups;
+	}
+
 	public List<UserCustomFieldValue> getCustomFields() {
 		return customFields;
 	}
@@ -185,24 +202,135 @@ public class User extends AuditableBaseEntity {
 		this.customFields = customFields;
 	}
 
-	public String getMobile() {
-		return this.mobile;
-	}
-
-	public void setMobile(String mobile) {
-		this.mobile = mobile;
-	}
-
 	public Tenant getTenant() {
-		return this.tenant;
+		return tenant;
 	}
 
 	public void setTenant(Tenant tenant) {
 		this.tenant = tenant;
 	}
 
+	public String getAvatarOriginalName() {
+		return avatarOriginalName;
+	}
+
+	public void setAvatarOriginalName(String avatarOriginalName) {
+		this.avatarOriginalName = avatarOriginalName;
+	}
+
+	public String getAvatarFileName() {
+		return avatarFileName;
+	}
+
+	public void setAvatarFileName(String avatarFileName) {
+		this.avatarFileName = avatarFileName;
+	}
+
+	public String getAvatarContentType() {
+		return avatarContentType;
+	}
+
+	public void setAvatarContentType(String avatarContentType) {
+		this.avatarContentType = avatarContentType;
+	}
+
+	public Long getAvatarFileSize() {
+		return avatarFileSize;
+	}
+
+	public void setAvatarFileSize(Long avatarFileSize) {
+		this.avatarFileSize = avatarFileSize;
+	}
+
+	public Date getAvatarUpdatedAt() {
+		return avatarUpdatedAt;
+	}
+
+	public void setAvatarUpdatedAt(Date avatarUpdatedAt) {
+		this.avatarUpdatedAt = avatarUpdatedAt;
+	}
+
+	public Boolean getEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(Boolean enabled) {
+		this.enabled = enabled;
+	}
+
+	public List<MultipartFile> getPicturefiles() {
+		return picturefiles;
+	}
+
+	public void setPicturefiles(List<MultipartFile> picturefiles) {
+		this.picturefiles = picturefiles;
+	}
+
+	public String getResetPasswordToken() {
+		return resetPasswordToken;
+	}
+
+	public void setResetPasswordToken(String resetPasswordToken) {
+		this.resetPasswordToken = resetPasswordToken;
+	}
+
+	public Date getResetPasswordSentAt() {
+		return resetPasswordSentAt;
+	}
+
+	public void setResetPasswordSentAt(Date resetPasswordSentAt) {
+		this.resetPasswordSentAt = resetPasswordSentAt;
+	}
+
+	public Date getRememberCreatedAt() {
+		return rememberCreatedAt;
+	}
+
+	public void setRememberCreatedAt(Date rememberCreatedAt) {
+		this.rememberCreatedAt = rememberCreatedAt;
+	}
+
+	public Integer getSignInCount() {
+		return signInCount;
+	}
+
+	public void setSignInCount(Integer signInCount) {
+		this.signInCount = signInCount;
+	}
+
+	public Date getCurrentSignInAt() {
+		return currentSignInAt;
+	}
+
+	public void setCurrentSignInAt(Date currentSignInAt) {
+		this.currentSignInAt = currentSignInAt;
+	}
+
+	public Date getLastSignInAt() {
+		return lastSignInAt;
+	}
+
+	public void setLastSignInAt(Date lastSignInAt) {
+		this.lastSignInAt = lastSignInAt;
+	}
+
+	public String getCurrentSignInIp() {
+		return currentSignInIp;
+	}
+
+	public void setCurrentSignInIp(String currentSignInIp) {
+		this.currentSignInIp = currentSignInIp;
+	}
+
 	public void setDbTenant(Tenant dbTenant) {
 		this.dbTenant = dbTenant;
 	}
 
+	public String getLastSignInIp() {
+		return lastSignInIp;
+	}
+
+	public void setLastSignInIp(String lastSignInIp) {
+		this.lastSignInIp = lastSignInIp;
+	}
 }

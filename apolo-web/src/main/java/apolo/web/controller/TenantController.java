@@ -1,41 +1,33 @@
 package apolo.web.controller;
 
-import java.util.Date;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-
+import apolo.business.model.FileContent;
+import apolo.business.service.FileService;
+import apolo.business.service.TenantService;
+import apolo.business.service.UserService;
+import apolo.common.util.MessageBundle;
+import apolo.data.enums.Skin;
 import apolo.data.enums.Spinner;
+import apolo.data.enums.Status;
+import apolo.data.model.Tenant;
+import apolo.data.model.User;
+import apolo.security.SecuredEnum;
+import apolo.security.UserPermission;
+import apolo.web.enums.Navigation;
 import net.sf.json.JSONObject;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import apolo.business.model.FileContent;
-import apolo.business.service.FileService;
-import apolo.business.service.TenantService;
-import apolo.business.service.UserService;
-import apolo.web.enums.Navigation;
-import apolo.common.util.MessageBundle;
-import apolo.data.enums.Language;
-import apolo.data.enums.Skin;
-import apolo.data.enums.Status;
-import apolo.data.model.Tenant;
-import apolo.data.model.User;
-import apolo.security.SecuredEnum;
-import apolo.security.UserPermission;
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import java.util.Date;
+import java.util.List;
 
 @Controller
 @RequestMapping(value = "/tenant")
@@ -97,10 +89,10 @@ public class TenantController extends BaseController<Tenant> {
 		
 		tenant.setStatus(Status.ACTIVE);
 		tenant.setCreatedBy(tenantService.getAuthenticatedUser());
-		tenant.setCreationDate(new Date());
+		tenant.setCreatedAt(new Date());
 		
-		tenant.setLastUpdatedBy(tenantService.getAuthenticatedUser());
-		tenant.setLastUpdateDate(new Date());
+		tenant.setUpdatedBy(tenantService.getAuthenticatedUser());
+		tenant.setUpdatedAt(new Date());
 		
 		mav.addObject("tenant", tenant);
 		mav.addObject("skinList", Skin.values());
@@ -121,8 +113,8 @@ public class TenantController extends BaseController<Tenant> {
 		
 		Tenant tenant = tenantService.find(null, id);
 		
-		tenant.setLastUpdatedBy(tenantService.getAuthenticatedUser());
-		tenant.setLastUpdateDate(new Date());
+		tenant.setUpdatedBy(tenantService.getAuthenticatedUser());
+		tenant.setUpdatedAt(new Date());
 		
 		mav.addObject("tenant", tenant);
 		mav.addObject("skinList", Skin.values());

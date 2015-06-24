@@ -2,14 +2,12 @@ package apolo.data.entitylistener;
 
 import apolo.data.model.User;
 import apolo.data.model.interfaces.IAuditableEntity;
-
-import java.util.Date;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
-
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import java.util.Date;
 
 public class AuditListener {
 
@@ -32,15 +30,15 @@ public class AuditListener {
 				user.setId(currentUser.getId());
 				
 				e.setCreatedBy(user);
-				e.setLastUpdatedBy(user);
+				e.setUpdatedBy(user);
 			}
 		} else {
 			e.setCreatedBy(null);
-			e.setLastUpdatedBy(null);
+			e.setUpdatedBy(null);
 		}
 
-		e.setCreationDate(new Date());
-		e.setLastUpdateDate(new Date());
+		e.setCreatedAt(new Date());
+		e.setUpdatedAt(new Date());
 	}
 
 	@PreUpdate
@@ -60,13 +58,19 @@ public class AuditListener {
 				if (currentUser != null) {
 					user.setId(currentUser.getId());
 					
-					e.setLastUpdatedBy(user);
+					if (e != null && (e.isDisableAuditLog() == null || !e.isDisableAuditLog())) {
+						e.setUpdatedBy(user);
+					}
 				}
 			} else {
-				e.setLastUpdatedBy(null);
+				if (e != null && (e.isDisableAuditLog() == null || !e.isDisableAuditLog())) {
+					e.setUpdatedBy(null);
+				}
 			}
 
-			e.setLastUpdateDate(new Date());
+			if (e != null && (e.isDisableAuditLog() == null || !e.isDisableAuditLog())) {
+				e.setUpdatedAt(new Date());
+			}
 		}
 	}
 }

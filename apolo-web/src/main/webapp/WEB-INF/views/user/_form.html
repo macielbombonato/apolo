@@ -7,8 +7,18 @@
 
     <input type="hidden" id="id" name="id" th:value="${user.id}"/>
     <input type="hidden" id="status" name="status" th:value="${user.status}"/>
-    <input type="hidden" id="pictureOriginalName" name="pictureOriginalName" th:value="${user.pictureOriginalName}"/>
-    <input type="hidden" id="pictureGeneratedName" name="pictureGeneratedName" th:value="${user.pictureGeneratedName}"/>
+    <input type="hidden" id="avatarOriginalName" name="avatarOriginalName" th:value="${user.avatarOriginalName}" th:if="${user.avatarOriginalName != null}"/>
+    <input type="hidden" id="avatarFileName" name="avatarFileName" th:value="${user.avatarFileName}" th:if="${user.avatarFileName != null}"/>
+
+    <input type="hidden" id="signInCount" name="signInCount" th:value="${user.signInCount}" th:if="${user.signInCount != null}"/>
+    <input type="hidden" id="resetPasswordToken" name="resetPasswordToken" th:value="${user.resetPasswordToken}" th:if="${user.resetPasswordToken != null}"/>
+    <input type="hidden" id="resetPasswordSentAt" name="resetPasswordSentAt" th:value="${user.resetPasswordSentAt}" th:if="${user.resetPasswordSentAt != null}"/>
+    <input type="hidden" id="rememberCreatedAt" name="rememberCreatedAt" th:value="${user.rememberCreatedAt}" th:if="${user.rememberCreatedAt != null}"/>
+    <input type="hidden" id="currentSignInAt" name="currentSignInAt" th:value="${user.currentSignInAt}" th:if="${user.currentSignInAt != null}"/>
+    <input type="hidden" id="lastSignInAt" name="lastSignInAt" th:value="${user.lastSignInAt}" th:if="${user.lastSignInAt != null}"/>
+    <input type="hidden" id="currentSignInIp" name="currentSignInIp" th:value="${user.currentSignInIp}" th:if="${user.currentSignInIp != null}"/>
+    <input type="hidden" id="lastSignInIp" name="lastSignInIp" th:value="${user.lastSignInIp}" th:if="${user.lastSignInIp != null}"/>
+
     <input type="hidden" id="tenant.id" name="tenant.id" th:value="${user.tenant.id}"/>
     <input type="hidden" id="tenant.name" name="tenant.name" th:value="${user.tenant.name}"/>
     <input type="hidden" id="tenant.url" name="tenant.url" th:value="${user.tenant.url}"/>
