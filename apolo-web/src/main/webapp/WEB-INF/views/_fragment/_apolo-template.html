@@ -5,47 +5,62 @@
     <head th:include="@{_fragment/_headTag} :: headTag">
     </head>
 
-    <!-- BODY options, add following classes to body to change options
+    <!--
+  BODY TAG OPTIONS:
+  =================
+  Apply one or more of the following classes to get the
+  desired effect
 
-        1. 'sidebar-minified'     - Switch sidebar to minified version (width 50px)
-        2. 'sidebar-hidden'		  - Hide sidebar
-        3. 'rtl'				  - Switch to Right to Left Mode
-        4. 'container'			  - Boxed layout
-        5. 'static-sidebar'		  - Static Sidebar
-        6. 'static-header'		  - Static Header
+  | SKINS         | skin-blue                               |
+  |               | skin-black                              |
+  |               | skin-purple                             |
+  |               | skin-yellow                             |
+  |               | skin-red                                |
+  |               | skin-green                              |
+
+  |LAYOUT OPTIONS | fixed                                   |
+  |               | layout-boxed                            |
+  |               | layout-top-nav                          |
+  |               | sidebar-collapse                        |
+  |               | sidebar-mini                            |
+
     -->
 
-    <body th:fragment="apolo-template" class="static-sidebar static-header static-footer">
+    <body th:fragment="apolo-template">
 
-        <div th:remove="tag" th:include="@{_fragment/_header} :: header"></div>
+        <div class="wrapper">
 
-        <div th:remove="tag" th:include="@{_fragment/_menu} :: menu"></div>
+            <div th:remove="tag" th:include="@{_fragment/_header} :: header"></div>
 
-        <div class="main">
-            <div class="row">
-                <div id="content-panel" class="col-sm-12">
+            <div th:remove="tag" th:include="@{_fragment/_menu} :: menu"></div>
 
-                    <div th:remove="tag" th:include="@{_fragment/_message} :: message"></div>
+            <div class="content-wrapper">
+                <div class="row">
+                    <div id="content-panel" class="col-sm-12">
 
-                    <div id="content-location">
-                        &nbsp;
+                        <div th:remove="tag" th:include="@{_fragment/_message} :: message"></div>
+
+                        <div id="content-location">
+                            &nbsp;
+                        </div>
+
                     </div>
+
+                    <div class="col-sm-2" th:remove="tag" th:include="@{_fragment/_ad-vertical} :: ad-vertical"></div>
 
                 </div>
 
-                <div class="col-sm-2" th:remove="tag" th:include="@{_fragment/_ad-vertical} :: ad-vertical"></div>
+                <div class="row">
+                    &nbsp;
+                </div>
+
+                <div class="col-sm-12" th:remove="tag" th:include="@{_fragment/_ad-horizontal} :: ad-horizontal"></div>
 
             </div>
 
-            <div class="row">
-                &nbsp;
-            </div>
-
-            <div class="col-sm-12" th:remove="tag" th:include="@{_fragment/_ad-horizontal} :: ad-horizontal"></div>
+            <div th:remove="tag" th:include="@{_fragment/_footer} :: footer"></div>
 
         </div>
-
-        <div th:remove="tag" th:include="@{_fragment/_footer} :: footer"></div>
 
     </body>
 </html>

@@ -5,58 +5,62 @@
     </head>
     <body th:fragment="header">
 
-    <!-- start: Header -->
-    <div class="navbar navbar-opacity" role="navigation">
-        <div class="navbar-header">
-            <div class="col-sm-12">
-                <a class="navbar-brand"
-                   th:href="${#authorization.expression('isAuthenticated()') == true} ? @{|/${#authentication.systemUser.tenant.url}/user|} : @{'/'}">
-                    <strong>
-                        <img th:if="${#authorization.expression('isAuthenticated()') == true}
-                                        and ${#authentication.systemUser.tenant.logo != null}"
-                             th:src="@{|/${#authentication.systemUser.tenant.url}/uploadedfiles/Tenant/${#authentication.systemUser.tenant.id}/${#authentication.systemUser.tenant.logo}|}"
-                             th:width="${#authentication.systemUser.tenant.logoWidth} + ${'px'}"
-                             th:height="${#authentication.systemUser.tenant.logoHeight} + ${'px'}"
-                             th:style="${'width: '} + ${#authentication.systemUser.tenant.logoWidth} + ${'px; height: '} + ${#authentication.systemUser.tenant.logoHeight} + ${'px;'}"
-                                />
-                        <span th:if="${#authorization.expression('isAuthenticated()') == true}
-                                        and ${#authentication.systemUser.tenant != null}
-                                        and ${#authentication.systemUser.tenant.showName == true}
-                                        and ${#authentication.systemUser.tenant.name != null}"
-                              th:text="${#authentication.systemUser.tenant.name}">
+    <header class="main-header navbar-opacity">
 
-                        </span>
-                        <img th:if="${#authorization.expression('isAuthenticated()') == false} or ${#authentication.systemUser.tenant.logo == null}"
-                             th:src="@{'/resources/app/img/logo.png'}"
-                             width="15"
-                             height="20"
-                             style="width: 15px; height: 20px;"
-                                />
-                        <span th:if="${#authorization.expression('isAuthenticated()') == false} or ${#authentication.systemUser.tenant.logo == null}"
-                              th:text="#{app.title}"
+        <a class="logo"
+           th:href="${#authorization.expression('isAuthenticated()') == true} ? @{|/${#authentication.systemUser.tenant.url}/user|} : @{'/'}">
+
+            <!-- mini logo for sidebar mini 50x50 pixels -->
+            <span class="logo-mini">
+                <b>A</b>LT
+            </span>
+
+            <!-- logo for regular state and mobile devices -->
+            <span class="logo-lg">
+                <strong>
+                    <img class="logo-opacity" th:if="${#authorization.expression('isAuthenticated()') == true}
+                                            and ${#authentication.systemUser.tenant.logo != null}"
+                         th:src="@{|/${#authentication.systemUser.tenant.url}/uploadedfiles/Tenant/${#authentication.systemUser.tenant.id}/${#authentication.systemUser.tenant.logo}|}"
+                         th:width="${#authentication.systemUser.tenant.logoWidth} + ${'px'}"
+                         th:height="${#authentication.systemUser.tenant.logoHeight} + ${'px'}"
+                         th:style="${'width: '} + ${#authentication.systemUser.tenant.logoWidth} + ${'px; height: '} + ${#authentication.systemUser.tenant.logoHeight} + ${'px;'}"
                             />
-                    </strong>
-                </a>
+                    <span class="logo-opacity" th:if="${#authorization.expression('isAuthenticated()') == true}
+                                    and ${#authentication.systemUser.tenant != null}
+                                    and ${#authentication.systemUser.tenant.showName == true}
+                                    and ${#authentication.systemUser.tenant.name != null}"
+                          th:text="${#authentication.systemUser.tenant.name}">
+
+                    </span>
+
+                    <img class="logo-opacity" th:if="${#authorization.expression('isAuthenticated()') == false} or ${#authentication.systemUser.tenant.logo == null}"
+                         th:src="@{'/resources/app/img/logo.png'}"
+                         width="15"
+                         height="20"
+                         style="width: 15px; height: 20px;"
+                            />
+                    <span class="logo-opacity" th:if="${#authorization.expression('isAuthenticated()') == false} or ${#authentication.systemUser.tenant.logo == null}"
+                          th:text="#{app.title}"
+                            />
+                </strong>
+            </span>
+        </a>
+
+        <!-- Header Navbar: style can be found in header.less -->
+        <nav class="navbar navbar-static-top" role="navigation">
+            <!-- Sidebar toggle button-->
+            <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                <span class="sr-only">Toggle navigation</span>
+            </a>
+            <!-- Navbar Right Menu -->
+            <div class="navbar-custom-menu">
+                <ul class="nav navbar-nav">
+
+                </ul>
             </div>
 
-
-        </div>
-        <ul class="nav navbar-nav navbar-actions navbar-left">
-            <li class="visible-md visible-lg"><a href="#" id="main-menu-toggle"><i class="fa fa-bars"></i></a></li>
-            <li class="visible-xs visible-sm"><a href="#" id="sidebar-menu"><i class="fa fa-bars"></i></a></li>
-        </ul>
-
-        <!--ul class="nav navbar-nav navbar-right">
-            <li>
-                <span class="timer visible-md visible-lg">
-                    <i class="fa fa-clock-o"></i>
-                    <span id="clock">
-                    </span>
-                </span>
-            </li>
-        </ul-->
-    </div>
-    <!-- end: Header -->
+        </nav>
+    </header>
 
     </body>
 </html>

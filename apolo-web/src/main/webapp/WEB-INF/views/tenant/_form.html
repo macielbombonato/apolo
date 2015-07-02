@@ -64,8 +64,7 @@
             <label for="showName" class="control-label" th:text="#{tenant.showName}">
                 tenant.hasShowName
             </label>
-            <input class="form-control"
-                   type="checkbox"
+            <input type="checkbox"
                    id="showName"
                    name="showName"
                    value="true"
@@ -137,8 +136,7 @@
             <label for="showName" class="control-label" th:text="#{tenant.sendAuthEmail}">
                 tenant.sendAuthEmail
             </label>
-            <input class="form-control"
-                   type="checkbox"
+            <input type="checkbox"
                    id="sendAuthEmail"
                    name="sendAuthEmail"
                    value="true"
@@ -211,9 +209,9 @@
             <input type="checkbox"
                    id="useTLS"
                    name="useTLS"
-                   class="form-control"
-                   th:value="${tenant.useTLS}"
-                   th:readonly="${readOnly}"
+                   value="true"
+                   th:disabled="${readOnly}"
+                   th:checked="${tenant.useTLS}"
                     />
         </div>
 
@@ -221,8 +219,7 @@
             <label for="showAdds" class="control-label" th:text="#{tenant.showAdds}">
                 tenant.showAdds
             </label>
-            <input class="form-control"
-                   type="checkbox"
+            <input type="checkbox"
                    id="showAdds"
                    name="showAdds"
                    value="true"

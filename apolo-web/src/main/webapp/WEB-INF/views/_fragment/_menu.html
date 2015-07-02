@@ -6,54 +6,49 @@
 </head>
 <body th:fragment="menu">
 
-    <div class="sidebar sidebar-collapse">
-        <div class="sidebar-header" sec:authorize="isAuthenticated()">
-            <div class="row">
-                <div class="col-lg-6 col-md-6 hidden-sm hidden-xs">
-                    <p class="center">
-                        <a th:href='@{|/${#authentication.systemUser.dbTenant.url}/user/view/${#authentication.systemUser.id}|}'>
-                            <img th:if="${#authentication.systemUser.avatarFileName != null}
-                                and ${#authentication.systemUser.avatarFileName != ''}"
-                                 th:src="@{|/${#authentication.systemUser.dbTenant.url}/uploadedfiles/User/${#authentication.systemUser.id}/${#authentication.systemUser.avatarFileName}|}"
-                                    />
+    <div class="main-sidebar slimScroll slimScrollBar sidebar-overflow" >
+        <div class="sidebar slimScrollDiv sidebar-overflow" id="scrollspy">
+            <!-- Sidebar user panel -->
+            <div class="user-panel" sec:authorize="isAuthenticated()">
+                <div class="pull-left image">
+                    <a th:href='@{|/${#authentication.systemUser.dbTenant.url}/user/view/${#authentication.systemUser.id}|}'>
+                        <img class="avatar-max-height img-circle" th:if="${#authentication.systemUser.avatarFileName != null}
+                            and ${#authentication.systemUser.avatarFileName != ''}"
+                             th:src="@{|/${#authentication.systemUser.dbTenant.url}/uploadedfiles/User/${#authentication.systemUser.id}/${#authentication.systemUser.avatarFileName}|}"
+                                />
 
-                            <span th:if="${#authentication.systemUser.avatarFileName == null or #authentication.systemUser.avatarFileName == ''}"
-                                  class="fa fa-user fa-4x">
-                            </span>
-                        </a>
-                    </p>
+                        <span th:if="${#authentication.systemUser.avatarFileName == null or #authentication.systemUser.avatarFileName == ''}"
+                              class="fa fa-user fa-4x">
+                        </span>
+                    </a>
                 </div>
-                <div class="col-lg-6 col-md-6 col-sm-12">
+                <div class="pull-left info">
                     <a class="center small" style="text-align: center;"
                        th:href='@{|/${#authentication.systemUser.dbTenant.url}/user/view/${#authentication.systemUser.id}|}'
-                       >
+                            >
                         <p class="center" th:text="${#authentication.systemUser.name}">
                             authentication.systemUser.name
                         </p>
                     </a>
 
-                    <p class="center col-xs-4 col-sm-4 col-md-12 col-lg-12">
-                        <a th:href='@{/logout}'>
-                            <i class="fa fa-power-off"></i>
-                            <span class="text" th:text="#{user.logout}" />
-                        </a>
-                    </p>
+                    <a class="center small" th:href='@{/logout}'>
+                        <i class="fa fa-power-off"></i>
+                        <span class="text" th:text="#{user.logout}" />
+                    </a>
+
                 </div>
             </div>
-        </div>
 
-        <div class="sidebar-menu">
-            <ul class="nav nav-sidebar">
-
-                <li sec:authorize="isAuthenticated()">
+            <ul class="sidebar-menu sidebar-menu-size">
+                <li class="treeview" sec:authorize="isAuthenticated()">
                     <a href="#">
                         <i class="fa fa-user"></i>
-                        <span class="text" th:text="#{user}">
-                            username
-                        </span>
-                        <span class="indicator"></span>
+                    <span th:text="#{user}">
+                        username
+                    </span>
+                        <i class="fa fa-angle-left pull-right"></i>
                     </a>
-                    <ul class="submenu">
+                    <ul class="treeview-menu">
                         <li>
                             <a th:href="@{|/${#authentication.systemUser.tenant.url}/user|}" >
                                 <i class="fa fa-tachometer"></i>
@@ -78,22 +73,22 @@
                 <li sec:authorize="!isAuthenticated()">
                     <a th:href="@{/login}">
                         <i class="fa fa-lock"></i>
-                        <span class="text" th:text="#{user.restricted.area.access}">
-                            user.restricted.area.access
-                        </span>
+                    <span class="text" th:text="#{user.restricted.area.access}">
+                        user.restricted.area.access
+                    </span>
                     </a>
                 </li>
 
-                <li sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_USER_LIST', 'ROLE_USER_MANAGER',
-                            'ROLE_USER_CREATE', 'ROLE_USER_CUSTOM_FIELD_LIST', 'ROLE_USER_CUSTOM_FIELD_CREATE')">
+                <li class="treeview" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_USER_LIST', 'ROLE_USER_MANAGER',
+                        'ROLE_USER_CREATE', 'ROLE_USER_CUSTOM_FIELD_LIST', 'ROLE_USER_CUSTOM_FIELD_CREATE')">
                     <a href="#">
                         <i class="icon fa fa-users"></i>
-                        <span class="text" th:text="#{menu.sysadmin.user}">
-                            menu.sysadmin.user
-                        </span>
-                        <span class="indicator"></span>
+                    <span class="text" th:text="#{menu.sysadmin.user}">
+                        menu.sysadmin.user
+                    </span>
+                        <i class="fa fa-angle-left pull-right"></i>
                     </a>
-                    <ul>
+                    <ul class="treeview-menu">
                         <li>
                             <a sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_USER_LIST')"
                                th:href='@{|/${#authentication.systemUser.tenant.url}/user/list|}'>
@@ -122,9 +117,9 @@
                             <a sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_USER_CUSTOM_FIELD_LIST')"
                                th:href='@{|/${#authentication.systemUser.tenant.url}/user-custom-field/list|}'>
                                 <i class="icon fa fa-list"></i>
-                                <span class="text" th:text="#{user.custom.field.list}">
-                                    user.custom.field.list
-                                </span>
+                            <span class="text" th:text="#{user.custom.field.list}">
+                                user.custom.field.list
+                            </span>
                             </a>
                         </li>
 
@@ -138,15 +133,15 @@
                     </ul>
                 </li>
 
-                <li sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_TENANT_LIST', 'ROLE_TENANT_CREATE')">
+                <li class="treeview" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_TENANT_LIST', 'ROLE_TENANT_CREATE')">
                     <a href="#">
                         <i class="icon fa fa-ship"></i>
-                        <span class="text" th:text="#{tenant}" >
-                            tenant
-                        </span>
-                        <span class="indicator"></span>
+                    <span class="text" th:text="#{tenant}" >
+                        tenant
+                    </span>
+                        <i class="fa fa-angle-left pull-right"></i>
                     </a>
-                    <ul>
+                    <ul class="treeview-menu">
                         <li>
                             <a sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_TENANT_LIST')"
                                th:href='@{|/tenant/list|}'>
@@ -165,15 +160,15 @@
                     </ul>
                 </li>
 
-                <li sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_USER_PERMISSION_LIST', 'ROLE_USER_PERMISSION_CREATE')">
+                <li class="treeview" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_USER_PERMISSION_LIST', 'ROLE_USER_PERMISSION_CREATE')">
                     <a href="#">
                         <i class="icon fa fa-arrows-alt"></i>
-                        <span class="text" th:text="#{menu.sysadmin.groups}" >
-                            menu.sysadmin.groups
-                        </span>
-                        <span class="indicator"></span>
+                    <span class="text" th:text="#{menu.sysadmin.groups}" >
+                        menu.sysadmin.groups
+                    </span>
+                        <i class="fa fa-angle-left pull-right"></i>
                     </a>
-                    <ul>
+                    <ul class="treeview-menu">
                         <li>
                             <a sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_USER_PERMISSION_LIST')"
                                th:href='@{|/${#authentication.systemUser.tenant.url}/user-group/list|}'>
@@ -201,7 +196,7 @@
                 </li>
             </ul>
         </div>
+        <!-- /.sidebar -->
     </div>
-
 </body>
 </html>

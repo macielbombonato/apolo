@@ -14,6 +14,23 @@ body {
 	opacity: 0.8;
 }
 
+.sidebar-overflow {
+	position: absolute;
+	overflow-y: scroll;
+}
+
+.sidebar-menu-size {
+	width: 235px;
+}
+
+.avatar-max-height {
+	max-height: 50px;
+}
+
+.logo-opacity {
+	opacity: 0.99;
+}
+
 .center {
 	text-align: center;
 }

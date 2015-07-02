@@ -1,4 +1,10 @@
 $(document).ready(function() {
+	$('body').addClass('skin-blue');
+	$('body').addClass('fixed');
+
+	$('body').data('spy', 'scroll');
+	$('body').data('target', '#scrollspy');
+
 	$('#content-location').html($('#page-content').html());
 
 	$('#page-content').remove();
