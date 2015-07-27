@@ -3,70 +3,60 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <head th:include="@{_fragment/_headTag} :: headTag">
     </head>
-    <body class="login">
+    <body class="login-page">
 
-        <div th:remove="tag" th:include="@{_fragment/_message} :: message"></div>
-
-        <div class="container">
-            <div class="row">
-                <div class="login-box col-lg-4 col-lg-offset-4 col-sm-6 col-sm-offset-3">
-
-                    <div class="header">
-                        <a th:href="${#authorization.expression('isAuthenticated()') == true} ? @{|/${#authentication.systemUser.tenant.url}/user|} : @{'/'}">
-                            <img th:if="${tenant != null}
+        <div class="login-box">
+            <div class="login-logo">
+                <a th:href="${#authorization.expression('isAuthenticated()') == true} ? @{|/${#authentication.systemUser.tenant.url}/user|} : @{'/'}">
+                    <h3>
+                        <img th:if="${tenant != null}
                                         and ${tenant.logo != null}"
-                                 th:src="@{|/${tenant.url}/uploadedfiles/Tenant/${tenant.id}/${tenant.logo}|}"
-                                 th:width="${tenant.logoWidth * 2} + ${'px'}"
-                                 th:height="${tenant.logoHeight * 2} + ${'px'}"
-                                 th:style="${'width: '} + ${tenant.logoWidth * 2} + ${'px; height: '} + ${tenant.logoHeight * 2} + ${'px;'}"
-                                    />
-                            <img th:if="${#authorization.expression('isAuthenticated()') == false} or ${#authentication.systemUser.tenant.logo == null}"
-                                 th:src="@{'/resources/app/img/logo.png'}"
-                                 width="40"
-                                 height="50"
-                                 style="width: 40px; height: 50px;"
-                                    />
-                            <h3 th:text="#{app.title}"
-                                    />
-                        </a>
+                             th:src="@{|/${tenant.url}/uploadedfiles/Tenant/${tenant.id}/${tenant.logo}|}"
+                             th:width="${tenant.logoWidth * 2} + ${'px'}"
+                             th:height="${tenant.logoHeight * 2} + ${'px'}"
+                             th:style="${'width: '} + ${tenant.logoWidth * 2} + ${'px; height: '} + ${tenant.logoHeight * 2} + ${'px;'}"
+                                />
+                        <img th:if="${#authorization.expression('isAuthenticated()') == false} or ${#authentication.systemUser.tenant.logo == null}"
+                             th:src="@{'/resources/app/img/logo.png'}"
+                             width="40"
+                             height="50"
+                             style="width: 40px; height: 50px;"
+                                />
+                        <span th:text="#{app.title}"></span>
+                    </h3>
+                </a>
+            </div><!-- /.login-logo -->
+            <div class="login-box-body">
+                <div class="login-box-msg" th:remove="tag" th:include="@{_fragment/_message} :: message"></div>
+
+                <form th:action="@{/login}" method="post" role="form">
+                    <div class="form-group has-feedback">
+                        <input type="email"
+                               class="form-control focus"
+                               id="username"
+                               name="username"
+                               th:placeholder="#{user.name}"
+                            />
+                        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <input type="password"
+                               class="form-control"
+                               id="password"
+                               name="password"
+                               th:placeholder="#{user.password}"
+                            />
+                        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
                     </div>
 
-                    <form th:action="@{/login}" method="post" role="form">
-                        <fieldset>
-                            <div class="form-group first">
-                                <div class="input-group col-sm-12">
-                                    <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                                    <input type="email"
-                                           id="username"
-                                           name="username"
-                                           class="form-control focus"
-                                           th:placeholder='#{user.name}'
-                                            />
-                                </div>
-                            </div>
-
-                            <div class="form-group last">
-                                <div class="input-group col-sm-12">
-                                    <span class="input-group-addon"><i class="fa fa-key"></i></span>
-                                    <input type="password"
-                                           id="password"
-                                           name="password"
-                                           class="form-control"
-                                           th:placeholder='#{user.password}'
-                                            />
-                                </div>
-                            </div>
-
-                            <div class="col-xs-12">
-                                <button type="submit" class="btn btn-primary col-xs-12">
-                                    <i class="fa fa-sign-in" />
-                                    <span th:text="#{user.login}" />
-                                </button>
-                            </div>
-                        </fieldset>
-                    </form>
-
-                </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <button type="submit" class="btn btn-primary btn-block btn-flat" th:text="#{user.login}">
+                                Sign In
+                            </button>
+                        </div>
+                    </div>
+                </form>
 
                 <div class="row">
                     &nbsp;
@@ -77,8 +67,6 @@
 
                 <div class="row">
                     &nbsp;
-                    <br />
-                    <br />
                     <br />
                 </div>
 
