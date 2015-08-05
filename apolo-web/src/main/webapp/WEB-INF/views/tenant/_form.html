@@ -160,6 +160,20 @@
         </div>
 
         <div class="form-group">
+            <label for="emailUsername" class="control-label" th:text="#{tenant.emailUsername}">
+                emailUsername
+            </label>
+
+            <input type="text"
+                   id="emailUsername"
+                   name="emailUsername"
+                   class="form-control"
+                   th:value="${tenant.emailUsername}"
+                   th:readonly="${readOnly}"
+                    />
+        </div>
+
+        <div class="form-group">
             <label for="emailPassword" class="control-label" th:text="#{tenant.emailPassword}">
                 emailPassword
             </label>

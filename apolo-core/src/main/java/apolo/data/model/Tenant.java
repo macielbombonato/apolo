@@ -66,6 +66,9 @@ public class Tenant extends AuditableBaseEntity {
 	@Column(name = "email_from", length = InputLength.NAME, nullable = true)
 	private String emailFrom;
 
+	@Column(name = "email_username", length = InputLength.NAME, nullable = true)
+	private String emailUsername;
+
 	@Column(name = "email_password", length = InputLength.NAME, nullable = true)
 	private String emailPassword;
 
@@ -298,5 +301,13 @@ public class Tenant extends AuditableBaseEntity {
 
 	public void setSendAuthEmail(Boolean sendAuthEmail) {
 		this.sendAuthEmail = sendAuthEmail;
+	}
+
+	public String getEmailUsername() {
+		return emailUsername;
+	}
+
+	public void setEmailUsername(String emailUsername) {
+		this.emailUsername = emailUsername;
 	}
 }

@@ -63,6 +63,7 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
 		String defaultTenant = System.getenv(EnviromentVariables.DEFAULT_TENANT.getCode());
 		String uploadedFilesPath = System.getenv(EnviromentVariables.UPLOADED_FILES.getCode());
 		String emailFrom = System.getenv(EnviromentVariables.DEFAULT_emailFrom.getCode());
+		String emailUsername = System.getenv(EnviromentVariables.DEFAULT_emailUsername.getCode());
 		String emailPassword = System.getenv(EnviromentVariables.DEFAULT_emailPassword.getCode());
 		String smtpHost = System.getenv(EnviromentVariables.DEFAULT_smtpHost.getCode());
 		String smtpPort = System.getenv(EnviromentVariables.DEFAULT_smtpPort.getCode());
@@ -73,8 +74,9 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
 		String googleAdSlotThree = System.getenv(EnviromentVariables.DEFAULT_GOOGLE_ADSLOT_THREE.getCode());
 		String googleAnalyticsUserAccount = System.getenv(EnviromentVariables.DEFAULT_GOOGLE_ANALYTICS_USER_ACCOUNT.getCode());
 		String sendAuthEmail = System.getenv(EnviromentVariables.SEND_AUTH_EMAIL.getCode());
-		String facebookAppId = "479118202249121";
-		String facebookAppSecret = "c46e6a31e96d71ec03b4719806573839";
+
+		String facebookAppId = System.getenv(EnviromentVariables.FACEBOOK_APP_ID.getCode());
+		String facebookAppSecret = System.getenv(EnviromentVariables.FACEBOOK_APP_SECRET.getCode());
 
 		String secretKey = System.getenv(EnviromentVariables.SECRET_KEY.getCode());
 		String ivKey = System.getenv(EnviromentVariables.IV_KEY.getCode());
@@ -83,6 +85,7 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
 		log.info("default.tenant:                     " + defaultTenant);
 
 		log.info("default.emailFrom:                  " + emailFrom);
+		log.info("default.emailUsername:              " + emailUsername);
 		log.info("default.emailPassword:              " + emailPassword);
 		log.info("default.smtpHost:                   " + smtpHost);
 		log.info("default.smtpPort:                   " + smtpPort);

@@ -51,6 +51,7 @@ Abaixo estão as variáveis de ambiente que devem ser configuradas em seu servid
 	export APOLO_DEFAULT_TENANT="apolo"
 
 	export APOLO_DEFAULT_emailFrom="email@from"
+	export APOLO_DEFAULT_emailUsername="email@username"
 	export APOLO_DEFAULT_emailPassword="pass"
 	export APOLO_DEFAULT_smtpHost="smtp"
 	export APOLO_DEFAULT_smtpPort="123"
@@ -70,6 +71,9 @@ Abaixo estão as variáveis de ambiente que devem ser configuradas em seu servid
 	export APOLO_DATASOURCE_USERNAME="your_user"
 	export APOLO_DATASOURCE_PASSWORD="pass"
 	export APOLO_HIBERNATE_SHOW_AND_FORMAT_SQL="true"
+
+	export APOLO_FACEBOOK_APP_ID="YORAPPID"
+	export APOLO_FACEBOOK_APP_SECRET="YOURAPPSECRET"
 
 
 ## Licença

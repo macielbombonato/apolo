@@ -17,11 +17,10 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.Properties;
 
-@SuppressWarnings("rawtypes")
-@Service("emailService")
-public class EmailServiceImpl<E extends BaseEntity> implements EmailService<E> {
+@Service("smtpEmailService")
+public class SmtpEmailService<E extends BaseEntity> implements EmailService<E> {
 
-    private static final Logger log = LoggerFactory.getLogger(EmailServiceImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(SmtpEmailService.class);
 
     @Autowired
     private ApplicationProperties applicationProperties;
@@ -29,8 +28,9 @@ public class EmailServiceImpl<E extends BaseEntity> implements EmailService<E> {
     @Override
     public String send(
             final Tenant tenant,
+            final String from,
+            final String to,
             final String subject,
-            final String target,
             final String message
     ) {
         String result = "";
@@ -89,7 +89,7 @@ public class EmailServiceImpl<E extends BaseEntity> implements EmailService<E> {
                 "true"
         );
 
-        String emailUsername = tenant.getEmailFrom();
+        String emailUsername = tenant.getEmailUsername();
 
         if (emailUsername == null || "".equals(emailUsername)) {
             emailUsername = applicationProperties.getEmailFrom();
@@ -126,14 +126,12 @@ public class EmailServiceImpl<E extends BaseEntity> implements EmailService<E> {
             MimeMessage mimeMessage = new MimeMessage(session);
 
             mimeMessage.setFrom(
-                    new InternetAddress(
-                            USERNAME
-                    )
+                    new InternetAddress(from)
             );
 
             mimeMessage.addRecipient(
                     Message.RecipientType.TO,
-                    new InternetAddress(target)
+                    new InternetAddress(to)
             );
 
             mimeMessage.setSubject(subject);
@@ -161,5 +159,4 @@ public class EmailServiceImpl<E extends BaseEntity> implements EmailService<E> {
 
         return result;
     }
-
 }

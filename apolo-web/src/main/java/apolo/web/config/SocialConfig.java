@@ -46,8 +46,12 @@ public class SocialConfig extends SocialConfigurerAdapter {
 
     @Override
     public void addConnectionFactories(ConnectionFactoryConfigurer cfConfig, Environment env) {
+        // Configure facebook
+        if (applicationProperties.getFacebookAppId() != null
+                && applicationProperties.getFacebookAppSecret() != null) {
+            cfConfig.addConnectionFactory(new FacebookConnectionFactory(applicationProperties.getFacebookAppId(), applicationProperties.getFacebookAppSecret()));
+        }
 //        cfConfig.addConnectionFactory(new TwitterConnectionFactory(env.getProperty("twitter.appKey"), env.getProperty("twitter.appSecret")));
-        cfConfig.addConnectionFactory(new FacebookConnectionFactory(applicationProperties.getFacebookAppId(), applicationProperties.getFacebookAppSecret()));
 //        cfConfig.addConnectionFactory(new LinkedInConnectionFactory(env.getProperty("linkedin.appKey"), env.getProperty("linkedin.appSecret")));
     }
 

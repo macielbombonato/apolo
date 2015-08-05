@@ -15,7 +15,6 @@ import apolo.data.model.User;
 import apolo.security.CurrentUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -25,6 +24,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Component;
 
+import javax.inject.Inject;
+import javax.inject.Named;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -33,16 +34,17 @@ public class UserAuthenticationProvider implements AuthenticationProvider {
 
 	private static final Logger log = LoggerFactory.getLogger(UserAuthenticationProvider.class);
 
-	@Autowired
+	@Inject
 	private UserService userService;
 	
-	@Autowired
+	@Inject
 	private ApplicationProperties applicationProperties;
 
-	@Autowired
+	@Inject
 	private TenantService tenantService;
 
-	@Autowired
+	@Inject
+	@Named("smtpEmailService")
 	private EmailService emailService;
 
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
@@ -96,8 +98,9 @@ public class UserAuthenticationProvider implements AuthenticationProvider {
 				try {
 					emailService.send(
 							tenant,
-							user.getTenant().getName() + ": " + MessageBundle.getMessageBundle("mail.auth.subject"),
+							tenant.getEmailFrom(),
 							user.getEmail(),
+							user.getTenant().getName() + ": " + MessageBundle.getMessageBundle("mail.auth.subject"),
 							MessageBundle.getMessageBundle("mail.auth.message", user.getName(), user.getSignInCount())
 					);
 				} catch (Throwable e) {

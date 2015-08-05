@@ -12,6 +12,8 @@ public class ApplicationProperties {
 
 	private String emailFrom;
 
+	private String emailUsername;
+
 	private String emailPassword;
 
 	private String smtpHost;
@@ -170,5 +172,13 @@ public class ApplicationProperties {
 
 	public void setFacebookAppSecret(String facebookAppSecret) {
 		this.facebookAppSecret = facebookAppSecret;
+	}
+
+	public String getEmailUsername() {
+		return emailUsername;
+	}
+
+	public void setEmailUsername(String emailUsername) {
+		this.emailUsername = emailUsername;
 	}
 }
