@@ -1,19 +1,15 @@
 package apolo.web.config;
 
-import java.util.EnumSet;
-import java.util.Set;
-
-import javax.servlet.DispatcherType;
-import javax.servlet.FilterRegistration;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRegistration;
-
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
+import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.servlet.DispatcherServlet;
+
+import javax.servlet.*;
+import java.util.EnumSet;
+import java.util.Set;
 
 public class Application implements WebApplicationInitializer {
 
@@ -25,7 +21,19 @@ public class Application implements WebApplicationInitializer {
 		
 		FilterRegistration.Dynamic securityFilter = servletContext.addFilter("securityFilter", new DelegatingFilterProxy("springSecurityFilterChain"));
 		securityFilter.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), true, "/*");
-		
+
+		EnumSet<DispatcherType> dispatcherTypes = EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD);
+
+		CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
+		characterEncodingFilter.setEncoding("UTF-8");
+		characterEncodingFilter.setForceEncoding(true);
+
+		FilterRegistration.Dynamic characterEncoding = servletContext.addFilter("characterEncoding", characterEncodingFilter);
+		characterEncoding.addMappingForUrlPatterns(dispatcherTypes, true, "/*");
+
+		FilterRegistration.Dynamic security = servletContext.addFilter("springSecurityFilterChain", new DelegatingFilterProxy());
+		security.addMappingForUrlPatterns(dispatcherTypes, true, "/*");
+
 		servletContext.addListener(new ContextLoaderListener(rootContext));
 		servletContext.setInitParameter("defaultHtmlEscape", "true");
 		

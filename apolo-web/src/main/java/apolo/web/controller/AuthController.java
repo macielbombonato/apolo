@@ -5,10 +5,10 @@ import apolo.common.util.MessageBundle;
 import apolo.security.UserPermission;
 import apolo.web.enums.Navigation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.social.facebook.api.Facebook;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,12 +17,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
 @SuppressWarnings("rawtypes")
 @Controller
 public class AuthController extends BaseController {
 	
+	private Facebook facebook;
+
 	@Autowired
 	private UserService userService;
 	
@@ -31,6 +34,11 @@ public class AuthController extends BaseController {
 	
 	@Autowired
 	private AppController appController;
+
+	@Inject
+	public AuthController(Facebook facebook) {
+		this.facebook = facebook;
+	}
 
 	@PreAuthorize("permitAll")
     @RequestMapping(value = "/login", method = RequestMethod.GET)
@@ -42,7 +50,7 @@ public class AuthController extends BaseController {
 	@RequestMapping(value = "/{tenant-url}/login", method = RequestMethod.GET)
 	public ModelAndView login(@PathVariable("tenant-url") String tenant, HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView(Navigation.AUTH_LOGIN.getPath());
-		
+
 		if (userService.getAuthenticatedUser() != null
 				&& userService.getAuthenticatedUser().getPermissions() != null
 				&& !userService.getAuthenticatedUser().getPermissions().isEmpty()

@@ -1,4 +1,4 @@
-package apolo.web.config;
+package apolo.web.service;
 
 
 import apolo.business.service.EmailService;
@@ -44,7 +44,7 @@ public class UserAuthenticationProvider implements AuthenticationProvider {
 
 	@Autowired
 	private EmailService emailService;
-	
+
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 		User user = userService.loadByUsernameAndPassword(
 				authentication.getName(), 

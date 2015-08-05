@@ -1,8 +1,13 @@
 package apolo.common.util;
 
+import apolo.common.config.model.ApplicationProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.ContextLoader;
 
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
@@ -11,16 +16,49 @@ import javax.crypto.spec.SecretKeySpec;
 import java.security.NoSuchAlgorithmException;
 
 @Component
-public class ApoloCrypt {
+public class ApoloCrypt implements PasswordEncoder {
 	
 	private static final Logger LOG = LoggerFactory.getLogger(ApoloCrypt.class);
 	
 	private String algorithm = "AES";
 	private String transformation = "AES/CBC/NoPadding";
 	private String encoding = "UTF-8";
-	
 
-	public String encrypt(String text, String secretKey, String iv) throws Exception {
+	@Autowired
+	private ApplicationProperties applicationProperties;
+
+	private ApplicationProperties getApplicationProperties() {
+		if (this.applicationProperties == null) {
+			ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+
+			applicationProperties = (ApplicationProperties) ctx.getBean("applicationProperties");
+		}
+
+		return this.applicationProperties;
+	}
+
+	public String encode(CharSequence rawPassword) {
+		String result = "";
+
+		try {
+			result = this.encode(
+					rawPassword.toString(),
+					this.getApplicationProperties().getSecretKey(),
+					this.getApplicationProperties().getIvKey()
+			);
+		} catch (Exception e) {
+			LOG.error(e.getMessage(), e);
+		}
+
+		return result;
+	}
+
+	public boolean matches(CharSequence rawPassword, String encodedPassword) {
+		String encoded = this.encode(rawPassword);
+		return matches(encoded.getBytes(), encodedPassword.getBytes());
+	}
+	
+	public String encode(String text, String secretKey, String iv) throws Exception {
 		IvParameterSpec ivspec = new IvParameterSpec(
 				buildKey(iv.trim()).getBytes(encoding)
 			);
@@ -55,7 +93,23 @@ public class ApoloCrypt {
 		return bytesToHex(encrypted);
 	}
 
-	public String decrypt(String code, String secretKey, String iv) throws Exception {
+	public String decode(String code) {
+		String result = "";
+
+		try {
+			result = this.decode(
+                            code,
+                            this.getApplicationProperties().getSecretKey(),
+                            this.getApplicationProperties().getIvKey()
+                        );
+		} catch (Exception e) {
+			LOG.error(e.getMessage(), e);
+		}
+
+		return result;
+	}
+
+	public String decode(String code, String secretKey, String iv) throws Exception {
 		IvParameterSpec ivspec = new IvParameterSpec(buildKey(iv.trim()).getBytes(encoding));
 
 		SecretKeySpec keyspec = new SecretKeySpec(buildKey(secretKey.trim()).getBytes(encoding), algorithm);
@@ -156,5 +210,17 @@ public class ApoloCrypt {
 		}
 
 		return key;
+	}
+
+	private boolean matches(byte[] expected, byte[] actual) {
+		if (expected.length != actual.length) {
+			return false;
+		}
+
+		int result = 0;
+		for (int i = 0; i < expected.length; i++) {
+			result |= expected[i] ^ actual[i];
+		}
+		return result == 0;
 	}
 }

@@ -131,11 +131,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 		try {
 			user = userRepository.findByEmailAndPassword(
                     username,
-                    apoloCrypt.encrypt(
-							password,
-							applicationProperties.getSecretKey(),
-							applicationProperties.getIvKey()
-						)
+                    apoloCrypt.encode(password)
                 );
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
@@ -173,11 +169,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 			Md5PasswordEncoder encoder = new Md5PasswordEncoder();
 			try {
 				user.setPassword(
-                        apoloCrypt.encrypt(
-								user.getPassword(),
-								applicationProperties.getSecretKey(),
-								applicationProperties.getIvKey()
-						)
+                        apoloCrypt.encode(user.getPassword())
                     );
 			} catch (Exception e) {
 				log.error(e.getMessage(), e);

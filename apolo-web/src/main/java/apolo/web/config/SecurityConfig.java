@@ -1,7 +1,9 @@
 package apolo.web.config;
 
 import apolo.common.config.model.ApplicationProperties;
+import apolo.common.util.ApoloCrypt;
 import apolo.security.UserPermission;
+import apolo.web.service.UserAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -10,8 +12,10 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.context.ContextLoader;
 
 import javax.inject.Inject;
@@ -31,10 +35,26 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(userAuthenticationProvider);
     }
-    
+
     @Bean @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new ApoloCrypt();
+    }
+
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        web
+                //Spring Security ignores request to static resources such as CSS or JS files.
+                .ignoring()
+                    .antMatchers(
+                            "/resources/**",
+                            "/error/**"
+                        );
     }
 
     @Override
@@ -59,8 +79,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                             UserPermission.ADMIN.getCode()
                         )
                 .antMatchers(
-                        "/resources/**",
-                        "/error/**",
                         "/install/**",
                         "/install",
                         "/login",

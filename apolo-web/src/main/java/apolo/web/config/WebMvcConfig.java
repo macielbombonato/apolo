@@ -73,6 +73,8 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
 		String googleAdSlotThree = System.getenv(EnviromentVariables.DEFAULT_GOOGLE_ADSLOT_THREE.getCode());
 		String googleAnalyticsUserAccount = System.getenv(EnviromentVariables.DEFAULT_GOOGLE_ANALYTICS_USER_ACCOUNT.getCode());
 		String sendAuthEmail = System.getenv(EnviromentVariables.SEND_AUTH_EMAIL.getCode());
+		String facebookAppId = "479118202249121";
+		String facebookAppSecret = "c46e6a31e96d71ec03b4719806573839";
 
 		String secretKey = System.getenv(EnviromentVariables.SECRET_KEY.getCode());
 		String ivKey = System.getenv(EnviromentVariables.IV_KEY.getCode());
@@ -96,6 +98,10 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
 		log.info("secretKey:                          " + secretKey);
 		log.info("ivKey:                              " + ivKey);
 
+		log.info("facebookAppId:                      " + facebookAppId);
+		log.info("facebookAppSecret:                  " + facebookAppSecret);
+
+
     	result.setDefaultTenant(defaultTenant);
     	result.setUploadedFilesPath(uploadedFilesPath);
 
@@ -114,6 +120,9 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
 
 		result.setSecretKey(secretKey);
 		result.setIvKey(ivKey);
+
+		result.setFacebookAppId(facebookAppId);
+		result.setFacebookAppSecret(facebookAppSecret);
 
 		log.info("*************** END Env Variables CONFIG FILE *************** ");
 
@@ -170,7 +179,7 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
 	public CommonsMultipartResolver multipartResolver() {
 		return new CommonsMultipartResolver();
 	}
-	
+
 	@Override
 	protected void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry.addResourceHandler(RESOURCES_HANDLER).addResourceLocations(RESOURCES_LOCATION).setCachePeriod(175316);

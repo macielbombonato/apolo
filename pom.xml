@@ -236,6 +236,11 @@
 	            <artifactId>spring-security-taglibs</artifactId>
 	            <version>${org.springframework.security-version}</version>
 	        </dependency>
+			<dependency>
+				<groupId>org.springframework.security</groupId>
+				<artifactId>spring-security-core</artifactId>
+				<version>${org.springframework.security-version}</version>
+			</dependency>
 	        <dependency>
 	            <groupId>org.springframework</groupId>
 	            <artifactId>spring-jdbc</artifactId>
@@ -257,6 +262,49 @@
 	            <version>${org.springframework-version}</version>
 	            <scope>test</scope>
 	        </dependency>
+
+			<!-- Use Apache HttpClient as HTTP Client -->
+			<dependency>
+				<groupId>org.apache.httpcomponents</groupId>
+				<artifactId>httpclient</artifactId>
+				<version>4.3.2</version>
+			</dependency>
+
+			<!-- Spring Social -->
+			<dependency>
+				<groupId>org.springframework.social</groupId>
+				<artifactId>spring-social-config</artifactId>
+				<version>1.1.0.RELEASE</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.social</groupId>
+				<artifactId>spring-social-core</artifactId>
+				<version>1.1.0.RELEASE</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.social</groupId>
+				<artifactId>spring-social-security</artifactId>
+				<version>1.1.0.RELEASE</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.social</groupId>
+				<artifactId>spring-social-web</artifactId>
+				<version>1.1.0.RELEASE</version>
+			</dependency>
+
+			<!-- Spring Social Facebook -->
+			<dependency>
+				<groupId>org.springframework.social</groupId>
+				<artifactId>spring-social-facebook</artifactId>
+				<version>1.1.0.RELEASE</version>
+			</dependency>
+
+			<!-- Spring Social Twitter -->
+			<dependency>
+				<groupId>org.springframework.social</groupId>
+				<artifactId>spring-social-twitter</artifactId>
+				<version>1.1.0.RELEASE</version>
+			</dependency>
 	        
 	        <!-- Apache -->
 	        <dependency>
@@ -583,6 +631,7 @@
 					</exclusion>
 				</exclusions>
 			</dependency>
+
 		</dependencies>
 	</dependencyManagement>
 	

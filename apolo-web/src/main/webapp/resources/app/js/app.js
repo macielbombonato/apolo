@@ -80,7 +80,7 @@ $(document).ready(function() {
 	});
 
 	$(".chosen-select").chosen();
-	
+
 	$('#formTab a').click(function (e) {
 		e.preventDefault();
 		$(this).tab('show');
@@ -147,7 +147,6 @@ $(document).ready(function() {
 			'src="//pagead2.googlesyndication.com/pagead/show_ads.js"> ' +
 		'</script> '
 	);
-
 });
 
 $.fn.is_on_screen = function(){

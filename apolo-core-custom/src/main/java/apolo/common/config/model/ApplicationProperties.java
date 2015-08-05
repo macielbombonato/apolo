@@ -31,7 +31,11 @@ public class ApplicationProperties {
 	private String googleAnalyticsUserAccount;
 
 	private Boolean sendAuthEmail;
-	
+
+	private String facebookAppId;
+
+	private String facebookAppSecret;
+
 	public String getUploadedFilesPath() {
 		return uploadedFilesPath;
 	}
@@ -150,5 +154,21 @@ public class ApplicationProperties {
 
 	public void setIvKey(String ivKey) {
 		this.ivKey = ivKey;
+	}
+
+	public String getFacebookAppId() {
+		return facebookAppId;
+	}
+
+	public void setFacebookAppId(String facebookAppId) {
+		this.facebookAppId = facebookAppId;
+	}
+
+	public String getFacebookAppSecret() {
+		return facebookAppSecret;
+	}
+
+	public void setFacebookAppSecret(String facebookAppSecret) {
+		this.facebookAppSecret = facebookAppSecret;
 	}
 }
