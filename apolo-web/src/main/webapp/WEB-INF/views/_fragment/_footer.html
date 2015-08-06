@@ -8,37 +8,34 @@
     </head>
     <body th:fragment="footer">
 
-        <footer>
 
-            <div class="row">
-
-                <div class="col-sm-5">
-                    <a sec:authorize="hasRole('ROLE_ADMIN')"
-                       th:href='@{|/version|}'
-                       class="btn">
-                        <img th:src="@{|/resources/app/img/flags/#{language.flag}|}"
-                             width="15"
-                             height="15"
-                             class="img"
-                                />
-                    </a>
-                    <img th:src="@{|/resources/app/img/flags/#{language.flag}|}"
-                         sec:authorize="!hasRole('ROLE_ADMIN')"
-                         width="15"
-                         height="15"
-                         class="img"
-                            />
-                    <span th:text="#{footer.message}" data-htmlEscape="false">
-                        footer.message
-                    </span>
-                </div><!--/.col-->
-
-                <div class="col-sm-7 text-right">
-
-                </div><!--/.col-->
-
-            </div><!--/.row-->
-
+        <footer class="main-footer">
+            <div class="pull-right hidden-xs">
+                <b th:text="#{view.version}">
+                    Version
+                </b>
+                <span th:text="#{version}">
+                    version
+                </span>
+            </div>
+            <a sec:authorize="hasRole('ROLE_ADMIN')"
+               th:href='@{|/version|}'
+               class="btn">
+                <img th:src="@{|/resources/app/img/flags/#{language.flag}|}"
+                     width="15"
+                     height="15"
+                     class="img"
+                        />
+            </a>
+            <img th:src="@{|/resources/app/img/flags/#{language.flag}|}"
+                 sec:authorize="!hasRole('ROLE_ADMIN')"
+                 width="15"
+                 height="15"
+                 class="img"
+                    />
+            <span th:text="#{footer.message}" data-htmlEscape="false">
+                footer.message
+            </span>
         </footer>
 
         <noscript>
