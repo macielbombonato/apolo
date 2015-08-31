@@ -723,7 +723,7 @@
 					<version>2.2</version>
 					<configuration>
 						<url>${env.APOLO_PRODUCTION_DEPLOY_URL}</url>
-						<server>${env.APOLO_PRODUCTION_DEPLOY_SERVER_NAME}}</server>
+						<server>${env.APOLO_PRODUCTION_DEPLOY_SERVER_NAME}</server>
 						<path>/</path>
 					</configuration>
 				</plugin>
