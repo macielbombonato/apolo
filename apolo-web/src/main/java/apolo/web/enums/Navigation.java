@@ -122,7 +122,7 @@ public enum Navigation {
 	USER_CHANGE_PASSWORD("user/change-password") {
 		@Override
 		public String getNodeName() {
-			return "user.changepassword";
+			return "user.change-password";
 		}
 
 		@Override
@@ -130,6 +130,30 @@ public enum Navigation {
 			return 1;
 		}
 	},
+	USER_FORGOT_PASSWORD("user/forgot-password") {
+		@Override
+		public String getNodeName() {
+			return "user.forgot-password";
+		}
+
+		@Override
+		public int getNodeLevel() {
+			return 1;
+		}
+	},
+
+	USER_RESET_PASSWORD("user/reset-password") {
+		@Override
+		public String getNodeName() {
+			return "user.reset-password";
+		}
+
+		@Override
+		public int getNodeLevel() {
+			return 1;
+		}
+	},
+
 	
 	USER_PERMISSION_LIST("user-group/list") {
 		@Override
@@ -383,174 +407,6 @@ public enum Navigation {
 		@Override
 		public String getNodeName() {
 			return "tenant";
-		}
-
-		@Override
-		public int getNodeLevel() {
-			return 2;
-		}
-	},
-
-	DISTRIBUTION_LIST("distribution/list") {
-		@Override
-		public String getNodeName() {
-			return "distribution.list";
-		}
-
-		@Override
-		public int getNodeLevel() {
-			return 1;
-		}
-	},
-	DISTRIBUTION_SEARCH("distribution/search") {
-		@Override
-		public String getNodeName() {
-			return "distribution.search.title";
-		}
-
-		@Override
-		public int getNodeLevel() {
-			return 1;
-		}
-	},
-	DISTRIBUTION_NEW("distribution/new") {
-		@Override
-		public String getNodeName() {
-			return "distribution.create";
-		}
-
-		@Override
-		public int getNodeLevel() {
-			return 1;
-		}
-	},
-	DISTRIBUTION_EDIT("distribution/edit") {
-		@Override
-		public String getNodeName() {
-			return "distribution.edit";
-		}
-
-		@Override
-		public int getNodeLevel() {
-			return 2;
-		}
-	},
-	DISTRIBUTION_VIEW("distribution/view") {
-		@Override
-		public String getNodeName() {
-			return "distribution";
-		}
-
-		@Override
-		public int getNodeLevel() {
-			return 2;
-		}
-	},
-
-	CONTACT_LIST("distribution/contact/list") {
-		@Override
-		public String getNodeName() {
-			return "contact.list";
-		}
-
-		@Override
-		public int getNodeLevel() {
-			return 2;
-		}
-	},
-	CONTACT_SEARCH("distribution/contact/search") {
-		@Override
-		public String getNodeName() {
-			return "contact.search.title";
-		}
-
-		@Override
-		public int getNodeLevel() {
-			return 2;
-		}
-	},
-	CONTACT_IMPORT("distribution/contact/import") {
-		@Override
-		public String getNodeName() {
-			return "contact.import";
-		}
-
-		@Override
-		public int getNodeLevel() {
-			return 2;
-		}
-	},
-	CONTACT_IMPORT_RESULT("distribution/contact/import-result") {
-		@Override
-		public String getNodeName() {
-			return "contact.import.result";
-		}
-
-		@Override
-		public int getNodeLevel() {
-			return 3;
-		}
-	},
-	CONTACT_UNSUBSCRIBE("distribution/contact/unsubscribe") {
-		@Override
-		public String getNodeName() {
-			return "contact.unsubscribe";
-		}
-
-		@Override
-		public int getNodeLevel() {
-			return 1;
-		}
-	},
-
-	CAMPAIGN_LIST("campaign/list") {
-		@Override
-		public String getNodeName() {
-			return "campaign.list";
-		}
-
-		@Override
-		public int getNodeLevel() {
-			return 1;
-		}
-	},
-	CAMPAIGN_SEARCH("campaign/search") {
-		@Override
-		public String getNodeName() {
-			return "campaign.search.title";
-		}
-
-		@Override
-		public int getNodeLevel() {
-			return 1;
-		}
-	},
-	CAMPAIGN_NEW("campaign/new") {
-		@Override
-		public String getNodeName() {
-			return "campaign.create";
-		}
-
-		@Override
-		public int getNodeLevel() {
-			return 1;
-		}
-	},
-	CAMPAIGN_EDIT("campaign/edit") {
-		@Override
-		public String getNodeName() {
-			return "campaign.edit";
-		}
-
-		@Override
-		public int getNodeLevel() {
-			return 2;
-		}
-	},
-	CAMPAIGN_VIEW("campaign/view") {
-		@Override
-		public String getNodeName() {
-			return "campaign";
 		}
 
 		@Override

@@ -113,4 +113,8 @@ public interface UserService extends BaseService<User> {
 	 * @return long
 	 */
 	long countByTenant(Tenant tenant);
+
+	void generateResetPasswordToken(String serverUrl, String email);
+
+	User findByToken(String token);
 }

@@ -62,6 +62,15 @@
                             </button>
                         </div>
                     </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <a th:with="url=${tenant != null ? '/' + tenant.url : ''}"
+                                    th:href="@{|${url}/forgot-password|}" class="pull-right" th:text="#{user.forgot-password}">
+                                Esqueci minha senha
+                            </a>
+                        </div>
+                    </div>
                 </form>
 
                 <div class="row">

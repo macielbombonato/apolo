@@ -177,7 +177,7 @@ public class AppController extends BaseController<User> {
 
 	@PreAuthorize("permitAll")
 	@RequestMapping(value = "/{tenant-url}", method = RequestMethod.GET)
-	public ModelAndView indexTenant(@PathVariable("tenant-url") String tenantUrl, HttpServletRequest request) {
+	public ModelAndView index(@PathVariable("tenant-url") String tenantUrl, HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView(Navigation.INDEX.getPath());
 
 		Tenant tenant = getDBTenant(tenantUrl);

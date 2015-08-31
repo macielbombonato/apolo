@@ -2,6 +2,7 @@ package apolo.business.service.impl;
 
 import apolo.business.model.FileContent;
 import apolo.business.model.InstallFormModel;
+import apolo.business.service.EmailService;
 import apolo.business.service.FileService;
 import apolo.business.service.TenantService;
 import apolo.business.service.UserService;
@@ -22,7 +23,6 @@ import apolo.security.CurrentUser;
 import apolo.security.UserPermission;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -33,6 +33,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.inject.Inject;
+import javax.inject.Named;
 import java.io.IOException;
 import java.util.*;
 
@@ -41,23 +43,27 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 
 	private static final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
 
-	@Autowired
+	@Inject
 	private UserRepository userRepository;
 	
-	@Autowired
+	@Inject
 	private UserGroupRepository userGroupRepository;
 	
-	@Autowired
+	@Inject
 	private FileService<User> fileService;
 	
-	@Autowired
+	@Inject
 	private ApplicationProperties applicationProperties;
 	
-	@Autowired
+	@Inject
 	private TenantService tenantService;
 
-	@Autowired
+	@Inject
 	private ApoloCrypt apoloCrypt;
+
+	@Inject
+	@Named("smtpEmailService")
+	private EmailService emailService;
 	
 	public List<User> list(Tenant tenant) {
 		PageRequest request = new PageRequest(1, PAGE_SIZE, Sort.Direction.ASC, "name");
@@ -110,6 +116,11 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 
 			result = user.getSignInCount();
 
+			if (user.getResetPasswordToken() != null) {
+				user.setResetPasswordToken(null);
+				user.setResetPasswordSentAt(null);
+			}
+
 			this.save(user);
 		}
 
@@ -136,6 +147,74 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 		}
 
 		return result;
+	}
+
+	@Override
+	public void generateResetPasswordToken(String serverUrl, String email) {
+		if (email != null
+				&& !"".equals(email)) {
+			User user = this.findByLogin(email);
+
+			if (user != null) {
+				try {
+					String token = apoloCrypt.encode(
+                            user.getEmail(),
+                            user.getDbTenant().getName() + user.getName(),
+                            applicationProperties.getIvKey()
+                    	);
+
+					user.setResetPasswordToken(token);
+					user.setResetPasswordSentAt(new Date());
+
+					user = this.save(user);
+
+					emailService.sendAsync(
+							user.getDbTenant(),
+							user.getDbTenant().getName(),
+							user.getDbTenant().getEmailFrom(),
+							user.getName(),
+							user.getEmail(),
+							MessageBundle.getMessageBundle("user.forgot-password.email.subject"),
+							this.buildResetPasswordMessage(
+									serverUrl + "reset-password/",
+									user
+							).toString()
+					);
+				} catch (Exception e) {
+					log.error(e.getMessage(), e);
+				}
+			}
+		}
+	}
+
+	@Override
+	public User findByToken(String token) {
+		User user = null;
+
+		user = userRepository.findByResetPasswordToken(token);
+
+		if (user != null
+				&& user.getResetPasswordSentAt() != null) {
+			Calendar now = GregorianCalendar.getInstance();
+			now.setTime(new Date());
+
+			Calendar resetAt = GregorianCalendar.getInstance();
+			resetAt.setTime(user.getResetPasswordSentAt());
+			resetAt.add(Calendar.MINUTE, 60);
+
+			if (resetAt.before(now)) {
+				user.setResetPasswordToken(null);
+				user.setResetPasswordSentAt(null);
+
+				this.save(user);
+
+				user = null;
+			}
+		} else {
+			user = null;
+		}
+
+		return user;
 	}
 
 	public User find(Tenant tenant, Long id) {
@@ -488,6 +567,38 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 			tenantService.save(tenant);
 		}
 		
+		return result;
+	}
+
+	private StringBuilder buildResetPasswordMessage(String url, User user) {
+		StringBuilder result = new StringBuilder();
+
+		result.append("<html>");
+		result.append("<body>");
+
+		result.append("<h1>");
+		result.append(MessageBundle.getMessageBundle("user.forgot-password.email.subject"));
+		result.append("</h1>");
+
+		result.append("<p>");
+		result.append(MessageBundle.getMessageBundle("user.forgot-password.email.message"));
+		result.append("</p>");
+
+		result.append("<p>");
+
+		result.append("<a href=\"" + url + user.getResetPasswordToken() + "\" >");
+		result.append(url + user.getResetPasswordToken());
+		result.append("</a>");
+
+		result.append("</p>");
+
+		result.append("<p>");
+		result.append(MessageBundle.getMessageBundle("user.forgot-password.email.footer"));
+		result.append("</p>");
+
+		result.append("</body>");
+		result.append("</html>");
+
 		return result;
 	}
 }

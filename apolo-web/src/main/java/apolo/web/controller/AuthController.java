@@ -2,6 +2,7 @@ package apolo.web.controller;
 
 import apolo.business.service.UserService;
 import apolo.common.util.MessageBundle;
+import apolo.data.model.User;
 import apolo.web.enums.Navigation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -13,6 +14,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -121,6 +123,96 @@ public class AuthController extends BaseController {
 		mav.addObject("tenant", getDBTenant(tenant));
         return mav;
     }
+
+	@PreAuthorize("permitAll")
+	@RequestMapping(value = "/forgot-password", method = RequestMethod.GET)
+	public ModelAndView forgotPassword(
+			HttpServletRequest request
+	) {
+		ModelAndView mav = new ModelAndView(Navigation.USER_FORGOT_PASSWORD.getPath());
+
+		mav.addObject("tenant", getDBTenant(applicationProperties.getDefaultTenant()));
+
+		return mav;
+	}
+
+	@PreAuthorize("permitAll")
+	@RequestMapping(value = "/{tenant-url}/forgot-password", method = RequestMethod.GET)
+	public ModelAndView forgotPassword(
+			@PathVariable("tenant-url") String tenant,
+			HttpServletRequest request
+	) {
+		ModelAndView mav = new ModelAndView(Navigation.USER_FORGOT_PASSWORD.getPath());
+
+		mav.addObject("tenant", getDBTenant(tenant));
+
+		return mav;
+	}
+
+	@PreAuthorize("permitAll")
+	@RequestMapping(value = "/{tenant-url}/forgot-password-send", method = RequestMethod.POST)
+	public ModelAndView forgotPasswordSend(
+			@PathVariable("tenant-url") String tenant,
+			@RequestParam(defaultValue = "") String email,
+			HttpServletRequest request
+	) {
+
+		userService.generateResetPasswordToken(
+				this.getServerUrl(
+						request,
+						tenant
+				),
+				email
+		);
+
+		ModelAndView mav = appController.index(tenant, request);
+
+		mav.addObject("warn", true);
+		mav.addObject("message", MessageBundle.getMessageBundle("user.forgot-password.msg"));
+
+		return mav;
+	}
+
+	@PreAuthorize("permitAll")
+	@RequestMapping(value = "/{tenant-url}/reset-password/{token}", method = RequestMethod.GET)
+	public ModelAndView resetPassword(
+			@PathVariable("tenant-url") String tenant,
+			@PathVariable("token") String token,
+			HttpServletRequest request
+	) {
+		ModelAndView mav = new ModelAndView(Navigation.USER_RESET_PASSWORD.getPath());
+
+		mav.addObject("tenant", getDBTenant(tenant));
+		mav.addObject("token", token);
+
+		return mav;
+	}
+
+	@PreAuthorize("permitAll")
+	@RequestMapping(value = "/{tenant-url}/reset-password-send", method = RequestMethod.POST)
+	public ModelAndView resetPasswordSend(
+			@PathVariable("tenant-url") String tenant,
+			@RequestParam(defaultValue = "") String token,
+			@RequestParam(defaultValue = "") String password,
+			@RequestParam(defaultValue = "") String passwordConfirmation,
+			HttpServletRequest request
+	) {
+
+		if (password.equals(passwordConfirmation)) {
+			User user = userService.findByToken(token);
+
+			user.setPassword(password);
+
+			userService.save(user, true, null);
+		}
+
+		ModelAndView mav = appController.index(tenant, request);
+
+		mav.addObject("msg", true);
+		mav.addObject("message", MessageBundle.getMessageBundle("user.reset-password.msg"));
+
+		return mav;
+	}
 	
     private void logout() {
     	SecurityContextHolder.getContext().setAuthentication(null);

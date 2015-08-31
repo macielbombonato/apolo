@@ -29,6 +29,10 @@ import org.springframework.web.util.NestedServletException;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
@@ -73,6 +77,31 @@ public abstract class BaseController<E extends BaseEntity> {
 		}
 		
 		return result;
+	}
+
+	protected String getServerUrl(HttpServletRequest request, String tenant) {
+		String serverUrl = "";
+
+		try {
+			URL url = new URL(request.getRequestURL().toString());
+
+			String host  = url.getHost();
+			String userInfo = url.getUserInfo();
+			String scheme = url.getProtocol();
+			int port = url.getPort();
+			String path = (String) request.getAttribute("javax.servlet.forward.request_uri");
+			String query = (String) request.getAttribute("javax.servlet.forward.query_string");
+			URI uri = new URI(scheme,userInfo,host,port,path,query,null);
+
+			serverUrl = uri.toString() + "/" + tenant + "/";
+
+		} catch (MalformedURLException e) {
+			log.error(e.getMessage(), e);
+		} catch (URISyntaxException e) {
+			log.error(e.getMessage(), e);
+		}
+
+		return serverUrl;
 	}
 	
 	protected void configurePageable(String tenant, ModelAndView mav, Page<E> page, String url) {
