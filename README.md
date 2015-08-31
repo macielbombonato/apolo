@@ -1,4 +1,4 @@
-# HERMES
+# APOLO
 ---------
 ## O Projeto Apolo
 
@@ -42,40 +42,41 @@ A partir da versão 3.1.0 o Apolo passou a utilizar variáveis de ambiente para 
 
 Abaixo estão as variáveis de ambiente que devem ser configuradas em seu servidor.
 
-	export HERMES_PRODUCTION_DEPLOY_URL="http://endereco_do_seu_servidor:8080/manager/text"
+	export APOLO_PRODUCTION_DEPLOY_URL="http://endereco_do_seu_servidor:8080/manager/text"
+	export APOLO_PRODUCTION_DEPLOY_SERVER_NAME="SERVER_NAME-CONFIGURADO-VARIAVEIS-DE-AMBIENTE"
 
-	export HERMES_SECRET_KEY="1234567890ABCDEF" #max 16 chars
-	export HERMES_IV_KEY="1234567890ABCDEF" #max 16 chars
+	export APOLO_SECRET_KEY="1234567890ABCDEF" #max 16 chars
+	export APOLO_IV_KEY="1234567890ABCDEF" #max 16 chars
 
-	export HERMES_UPLOADED_FILES="/your/file/path/"
-	export HERMES_VIDEO_CONVERTER_EXECUTABLE_PATH=""
-	export HERMES_PDF_IMAGE_EXTRACTOR_EXECUTABLE_PATH=""
-	export HERMES_DEFAULT_TENANT="apolo"
+	export APOLO_UPLOADED_FILES="/your/file/path/"
+	export APOLO_VIDEO_CONVERTER_EXECUTABLE_PATH=""
+	export APOLO_PDF_IMAGE_EXTRACTOR_EXECUTABLE_PATH=""
+	export APOLO_DEFAULT_TENANT="apolo"
 
-	export HERMES_DEFAULT_emailFrom="email@from"
-	export HERMES_DEFAULT_emailUsername="email@username"
-	export HERMES_DEFAULT_emailPassword="pass"
-	export HERMES_DEFAULT_smtpHost="smtp"
-	export HERMES_DEFAULT_smtpPort="123"
-	export HERMES_DEFAULT_useTLS="true"
-	export HERMES_SEND_AUTH_EMAIL="true"
+	export APOLO_DEFAULT_emailFrom="email@from"
+	export APOLO_DEFAULT_emailUsername="email@username"
+	export APOLO_DEFAULT_emailPassword="pass"
+	export APOLO_DEFAULT_smtpHost="smtp"
+	export APOLO_DEFAULT_smtpPort="123"
+	export APOLO_DEFAULT_useTLS="true"
+	export APOLO_SEND_AUTH_EMAIL="true"
 
-	export HERMES_DEFAULT_GOOGLE_ADCLIENT="ca-pub-XXXXXXXXXXX"
-	export HERMES_DEFAULT_GOOGLE_ADSLOT_ONE="XXXXXXXXXX"
-	export HERMES_DEFAULT_GOOGLE_ADSLOT_TWO="XXXXXXXXXX"
-	export HERMES_DEFAULT_GOOGLE_ADSLOT_THREE="XXXXXXXXXX"
-	export HERMES_DEFAULT_GOOGLE_ANALYTICS_USER_ACCOUNT="UA-XXXXXXXX-X"
+	export APOLO_DEFAULT_GOOGLE_ADCLIENT="ca-pub-XXXXXXXXXXX"
+	export APOLO_DEFAULT_GOOGLE_ADSLOT_ONE="XXXXXXXXXX"
+	export APOLO_DEFAULT_GOOGLE_ADSLOT_TWO="XXXXXXXXXX"
+	export APOLO_DEFAULT_GOOGLE_ADSLOT_THREE="XXXXXXXXXX"
+	export APOLO_DEFAULT_GOOGLE_ANALYTICS_USER_ACCOUNT="UA-XXXXXXXX-X"
 
-	export HERMES_DATASOURCE_DRIVER_CLASS="com.mysql.jdbc.Driver"
-	export HERMES_HIBERNATE_DIALECT="org.hibernate.dialect.MySQL5InnoDBDialect"
-	export HERMES_HIBERNATE_HBM2DDL="update"
-	export HERMES_DATASOURCE_URL="jdbc:mysql://localhost:3306/hermes?createDatabaseIfNotExist=true&amp;useUnicode=true&amp;characterEncoding=utf-8"
-	export HERMES_DATASOURCE_USERNAME="your_user"
-	export HERMES_DATASOURCE_PASSWORD="pass"
-	export HERMES_HIBERNATE_SHOW_AND_FORMAT_SQL="true"
+	export APOLO_DATASOURCE_DRIVER_CLASS="com.mysql.jdbc.Driver"
+	export APOLO_HIBERNATE_DIALECT="org.hibernate.dialect.MySQL5InnoDBDialect"
+	export APOLO_HIBERNATE_HBM2DDL="update"
+	export APOLO_DATASOURCE_URL="jdbc:mysql://localhost:3306/apolo?createDatabaseIfNotExist=true&amp;useUnicode=true&amp;characterEncoding=utf-8"
+	export APOLO_DATASOURCE_USERNAME="your_user"
+	export APOLO_DATASOURCE_PASSWORD="pass"
+	export APOLO_HIBERNATE_SHOW_AND_FORMAT_SQL="true"
 
-	export HERMES_FACEBOOK_APP_ID="YORAPPID"
-	export HERMES_FACEBOOK_APP_SECRET="YOURAPPSECRET"
+	export APOLO_FACEBOOK_APP_ID="YORAPPID"
+	export APOLO_FACEBOOK_APP_SECRET="YOURAPPSECRET"
 
 ## Primeiros passos
 
@@ -106,7 +107,7 @@ Primeiro você precisa abrir o arquivo settings.xml do maven que fica no seu rep
 Agora é necessário incluir as seguintes linhas no arquivo e dentro da estrutura servers:
 
     <server>
-      <id>TomcatServer</id>
+      <id>SERVER_NAME-CONFIGURADO-VARIAVEIS-DE-AMBIENTE</id>
       <username>admin</username>
       <password>SENHA-CONFIGURADA-NO-ARQUIVO-USERS-DO-TOMCAT-NO-SERVER</password>
     </server>
@@ -121,7 +122,7 @@ Vá até a instalação do tomcat e na pasta de configuração dele abra o arqui
 
 Estando tudo certo neste arquivo, verifique se na pasta webapps vc possui o projeto manager, caso sim, a estrutura está OK e pronta para o deploy remoto.
 
-Voltando a máquina local, é necessário conferir se a variável de ambiente HERMES_PRODUCTION_DEPLOY_URL está apontando para o servidor corretamente, abaixo segue um exemplo:
+Voltando a máquina local, é necessário conferir se a variável de ambiente APOLO_PRODUCTION_DEPLOY_URL está apontando para o servidor corretamente, abaixo segue um exemplo:
 
 	http://endereco_do_seu_servidor:8080/manager/text
 
