@@ -8,19 +8,19 @@
     <name>Apolo - WEB</name>
     <groupId>apolo.web</groupId>
     <packaging>war</packaging>
-    
+
     <url>http://dimeric.com.br</url>
-    
+
     <parent>
         <groupId>apolo</groupId>
         <artifactId>apolo</artifactId>
-        <version>3.1.0</version>
+        <version>3.2.0</version>
     </parent>
-    
+
     <properties>
         <start-class>apolo.web.config.Application</start-class>
     </properties>
-    
+
     <dependencies>
 		<dependency>
 			<groupId>apolo.core.custom</groupId>
@@ -32,7 +32,7 @@
 			<artifactId>apolo-core</artifactId>
             <version>${project.parent.version}</version>
 		</dependency>
-    
+
         <!-- Data base Driver -->
         <dependency>
             <groupId>postgresql</groupId>
@@ -42,7 +42,7 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
-        
+
         <!-- Persistence -->
         <dependency>
             <groupId>org.eclipse.persistence</groupId>
@@ -69,7 +69,7 @@
             <artifactId>hibernate-jpa-2.1-api</artifactId>
             <scope>provided</scope>
         </dependency>
-        
+
         <!-- Spring -->
         <dependency>
             <groupId>org.springframework.data</groupId>
@@ -134,7 +134,7 @@
             <artifactId>spring-test</artifactId>
             <scope>test</scope>
         </dependency>
-        
+
         <!-- Apache -->
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -172,7 +172,7 @@
             <artifactId>derbytools</artifactId>
             <scope>test</scope>
         </dependency>
-        
+
         <dependency>
             <groupId>asm</groupId>
             <artifactId>asm</artifactId>
@@ -342,7 +342,7 @@
             <groupId>com.ibm.icu</groupId>
             <artifactId>icu4j</artifactId>
         </dependency>
-        
+
         <dependency>
             <groupId>com.google.code.findbugs</groupId>
             <artifactId>jsr305</artifactId>
@@ -351,13 +351,13 @@
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
         </dependency>
-        
+
         <dependency>
             <groupId>br.com.insula</groupId>
             <artifactId>opes</artifactId>
         </dependency>
-        
-        <!-- JavaMail API --> 
+
+        <!-- JavaMail API -->
         <dependency>
             <groupId>javamail</groupId>
             <artifactId>javamail</artifactId>
@@ -444,6 +444,11 @@
         <dependency>
             <groupId>org.springframework.social</groupId>
             <artifactId>spring-social-twitter</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.quartz-scheduler</groupId>
+            <artifactId>quartz</artifactId>
         </dependency>
     </dependencies>
 

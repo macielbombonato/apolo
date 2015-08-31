@@ -7,28 +7,17 @@ import apolo.common.exception.GenericException;
 import apolo.common.util.MessageBundle;
 import apolo.data.model.BaseEntity;
 import apolo.data.model.Tenant;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 @SuppressWarnings("rawtypes")
 @Service("fileService")
@@ -226,7 +215,27 @@ public class FileServiceImpl<E extends BaseEntity> implements FileService<E> {
 			directory.delete();
 		}
 	}
-	
+
+	@Override
+	public File getFile(Tenant tenant, E entity, String filename) {
+		File result = null;
+
+		filename = validateFileName(filename);
+
+		String filePath =
+				applicationProperties.getUploadedFilesPath() +
+						tenant.getUrl() +
+						File.separator +
+						entity.getClass().getSimpleName() +
+						File.separator +
+						entity.getId();
+
+		result = createAndValidateFile(filePath, true);
+		result = createAndValidateFile(filePath + File.separator + filename, false);
+
+		return result;
+	}
+
 	public void copyDirectory(File sourceLocation , File targetLocation) throws IOException {
 	    if (sourceLocation.isDirectory()) {
 	        if (!targetLocation.exists()) {

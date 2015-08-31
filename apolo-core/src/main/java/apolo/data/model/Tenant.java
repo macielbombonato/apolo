@@ -1,7 +1,6 @@
 package apolo.data.model;
 
 import apolo.data.entitylistener.AuditLogListener;
-import apolo.data.enums.Spinner;
 import apolo.data.enums.Status;
 import apolo.data.util.InputLength;
 import org.hibernate.annotations.Type;
@@ -26,9 +25,9 @@ public class Tenant extends AuditableBaseEntity {
 	@Size(min = 1, max = InputLength.TINY)
 	private String url;
 	
-	@Column(name = "name", length = InputLength.CODE, nullable = false)
+	@Column(name = "name", length = InputLength.NAME, nullable = false)
     @NotNull
-    @Size(min = 1, max = InputLength.CODE)
+    @Size(min = 1, max = InputLength.NAME)
 	private String name;
 	
 	@Column(name = "logo", length = InputLength.MEDIUM, nullable = true)
@@ -49,11 +48,6 @@ public class Tenant extends AuditableBaseEntity {
 	@Type(type = "apolo.data.enums.usertype.StatusUserType")
 	@NotNull
 	private Status status;
-
-    @Column(name = "spinner", nullable = true)
-    @Type(type = "apolo.data.enums.usertype.SpinnerUserType")
-    @NotNull
-    private Spinner spinner;
 
     @Column(name = "has_show_name", nullable = true)
     @Type(type="yes_no")
@@ -261,14 +255,6 @@ public class Tenant extends AuditableBaseEntity {
 
     public void setShowAdds(Boolean showAdds) {
         this.showAdds = showAdds;
-    }
-
-    public Spinner getSpinner() {
-        return spinner;
-    }
-
-    public void setSpinner(Spinner spinner) {
-        this.spinner = spinner;
     }
 
     public String getIcon() {

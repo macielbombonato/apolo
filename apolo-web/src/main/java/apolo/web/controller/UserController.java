@@ -1,24 +1,20 @@
 package apolo.web.controller;
 
 import apolo.business.model.FileContent;
-import apolo.business.service.FileService;
-import apolo.business.service.UserCustomFieldService;
-import apolo.business.service.UserGroupService;
-import apolo.business.service.UserService;
+import apolo.business.service.*;
 import apolo.common.config.model.ApplicationProperties;
 import apolo.common.util.MessageBundle;
 import apolo.data.enums.UserStatus;
 import apolo.data.model.Tenant;
 import apolo.data.model.User;
-import apolo.security.SecuredEnum;
 import apolo.security.UserPermission;
 import apolo.web.enums.Navigation;
 import net.sf.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomCollectionEditor;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
@@ -27,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.Date;
@@ -39,44 +36,57 @@ public class UserController extends BaseController<User> {
 
 	private final String ACCEPTED_FILE_TYPE = ".gif.jpg.png";
 	
-	@Autowired
+	@Inject
 	UserService userService;
 	
-	@Autowired
+	@Inject
 	UserGroupService userGroupService;
 	
-	@Autowired
+	@Inject
 	UserCustomFieldService userCustomFieldService;
 	
-	@Autowired
+	@Inject
 	private FileService<User> fileService;
 	
-	@Autowired
+	@Inject
 	private ApplicationProperties applicationProperties;
-	
-	@SecuredEnum(UserPermission.AFTER_AUTH_USER)
+
+	@Inject
+	private TenantService tenantService;
+
+	@PreAuthorize("@apoloSecurity.isAuthenticated()")
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public ModelAndView index(
 				@PathVariable("tenant-url") String tenant, 
 				HttpServletRequest request
 			) {
 		ModelAndView mav = new ModelAndView(Navigation.USER_INDEX.getPath());
-		
+
 		mav.addObject("user", userService.getAuthenticatedUser());
+
+		double userCount = userService.count();
+
+		double userTenantCount = userService.countByTenant(getDBTenant(tenant));
+		double userTenantCountPercent = (userTenantCount / userCount) * 100;
+
+		double tenantCount = tenantService.count();
+
+		mav.addObject("tenantCount", tenantCount);
+
+		mav.addObject("userCount", userCount);
+		mav.addObject("userTenantCount", userTenantCount);
+		mav.addObject("userTenantCountPercent", userTenantCountPercent);
+
 		mav.addObject("readOnly", true);
 		return mav;
 	}
-	
-	@SecuredEnum(UserPermission.AFTER_AUTH_USER)
+
+	@PreAuthorize("@apoloSecurity.isAuthenticated()")
 	@RequestMapping(value = "change-password", method = RequestMethod.GET)
 	public ModelAndView changePassword(
 				@PathVariable("tenant-url") String tenant, 
 				HttpServletRequest request
 			) {
-		validatePermissions(
-				UserPermission.AFTER_AUTH_USER
-			);
-		
 		ModelAndView mav = new ModelAndView(Navigation.USER_CHANGE_PASSWORD.getPath());
 		
 		mav.addObject("user", userService.getAuthenticatedUser());
@@ -84,8 +94,8 @@ public class UserController extends BaseController<User> {
 		mav.addObject("changePassword", true);
 		return mav;
 	}
-	
-	@SecuredEnum(UserPermission.AFTER_AUTH_USER)
+
+	@PreAuthorize("@apoloSecurity.isAuthenticated()")
 	@RequestMapping(value = "change-password-save", method = RequestMethod.POST)
 	public ModelAndView changePasswordSave(
 				@PathVariable("tenant-url") String tenant,
@@ -93,13 +103,9 @@ public class UserController extends BaseController<User> {
 				HttpServletRequest request, 
 				@RequestParam(defaultValue = "") String passwordConfirmation
 			) {
-		validatePermissions(
-				UserPermission.AFTER_AUTH_USER
-			);
-		
 		ModelAndView mav = index(tenant, request);
 		
-		if (entityHasErrors(user, true, passwordConfirmation)) {
+		if (entityHasErrors(user, true, passwordConfirmation, null)) {
 			mav.setViewName(
 					getRedirectionPath(
 							tenant, 
@@ -114,7 +120,7 @@ public class UserController extends BaseController<User> {
 			mav.addObject("error", true);
 			
 			StringBuilder message = new StringBuilder();
-			message.append(additionalValidation(user, true, passwordConfirmation));
+			message.append(additionalValidation(user, true, passwordConfirmation, null));
 			
 			mav.addObject("message", message.toString());
 			
@@ -132,16 +138,13 @@ public class UserController extends BaseController<User> {
 		return mav;
 	}
 
-	@SecuredEnum(UserPermission.USER_CREATE)
+	@PreAuthorize("@apoloSecurity.hasPermission('USER_CREATE')")
 	@RequestMapping(value = "new", method = RequestMethod.GET)
 	public ModelAndView create(
 				@PathVariable("tenant-url") String tenantUrl, 
 				HttpServletRequest request
 			) {
-		validatePermissions(
-				UserPermission.USER_CREATE
-			);
-		
+
 		ModelAndView mav = new ModelAndView(Navigation.USER_NEW.getPath());
 		
 		User user = new User();
@@ -165,18 +168,14 @@ public class UserController extends BaseController<User> {
 		
 		return mav;
 	}
-	
-	@SecuredEnum(UserPermission.AFTER_AUTH_USER)
+
+	@PreAuthorize("@apoloSecurity.isAuthenticated()")
 	@RequestMapping(value = "edit/{id}", method = RequestMethod.GET)
 	public ModelAndView edit(
 				@PathVariable("tenant-url") String tenant, 
 				@PathVariable Long id, 
 				HttpServletRequest request
 			) {
-		validatePermissions(
-				UserPermission.AFTER_AUTH_USER
-			);
-		
 		ModelAndView mav = new ModelAndView(Navigation.USER_EDIT.getPath());
 		
 		User user = userService.find(getDBTenant(tenant), id);
@@ -201,17 +200,13 @@ public class UserController extends BaseController<User> {
 		return mav;
 	}
 
-	@SecuredEnum(UserPermission.AFTER_AUTH_USER)
+	@PreAuthorize("@apoloSecurity.isAuthenticated()")
 	@RequestMapping(value = "view/{id}", method = RequestMethod.GET)
 	public ModelAndView view(
 				@PathVariable("tenant-url") String tenant, 
 				@PathVariable Long id, 
 				HttpServletRequest request
 			) {
-		validatePermissions(
-				UserPermission.AFTER_AUTH_USER
-			);
-		
 		ModelAndView mav = new ModelAndView(Navigation.USER_VIEW.getPath());
 
 		User user = null;
@@ -242,16 +237,13 @@ public class UserController extends BaseController<User> {
 		return mav;
 	}
 	
-	@SecuredEnum(UserPermission.USER_REMOVE)
+	@PreAuthorize("@apoloSecurity.hasPermission('USER_REMOVE')")
 	@RequestMapping(value = "remove/{id}", method = RequestMethod.GET)
 	public @ResponseBody String remove(
 				@PathVariable("tenant-url") String tenant, 
 				@PathVariable Long id
 			) {
-		validatePermissions(
-				UserPermission.USER_REMOVE
-			);
-		
+
 		String result = "";
 		
 		JSONObject jsonSubject = new JSONObject();
@@ -282,17 +274,14 @@ public class UserController extends BaseController<User> {
 		return jsonSubject.toString();
 	}
 	
-	@SecuredEnum(UserPermission.USER_REMOVE)
+	@PreAuthorize("@apoloSecurity.hasPermission('USER_REMOVE')")
 	@RequestMapping(value = "remove-registry/{id}", method = RequestMethod.GET)
 	public ModelAndView removeRegistry(
 				@PathVariable("tenant-url") String tenant, 
 				@PathVariable Long id, 
 				HttpServletRequest request
 			) {
-		validatePermissions(
-				UserPermission.USER_REMOVE
-			);
-		
+
 		ModelAndView mav = new ModelAndView(Navigation.USER_LIST.getPath());
 		
 		User user = userService.find(getDBTenant(tenant), id);
@@ -313,8 +302,8 @@ public class UserController extends BaseController<User> {
 		
 		return mav;
 	}
-	
-	@SecuredEnum(UserPermission.AFTER_AUTH_USER)
+
+	@PreAuthorize("@apoloSecurity.isAuthenticated()")
 	@RequestMapping(value = "save", method = RequestMethod.POST)
 	public ModelAndView save(
 				@PathVariable("tenant-url") String tenant, 
@@ -324,10 +313,6 @@ public class UserController extends BaseController<User> {
 				@RequestParam(defaultValue = "false") boolean changePassword, 
 				@RequestParam(defaultValue = "") String passwordConfirmation
 			) {
-		validatePermissions(
-				UserPermission.AFTER_AUTH_USER
-			);
-		
 		ModelAndView mav = new ModelAndView();
 		
 		MultipartFile objectFile = null;
@@ -354,7 +339,7 @@ public class UserController extends BaseController<User> {
 		/*
 		 * Object validation
 		 */
-		if (result.hasErrors() || entityHasErrors(entity, changePassword, passwordConfirmation)) {
+		if (result.hasErrors() || entityHasErrors(entity, changePassword, passwordConfirmation, objectFile)) {
 			mav.setViewName(getRedirectionPath(tenant, request, Navigation.USER_NEW, Navigation.USER_EDIT));
 			mav.addObject("user", entity);
 			mav.addObject("groupList", userGroupService.list(getDBTenant(tenant)));
@@ -377,7 +362,7 @@ public class UserController extends BaseController<User> {
 				message.append(MessageBundle.getMessageBundle("common.field") + " " + MessageBundle.getMessageBundle("user." + argument.getDefaultMessage()) + ": " + error.getDefaultMessage() + "\n <br />");
 			}
 			
-			message.append(additionalValidation(entity, changePassword, passwordConfirmation));
+			message.append(additionalValidation(entity, changePassword, passwordConfirmation, objectFile));
 			
 			mav.addObject("message", message.toString());
 			
@@ -414,17 +399,14 @@ public class UserController extends BaseController<User> {
 		return mav;
 	}
 	
-	@SecuredEnum(UserPermission.USER_MANAGER)
+	@PreAuthorize("@apoloSecurity.hasPermission('USER_MANAGER')")
 	@RequestMapping(value = "lock/{id}", method = RequestMethod.GET)
 	public ModelAndView lock(
 				@PathVariable("tenant-url") String tenant, 
 				@PathVariable Long id, 
 				HttpServletRequest request
 			) {
-		validatePermissions(
-				UserPermission.USER_MANAGER
-			);
-		
+
 		ModelAndView mav = new ModelAndView(Navigation.USER_EDIT.getPath());
 		
 		User user = userService.find(getDBTenant(tenant), id);
@@ -442,17 +424,14 @@ public class UserController extends BaseController<User> {
 		return mav;
 	}
 	
-	@SecuredEnum(UserPermission.USER_MANAGER)
+	@PreAuthorize("@apoloSecurity.hasPermission('USER_MANAGER')")
 	@RequestMapping(value = "unlock/{id}", method = RequestMethod.GET)
 	public ModelAndView unlock(
 				@PathVariable("tenant-url") String tenant, 
 				@PathVariable Long id, 
 				HttpServletRequest request
 			) {
-		validatePermissions(
-				UserPermission.USER_MANAGER
-			);
-		
+
 		ModelAndView mav = new ModelAndView(Navigation.USER_EDIT.getPath());
 		
 		User user = userService.find(getDBTenant(tenant), id);
@@ -469,31 +448,25 @@ public class UserController extends BaseController<User> {
 		
 		return mav;
 	}
-	
-	@SecuredEnum(UserPermission.USER_MANAGER)
+
+	@PreAuthorize("@apoloSecurity.hasPermission('USER_MANAGER')")
 	@RequestMapping(value = "list-locked", method = RequestMethod.GET)
 	public ModelAndView listLocked(
 				@PathVariable("tenant-url") String tenant, 
 				HttpServletRequest request
 			) {
-		validatePermissions(
-				UserPermission.USER_MANAGER
-			);
-		
+
 		return listLocked(tenant, 1, request);
 	}
 	
-	@SecuredEnum(UserPermission.USER_MANAGER)
+	@PreAuthorize("@apoloSecurity.hasPermission('USER_MANAGER')")
 	@RequestMapping(value = "list-locked/{pageNumber}", method = RequestMethod.GET)
 	public ModelAndView listLocked(
 				@PathVariable("tenant-url") String tenant, 
 				@PathVariable Integer pageNumber, 
 				HttpServletRequest request
 			) {
-		validatePermissions(
-				UserPermission.USER_MANAGER
-			);
-		
+
 		ModelAndView mav = new ModelAndView(Navigation.USER_LIST.getPath());
 		
 		Page<User> page = userService.listLocked(getDBTenant(tenant), pageNumber);
@@ -509,30 +482,24 @@ public class UserController extends BaseController<User> {
 		return mav;
 	}
 
-	@SecuredEnum(UserPermission.USER_LIST)
+	@PreAuthorize("@apoloSecurity.hasPermission('USER_LIST')")
 	@RequestMapping(value = "list", method = RequestMethod.GET)
 	public ModelAndView list(
 				@PathVariable("tenant-url") String tenant, 
 				HttpServletRequest request
 			) {
-		validatePermissions(
-				UserPermission.USER_LIST
-			);
-		
+
 		return list(tenant, 1, request);
 	}
 	
-	@SecuredEnum(UserPermission.USER_LIST)
+	@PreAuthorize("@apoloSecurity.hasPermission('USER_LIST')")
 	@RequestMapping(value = "list/{pageNumber}", method = RequestMethod.GET)
 	public ModelAndView list(
 				@PathVariable("tenant-url") String tenant, 
 				@PathVariable Integer pageNumber, 
 				HttpServletRequest request
 			) {
-		validatePermissions(
-				UserPermission.USER_LIST
-			);
-		
+
 		ModelAndView mav = new ModelAndView(Navigation.USER_LIST.getPath());
 		
 		Page<User> page = userService.list(getDBTenant(tenant), pageNumber);
@@ -548,35 +515,29 @@ public class UserController extends BaseController<User> {
 		return mav;
 	}
 	
-	@SecuredEnum(UserPermission.USER_LIST)
+	@PreAuthorize("@apoloSecurity.hasPermission('USER_LIST')")
 	@RequestMapping(value = "search", method = RequestMethod.POST)
 	public ModelAndView search(
 				@PathVariable("tenant-url") String tenant, 
 				@ModelAttribute("searchParameter") String searchParameter, 
 				HttpServletRequest request
 			) {
-		validatePermissions(
-				UserPermission.USER_LIST
-			);
-		
+
 		return search(tenant, 1, searchParameter, request);
 	}
 	
-	@SecuredEnum(UserPermission.USER_LIST)
+	@PreAuthorize("@apoloSecurity.hasPermission('USER_LIST')")
 	@RequestMapping(value = "search/{pageNumber}", method = RequestMethod.GET)
 	public ModelAndView search(
 				@PathVariable("tenant-url") String tenant, 
 				@PathVariable Integer pageNumber, 
 				HttpServletRequest request
 			) {
-		validatePermissions(
-				UserPermission.USER_LIST
-			);
-		
+
 		return search(tenant, pageNumber, "", request);
 	}
 	
-	@SecuredEnum(UserPermission.USER_LIST)
+	@PreAuthorize("@apoloSecurity.hasPermission('USER_LIST')")
 	@RequestMapping(value = "search/{searchParameter}/{pageNumber}", method = RequestMethod.GET)
 	public ModelAndView search(
 				@PathVariable("tenant-url") String tenant, 
@@ -584,10 +545,7 @@ public class UserController extends BaseController<User> {
 				@PathVariable String searchParameter, 
 				HttpServletRequest request
 			) {
-		validatePermissions(
-				UserPermission.USER_LIST
-			);
-		
+
 		ModelAndView mav = new ModelAndView(Navigation.USER_LIST.getPath());
 		
 		Page<User> page = userService.search(getDBTenant(tenant), pageNumber, searchParameter);
@@ -611,22 +569,19 @@ public class UserController extends BaseController<User> {
 		return mav;
 	}
 	
-	@SecuredEnum(UserPermission.USER_LIST)
+	@PreAuthorize("@apoloSecurity.hasPermission('USER_LIST')")
 	@RequestMapping(value = "search-form", method = RequestMethod.GET)
 	public ModelAndView searchForm(
 				@PathVariable("tenant-url") String tenant, 
 				HttpServletRequest request
 			) {
-		validatePermissions(
-				UserPermission.USER_LIST
-			);
-		
+
 		ModelAndView mav = new ModelAndView(Navigation.USER_SEARCH.getPath());
 		
 		return mav;
 	}
 	
-    private boolean entityHasErrors(User entity, boolean changePassword, String passwordConfirmation) {
+    private boolean entityHasErrors(User entity, boolean changePassword, String passwordConfirmation, MultipartFile objectFile) {
 		boolean hasErrors = false;
 		
 		if (entity != null) {
@@ -634,7 +589,7 @@ public class UserController extends BaseController<User> {
 				hasErrors = true;
 			} else if(changePassword && !entity.getPassword().equals(passwordConfirmation)) {
 				hasErrors = true;
-			} else if (isValidFileType(entity)) {
+			} else if (isValidFileType(entity, objectFile)) {
 				hasErrors = true;
 			}
 		}
@@ -655,7 +610,7 @@ public class UserController extends BaseController<User> {
 		return hasError;
     }
     
-    private String additionalValidation(User entity, boolean changePassword, String passwordConfirmation) {
+    private String additionalValidation(User entity, boolean changePassword, String passwordConfirmation, MultipartFile objectFile) {
 		StringBuilder message = new StringBuilder();
 		
 		if (entity != null) {
@@ -667,7 +622,7 @@ public class UserController extends BaseController<User> {
 				message.append(MessageBundle.getMessageBundle("user.password.confirmation") + ": " + MessageBundle.getMessageBundle("user.password.confirmatin.failure") + "\n <br />");
 			}
 			
-			if (isValidFileType(entity)) {
+			if (isValidFileType(entity, objectFile)) {
 				message.append(MessageBundle.getMessageBundle("user.picturefiles") + ": " + MessageBundle.getMessageBundle("user.fileType") + "\n <br />");
 			}
 		}
@@ -675,17 +630,19 @@ public class UserController extends BaseController<User> {
 		return message.toString();
 	}
     
-	private boolean isValidFileType(User entity) {
+	private boolean isValidFileType(User entity, MultipartFile objectFile) {
 		boolean hasErrors = false;
 		
-		if (entity.getAvatarOriginalName() == null
-				|| (entity.getAvatarOriginalName() != null
+		if (objectFile != null && !objectFile.isEmpty()) {
+			if (entity.getAvatarOriginalName() == null
+					|| (entity.getAvatarOriginalName() != null
 					&& entity.getAvatarOriginalName().length() > 0
 					&& !ACCEPTED_FILE_TYPE.contains(fileService.extractFileExtension(entity.getAvatarOriginalName()))
-				)) {
-			hasErrors = true;
+			)) {
+				hasErrors = true;
+			}
 		}
-		
+
 		return hasErrors;
 	}
 

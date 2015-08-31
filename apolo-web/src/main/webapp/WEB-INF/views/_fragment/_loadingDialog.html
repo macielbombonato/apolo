@@ -9,23 +9,26 @@
             <div class="row ">
                 <div id="loadingDialog" class="modal fade span1" tabindex="-1" data-role="dialog" style="text-align: center;">
                     <div>
-                        <div>
-                            <img th:if="${#authorization.expression('isAuthenticated()') == true}
-                                        and ${#authentication.systemUser.tenant != null}
-                                        and ${#authentication.systemUser.tenant.spinner != null}"
-                                 th:src="@{|/resources/app/img/${#authentication.systemUser.tenant.spinner.image}|}"
-                                 class="img"
-                                 width="128px;"
-                                 />
-
-                            <img th:if="${#authorization.expression('isAuthenticated()') != true}
-                                        or ${#authentication.systemUser.tenant == null}
-                                        or ${#authentication.systemUser.tenant.spinner == null}"
-                                 th:src="@{/resources/app/img/spinner-cogs.gif}"
-                                 class="img"
-                                 width="128px;"
-                                    />
-                        </div>
+                        <center>
+                            <div class="holder">
+                                <div class="circle"></div>
+                                <div class="circle"></div>
+                                <div class="circle"></div>
+                                <div class="circle"></div>
+                                <div class="circle"></div>
+                                <div class="circle"></div>
+                                <div class="circle"></div>
+                                <div class="circle"></div>
+                                <div class="circle"></div>
+                                <div class="circle"></div>
+                                <div class="circle"></div>
+                                <div class="circle"></div>
+                                <div class="circle"></div>
+                                <div class="circle"></div>
+                                <div class="circle"></div>
+                                <div class="circle"></div>
+                            </div>
+                        </center>
                     </div>
                 </div>
             </div>

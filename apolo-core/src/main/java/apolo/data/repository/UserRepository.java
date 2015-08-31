@@ -64,5 +64,9 @@ public interface UserRepository extends JpaRepository<User, Long>, UserRepositor
 	User findByEmail(String email);
 	
 	User findByTenantAndId(Tenant tenant, Long id);
+
+	long count();
+
+	long countByTenant(Tenant tenant);
 	
 }

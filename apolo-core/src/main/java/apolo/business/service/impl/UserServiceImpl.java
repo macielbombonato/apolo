@@ -10,7 +10,6 @@ import apolo.common.exception.AccessDeniedException;
 import apolo.common.exception.BusinessException;
 import apolo.common.util.ApoloCrypt;
 import apolo.common.util.MessageBundle;
-import apolo.data.enums.Spinner;
 import apolo.data.enums.Status;
 import apolo.data.enums.UserStatus;
 import apolo.data.model.Tenant;
@@ -93,9 +92,8 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 	}
 
 	@Override
-	public int increaseSignInCounter(Long id, String userIPAddress) {
+	public int increaseSignInCounter(User user, String userIPAddress) {
 		int result = 0;
-		User user = this.find(id);
 
 		if (user != null) {
 			if (user.getSignInCount() != null) {
@@ -113,6 +111,28 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 			result = user.getSignInCount();
 
 			this.save(user);
+		}
+
+		return result;
+	}
+
+	@Override
+	public long count() {
+		long result = 0L;
+		if (getAuthenticatedUser() != null
+				&& getAuthenticatedUser().getPermissions().contains(UserPermission.ADMIN)) {
+			result = userRepository.count();
+		}
+
+		return result;
+	}
+
+	@Override
+	public long countByTenant(Tenant tenant) {
+		long result = 0L;
+		if (getAuthenticatedUser() != null
+				&& getAuthenticatedUser().getPermissions().contains(UserPermission.ADMIN)) {
+			result = userRepository.countByTenant(tenant);
 		}
 
 		return result;
@@ -225,7 +245,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 			user.setEnabled(true);
 		}
 		
-		return userRepository.saveAndFlush(user);
+		return userRepository.save(user);
 	}
 	
 	@Transactional
@@ -255,9 +275,6 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 				}
 			}
 			
-			result.add(new SimpleGrantedAuthority(UserPermission.AFTER_AUTH_USER.getAttribute()));
-			
-			user.getPermissions().add(UserPermission.AFTER_AUTH_USER);
 		}
 
 		return result;
@@ -360,7 +377,6 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 			tenant.setLogoHeight(20);
 			tenant.setLogoWidth(15);
 			tenant.setUrl(applicationProperties.getDefaultTenant());
-			tenant.setSpinner(Spinner.COGS);
 			tenant.setStatus(Status.ACTIVE);
 
 			tenant.setEmailFrom(applicationProperties.getEmailFrom());

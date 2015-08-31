@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:include="@{_fragment/_headTag} :: headTag">
+</head>
+<body>
+<div th:remove="tag" th:include="@{_fragment/_apolo-template} :: apolo-template"></div>
+
+<div id="page-content">
+    <section class="content-header">
+        <h1 th:text="#{contact.list}">
+            Widgets
+        </h1>
+    </section>
+
+    <section class="content">
+        <div th:with="searchUrlParam=${'/'} + ${#authentication.systemUser.tenant.url} + ${'/distribution/'} + ${distributionId} + ${'/contact/search'}">
+            <div th:remove="tag"
+                 th:include="@{_fragment/_search} ::
+                        search (
+                                searchUrl=${searchUrlParam},
+                                placeholderTerm=${'contact.search.field'}
+                                )"
+                    >
+                search Form
+            </div>
+        </div>
+
+        <div class="row">
+            <br />
+            &nbsp;
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12">
+                <a th:href="${'/'} + ${#authentication.systemUser.tenant.url} + ${'/distribution/'} + ${distributionId} + ${'/contact/import'}"
+                        class="btn btn-success ">
+                    <i class="fa fa-plus"></i>
+                    <span th:text="#{contact.import}"></span>
+                </a>
+                <a sec:authorize="@apoloSecurity.hasPermission('CAMPAIGN_LIST')"
+                   th:href='@{|/${#authentication.systemUser.tenant.url}/distribution/${distributionId}/contact/download|}'
+                   class="btn btn-primary "
+                   data-toggle="tooltip">
+                    <i class="fa fa-download"></i>
+                    <span th:text="#{contact.download}" />
+                </a>
+            </div>
+        </div>
+
+        <div class="row">
+            &nbsp;
+        </div>
+
+        <center>
+            <div th:remove="tag" th:include="@{_fragment/_pagination} :: pagination"></div>
+        </center>
+
+        <div class="table-responsive" th:if="${contactList != null} and ${!contactList.isEmpty()}">
+            <table class="table table-striped table-hover table-bordered">
+                <thead>
+                <tr>
+                    <th th:text="#{distribution}">
+                        distribution
+                    </th>
+                    <th th:text="#{contact.name}">
+                        contact.name
+                    </th>
+                    <th th:text="#{contact.email}">
+                        contact.email
+                    </th>
+                    <th th:text="#{contact.mobile}">
+                        contact.mobile
+                    </th>
+                    <th th:text="#{contact.status}">
+                        contact.status
+                    </th>
+                    <th th:text="#{common.actions}"
+                        sec:authorize="@apoloSecurity.hasPermission('CONTACT_MANAGER')">
+                        common.actions
+                    </th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr th:id="${'contact_'} + ${contact.id}" th:each="contact : ${contactList}">
+
+                    <td th:text="${contact.distributionList.name}">
+                        ${contact.distributionList.name}
+                    </td>
+                    <td th:text="${contact.name}">
+                        ${contact.name}
+                    </td>
+                    <td th:text="${contact.email}">
+                        ${contact.email}
+                    </td>
+                    <td th:text="${contact.mobile}">
+                        ${contact.mobile}
+                    </td>
+                    <td th:with="status=${'contact.status.'} + ${contact.status}"
+                        th:text="#{${status}}">
+                        status
+                    </td>
+                    <td sec:authorize="@apoloSecurity.hasPermission('CONTACT_MANAGER')">
+                        <div class="btn-group btn-group-sm">
+                            <a sec:authorize="@apoloSecurity.hasPermission('CONTACT_MANAGER')"
+                               href='#'
+                               class="btn btn-default"
+                               th:with="removeAction=${'removeConfirmationDialogOpen('''} + ${'/'} + ${#authentication.systemUser.tenant.url} + ${'/distribution/'} + ${contact.distributionList.id} + ${'/contact/remove/'} + ${contact.id} + ${''', ''contact_'} + ${contact.id} + ${''');'}"
+                               th:onclick="${removeAction}"
+                               data-toggle="tooltip"
+                               th:title="#{common.remove}">
+                                <i class="fa fa-times"></i>
+                            </a>
+                            <a sec:authorize="@apoloSecurity.hasPermission('CONTACT_REACTIVE')"
+                               th:if="${contact.status == statusBLACKLIST}"
+                               th:href='@{|/${#authentication.systemUser.tenant.url}/distribution/${contact.distributionList.id}/contact/reactive/${contact.id}|}'
+                               class="btn btn-default"
+                               data-toggle="tooltip"
+                               th:title="#{contact.reactive}">
+                                <i class="fa fa-check-square-o"></i>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="panel-body" th:if="${contactList == null} or ${contactList.isEmpty()}">
+            <p th:text="#{common.nodatafound}">
+                common.nodatafound
+            </p>
+        </div>
+        <center>
+            <div th:remove="tag" th:include="@{_fragment/_pagination} :: pagination"></div>
+        </center>
+    </section>
+</div>
+</body>
+</html>

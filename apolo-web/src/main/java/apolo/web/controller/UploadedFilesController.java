@@ -1,7 +1,7 @@
 package apolo.web.controller;
 
-import java.io.File;
-
+import apolo.common.config.model.ApplicationProperties;
+import apolo.data.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpStatus;
@@ -12,10 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import apolo.common.config.model.ApplicationProperties;
-import apolo.data.model.User;
-import apolo.security.SecuredEnum;
-import apolo.security.UserPermission;
+import java.io.File;
 
 @Controller
 public class UploadedFilesController extends BaseController<User> {
@@ -24,7 +21,7 @@ public class UploadedFilesController extends BaseController<User> {
 	ApplicationProperties applicationProperties;
 
     @SuppressWarnings("rawtypes")
-	@PreAuthorize("isAuthenticated()")
+	@PreAuthorize("permitAll")
     @RequestMapping(value = "/uploadedfiles/{entity}/{id}/{fileName}.{extension}" , method = RequestMethod.GET)
     public ResponseEntity<FileSystemResource> getFile(
             @PathVariable("entity") String entity,
@@ -42,7 +39,7 @@ public class UploadedFilesController extends BaseController<User> {
     }
 
 	@SuppressWarnings("rawtypes")
-	@PreAuthorize("isAuthenticated()")
+	@PreAuthorize("permitAll")
 	@RequestMapping(value = "/{tenant}/uploadedfiles/{entity}/{id}/{fileName}.{extension}" , method = RequestMethod.GET)
     public ResponseEntity<FileSystemResource> getFile(
     		@PathVariable("tenant") String tenant,
@@ -51,11 +48,7 @@ public class UploadedFilesController extends BaseController<User> {
     		@PathVariable("fileName") String fileName,
     		@PathVariable("extension") String extension
     		) {
-		validatePermissions(
-				UserPermission.AFTER_AUTH_USER
-			);
-		
-		String filePath = 
+		String filePath =
 				applicationProperties.getUploadedFilesPath() + 
 				tenant +
 				File.separator +

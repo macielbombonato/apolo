@@ -15,7 +15,6 @@ import apolo.security.UserPermission;
 import apolo.web.enums.Navigation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.AccessDeniedException;
@@ -28,23 +27,23 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.NestedServletException;
 
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
 
-@SuppressWarnings("rawtypes")
-public abstract class BaseController<E extends BaseEntity> { 
+public abstract class BaseController<E extends BaseEntity> {
 	
 	protected static final Logger log = LoggerFactory.getLogger(BaseController.class);
 
-	@Autowired
+	@Inject
 	protected TenantService tenantService;
 	
-	@Autowired
+	@Inject
 	protected UserService userService;
 
-	@Autowired
+	@Inject
 	protected ApplicationProperties applicationProperties;
 	
 	@InitBinder
@@ -100,34 +99,28 @@ public abstract class BaseController<E extends BaseEntity> {
 		
 		tenant = tenantService.getValidatedTenant(url);
 
-		return tenant;
-	}
-	
-	protected boolean validatePermissions(UserPermission...permissions) {
-		boolean result = false;
-		
-		User user = tenantService.getAuthenticatedUser();
-		
-		if (user != null 
-				&& permissions != null 
-				&& permissions.length > 0) {
-			if (user.getPermissions().contains(UserPermission.ADMIN)) {
-				result = true;
+		User user = userService.getAuthenticatedUser();
+
+		if (user != null
+				&& !user.getTenant().equals(tenant)) {
+
+			if (user.getPermissions() != null
+					&& !user.getPermissions().isEmpty()
+					&& (
+						user.getPermissions().contains(UserPermission.ADMIN)
+					|| user.getPermissions().contains(UserPermission.TENANT_MANAGER)
+			)) {
+				user.getDbTenant();
+				user.setTenant(tenant);
+
+				reconstructAuthenticatedUser(user);
 			} else {
-				for (UserPermission userPermission : permissions) {
-					if (user.getPermissions().contains(userPermission)) {
-						result = true;
-					}
-				}				
+				String message = MessageBundle.getMessageBundle("error.403.msg");
+				throw new AccessDeniedException(message);
 			}
 		}
-		
-		if (!result) {
-			String message = MessageBundle.getMessageBundle("error.403.msg");
-			throw new AccessDeniedException(message);
-		}
-		
-		return result;
+
+		return tenant;
 	}
 	
 	protected void reconstructAuthenticatedUser(User user) {
@@ -228,6 +221,24 @@ public abstract class BaseController<E extends BaseEntity> {
 		return mav;
 	}
 
+	protected static final String builtPermissions(UserPermission... userPermissions) {
+		String result = "hasAnyRole(";
+
+		if (userPermissions != null && userPermissions.length > 0) {
+			for(UserPermission permission : userPermissions) {
+				if (!"hasAnyRole(".equals(result)) {
+					result += ", ";
+				}
+
+				result += permission.getAttribute();
+			}
+		}
+
+		result += ")";
+
+		return result;
+	}
+
 	@ExceptionHandler(Exception.class)
 	public ModelAndView handleException(Exception ex) {
 		ex.printStackTrace();
@@ -295,11 +306,14 @@ public abstract class BaseController<E extends BaseEntity> {
 	protected void initBinder(WebDataBinder binder) {
 		//Create a custom binder that will convert a String with pattern dd/MM/yyyy to an appropriate Date object.
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
+
 		binder.registerCustomEditor(Date.class, "createdAt", new CustomDateEditor(dateFormat, false));
 		binder.registerCustomEditor(Date.class, "updatedAt", new CustomDateEditor(dateFormat, false));
+
+		binder.registerCustomEditor(Date.class, "resetPasswordSentAt", new CustomDateEditor(dateFormat, false));
+
 		binder.registerCustomEditor(Date.class, "currentSignInAt", new CustomDateEditor(dateFormat, false));
-		binder.registerCustomEditor(Date.class, "resetPasswordSentAt", new CustomDateEditor(dateFormat, false));
 		binder.registerCustomEditor(Date.class, "lastSignInAt", new CustomDateEditor(dateFormat, false));
-		binder.registerCustomEditor(Date.class, "resetPasswordSentAt", new CustomDateEditor(dateFormat, false));
+
 	}
 }

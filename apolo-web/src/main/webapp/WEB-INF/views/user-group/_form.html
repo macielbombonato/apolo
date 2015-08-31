@@ -54,7 +54,7 @@
                     class="form-control chosen-select"
                     th:disabled="${readOnly}"
                     th:attr="data-placeholder=#{common.select}"
-                    th:with="style=${#authorization.expression('hasAnyRole(''ROLE_ADMIN'', ''ROLE_USER_CREATE'', ''ROLE_USER_EDIT'')') == false ? 'display: none;' : 'display: block;' }"
+                    th:with="style=${#authorization.expression('@apoloSecurity.hasPermission(''USER_CREATE'', ''USER_EDIT'')') == false ? 'display: none;' : 'display: block;' }"
                     th:style="${style}"
                     >
                 <option th:if="${permissionList != null} and ${userGroup != null} and ${userGroup.permissions == null}"

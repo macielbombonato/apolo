@@ -12,82 +12,99 @@
                 "
         >
 
-    <ul th:if="${page != null} and ${page.content != null}"
-            class="pagination pagination-sm">
+    <div class="row">
+        <div class="col-sm-12">
+            <ul th:if="${page != null} and ${page.content != null}"
+                    class="pagination pagination-sm">
 
-        <!-- backward flags -->
-        <li th:if="${currentIndex == 1}"
-                class="disabled">
-            <a href="#">
-                <i class="fa fa-fast-backward"></i>
-            </a>
-        </li>
-        <li th:if="${currentIndex == 1}"
-                class="disabled">
-            <a href="#">
-                <i class="fa fa-step-backward"></i>
-            </a>
-        </li>
+                <!-- backward flags -->
+                <li th:if="${currentIndex == 1}"
+                        class="disabled">
+                    <a href="#">
+                        <i class="fa fa-fast-backward"></i>
+                    </a>
+                </li>
+                <li th:if="${currentIndex == 1}"
+                        class="disabled">
+                    <a href="#">
+                        <i class="fa fa-step-backward"></i>
+                    </a>
+                </li>
 
-        <li th:if="${currentIndex != 1}">
-            <a th:href="@{${firstUrl}}">
-                <i class="fa fa-fast-backward"></i>
-            </a>
-        </li>
-        <li th:if="${currentIndex != 1}">
-            <a th:href="@{${prevUrl}}">
-                <i class="fa fa-step-backward"></i>
-            </a>
-        </li>
-
-
-        <!-- Page number of index -->
-        <li th:each="i : ${#numbers.sequence(beginIndex, endIndex)}"
-            th:if="${page.totalPages > 0}"
-            th:with="pageUrl=${url} + ${'/'} + ${i}"
-                th:class="${i == currentIndex} ? ${'active'} : ${'none'}"
-                class="active">
-            <a th:href="@{${pageUrl}}" th:text="${i}">
-                i
-            </a>
-        </li>
+                <li th:if="${currentIndex != 1}">
+                    <a th:href="@{${firstUrl}}">
+                        <i class="fa fa-fast-backward"></i>
+                    </a>
+                </li>
+                <li th:if="${currentIndex != 1}">
+                    <a th:href="@{${prevUrl}}">
+                        <i class="fa fa-step-backward"></i>
+                    </a>
+                </li>
 
 
-        <!-- forward flags -->
-        <li th:if="${currentIndex == page.totalPages}
-                    or ${page == null}
-                    or ${page.totalPages == 0} "
-                class="disabled">
-            <a href="#">
-                <i class="fa fa-step-forward"></i>
-            </a>
-        </li>
-        <li th:if="${currentIndex == page.totalPages}
-                    or ${page == null}
-                    or ${page.totalPages == 0} "
-                class="disabled">
-            <a href="#">
-                <i class="fa fa-fast-forward"></i>
-            </a>
-        </li>
+                <!-- Page number of index -->
+                <li th:each="i : ${#numbers.sequence(beginIndex, endIndex)}"
+                    th:if="${page.totalPages > 0}"
+                    th:with="pageUrl=${url} + ${'/'} + ${i}"
+                        th:class="${i == currentIndex} ? ${'active'} : ${'none'}"
+                        class="active">
+                    <a th:href="@{${pageUrl}}" th:text="${i}">
+                        i
+                    </a>
+                </li>
 
-        <li th:if="${page != null}
-                    and ${page.totalPages > 0}
-                    and ${currentIndex != page.totalPages}"
-                >
-            <a th:href="@{${nextUrl}}">
-                <i class="fa fa-step-forward"></i>
-            </a>
-        </li>
-        <li th:if="${page != null}
-                    and ${page.totalPages > 0}
-                    and ${currentIndex != page.totalPages}"
-                >
-            <a th:href="@{${lastUrl}}">
-                <i class="fa fa-fast-forward"></i>
-            </a>
-        </li>
-    </ul>
+
+                <!-- forward flags -->
+                <li th:if="${currentIndex == page.totalPages}
+                            or ${page == null}
+                            or ${page.totalPages == 0} "
+                        class="disabled">
+                    <a href="#">
+                        <i class="fa fa-step-forward"></i>
+                    </a>
+                </li>
+                <li th:if="${currentIndex == page.totalPages}
+                            or ${page == null}
+                            or ${page.totalPages == 0} "
+                        class="disabled">
+                    <a href="#">
+                        <i class="fa fa-fast-forward"></i>
+                    </a>
+                </li>
+
+                <li th:if="${page != null}
+                            and ${page.totalPages > 0}
+                            and ${currentIndex != page.totalPages}"
+                        >
+                    <a th:href="@{${nextUrl}}">
+                        <i class="fa fa-step-forward"></i>
+                    </a>
+                </li>
+                <li th:if="${page != null}
+                            and ${page.totalPages > 0}
+                            and ${currentIndex != page.totalPages}"
+                        >
+                    <a th:href="@{${lastUrl}}">
+                        <i class="fa fa-fast-forward"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <strong>
+                    <span th:text="#{common.records}">
+                        Total
+                    </span>
+            </strong>:
+            <span th:text="${page.totalElements}">
+                0
+            </span>
+        </div>
+    </div>
 </div>
 </body>
 </html>

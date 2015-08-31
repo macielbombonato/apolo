@@ -24,5 +24,7 @@ public interface FileService<E extends BaseEntity> {
 	void convertTextFileToHtmlFile(E entity, String sourceName, String destName);
 	
 	void delete(File directory) throws IOException;
+
+	File getFile(Tenant tenant, E entity, String filename);
 	
 }

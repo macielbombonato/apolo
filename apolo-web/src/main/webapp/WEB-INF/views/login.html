@@ -7,8 +7,17 @@
 
         <div class="login-box">
             <div class="login-logo">
-                <a th:href="${#authorization.expression('isAuthenticated()') == true} ? @{|/${#authentication.systemUser.tenant.url}/user|} : @{'/'}">
-                    <h3>
+                <a th:href="${#authorization.expression('@apoloSecurity.isAuthenticated()') == true} ? @{|/${#authentication.systemUser.tenant.url}/user|} : @{'/'}">
+                    <h3 th:if="${tenant == null}">
+                        <img th:if="${tenant == null}"
+                             th:src="@{'/resources/app/img/favicon.png'}"
+                             width="40"
+                             height="50"
+                             style="width: 40px; height: 50px;"
+                                />
+                        <span th:text="#{app.title}"></span>
+                    </h3>
+                    <h3 th:if="${tenant != null}">
                         <img th:if="${tenant != null}
                                         and ${tenant.logo != null}"
                              th:src="@{|/${tenant.url}/uploadedfiles/Tenant/${tenant.id}/${tenant.logo}|}"
@@ -16,13 +25,10 @@
                              th:height="${tenant.logoHeight * 2} + ${'px'}"
                              th:style="${'width: '} + ${tenant.logoWidth * 2} + ${'px; height: '} + ${tenant.logoHeight * 2} + ${'px;'}"
                                 />
-                        <img th:if="${#authorization.expression('isAuthenticated()') == false} or ${#authentication.systemUser.tenant.logo == null}"
-                             th:src="@{'/resources/app/img/logo.png'}"
-                             width="40"
-                             height="50"
-                             style="width: 40px; height: 50px;"
-                                />
-                        <span th:text="#{app.title}"></span>
+                        <span th:if="${tenant.showName == true}"
+                                th:text="#{app.title}">
+                            App Name
+                        </span>
                     </h3>
                 </a>
             </div><!-- /.login-logo -->

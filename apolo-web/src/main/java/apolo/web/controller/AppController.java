@@ -7,8 +7,6 @@ import apolo.common.config.model.ApplicationProperties;
 import apolo.common.util.MessageBundle;
 import apolo.data.model.Tenant;
 import apolo.data.model.User;
-import apolo.security.SecuredEnum;
-import apolo.security.UserPermission;
 import apolo.web.enums.Navigation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -156,11 +154,9 @@ public class AppController extends BaseController<User> {
 		return mav;
 	}
 	
-	@SecuredEnum(UserPermission.ADMIN)
+	@PreAuthorize("@apoloSecurity.hasPermission('ADMIN')")
 	@RequestMapping(value = "/version", method = RequestMethod.GET)
 	public ModelAndView version(HttpServletRequest request) {
-		validatePermissions(UserPermission.ADMIN);
-		
 		ModelAndView mav = new ModelAndView(Navigation.VERSION.getPath());
 		
 		mav.addObject("readOnly", true);
@@ -199,7 +195,18 @@ public class AppController extends BaseController<User> {
 	@PreAuthorize("permitAll")
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView home(HttpServletRequest request) {
-		return index(request);
+		ModelAndView mav = null;
+
+		if (userService.getAuthenticatedUser() != null) {
+			mav = userController.index(
+					userService.getAuthenticatedUser().getDbTenant().getUrl(),
+					request
+			);
+		} else {
+			mav = index(request);
+		}
+
+		return mav;
 	}
 	
 	/**

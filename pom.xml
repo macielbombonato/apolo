@@ -7,7 +7,7 @@
     <groupId>apolo</groupId>
     <artifactId>apolo</artifactId>
     <packaging>pom</packaging>
-    <version>3.1.0</version>
+    <version>3.2.0</version>
 
     <url>http://dimeric.com.br</url>
 
@@ -15,7 +15,7 @@
         <name>Dimeric</name>
         <url>http://dimeric.com.br</url>
     </organization>
-    
+
     <properties>
 		<java.version>1.6</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -36,14 +36,14 @@
         <module>apolo-core</module>
         <module>apolo-web</module>
     </modules>
-    
+
     <repositories>
         <repository>
             <id>spring-releases</id>
             <name>Spring Releases</name>
             <url>http://repo.spring.io/libs-release</url>
         </repository>
-        
+
 		<repository>
 			<id>sonatype-forge</id>
 			<url>https://repository.sonatype.org/content/groups/forge/</url>
@@ -89,12 +89,12 @@
 			<url>http://download.java.net/maven/2/</url>
 			<layout>default</layout>
 		</repository>
-		
+
 	  	<repository>
 	  		<id>Java.Net</id>
 	  		<url>http://download.java.net/maven/2/</url>
 	  	</repository>
-	  	
+
         <repository>
             <id>spring-snapshots</id>
             <url>http://repo.spring.io/snapshot</url>
@@ -104,14 +104,14 @@
             <id>spring-milestones</id>
             <url>http://repo.spring.io/milestone</url>
         </repository>
-        
+
 		<repository>
 			<id>maven-oss-insula</id>
 			<name>Insula Maven OSS Releases Repository</name>
 			<url>http://maven-oss.insula.com.br/releases</url>
 		</repository>
     </repositories>
-    
+
     <pluginRepositories>
         <pluginRepository>
             <id>spring-snapshots</id>
@@ -121,14 +121,14 @@
             <id>spring-milestones</id>
             <url>http://repo.spring.io/milestone</url>
         </pluginRepository>
-        
+
         <pluginRepository>
             <id>spring-releases</id>
             <name>Spring Releases</name>
             <url>http://repo.spring.io/libs-release</url>
         </pluginRepository>
     </pluginRepositories>
-    
+
 	<dependencyManagement>
 		<dependencies>
 	        <!-- Data base Driver -->
@@ -142,7 +142,7 @@
 	            <artifactId>mysql-connector-java</artifactId>
 	            <version>5.1.21</version>
 	        </dependency>
-	        
+
 	        <!-- Persistence -->
 	        <dependency>
 	            <groupId>org.eclipse.persistence</groupId>
@@ -175,12 +175,12 @@
 	            <version>1.0.0.Final</version>
 	            <scope>provided</scope>
 	        </dependency>
-	        
+
 	        <!-- Spring -->
 	        <dependency>
 	            <groupId>org.springframework.data</groupId>
 	            <artifactId>spring-data-jpa</artifactId>
-	            <version>1.2.0.RELEASE</version>
+				<version>1.8.2.RELEASE</version>
 	            <exclusions>
 	                <exclusion>
 	                    <groupId>org.springframework</groupId>
@@ -305,7 +305,7 @@
 				<artifactId>spring-social-twitter</artifactId>
 				<version>1.1.0.RELEASE</version>
 			</dependency>
-	        
+
 	        <!-- Apache -->
 	        <dependency>
 	            <groupId>org.apache.commons</groupId>
@@ -324,7 +324,7 @@
 	            <version>3</version>
 	            <type>pom</type>
 	        </dependency>
-	
+
 	        <!-- Apache Derby -->
 	        <dependency>
 	            <groupId>org.apache.derby</groupId>
@@ -350,20 +350,20 @@
 	            <version>10.7.1.1</version>
 	            <scope>test</scope>
 	        </dependency>
-	        
+
 	        <dependency>
 	            <groupId>asm</groupId>
 	            <artifactId>asm</artifactId>
 	            <version>3.3.1</version>
 	        </dependency>
-	
+
 	        <!-- javax.validation (JSR-303) -->
 	        <dependency>
 	            <groupId>javax.validation</groupId>
 	            <artifactId>validation-api</artifactId>
 	            <version>1.0.0.GA</version>
 	        </dependency>
-	
+
 	        <!-- CGLIB -->
 	        <dependency>
 	            <groupId>cglib</groupId>
@@ -552,7 +552,7 @@
 	            <artifactId>icu4j</artifactId>
 	            <version>51.1</version>
 	        </dependency>
-	        
+
 	        <dependency>
 	            <groupId>com.google.code.findbugs</groupId>
 	            <artifactId>jsr305</artifactId>
@@ -563,14 +563,14 @@
 	            <artifactId>guava</artifactId>
 	            <version>16.0.1</version>
 	        </dependency>
-	        
+
 	        <dependency>
 	            <groupId>br.com.insula</groupId>
 	            <artifactId>opes</artifactId>
 	            <version>1.4.0</version>
 	        </dependency>
-	        
-	        <!-- JavaMail API --> 
+
+	        <!-- JavaMail API -->
 	        <dependency>
 	            <groupId>javamail</groupId>
 	            <artifactId>javamail</artifactId>
@@ -632,9 +632,22 @@
 				</exclusions>
 			</dependency>
 
+			<dependency>
+				<groupId>com.mandrillapp.wrapper.lutung</groupId>
+				<artifactId>lutung</artifactId>
+				<version>0.0.5</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.quartz-scheduler</groupId>
+				<artifactId>quartz</artifactId>
+				<version>2.2.1</version>
+			</dependency>
+
+
 		</dependencies>
 	</dependencyManagement>
-	
+
 	<build>
 		<resources>
 			<resource>
@@ -647,7 +660,7 @@
 				<filtering>false</filtering>
 			</resource>
 		</resources>
-		
+
 		<pluginManagement>
 			<plugins>
 				<plugin>
@@ -660,7 +673,7 @@
 						<encoding>${project.build.sourceEncoding}</encoding>
 					</configuration>
 				</plugin>
-				
+
 				<plugin>
 					<groupId>org.eclipse.jetty</groupId>
 					<artifactId>jetty-maven-plugin</artifactId>
@@ -671,7 +684,7 @@
 						</webApp>
 					</configuration>
 				</plugin>
-	
+
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-dependency-plugin</artifactId>
@@ -685,7 +698,7 @@
 						</execution>
 					</executions>
 				</plugin>
-	
+
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-resources-plugin</artifactId>
@@ -694,7 +707,7 @@
 						<encoding>${project.build.sourceEncoding}</encoding>
 					</configuration>
 				</plugin>
-	
+
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-war-plugin</artifactId>
@@ -709,7 +722,7 @@
 					<artifactId>tomcat7-maven-plugin</artifactId>
 					<version>2.2</version>
 					<configuration>
-						<url>http://localhost:8080/manager/text</url>
+						<url>${env.APOLO_PRODUCTION_DEPLOY_URL}</url>
 						<server>TomcatServer</server>
 						<path>/</path>
 					</configuration>

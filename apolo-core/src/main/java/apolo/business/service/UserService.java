@@ -100,5 +100,17 @@ public interface UserService extends BaseService<User> {
 	 * Increase user sign in counter
 	 * @param id
 	 */
-	int increaseSignInCounter(Long id, String userIPAddress);
+	int increaseSignInCounter(User user, String userIPAddress);
+
+	/**
+	 * Return the total of users
+	 * @return long
+	 */
+	long count();
+
+	/**
+	 * Return the total of users of this tenant
+	 * @return long
+	 */
+	long countByTenant(Tenant tenant);
 }

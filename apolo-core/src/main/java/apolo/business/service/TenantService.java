@@ -27,5 +27,7 @@ public interface TenantService extends BaseService<Tenant> {
 	Tenant unlock(Tenant entity);
 
 	Tenant getValidatedTenant(String tenantUrl);
+
+	long count();
 	
 }

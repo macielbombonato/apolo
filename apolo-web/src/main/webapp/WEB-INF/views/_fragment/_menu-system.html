@@ -6,10 +6,10 @@
 </head>
 <body th:fragment="menu-system">
 
-<section sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_USER_LIST', 'ROLE_USER_MANAGER',
-                                'ROLE_USER_CREATE', 'ROLE_USER_CUSTOM_FIELD_LIST', 'ROLE_USER_CUSTOM_FIELD_CREATE',
-                                'ROLE_TENANT_LIST', 'ROLE_TENANT_CREATE', 'ROLE_USER_PERMISSION_LIST',
-                                'ROLE_USER_PERMISSION_CREATE', 'ROLE_CONFIGURATION_LIST', 'ROLE_CONFIGURATION_CREATE')">
+<section sec:authorize="@apoloSecurity.hasPermission('USER_LIST', 'USER_MANAGER',
+                                'USER_CREATE', 'USER_CUSTOM_FIELD_LIST', 'USER_CUSTOM_FIELD_CREATE',
+                                'TENANT_LIST', 'TENANT_CREATE', 'USER_PERMISSION_LIST',
+                                'USER_PERMISSION_CREATE', 'CONFIGURATION_LIST', 'CONFIGURATION_CREATE')">
     <a href="#menu-system" class="list-group-item" data-toggle="collapse" data-parent="#sidebar">
         <span><i class="fa fa-cogs"></i></span>
         <strong th:text="#{menu.sysadmin}" />
@@ -22,25 +22,25 @@
             <span><i class="fa fa-chevron-down"></i></span>
         </a>
         <div class="collapse" id="menu-user-admin">
-            <a sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_USER_LIST')"
+            <a sec:authorize="@apoloSecurity.hasPermission('USER_LIST')"
                th:href='@{|/${#authentication.systemUser.tenant.url}/user/list|}' class="list-group-item">
                 <i class="fa fa-list"></i>
                 <span th:text="#{user.list}">user.list</span>
             </a>
 
-            <a sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_USER_MANAGER')"
+            <a sec:authorize="@apoloSecurity.hasPermission('USER_MANAGER')"
                th:href='@{|/${#authentication.systemUser.tenant.url}/user/list-locked|}' class="list-group-item">
                 <i class="fa fa-user-secret"></i>
                 <span th:text="#{user.list.locked}">user.list.locked</span>
             </a>
 
-            <a sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_USER_CREATE')"
+            <a sec:authorize="@apoloSecurity.hasPermission('USER_CREATE')"
                th:href='@{|/${#authentication.systemUser.tenant.url}/user/new|}' class="list-group-item">
                 <i class="fa fa-user-plus"></i>
                 <span th:text="#{user.new}">user.new</span>
             </a>
 
-            <a sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_USER_CUSTOM_FIELD_LIST')"
+            <a sec:authorize="@apoloSecurity.hasPermission('USER_CUSTOM_FIELD_LIST')"
                th:href='@{|/${#authentication.systemUser.tenant.url}/user-custom-field/list|}' class="list-group-item">
                 <i class="fa fa-list"></i>
                 <span th:text="#{user.custom.field.list}">
@@ -48,7 +48,7 @@
                 </span>
             </a>
 
-            <a sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_USER_CUSTOM_FIELD_CREATE')"
+            <a sec:authorize="@apoloSecurity.hasPermission('USER_CUSTOM_FIELD_CREATE')"
                th:href='@{|/${#authentication.systemUser.tenant.url}/user-custom-field/new|}' class="list-group-item">
                 <i class="fa fa-plus"></i>
                 <span th:text="#{user.custom.field.new}">
@@ -63,13 +63,13 @@
             <span><i class="fa fa-chevron-down"></i></span>
         </a>
         <div class="collapse" id="menu-tenant">
-            <a sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_TENANT_LIST')"
+            <a sec:authorize="@apoloSecurity.hasPermission('TENANT_LIST')"
                th:href='@{|/tenant/list|}' class="list-group-item">
                 <i class="glyphicon glyphicon-th-list"></i>
                 <span th:text="#{tenant.list}">tenant.list</span>
             </a>
 
-            <a sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_TENANT_CREATE')"
+            <a sec:authorize="@apoloSecurity.hasPermission('TENANT_CREATE')"
                th:href='@{|/tenant/new|}' class="list-group-item">
                 <i class="glyphicon glyphicon-plus"></i>
                 <span th:text="#{tenant.create}">tenant.create</span>
@@ -82,14 +82,14 @@
             <span><i class="fa fa-chevron-down"></i></span>
         </a>
         <div class="collapse" id="menu-user-group">
-            <a sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_USER_PERMISSION_LIST')"
+            <a sec:authorize="@apoloSecurity.hasPermission('USER_PERMISSION_LIST')"
                th:href='@{|/${#authentication.systemUser.tenant.url}/user-group/list|}'
                class="list-group-item">
                 <i class="fa fa-list"></i>
                 <span th:text="#{user.group.list}">user.group.list</span>
             </a>
 
-            <a sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_USER_PERMISSION_CREATE')"
+            <a sec:authorize="@apoloSecurity.hasPermission('USER_PERMISSION_CREATE')"
                th:href='@{|/${#authentication.systemUser.tenant.url}/user-group/new|}' class="list-group-item">
                 <i class="fa fa-plus"></i>
                 <span th:text="#{user.group.new}">user.group.new</span>
@@ -102,20 +102,20 @@
             <span><i class="fa fa-chevron-down"></i></span>
         </a>
         <div class="collapse" id="menu-configuration">
-            <a sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_CONFIGURATION_LIST')"
+            <a sec:authorize="@apoloSecurity.hasPermission('CONFIGURATION_LIST')"
                th:href='@{|/${#authentication.systemUser.tenant.url}/configuration/list|}' class="list-group-item">
                 <i class="fa fa-list"></i>
                 <span th:text="#{configuration.list}">configuration.list</span>
             </a>
 
-            <a sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_CONFIGURATION_CREATE')"
+            <a sec:authorize="@apoloSecurity.hasPermission('CONFIGURATION_CREATE')"
                th:href='@{|/${#authentication.systemUser.tenant.url}/configuration/new|}' class="list-group-item">
                 <i class="fa fa-plus"></i>
                 <span th:text="#{configuration.new}">configuration.new</span>
             </a>
         </div>
 
-        <a sec:authorize="hasAnyRole('ROLE_ADMIN')"
+        <a sec:authorize="@apoloSecurity.hasPermission('ADMIN')"
            th:href='@{|/${#authentication.systemUser.tenant.url}/auditlog/list|}' class="list-group-item">
             <i class="fa fa-list-alt"></i>
             <span th:text="#{auditlog.list}">auditlog.list</span>

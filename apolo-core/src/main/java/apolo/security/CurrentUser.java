@@ -1,9 +1,9 @@
 package apolo.security;
 
-import java.util.Collection;
-
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
+
+import java.util.Collection;
 
 public class CurrentUser extends UsernamePasswordAuthenticationToken {
 
@@ -24,6 +24,7 @@ public class CurrentUser extends UsernamePasswordAuthenticationToken {
 		super(systemUser, password, authorities);
 		this.id = id;
 		this.systemUser = systemUser;
+		super.setDetails(systemUser);
 	}
 
 	public Long getId() {

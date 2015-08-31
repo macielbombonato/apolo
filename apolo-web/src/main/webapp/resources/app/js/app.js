@@ -1,7 +1,4 @@
 $(document).ready(function() {
-	$('body').addClass('skin-blue');
-	$('body').addClass('fixed');
-
 	$('body').data('spy', 'scroll');
 	$('body').data('target', '#scrollspy');
 
@@ -210,6 +207,7 @@ function callRemove() {
 		url : $('#removeConfirmationUrl').val(),
 		beforeSend : function(xhr) {
 			$('#loadingDialog').modal('toggle');
+			$('#removeConfirmationDialog').modal('toggle');
 		},
 		success : function(response) {
 			var json = $.parseJSON(response);
@@ -219,9 +217,8 @@ function callRemove() {
 			if (json.result.success) {
 				$('#'+$('#removeConfirmationObjectId').val()).remove();		
 			}
-			
+
 			$('#loadingDialog').modal('toggle');
-			$('#removeConfirmationDialog').modal('toggle');
 			$('#removeMsgDialog').modal('toggle');
 		},
 		complete : function() {

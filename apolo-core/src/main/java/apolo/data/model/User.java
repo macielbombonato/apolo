@@ -128,6 +128,7 @@ public class User extends AuditableBaseEntity {
 		if (this.dbTenant != null) {
 			result = this.dbTenant;
 		} else {
+			this.dbTenant = this.tenant;
 			result = this.tenant;
 		}
 		

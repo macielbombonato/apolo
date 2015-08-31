@@ -5,7 +5,7 @@
     </head>
     <body th:fragment="ad-vertical">
 
-        <div th:if="${ (#authorization.expression('isAuthenticated()') == true and #authentication.systemUser.tenant.showAdds == true)}">
+        <div th:if="${ (#authorization.expression('@apoloSecurity.isAuthenticated()') == true and #authentication.systemUser.tenant.showAdds == true)}">
 
             <input type="hidden" id="googleAdClient" th:value="${#authentication.systemUser.tenant.googleAdClient}" />
             <input type="hidden" id="googleAdSlotOne" th:value="${#authentication.systemUser.tenant.googleAdSlotOne}" />

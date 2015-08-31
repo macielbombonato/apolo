@@ -6,15 +6,14 @@ import apolo.business.service.UserService;
 import apolo.data.model.AuditLog;
 import apolo.data.model.Tenant;
 import apolo.data.repository.AuditLogRepository;
-
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service("auditLogService")
 public class AuditLogServiceImpl implements AuditLogService {
@@ -32,7 +31,7 @@ public class AuditLogServiceImpl implements AuditLogService {
 	public AuditLog save(Tenant tenant, AuditLog entity) {
 		entity.setTenantId(tenant.getId());
 		
-		return auditLogRepository.saveAndFlush(entity);
+		return auditLogRepository.save(entity);
 	}
 
 	public List<AuditLog> list() {

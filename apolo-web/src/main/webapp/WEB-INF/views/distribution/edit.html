@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:include="@{_fragment/_headTag} :: headTag">
+</head>
+<body>
+<div th:remove="tag" th:include="@{_fragment/_apolo-template} :: apolo-template"></div>
+
+<div id="page-content">
+    <section class="content-header">
+        <h1 th:text="#{distribution.edit}">
+            Widgets
+        </h1>
+    </section>
+
+    <section class="content">
+        <form id="userForm" th:action="@{|/${#authentication.systemUser.tenant.url}/distribution/save|}" role="form" method="post" enctype="multipart/form-data">
+            <div th:remove="tag" th:include="@{distribution/_form} :: distribution-form"></div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fa fa-floppy-o"></i>
+                    <span th:text="#{common.save}" />
+                </button>
+
+                <a th:if="${distribution.id != null}"
+                   th:href='@{|/${#authentication.systemUser.tenant.url}/distribution/view/${distribution.id}|}' class="btn btn-default">
+                    <i class="fa fa-times"></i>
+                    <span th:text="#{common.cancel}" />
+                </a>
+                <a th:if="${distribution.id == null}"
+                   th:href='@{|/${#authentication.systemUser.tenant.url}/distribution/list|}' class="btn btn-default">
+                    <i class="fa fa-times"></i>
+                    <span th:text="#{common.cancel}" />
+                </a>
+            </div>
+        </form>
+    </section>
+</div>
+</body>
+</html>

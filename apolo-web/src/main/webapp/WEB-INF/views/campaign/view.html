@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:include="@{_fragment/_headTag} :: headTag">
+</head>
+<body>
+<div th:remove="tag" th:include="@{_fragment/_apolo-template} :: apolo-template"></div>
+
+<div id="page-content">
+    <section class="content-header">
+        <h1 th:text="#{campaign}">
+            Widgets
+        </h1>
+    </section>
+
+    <section class="content">
+        <div class="col-sm-12">
+            <div th:remove="tag" th:include="@{campaign/_form} :: campaign-form"></div>
+
+            <div class="btn-group" role="group">
+                <a sec:authorize="@apoloSecurity.hasPermission('CAMPAIGN_MANAGER')"
+                   th:href='@{|/${#authentication.systemUser.tenant.url}/campaign/edit/${campaign.id}|}'
+                   th:if="${statusSENT != campaign.status} and ${statusWIP != campaign.status} and ${statusUPDATING != campaign.status}"
+                   class="btn btn-default">
+                    <i class="fa fa-pencil-square-o"></i>
+                    <span th:text="#{common.edit}" />
+                </a>
+                <a sec:authorize="@apoloSecurity.hasPermission('CAMPAIGN_MANAGER', 'CAMPAIGN_SEND')"
+                   th:if="${statusSENT != campaign.status} and ${statusWIP != campaign.status} and ${statusUPDATING != campaign.status}"
+                   th:href='@{|/${#authentication.systemUser.tenant.url}/campaign/test/${campaign.id}|}'
+                   class="btn btn-info"
+                   data-toggle="tooltip">
+                    <i class="fa fa-refresh"></i>
+                    <span th:text="#{campaign.test}" />
+                </a>
+                <a sec:authorize="@apoloSecurity.hasPermission('CAMPAIGN_SEND')"
+                   th:if="${statusSENT != campaign.status} and ${statusWIP != campaign.status} and ${statusUPDATING != campaign.status}"
+                   th:href='@{|/${#authentication.systemUser.tenant.url}/campaign/send/${campaign.id}|}'
+                   class="btn btn-success"
+                   data-toggle="tooltip">
+                    <i class="fa fa-send"></i>
+                    <span th:text="#{campaign.send}" />
+                </a>
+                <a sec:authorize="@apoloSecurity.hasPermission('CAMPAIGN_MANAGER')"
+                   th:href='@{|/${#authentication.systemUser.tenant.url}/campaign/copy/${campaign.id}|}'
+                   th:if="${statusSENT == campaign.status} and ${statusWIP != campaign.status} and ${statusUPDATING != campaign.status}"
+                   class="btn btn-warning"
+                   data-toggle="tooltip">
+                    <i class="fa fa-clone"></i>
+                    <span th:text="#{common.copy}" />
+                </a>
+
+                <a sec:authorize="@apoloSecurity.hasPermission('CAMPAIGN_MANAGER')"
+                   th:href='@{|/${#authentication.systemUser.tenant.url}/campaign/update/${campaign.id}|}'
+                   th:if="${statusSENT == campaign.status}"
+                   class="btn btn-info"
+                   data-toggle="tooltip">
+                    <i class="fa fa-wrench"></i>
+                    <span th:text="#{campaign.update.action}" />
+                </a>
+
+                <a href='#' class="btn btn-default back" >
+                    <i class="fa fa-backward"></i>
+                    <span th:text="#{common.back}" />
+                </a>
+            </div>
+        </div>
+    </section>
+
+</div>
+</body>
+</html>

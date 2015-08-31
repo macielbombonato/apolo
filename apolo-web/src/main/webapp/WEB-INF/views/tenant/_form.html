@@ -25,30 +25,6 @@
 <div class="tab-content">
     <div class="tab-pane active" id="home">
         <div class="form-group">
-            <label for="spinner" class="control-label" th:text="#{tenant.spinner}">
-                tenant.spinner
-            </label>
-
-            <div class="row">
-                <div class="col-sm-3" th:each="spinner : ${spinnerList}">
-                    <label class="control-label">
-                        <input type="radio"
-                               id="spinner"
-                               name="spinner"
-                               th:value="${spinner}"
-                               th:checked="${spinner eq tenant.spinner}"
-                               th:disabled="${readOnly}"
-                                />
-                        <img th:src="@{|/resources/app/img/${spinner.image}|}"
-                             class="img"
-                             width="64px;"
-                             />
-                    </label>
-                </div>
-            </div>
-        </div>
-
-        <div class="form-group">
             <label for="name" class="control-label" th:text="#{tenant.name}">
                 tenant.name
             </label>

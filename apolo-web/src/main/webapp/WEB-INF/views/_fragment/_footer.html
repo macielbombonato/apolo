@@ -7,37 +7,6 @@
     <head>
     </head>
     <body th:fragment="footer">
-
-
-        <footer class="main-footer">
-            <div class="pull-right hidden-xs">
-                <b th:text="#{view.version}">
-                    Version
-                </b>
-                <span th:text="#{version}">
-                    version
-                </span>
-            </div>
-            <a sec:authorize="hasRole('ROLE_ADMIN')"
-               th:href='@{|/version|}'
-               class="btn">
-                <img th:src="@{|/resources/app/img/flags/#{language.flag}|}"
-                     width="15"
-                     height="15"
-                     class="img"
-                        />
-            </a>
-            <img th:src="@{|/resources/app/img/flags/#{language.flag}|}"
-                 sec:authorize="!hasRole('ROLE_ADMIN')"
-                 width="15"
-                 height="15"
-                 class="img"
-                    />
-            <span th:text="#{footer.message}" data-htmlEscape="false">
-                footer.message
-            </span>
-        </footer>
-
         <noscript>
             <div class="alert alert-block">
                 <h4 class="alert-heading">Warning!</h4>
@@ -60,6 +29,34 @@
         <!-- END ConfirmDialog -->
 
         <div th:remove="tag" th:include="@{_fragment/_scriptsTag} :: scriptsTag"></div>
+
+        <footer class="main-footer">
+            <div class="pull-right hidden-xs">
+                <b th:text="#{view.version}">
+                    Version
+                </b>
+                <span th:text="#{version}">
+                    version
+                </span>
+            </div>
+            <a sec:authorize="@apoloSecurity.hasPermission('ADMIN')"
+               th:href='@{|/version|}'>
+                <img th:src="@{|/resources/app/img/flags/#{language.flag}|}"
+                     width="15"
+                     height="15"
+                     class="img"
+                        />
+            </a>
+            <img th:src="@{|/resources/app/img/flags/#{language.flag}|}"
+                 sec:authorize="!@apoloSecurity.hasPermission('ADMIN')"
+                 width="15"
+                 height="15"
+                 class="img"
+                    />
+            <span th:text="#{footer.message}" data-htmlEscape="false">
+                footer.message
+            </span>
+        </footer>
 
     </body>
 </html>

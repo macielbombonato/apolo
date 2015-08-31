@@ -15,8 +15,8 @@ public enum Status {
 	
 	static {
 		Builder<String, Status> builder = ImmutableMap.builder();
-		for (Status tipo : values()) {
-			builder.put(tipo.code, tipo);
+		for (Status type : values()) {
+			builder.put(type.code, type);
 		}
 		valueMap = builder.build();
 	}

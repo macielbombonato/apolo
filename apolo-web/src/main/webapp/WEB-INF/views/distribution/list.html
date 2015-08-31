@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:include="@{_fragment/_headTag} :: headTag">
+</head>
+<body>
+<div th:remove="tag" th:include="@{_fragment/_apolo-template} :: apolo-template"></div>
+
+<div id="page-content">
+    <section class="content-header">
+        <h1 th:text="#{distribution.list}">
+            Widgets
+        </h1>
+        <ol class="breadcrumb">
+            <li>
+                <a th:href="${'/'} + ${#authentication.systemUser.tenant.url} + ${'/distribution/new'}">
+                    <i class="fa fa-plus"></i>
+                    <span th:text="#{menu.distribution.create}"></span>
+                </a>
+            </li>
+        </ol>
+    </section>
+
+    <section class="content">
+        <div th:with="searchUrlParam=${'/'} + ${#authentication.systemUser.tenant.url} + ${'/distribution/search'}">
+            <div th:remove="tag"
+                 th:include="@{_fragment/_search} ::
+                        search (
+                                searchUrl=${searchUrlParam},
+                                placeholderTerm=${'distribution.search.field'}
+                                )"
+                    >
+                search Form
+            </div>
+        </div>
+
+        <br />
+        <center>
+            <div th:remove="tag" th:include="@{_fragment/_pagination} :: pagination"></div>
+        </center>
+        <div class="table-responsive" th:if="${distributionList != null} and ${!distributionList.isEmpty()}">
+            <table class="table table-striped table-hover table-bordered">
+                <thead>
+                <tr>
+                    <th th:text="#{distribution.name}">
+                        distribution.name
+                    </th>
+                    <th th:text="#{common.actions}"
+                        sec:authorize="@apoloSecurity.hasPermission('DISTRIBUTION_LIST', 'DISTRIBUTION_MANAGER')">
+                        common.actions
+                    </th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr th:id="${'distribution_'} + ${distribution.id}" th:each="distribution : ${distributionList}">
+
+                    <td>
+                        <a th:href='@{|/${#authentication.systemUser.tenant.url}/distribution/view/${distribution.id}|}'
+                           th:text="${distribution.name}"
+                           class="btn btn-link" >
+                            ${distribution.name}
+                        </a>
+                    </td>
+                    <td sec:authorize="@apoloSecurity.hasPermission('DISTRIBUTION_LIST', 'DISTRIBUTION_MANAGER')">
+                        <div class="btn-group btn-group-sm">
+                            <a th:href='@{|/${#authentication.systemUser.tenant.url}/distribution/view/${distribution.id}|}'
+                               class="btn btn-default"
+                               data-toggle="tooltip"
+                               th:title="#{common.show}">
+                                <i class="fa fa-search-plus"></i>
+                            </a>
+                            <a sec:authorize="@apoloSecurity.hasPermission('DISTRIBUTION_MANAGER')"
+                               th:href='@{|/${#authentication.systemUser.tenant.url}/distribution/edit/${distribution.id}|}'
+                               class="btn btn-default"
+                               data-toggle="tooltip"
+                               th:title="#{common.edit}">
+                                <i class="fa fa-pencil-square-o"></i>
+                            </a>
+                            <a sec:authorize="@apoloSecurity.hasPermission('DISTRIBUTION_MANAGER')"
+                               href='#'
+                               class="btn btn-default"
+                               th:with="removeAction=${'removeConfirmationDialogOpen('''} + ${'/'} + ${#authentication.systemUser.tenant.url} + ${'/distribution/remove/'} + ${distribution.id} + ${''', ''distribution_'} + ${distribution.id} + ${''');'}"
+                               th:onclick="${removeAction}"
+                               data-toggle="tooltip"
+                               th:title="#{common.remove}">
+                                <i class="fa fa-times"></i>
+                            </a>
+                            <a th:href='@{|/${#authentication.systemUser.tenant.url}/distribution/${distribution.id}/contact/list|}'
+                                    class="btn btn-default"
+                                    th:title="#{contact.list}"
+                                    >
+                                <i class="fa fa-search-plus"></i>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="panel-body" th:if="${distributionList == null} or ${distributionList.isEmpty()}">
+            <p th:text="#{common.nodatafound}">
+                common.nodatafound
+            </p>
+        </div>
+        <center>
+            <div th:remove="tag" th:include="@{_fragment/_pagination} :: pagination"></div>
+        </center>
+    </section>
+</div>
+</body>
+</html>

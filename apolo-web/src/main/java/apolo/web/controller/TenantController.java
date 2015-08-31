@@ -10,13 +10,12 @@ import apolo.data.enums.Spinner;
 import apolo.data.enums.Status;
 import apolo.data.model.Tenant;
 import apolo.data.model.User;
-import apolo.security.SecuredEnum;
-import apolo.security.UserPermission;
 import apolo.web.enums.Navigation;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
@@ -47,16 +46,12 @@ public class TenantController extends BaseController<Tenant> {
 	@Autowired
 	private UserController userController;
 	
-	@SecuredEnum(UserPermission.TENANT_MANAGER)
+	@PreAuthorize("@apoloSecurity.hasPermission('TENANT_MANAGER')")
 	@RequestMapping(value = "change/{tenant-url}", method = RequestMethod.GET)
 	public ModelAndView changeTenant(
 				@PathVariable("tenant-url") String tenantUrl, 
 				HttpServletRequest request
 			) {
-		
-		validatePermissions(
-				UserPermission.TENANT_MANAGER
-			);
 		
 		Tenant tenant = getDBTenant(tenantUrl);
 		
@@ -75,14 +70,9 @@ public class TenantController extends BaseController<Tenant> {
 		return mav;
 	}
 
-
-	@SecuredEnum(UserPermission.TENANT_CREATE)
+	@PreAuthorize("@apoloSecurity.hasPermission('TENANT_CREATE')")
 	@RequestMapping(value = "new", method = RequestMethod.GET)
 	public ModelAndView create(HttpServletRequest request) {
-		validatePermissions(
-				UserPermission.TENANT_CREATE
-			);
-		
 		ModelAndView mav = new ModelAndView(Navigation.TENANT_NEW.getPath());
 		
 		Tenant tenant = new Tenant();
@@ -102,13 +92,9 @@ public class TenantController extends BaseController<Tenant> {
 		return mav;
 	}
 	
-	@SecuredEnum(UserPermission.TENANT_EDIT)
+	@PreAuthorize("@apoloSecurity.hasPermission('TENANT_EDIT')")
 	@RequestMapping(value = "edit/{id}", method = RequestMethod.GET)
 	public ModelAndView edit(@PathVariable Long id, HttpServletRequest request) {
-		validatePermissions(
-				UserPermission.TENANT_EDIT
-			);
-		
 		ModelAndView mav = new ModelAndView(Navigation.TENANT_EDIT.getPath());
 		
 		Tenant tenant = tenantService.find(null, id);
@@ -125,24 +111,12 @@ public class TenantController extends BaseController<Tenant> {
 		return mav;
 	}
 
-	@SecuredEnum({
-			UserPermission.TENANT_EDIT, 
-			UserPermission.TENANT_CREATE, 
-			UserPermission.TENANT_LIST, 
-			UserPermission.TENANT_MANAGER
-		})
+	@PreAuthorize("@apoloSecurity.hasPermission('TENANT_EDIT', 'TENANT_CREATE', 'TENANT_LIST', 'TENANT_MANAGER')")
 	@RequestMapping(value = "view/{id}", method = RequestMethod.GET)
 	public ModelAndView view(
 				@PathVariable Long id, 
 				HttpServletRequest request
 			) {
-		
-		validatePermissions(
-				UserPermission.TENANT_EDIT, 
-				UserPermission.TENANT_CREATE, 
-				UserPermission.TENANT_LIST, 
-				UserPermission.TENANT_MANAGER
-			);
 		
 		ModelAndView mav = new ModelAndView(Navigation.TENANT_VIEW.getPath());
 
@@ -156,13 +130,10 @@ public class TenantController extends BaseController<Tenant> {
 		return mav;
 	}
 	
-	@SecuredEnum(UserPermission.TENANT_REMOVE)
+	@PreAuthorize("@apoloSecurity.hasPermission('TENANT_REMOVE')")
 	@RequestMapping(value = "remove/{id}", method = RequestMethod.GET)
 	public @ResponseBody String remove(@PathVariable Long id) {
-		validatePermissions(
-				UserPermission.TENANT_REMOVE
-			);
-		
+
 		String result = "";
 		
 		JSONObject jsonSubject = new JSONObject();
@@ -188,16 +159,12 @@ public class TenantController extends BaseController<Tenant> {
 		return jsonSubject.toString();
 	}
 	
-	@SecuredEnum(UserPermission.TENANT_REMOVE)
+	@PreAuthorize("@apoloSecurity.hasPermission('TENANT_REMOVE')")
 	@RequestMapping(value = "remove-registry/{id}", method = RequestMethod.GET)
 	public ModelAndView removeRegistry(
 				@PathVariable Long id, 
 				HttpServletRequest request
 			) {
-		
-		validatePermissions(
-				UserPermission.TENANT_REMOVE
-			);
 		
 		ModelAndView mav = new ModelAndView(Navigation.TENANT_LIST.getPath());
 		
@@ -220,23 +187,13 @@ public class TenantController extends BaseController<Tenant> {
 		return mav;
 	}
 	
-	@SecuredEnum({
-			UserPermission.TENANT_EDIT, 
-			UserPermission.TENANT_CREATE, 
-			UserPermission.TENANT_LIST
-		})
+	@PreAuthorize("@apoloSecurity.hasPermission('TENANT_EDIT', 'TENANT_CREATE', 'TENANT_LIST')")
 	@RequestMapping(value = "save", method = RequestMethod.POST)
 	public ModelAndView save(
 				@Valid @ModelAttribute("tenant") Tenant entity, 
 				BindingResult result, 
 				HttpServletRequest request 
 			) {
-		
-		validatePermissions(
-				UserPermission.TENANT_EDIT, 
-				UserPermission.TENANT_CREATE, 
-				UserPermission.TENANT_LIST 
-			);
 		
 		ModelAndView mav = new ModelAndView();
 		
@@ -360,16 +317,12 @@ public class TenantController extends BaseController<Tenant> {
 		return mav;
 	}
 	
-	@SecuredEnum(UserPermission.TENANT_MANAGER)
+	@PreAuthorize("@apoloSecurity.hasPermission('TENANT_MANAGER')")
 	@RequestMapping(value = "lock/{id}", method = RequestMethod.GET)
 	public ModelAndView lock(
 				@PathVariable Long id, 
 				HttpServletRequest request
 			) {
-		
-		validatePermissions(
-				UserPermission.TENANT_MANAGER
-			);
 		
 		ModelAndView mav = new ModelAndView(Navigation.USER_INDEX.getPath());
 		
@@ -388,16 +341,12 @@ public class TenantController extends BaseController<Tenant> {
 		return mav;
 	}
 	
-	@SecuredEnum(UserPermission.TENANT_MANAGER)
+	@PreAuthorize("@apoloSecurity.hasPermission('TENANT_MANAGER')")
 	@RequestMapping(value = "unlock/{id}", method = RequestMethod.GET)
 	public ModelAndView unlock(
 				@PathVariable Long id, 
 				HttpServletRequest request
 			) {
-		
-		validatePermissions(
-				UserPermission.TENANT_MANAGER
-			);
 		
 		ModelAndView mav = new ModelAndView(Navigation.USER_EDIT.getPath());
 		
@@ -416,42 +365,19 @@ public class TenantController extends BaseController<Tenant> {
 		return mav;
 	}
 	
-	@SecuredEnum({
-			UserPermission.TENANT_EDIT, 
-			UserPermission.TENANT_CREATE, 
-			UserPermission.TENANT_LIST, 
-			UserPermission.TENANT_MANAGER
-		})
+	@PreAuthorize("@apoloSecurity.hasPermission('TENANT_EDIT', 'TENANT_CREATE', 'TENANT_LIST', 'TENANT_MANAGER')")
 	@RequestMapping(value = "list", method = RequestMethod.GET)
 	public ModelAndView list(HttpServletRequest request) {
-		validatePermissions(
-				UserPermission.TENANT_EDIT, 
-				UserPermission.TENANT_CREATE, 
-				UserPermission.TENANT_LIST, 
-				UserPermission.TENANT_MANAGER
-			);
-		
+
 		return list(1, request);
 	}
 	
-	@SecuredEnum({
-			UserPermission.TENANT_EDIT, 
-			UserPermission.TENANT_CREATE, 
-			UserPermission.TENANT_LIST, 
-			UserPermission.TENANT_MANAGER
-		})
+	@PreAuthorize("@apoloSecurity.hasPermission('TENANT_EDIT', 'TENANT_CREATE', 'TENANT_LIST', 'TENANT_MANAGER')")
 	@RequestMapping(value = "list/{pageNumber}", method = RequestMethod.GET)
 	public ModelAndView list(
 				@PathVariable Integer pageNumber, 
 				HttpServletRequest request
 			) {
-		
-		validatePermissions(
-				UserPermission.TENANT_EDIT, 
-				UserPermission.TENANT_CREATE, 
-				UserPermission.TENANT_LIST, 
-				UserPermission.TENANT_MANAGER
-			);
 		
 		ModelAndView mav = new ModelAndView(Navigation.TENANT_LIST.getPath());
 		
@@ -468,34 +394,17 @@ public class TenantController extends BaseController<Tenant> {
 		return mav;
 	}
 	
-	@SecuredEnum({
-			UserPermission.TENANT_EDIT, 
-			UserPermission.TENANT_CREATE, 
-			UserPermission.TENANT_LIST, 
-			UserPermission.TENANT_MANAGER
-		})
+	@PreAuthorize("@apoloSecurity.hasPermission('TENANT_EDIT', 'TENANT_CREATE', 'TENANT_LIST', 'TENANT_MANAGER')")
 	@RequestMapping(value = "search", method = RequestMethod.POST)
 	public ModelAndView search(
 				@ModelAttribute("searchParameter") String searchParameter, 
 				HttpServletRequest request
 			) {
 		
-		validatePermissions(
-				UserPermission.TENANT_EDIT, 
-				UserPermission.TENANT_CREATE, 
-				UserPermission.TENANT_LIST, 
-				UserPermission.TENANT_MANAGER
-			);
-		
 		return search(1, searchParameter, request);
 	}
 	
-	@SecuredEnum({
-			UserPermission.TENANT_EDIT, 
-			UserPermission.TENANT_CREATE, 
-			UserPermission.TENANT_LIST, 
-			UserPermission.TENANT_MANAGER
-		})
+	@PreAuthorize("@apoloSecurity.hasPermission('TENANT_EDIT', 'TENANT_CREATE', 'TENANT_LIST', 'TENANT_MANAGER')")
 	@RequestMapping(value = "search/{pageNumber}", method = RequestMethod.GET)
 	public ModelAndView search(
 				@PathVariable("tenant-url") String tenant, 
@@ -503,35 +412,16 @@ public class TenantController extends BaseController<Tenant> {
 				HttpServletRequest request
 			) {
 		
-		validatePermissions(
-				UserPermission.TENANT_EDIT, 
-				UserPermission.TENANT_CREATE, 
-				UserPermission.TENANT_LIST, 
-				UserPermission.TENANT_MANAGER
-			);
-		
 		return search(pageNumber, "", request);
 	}
 	
-	@SecuredEnum({
-			UserPermission.TENANT_EDIT, 
-			UserPermission.TENANT_CREATE, 
-			UserPermission.TENANT_LIST, 
-			UserPermission.TENANT_MANAGER
-		})
+	@PreAuthorize("@apoloSecurity.hasPermission('TENANT_EDIT', 'TENANT_CREATE', 'TENANT_LIST', 'TENANT_MANAGER')")
 	@RequestMapping(value = "search/{searchParameter}/{pageNumber}", method = RequestMethod.GET)
 	public ModelAndView search(
 				@PathVariable Integer pageNumber, 
 				@PathVariable String searchParameter, 
 				HttpServletRequest request
 			) {
-		
-		validatePermissions(
-				UserPermission.TENANT_EDIT, 
-				UserPermission.TENANT_CREATE, 
-				UserPermission.TENANT_LIST, 
-				UserPermission.TENANT_MANAGER
-			);
 		
 		ModelAndView mav = new ModelAndView(Navigation.TENANT_LIST.getPath());
 		
@@ -556,21 +446,10 @@ public class TenantController extends BaseController<Tenant> {
 		return mav;
 	}
 	
-	@SecuredEnum({
-			UserPermission.TENANT_EDIT, 
-			UserPermission.TENANT_CREATE, 
-			UserPermission.TENANT_LIST, 
-			UserPermission.TENANT_MANAGER
-		})
+	@PreAuthorize("@apoloSecurity.hasPermission('TENANT_EDIT', 'TENANT_CREATE', 'TENANT_LIST', 'TENANT_MANAGER')")
 	@RequestMapping(value = "search-form", method = RequestMethod.GET)
 	public ModelAndView searchForm(HttpServletRequest request) {
-		validatePermissions(
-				UserPermission.TENANT_EDIT, 
-				UserPermission.TENANT_CREATE, 
-				UserPermission.TENANT_LIST, 
-				UserPermission.TENANT_MANAGER
-			);
-		
+
 		ModelAndView mav = new ModelAndView(Navigation.TENANT_SEARCH.getPath());
 		
 		return mav;

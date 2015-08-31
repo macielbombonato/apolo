@@ -236,4 +236,14 @@ public class TenantServiceImpl extends BaseServiceImpl<Tenant> implements Tenant
 		return tenant;
 	}
 
+	public long count() {
+		long result = 0L;
+		if (getAuthenticatedUser() != null
+				&& getAuthenticatedUser().getPermissions().contains(UserPermission.ADMIN)) {
+			result = tenantRepository.count();
+		}
+
+		return result;
+	}
+
 }

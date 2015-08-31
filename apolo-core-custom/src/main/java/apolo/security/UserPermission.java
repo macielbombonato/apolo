@@ -2,10 +2,9 @@ package apolo.security;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMap.Builder;
+import org.springframework.security.access.ConfigAttribute;
 
 import java.util.Map;
-
-import org.springframework.security.access.ConfigAttribute;
 
 /**
  * UserPermission
@@ -24,21 +23,7 @@ public enum UserPermission implements ConfigAttribute {
 		}
 	},
 	
-	BEFORE_AUTH_USER("BEFORE_AUTH_USER") {
-		@Override
-		public boolean isListable() {
-			return false;
-		}
-	},
-	
-	AFTER_AUTH_USER("AFTER_AUTH_USER") {
-		@Override
-		public boolean isListable() {
-			return false;
-		}
-	},
-	
-	TENANT_CREATE("TENANT_CREATE"), 
+	TENANT_CREATE("TENANT_CREATE"),
 	TENANT_EDIT("TENANT_EDIT"),
 	TENANT_REMOVE("TENANT_REMOVE"),
 	TENANT_LIST("TENANT_LIST"),
@@ -57,22 +42,26 @@ public enum UserPermission implements ConfigAttribute {
 	USER_PERMISSION_EDIT("USER_PERMISSION_EDIT"),
 	USER_PERMISSION_REMOVE("USER_PERMISSION_REMOVE"),
 	
-	USER_CUSTOM_FIELD_LIST("USER_CUSTOM_FIELD_LIST"),
-	USER_CUSTOM_FIELD_VIEW("USER_CUSTOM_FIELD_VIEW"),
-	USER_CUSTOM_FIELD_CREATE("USER_CUSTOM_FIELD_CREATE"),
-	USER_CUSTOM_FIELD_EDIT("USER_CUSTOM_FIELD_EDIT"),
-	USER_CUSTOM_FIELD_REMOVE("USER_CUSTOM_FIELD_REMOVE"),
-	
 	CONFIGURATION_LIST("CONFIGURATION_LIST"),
 	CONFIGURATION_VIEW("CONFIGURATION_VIEW"),
 	CONFIGURATION_CREATE("CONFIGURATION_CREATE"),
 	CONFIGURATION_EDIT("CONFIGURATION_EDIT"),
 	CONFIGURATION_REMOVE("CONFIGURATION_REMOVE"),
+
+	DISTRIBUTION_LIST("DISTRIBUTION_LIST"),
+	DISTRIBUTION_MANAGER("DISTRIBUTION_MANAGER"),
+
+	CONTACT_MANAGER("CONTACT_MANAGER"),
+	CONTACT_REACTIVE("CONTACT_REACTIVE"),
+
+	CAMPAIGN_LIST("CAMPAIGN_LIST"),
+	CAMPAIGN_MANAGER("CAMPAIGN_MANAGER"),
+	CAMPAIGN_SEND("CAMPAIGN_SEND"),
 	
 	;
 	
 	public String getAttribute() {
-		return "ROLE_" + name(); // the spring security needs the ROLE prefix
+		return "ROLE_" + getCode(); // the spring security needs the ROLE prefix
 	}
 	
 	private final String code;
@@ -81,8 +70,8 @@ public enum UserPermission implements ConfigAttribute {
 	
 	static {
 		Builder<String, UserPermission> builder = ImmutableMap.builder();
-		for (UserPermission tipo : values()) {
-			builder.put(tipo.code, tipo);
+		for (UserPermission type : values()) {
+			builder.put(type.code, type);
 		}
 		valueMap = builder.build();
 	}

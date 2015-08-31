@@ -27,5 +27,7 @@ public interface TenantRepository extends JpaRepository<Tenant, Long>, TenantRep
             Status status,
             Pageable page
     );
+
+	long count();
 	
 }

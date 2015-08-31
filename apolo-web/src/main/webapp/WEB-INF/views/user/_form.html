@@ -14,8 +14,9 @@
     <input type="hidden" id="resetPasswordToken" name="resetPasswordToken" th:value="${user.resetPasswordToken}" th:if="${user.resetPasswordToken != null}"/>
     <input type="hidden" id="resetPasswordSentAt" name="resetPasswordSentAt" th:value="${user.resetPasswordSentAt}" th:if="${user.resetPasswordSentAt != null}"/>
     <input type="hidden" id="rememberCreatedAt" name="rememberCreatedAt" th:value="${user.rememberCreatedAt}" th:if="${user.rememberCreatedAt != null}"/>
-    <input type="hidden" id="currentSignInAt" name="currentSignInAt" th:value="${user.currentSignInAt}" th:if="${user.currentSignInAt != null}"/>
-    <input type="hidden" id="lastSignInAt" name="lastSignInAt" th:value="${user.lastSignInAt}" th:if="${user.lastSignInAt != null}"/>
+
+    <input type="hidden" id="lastSignInAt"    name="lastSignInAt"    th:value="${user.lastSignInAt}"    th:if="${user.lastSignInAt != null}"/>
+
     <input type="hidden" id="currentSignInIp" name="currentSignInIp" th:value="${user.currentSignInIp}" th:if="${user.currentSignInIp != null}"/>
     <input type="hidden" id="lastSignInIp" name="lastSignInIp" th:value="${user.lastSignInIp}" th:if="${user.lastSignInIp != null}"/>
 
@@ -155,10 +156,10 @@
             <div th:if="${!readOnly}">
                 <div class="row">
                     <div class="col-sm-12">
-                        <label for="groups"
+                        <label for="listTo"
                                class="control-label"
                                th:text="#{user.groups}"
-                               sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_USER_CREATE', 'ROLE_USER_EDIT')"
+                               sec:authorize="@apoloSecurity.hasPermission('USER_CREATE', 'ROLE_USER_EDIT')"
                                 />
                     </div>
 
@@ -170,7 +171,7 @@
                                 class="form-control chosen-select"
                                 th:disabled="${readOnly}"
                                 th:attr="data-placeholder=#{common.select}"
-                                th:with="style=${#authorization.expression('hasAnyRole(''ROLE_ADMIN'', ''ROLE_USER_CREATE'', ''ROLE_USER_EDIT'')') == false ? 'display: none;' : 'display: block;' }"
+                                th:with="style=${#authorization.expression('@apoloSecurity.hasPermission(''USER_CREATE'', ''USER_EDIT'')') == false ? 'display: none;' : 'display: block;' }"
                                 th:style="${style}"
                                 aria-hidden="true"
                                 >
@@ -206,12 +207,12 @@
                             <li th:each="group : ${user.groups}"
                                 class="list-group-item">
 
-                                <a sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_USER_LIST', 'ROLE_USER_PERMISSION_LIST', 'ROLE_USER_PERMISSION_VIEW')"
+                                <a sec:authorize="@apoloSecurity.hasPermission('USER_LIST', 'USER_PERMISSION_LIST', 'USER_PERMISSION_VIEW')"
                                    th:href='@{|/${#authentication.systemUser.tenant.url}/user-group/view/${group.id}|}'
                                         th:text="${group.name}"
                                         />
 
-                                <span sec:authorize="!hasAnyRole('ROLE_ADMIN', 'ROLE_USER_LIST', 'ROLE_USER_PERMISSION_LIST', 'ROLE_USER_PERMISSION_VIEW')"
+                                <span sec:authorize="!@apoloSecurity.hasPermission('USER_LIST', 'USER_PERMISSION_LIST', 'USER_PERMISSION_VIEW')"
                                       th:text="${group.name}"
                                         />
                             </li>

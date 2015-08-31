@@ -2,7 +2,6 @@ package apolo.web.controller;
 
 import apolo.business.service.UserService;
 import apolo.common.util.MessageBundle;
-import apolo.security.UserPermission;
 import apolo.web.enums.Navigation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -53,8 +52,7 @@ public class AuthController extends BaseController {
 
 		if (userService.getAuthenticatedUser() != null
 				&& userService.getAuthenticatedUser().getPermissions() != null
-				&& !userService.getAuthenticatedUser().getPermissions().isEmpty()
-				&& userService.getAuthenticatedUser().getPermissions().contains(UserPermission.AFTER_AUTH_USER)) {
+				&& !userService.getAuthenticatedUser().getPermissions().isEmpty()) {
 			mav = userController.index(tenant, request);
 		}
 
@@ -69,6 +67,8 @@ public class AuthController extends BaseController {
 				"tenant",
 				getDBTenant(tenant)
 		);
+
+		mav.addObject("tenant", getDBTenant(tenant));
 		
 		return mav;
 	}
@@ -100,22 +100,25 @@ public class AuthController extends BaseController {
 		
 		mav.addObject("error", true);
 		mav.addObject("message", message);
+		mav.addObject("tenant", getDBTenant(tenant));
+
 		return mav;
 	}
 
-	@PreAuthorize("isAuthenticated()")
+	@PreAuthorize("@apoloSecurity.isAuthenticated()")
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
 	public ModelAndView logout(HttpServletRequest request, ModelMap model) {
 		return logout(applicationProperties.getDefaultTenant(), request, model);
 	}
 
-	@PreAuthorize("isAuthenticated()")
+	@PreAuthorize("@apoloSecurity.isAuthenticated()")
     @RequestMapping(value = "/{tenant-url}/logout", method = RequestMethod.GET)
     public ModelAndView logout(
             @PathVariable("tenant-url") String tenant,
             HttpServletRequest request,
             ModelMap model) {
         ModelAndView mav = new ModelAndView(Navigation.AUTH_LOGIN.getPath(), model);
+		mav.addObject("tenant", getDBTenant(tenant));
         return mav;
     }
 	
