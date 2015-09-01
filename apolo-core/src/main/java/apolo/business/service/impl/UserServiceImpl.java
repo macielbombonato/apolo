@@ -263,6 +263,25 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 			String message = MessageBundle.getMessageBundle("user.edit.msg.error.admin.permission");
 			throw new BusinessException(message);
 		}
+
+		boolean sendEmail = false;
+
+		if (user.getId() == null) {
+			try {
+				String token = apoloCrypt.encode(
+						user.getEmail(),
+						user.getDbTenant().getName() + user.getName(),
+						applicationProperties.getIvKey()
+				);
+
+				user.setResetPasswordToken(token);
+				user.setResetPasswordSentAt(new Date());
+
+				sendEmail = true;
+			} catch (Exception e) {
+				log.error(e.getMessage(), e);
+			}
+		}
 		
 		if (changePassword) {
 			Md5PasswordEncoder encoder = new Md5PasswordEncoder();
@@ -322,25 +341,6 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 			user.setEnabled(false);
 		} else {
 			user.setEnabled(true);
-		}
-
-		boolean sendEmail = false;
-
-		if (user.getId() == null) {
-			try {
-				String token = apoloCrypt.encode(
-						user.getEmail(),
-						user.getDbTenant().getName() + user.getName(),
-						applicationProperties.getIvKey()
-				);
-
-				user.setResetPasswordToken(token);
-				user.setResetPasswordSentAt(new Date());
-
-				sendEmail = true;
-			} catch (Exception e) {
-				log.error(e.getMessage(), e);
-			}
 		}
 
 		user = userRepository.save(user);
