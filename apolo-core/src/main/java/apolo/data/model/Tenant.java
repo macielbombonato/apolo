@@ -1,6 +1,7 @@
 package apolo.data.model;
 
 import apolo.data.entitylistener.AuditLogListener;
+import apolo.data.enums.Skin;
 import apolo.data.enums.Status;
 import apolo.data.util.InputLength;
 import org.hibernate.annotations.Type;
@@ -43,6 +44,11 @@ public class Tenant extends AuditableBaseEntity {
 	@Column(name = "logo_height", nullable = true)
 	@Max(40)
 	private Integer logoHeight;
+
+	@Column(name = "skin", nullable = false)
+	@Type(type = "apolo.data.enums.usertype.SkinUserType")
+	@NotNull
+	private Skin skin;
 	
 	@Column(name = "status", nullable = false)
 	@Type(type = "apolo.data.enums.usertype.StatusUserType")
@@ -295,5 +301,13 @@ public class Tenant extends AuditableBaseEntity {
 
 	public void setEmailUsername(String emailUsername) {
 		this.emailUsername = emailUsername;
+	}
+
+	public Skin getSkin() {
+		return skin;
+	}
+
+	public void setSkin(Skin skin) {
+		this.skin = skin;
 	}
 }

@@ -63,8 +63,23 @@
 
         </div>
 
+        <input th:if="${tenant == null or tenant.skin == null} and ${#authorization.expression('@apoloSecurity.isAuthenticated()') != true}"
+               type="hidden" id="skin" th:value="skin-black" />
+
+        <input th:if="${tenant != null} and ${tenant.skin != null} and ${#authorization.expression('@apoloSecurity.isAuthenticated()') != true}"
+                type="hidden" id="skin" th:value="${tenant.skin.code}" />
+
+        <input th:if="${#authorization.expression('@apoloSecurity.isAuthenticated()') == true}
+                    and ${#authentication.systemUser.tenant != null}
+                    and ${#authentication.systemUser.tenant.skin != null}"
+               type="hidden" id="skin" th:value="${#authentication.systemUser.tenant.skin.code}" />
+
+        <input th:if="${#authorization.expression('@apoloSecurity.isAuthenticated()') == true}
+                    and ${#authentication.systemUser.tenant == null or #authentication.systemUser.tenant.skin == null}"
+               type="hidden" id="skin" th:value="skin-black" />
+
         <script th:inline="javascript">
-            $('body').addClass('skin-black');
+            $('body').addClass($('#skin').val());
             $('body').addClass('fixed');
         </script>
 

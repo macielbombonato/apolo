@@ -1,53 +1,145 @@
 package apolo.data.enums;
 
-import java.util.Map;
-
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMap.Builder;
 
+import java.util.Map;
+
 public enum Skin {
-	SKIN_0("") {
+	SKIN_BLACK("skin-black") {
 		@Override
-		public String getColor() {
-			return "#323447";
+		public String getBackgroundTitleBar() {
+			return "bg-black";
+		}
+
+		@Override
+		public String getBackgroundMenuBody() {
+			return "#222d32";
 		}
 	},
-	SKIN_1("skin-1") {
+	SKIN_BLUE("skin-blue") {
 		@Override
-		public String getColor() {
-			return "#efefef";
+		public String getBackgroundTitleBar() {
+			return "bg-light-blue";
+		}
+
+		@Override
+		public String getBackgroundMenuBody() {
+			return "#222d32";
 		}
 	},
-	SKIN_2("skin-2") {
+	SKIN_PURPLE("skin-purple") {
 		@Override
-		public String getColor() {
-			return "#a93922";
+		public String getBackgroundTitleBar() {
+			return "bg-purple";
+		}
+
+		@Override
+		public String getBackgroundMenuBody() {
+			return "#222d32";
 		}
 	},
-	SKIN_3("skin-3") {
+	SKIN_YELLOW("skin-yellow") {
 		@Override
-		public String getColor() {
-			return "#3e6b96";
+		public String getBackgroundTitleBar() {
+			return "bg-yellow";
+		}
+
+		@Override
+		public String getBackgroundMenuBody() {
+			return "#222d32";
 		}
 	},
-	SKIN_4("skin-4") {
+	SKIN_RED("skin-red") {
 		@Override
-		public String getColor() {
-			return "#635247";
+		public String getBackgroundTitleBar() {
+			return "bg-red";
+		}
+
+		@Override
+		public String getBackgroundMenuBody() {
+			return "#222d32";
 		}
 	},
-	SKIN_5("skin-5") {
+	SKIN_GREEN("skin-green") {
 		@Override
-		public String getColor() {
-			return "#3a3a3a";
+		public String getBackgroundTitleBar() {
+			return "bg-green";
+		}
+
+		@Override
+		public String getBackgroundMenuBody() {
+			return "#222d32";
 		}
 	},
-	SKIN_6("skin-6") {
+
+	SKIN_BLACK_LIGHT("skin-black-light") {
 		@Override
-		public String getColor() {
-			return "#495B6C";
+		public String getBackgroundTitleBar() {
+			return "bg-black";
+		}
+
+		@Override
+		public String getBackgroundMenuBody() {
+			return "#f9fafc";
 		}
 	},
+	SKIN_BLUE_LIGHT("skin-blue-light") {
+		@Override
+		public String getBackgroundTitleBar() {
+			return "bg-blue";
+		}
+
+		@Override
+		public String getBackgroundMenuBody() {
+			return "#f9fafc";
+		}
+	},
+	SKIN_PURPLE_LIGHT("skin-purple-light") {
+		@Override
+		public String getBackgroundTitleBar() {
+			return "bg-purple";
+		}
+
+		@Override
+		public String getBackgroundMenuBody() {
+			return "#f9fafc";
+		}
+	},
+	SKIN_YELLOW_LIGHT("skin-yellow-light") {
+		@Override
+		public String getBackgroundTitleBar() {
+			return "bg-yellow";
+		}
+
+		@Override
+		public String getBackgroundMenuBody() {
+			return "#f9fafc";
+		}
+	},
+	SKIN_RED_LIGHT("skin-red-light") {
+		@Override
+		public String getBackgroundTitleBar() {
+			return "bg-red";
+		}
+
+		@Override
+		public String getBackgroundMenuBody() {
+			return "#f9fafc";
+		}
+	},
+	SKIN_GREEN_LIGHT("skin-green-light") {
+		@Override
+		public String getBackgroundTitleBar() {
+			return "bg-green";
+		}
+
+		@Override
+		public String getBackgroundMenuBody() {
+			return "#f9fafc";
+		}
+	},
+
 	;
 	
 	private final String code;
@@ -74,5 +166,6 @@ public enum Skin {
 		return code;
 	}
 	
-	public abstract String getColor();
+	public abstract String getBackgroundTitleBar();
+	public abstract String getBackgroundMenuBody();
 }
