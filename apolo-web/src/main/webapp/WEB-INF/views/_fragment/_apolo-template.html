@@ -63,20 +63,41 @@
 
         </div>
 
-        <input th:if="${tenant == null or tenant.skin == null} and ${#authorization.expression('@apoloSecurity.isAuthenticated()') != true}"
-               type="hidden" id="skin" th:value="skin-black" />
-
-        <input th:if="${tenant != null} and ${tenant.skin != null} and ${#authorization.expression('@apoloSecurity.isAuthenticated()') != true}"
-                type="hidden" id="skin" th:value="${tenant.skin.code}" />
-
-        <input th:if="${#authorization.expression('@apoloSecurity.isAuthenticated()') == true}
-                    and ${#authentication.systemUser.tenant != null}
+        <div th:if="${#authorization.expression('@apoloSecurity.isAuthenticated()') == true}">
+            <input th:if="${#authentication.systemUser.tenant != null}
                     and ${#authentication.systemUser.tenant.skin != null}"
-               type="hidden" id="skin" th:value="${#authentication.systemUser.tenant.skin.code}" />
+                   type="hidden" id="skin" th:value="${#authentication.systemUser.tenant.skin.code}" />
 
-        <input th:if="${#authorization.expression('@apoloSecurity.isAuthenticated()') == true}
-                    and ${#authentication.systemUser.tenant == null or #authentication.systemUser.tenant.skin == null}"
-               type="hidden" id="skin" th:value="skin-black" />
+            <input th:if="${#authentication.systemUser.tenant != null}
+                    and ${#authentication.systemUser.tenant.skin == null}"
+                   type="hidden" id="skin" value="skin-black" />
+
+            <div th:if="${#authentication.systemUser.tenant == null and tenant == null}">
+                <input type="hidden" id="skin" th:value="skin-black" />
+            </div>
+
+            <div th:if="${#authentication.systemUser.tenant == null and tenant != null}">
+                <input th:if="${tenant.skin == null}"
+                       type="hidden" id="skin" th:value="skin-black" />
+
+                <input th:if="${tenant.skin != null}"
+                       type="hidden" id="skin" th:value="${tenant.skin.code}" />
+            </div>
+        </div>
+
+        <div th:if="${#authorization.expression('@apoloSecurity.isAuthenticated()') != true}">
+            <div th:if="${tenant == null}">
+                <input type="hidden" id="skin" th:value="skin-black" />
+            </div>
+
+            <div th:if="${tenant != null}">
+                <input th:if="${tenant.skin == null}"
+                       type="hidden" id="skin" th:value="skin-black" />
+
+                <input th:if="${tenant.skin != null}"
+                       type="hidden" id="skin" th:value="${tenant.skin.code}" />
+            </div>
+        </div>
 
         <script th:inline="javascript">
             $('body').addClass($('#skin').val());

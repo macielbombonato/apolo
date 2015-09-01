@@ -20,7 +20,7 @@ public enum Skin {
 	SKIN_BLUE("skin-blue") {
 		@Override
 		public String getBackgroundTitleBar() {
-			return "bg-light-blue";
+			return "bg-blue";
 		}
 
 		@Override
@@ -76,7 +76,7 @@ public enum Skin {
 	SKIN_BLACK_LIGHT("skin-black-light") {
 		@Override
 		public String getBackgroundTitleBar() {
-			return "bg-black";
+			return "bg-light-black";
 		}
 
 		@Override

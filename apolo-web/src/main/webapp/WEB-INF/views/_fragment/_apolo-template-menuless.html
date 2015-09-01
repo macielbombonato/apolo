@@ -63,8 +63,44 @@
 
         </div>
 
+        <div th:if="${#authorization.expression('@apoloSecurity.isAuthenticated()') == true}">
+            <input th:if="${#authentication.systemUser.tenant != null}
+                    and ${#authentication.systemUser.tenant.skin != null}"
+                   type="hidden" id="skin" th:value="${#authentication.systemUser.tenant.skin.code}" />
+
+            <input th:if="${#authentication.systemUser.tenant != null}
+                    and ${#authentication.systemUser.tenant.skin == null}"
+                   type="hidden" id="skin" value="skin-black" />
+
+            <div th:if="${#authentication.systemUser.tenant == null and tenant == null}">
+                <input type="hidden" id="skin" th:value="skin-black" />
+            </div>
+
+            <div th:if="${#authentication.systemUser.tenant == null and tenant != null}">
+                <input th:if="${tenant.skin == null}"
+                       type="hidden" id="skin" th:value="skin-black" />
+
+                <input th:if="${tenant.skin != null}"
+                       type="hidden" id="skin" th:value="${tenant.skin.code}" />
+            </div>
+        </div>
+
+        <div th:if="${#authorization.expression('@apoloSecurity.isAuthenticated()') != true}">
+            <div th:if="${tenant == null}">
+                <input type="hidden" id="skin" th:value="skin-black" />
+            </div>
+
+            <div th:if="${tenant != null}">
+                <input th:if="${tenant.skin == null}"
+                       type="hidden" id="skin" th:value="skin-black" />
+
+                <input th:if="${tenant.skin != null}"
+                       type="hidden" id="skin" th:value="${tenant.skin.code}" />
+            </div>
+        </div>
+
         <script th:inline="javascript">
-            $('body').addClass('skin-black');
+            $('body').addClass($('#skin').val());
             $('body').addClass('fixed');
             $('body').addClass('sidebar-collapse');
         </script>

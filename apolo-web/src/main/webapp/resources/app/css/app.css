@@ -75,6 +75,10 @@ body {
 	color: #FCFCFC;
 }
 
+.bg-light-black {
+	background: #fefefe;
+}
+
 #menu-toggle {
     position: relative;
     float: left;

@@ -23,38 +23,39 @@
 </ul>
 
 <div class="tab-content">
-    <div class="row">
-        <ul class="list-unstyled clearfix">
+    <div class="tab-pane active" id="home">
 
-            <li class="col-sm-4"
+        <div class="row">
+            <ul class="list-unstyled clearfix">
+
+                <li class="col-sm-4"
                     style="float:left; padding: 5px;"
                     th:each="skin : ${skinList}">
-                <a href="#" style="box-shadow: 0 0 3px rgba(0,0,0,0.4)" class="clearfix full-opacity-hover">
-                    <div>
-                        <span th:class="${skin.backgroundTitleBar}" style="display:block; width: 20%; float: left; height: 7px;"></span>
-                        <span th:class="${skin.backgroundTitleBar}" style="display:block; width: 80%; float: left; height: 7px;"></span>
-                    </div>
-                    <div>
-                        <span th:style="${'display:block; width: 20%; float: left; height: 20px; background: '}+${skin.backgroundMenuBody}+${';'}"></span>
-                        <span style="display:block; width: 80%; float: left; height: 20px; background: #f4f5f7;"></span>
-                    </div>
-                    <div class="text-center no-margin">
-                        <input type="radio"
-                               id="skin"
-                               name="skin"
-                               th:value="${skin}"
-                               th:checked="${tenant.skin != null and tenant.skin.code eq skin.code}"
-                               th:text="${' '} + ${skin.code}"
-                               th:disabled="${readOnly}"
-                                />
-                    </div>
+                    <a href="#" style="box-shadow: 0 0 3px rgba(0,0,0,0.4)" class="clearfix full-opacity-hover">
+                        <div>
+                            <span th:class="${skin.backgroundTitleBar}" style="display:block; width: 20%; float: left; height: 7px;"></span>
+                            <span th:class="${skin.backgroundTitleBar}" style="display:block; width: 80%; float: left; height: 7px;"></span>
+                        </div>
+                        <div>
+                            <span th:style="${'display:block; width: 20%; float: left; height: 20px; background: '}+${skin.backgroundMenuBody}+${';'}"></span>
+                            <span style="display:block; width: 80%; float: left; height: 20px; background: #f4f5f7;"></span>
+                        </div>
+                        <div class="text-center no-margin">
+                            <input type="radio"
+                                   id="skin"
+                                   name="skin"
+                                   th:value="${skin}"
+                                   th:checked="${tenant.skin != null and tenant.skin.code eq skin.code}"
+                                   th:text="${' '} + ${skin.code}"
+                                   th:disabled="${readOnly}"
+                                    />
+                        </div>
 
-                </a>
-            </li>
-        </ul>
-    </div>
+                    </a>
+                </li>
+            </ul>
+        </div>
 
-    <div class="tab-pane active" id="home">
         <div class="form-group">
             <label for="name" class="control-label" th:text="#{tenant.name}">
                 tenant.name

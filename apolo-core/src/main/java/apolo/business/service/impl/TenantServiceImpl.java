@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 @Service("tenantService")
@@ -135,6 +136,9 @@ public class TenantServiceImpl extends BaseServiceImpl<Tenant> implements Tenant
 		Tenant result = null;
 
 		try {
+			tenant.setUpdatedBy(getAuthenticatedUser());
+			tenant.setUpdatedAt(new Date());
+
 			result = tenantRepository.saveAndFlush(tenant);
 		} catch (Throwable e) {
 			LOG.error(e.getMessage(), e);
