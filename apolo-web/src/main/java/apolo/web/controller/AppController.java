@@ -132,7 +132,14 @@ public class AppController extends BaseController<User> {
 					}
 					
 					try {
-						success = userService.systemSetup(install, file);
+						success = userService.systemSetup(
+								getServerUrl(
+										request,
+										install.getUser().getDbTenant().getUrl()
+									),
+								install,
+								file
+							);
 					} catch (Throwable e) {
 						log.error(e.getMessage(), e);
 					}				

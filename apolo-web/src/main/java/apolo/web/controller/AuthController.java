@@ -203,7 +203,15 @@ public class AuthController extends BaseController {
 
 			user.setPassword(password);
 
-			userService.save(user, true, null);
+			userService.save(
+					getServerUrl(
+							request,
+							user.getDbTenant().getUrl()
+						),
+					user,
+					true,
+					null
+				);
 		}
 
 		ModelAndView mav = appController.index(tenant, request);

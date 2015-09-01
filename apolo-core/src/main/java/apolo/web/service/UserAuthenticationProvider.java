@@ -97,7 +97,7 @@ public class UserAuthenticationProvider implements AuthenticationProvider {
 							user.getName(),
 							user.getEmail(),
 							user.getTenant().getName() + ": " + MessageBundle.getMessageBundle("mail.auth.subject"),
-							MessageBundle.getMessageBundle("mail.auth.message", user.getName(), user.getSignInCount())
+							buildAuthenticationMessage(user).toString()
 					);
 				} catch (Throwable e) {
 					log.error("********* => Error when try to send authentication email");
@@ -132,5 +132,25 @@ public class UserAuthenticationProvider implements AuthenticationProvider {
 	public boolean supports(Class authentication) {
 		return (UsernamePasswordAuthenticationToken.class
 				.isAssignableFrom(authentication));
+	}
+
+	private StringBuilder buildAuthenticationMessage(User user) {
+		StringBuilder result = new StringBuilder();
+
+		result.append("<html>");
+		result.append("<body>");
+
+		result.append("<h1>");
+		result.append(user.getTenant().getName() + ": " + MessageBundle.getMessageBundle("mail.auth.subject"));
+		result.append("</h1>");
+
+		result.append("<p>");
+		result.append(MessageBundle.getMessageBundle("mail.auth.message", user.getName(), user.getSignInCount()));
+		result.append("</p>");
+
+		result.append("</body>");
+		result.append("</html>");
+
+		return result;
 	}
 }

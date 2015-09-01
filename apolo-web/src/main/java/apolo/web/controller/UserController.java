@@ -132,7 +132,15 @@ public class UserController extends BaseController<User> {
 			
 			dbuser.setPassword(user.getPassword());
 			
-			userService.save(dbuser, true, null);
+			userService.save(
+					getServerUrl(
+							request,
+							dbuser.getDbTenant().getUrl()
+						),
+					dbuser,
+					true,
+					null
+				);
 		}
 		
 		return mav;
@@ -379,7 +387,15 @@ public class UserController extends BaseController<User> {
 					file.setFile(objectFile);
 				}
 				
-				userService.save(entity, changePassword, file);
+				userService.save(
+						getServerUrl(
+								request,
+								entity.getDbTenant().getUrl()
+							),
+						entity,
+						changePassword,
+						file
+					);
 				
 				// Reconstruct user in session
 				if (userService.getAuthenticatedUser().getId().equals(entity.getId())) {

@@ -253,11 +253,11 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 			entity.setUpdatedAt(new Date());
 		}
 		
-		return save(entity, false, null);
+		return save(null, entity, false, null);
 	}
 
 	@Transactional
-	public User save(User user, boolean changePassword, FileContent file) {
+	public User save(String serverUrl, User user, boolean changePassword, FileContent file) {
 		if (UserStatus.ADMIN.equals(user.getStatus()) 
 				&& !user.getPermissions().contains(UserPermission.ADMIN)) {
 			String message = MessageBundle.getMessageBundle("user.edit.msg.error.admin.permission");
@@ -323,8 +323,48 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 		} else {
 			user.setEnabled(true);
 		}
+
+		boolean sendEmail = false;
+
+		if (user.getId() == null) {
+			try {
+				String token = apoloCrypt.encode(
+						user.getEmail(),
+						user.getDbTenant().getName() + user.getName(),
+						applicationProperties.getIvKey()
+				);
+
+				user.setResetPasswordToken(token);
+				user.setResetPasswordSentAt(new Date());
+
+				sendEmail = true;
+			} catch (Exception e) {
+				log.error(e.getMessage(), e);
+			}
+		}
+
+		user = userRepository.save(user);
+
+		if (sendEmail) {
+			try {
+				emailService.send(
+						user.getDbTenant(),
+						user.getDbTenant().getName(),
+						user.getDbTenant().getEmailFrom(),
+						user.getName(),
+						user.getEmail(),
+						MessageBundle.getMessageBundle("user.new.email.subject"),
+						this.buildCreateUserMessage(
+								serverUrl + "reset-password/",
+								user
+						).toString()
+				);
+			} catch (Exception e) {
+				log.error(e.getMessage(), e);
+			}
+		}
 		
-		return userRepository.save(user);
+		return user;
 	}
 	
 	@Transactional
@@ -434,7 +474,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 	}
 
 	@Transactional
-	public boolean systemSetup(InstallFormModel formModel, FileContent file) {
+	public boolean systemSetup(String serverUrl, InstallFormModel formModel, FileContent file) {
 		boolean result = false;
 		
 		Collection<GrantedAuthority> authorities = loadUserAuthorities(formModel.getUser());
@@ -533,7 +573,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 				/*
 				 * Save system administrator and get your ID
 				 */
-				dbUser = this.save(formModel.getUser(), true, file);
+				dbUser = this.save(serverUrl, formModel.getUser(), true, file);
 				
 				/*
 				 * Save again to tell to the system that the administrator create yourself
@@ -542,7 +582,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 				
 				formModel.getUser().setTenant(tenant);
 				
-				this.save(dbUser, false, null);
+				this.save(serverUrl, dbUser, false, null);
 				
 				/*
 				 * Save the group again to associate administrator user as owner 
@@ -555,7 +595,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 				dbUser.setStatus(UserStatus.ADMIN);
 				dbUser.setPassword(formModel.getUser().getPassword());
 				
-				this.save(dbUser, true, file);
+				this.save(serverUrl, dbUser, true, file);
 				
 				result = true;
 			}
@@ -594,6 +634,38 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 
 		result.append("<p>");
 		result.append(MessageBundle.getMessageBundle("user.forgot-password.email.footer"));
+		result.append("</p>");
+
+		result.append("</body>");
+		result.append("</html>");
+
+		return result;
+	}
+
+	private StringBuilder buildCreateUserMessage(String url, User user) {
+		StringBuilder result = new StringBuilder();
+
+		result.append("<html>");
+		result.append("<body>");
+
+		result.append("<h1>");
+		result.append(MessageBundle.getMessageBundle("user.new.email.subject"));
+		result.append("</h1>");
+
+		result.append("<p>");
+		result.append(MessageBundle.getMessageBundle("user.new.email.message", user.getName()));
+		result.append("</p>");
+
+		result.append("<p>");
+
+		result.append("<a href=\"" + url + user.getResetPasswordToken() + "\" >");
+		result.append(url + user.getResetPasswordToken());
+		result.append("</a>");
+
+		result.append("</p>");
+
+		result.append("<p>");
+		result.append(MessageBundle.getMessageBundle("user.new.email.footer"));
 		result.append("</p>");
 
 		result.append("</body>");
