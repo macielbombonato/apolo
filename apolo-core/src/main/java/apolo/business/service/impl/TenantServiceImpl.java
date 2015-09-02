@@ -82,6 +82,19 @@ public class TenantServiceImpl extends BaseServiceImpl<Tenant> implements Tenant
 	
 	@Transactional
 	public Tenant save(Tenant tenant, FileContent logo, FileContent icon) {
+
+		if (tenant != null
+				&& tenant.getId() == null) {
+			tenant.setCreatedBy(getAuthenticatedUser());
+			tenant.setCreatedAt(new Date());
+		} else if (tenant != null
+				&& tenant.getId() != null
+				&& (tenant.getEmailPassword() == null
+					|| "".equals(tenant.getEmailPassword()))) {
+			Tenant dbTenant = this.find(tenant.getId());
+
+			tenant.setEmailPassword(dbTenant.getEmailPassword());
+		}
 		
         if (logo != null
                 && logo.getFile() != null
