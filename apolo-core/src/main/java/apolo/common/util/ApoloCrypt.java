@@ -59,14 +59,28 @@ public class ApoloCrypt implements PasswordEncoder {
 	}
 	
 	public String encode(String text, String secretKey, String iv) throws Exception {
+		byte[] ivBytes = new byte[16];
+		byte[] generatedIV = buildKey(iv.trim()).getBytes(encoding);
+
+		for (int i = 0; i < ivBytes.length; i++) {
+			ivBytes[i] = generatedIV[i];
+		}
+
 		IvParameterSpec ivspec = new IvParameterSpec(
-				buildKey(iv.trim()).getBytes(encoding)
-			);
+				ivBytes
+		);
+
+		byte[] secretKeyBytes = new byte[16];
+		byte[] generatedKey = buildKey(secretKey.trim()).getBytes(encoding);
+
+		for (int i = 0; i < secretKeyBytes.length; i++) {
+			secretKeyBytes[i] = generatedKey[i];
+		}
 
 		SecretKeySpec keyspec = new SecretKeySpec(
-				buildKey(secretKey.trim()).getBytes(encoding),
+				secretKeyBytes,
 				algorithm
-			);
+		);
 
 		Cipher cipher = null;
 		try {
