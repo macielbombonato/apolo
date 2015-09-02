@@ -722,9 +722,11 @@
 					<artifactId>tomcat7-maven-plugin</artifactId>
 					<version>2.2</version>
 					<configuration>
-						<url>${env.APOLO_PRODUCTION_DEPLOY_URL}</url>
-						<server>${env.APOLO_PRODUCTION_DEPLOY_SERVER_NAME}</server>
 						<path>/</path>
+						<update>true</update>
+						<url>${env.APOLO_PRODUCTION_DEPLOY_URL}</url>
+						<username>${env.APOLO_PRODUCTION_DEPLOY_USERNAME}</username>
+						<password>${env.APOLO_PRODUCTION_DEPLOY_PASSWORD}</password>
 					</configuration>
 				</plugin>
 			</plugins>

@@ -43,7 +43,9 @@ A partir da versão 3.1.0 o Apolo passou a utilizar variáveis de ambiente para 
 Abaixo estão as variáveis de ambiente que devem ser configuradas em seu servidor.
 
 	export APOLO_PRODUCTION_DEPLOY_URL="http://endereco_do_seu_servidor:8080/manager/text"
-	export APOLO_PRODUCTION_DEPLOY_SERVER_NAME="SERVER_NAME-CONFIGURADO-VARIAVEIS-DE-AMBIENTE"
+
+	export APOLO_PRODUCTION_DEPLOY_USERNAME="USERNAME-CONFIGURADO-NO-TOMCAT"
+	export APOLO_PRODUCTION_DEPLOY_PASSWORD="SENHA-CONFIGURADA-NO-ARQUIVO-USERS-DO-TOMCAT-NO-SERVER"
 
 	export APOLO_SECRET_KEY="1234567890ABCDEF" #max 16 chars
 	export APOLO_IV_KEY="1234567890ABCDEF" #max 16 chars
@@ -97,22 +99,7 @@ Preencha o formulário para criar o usuário administrador geral do sistema. Ap�
 
 ## Deploy em PRODUÇÃO
 
-Bom, quando fechar um release e quiser fazer o deploy em produção, é possível fazer isso diretamente de sua máquina, mas para isso, algumas coisas precisam ser feitas no servidor e na sua máquina.
-
-Primeiro você precisa abrir o arquivo settings.xml do maven que fica no seu repositório local de usuário (ambiente UNIX).
-
-	$ cd ~/.m2
-	$ vi settings.xml
-
-Agora é necessário incluir as seguintes linhas no arquivo e dentro da estrutura servers:
-
-    <server>
-      <id>SERVER_NAME-CONFIGURADO-VARIAVEIS-DE-AMBIENTE</id>
-      <username>admin</username>
-      <password>SENHA-CONFIGURADA-NO-ARQUIVO-USERS-DO-TOMCAT-NO-SERVER</password>
-    </server>
-
-Agora é necessário conferir se a estrutura no servidor está correta, caso não, devemos acertá-la.
+Bom, quando fechar um release e quiser fazer o deploy em produção, é possível fazer isso diretamente de sua máquina, mas para isso, algumas coisas precisam ser feitas no servidor.
 
 Vá até a instalação do tomcat e na pasta de configuração dele abra o arquivo tomcat-users.xml. Verificar se os usuários e roles estão corretamente configurados, conforme exemplo:
 
@@ -122,7 +109,9 @@ Vá até a instalação do tomcat e na pasta de configuração dele abra o arqui
 
 Estando tudo certo neste arquivo, verifique se na pasta webapps vc possui o projeto manager, caso sim, a estrutura está OK e pronta para o deploy remoto.
 
-Voltando a máquina local, é necessário conferir se a variável de ambiente APOLO_PRODUCTION_DEPLOY_URL está apontando para o servidor corretamente, abaixo segue um exemplo:
+Voltando a máquina local, é necessário conferir se a variável de ambiente **APOLO_PRODUCTION_DEPLOY_URL** está apontando para o servidor corretamente e se as variáveis **APOLO_PRODUCTION_DEPLOY_USERNAME** e **APOLO_PRODUCTION_DEPLOY_PASSWORD** estão com os valores corretos no arquivo de configuração do Tomcat de produção. 
+
+Abaixo segue um exemplo de URL para deploy remoto:
 
 	http://endereco_do_seu_servidor:8080/manager/text
 
