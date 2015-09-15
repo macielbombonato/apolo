@@ -11,6 +11,7 @@ import apolo.common.exception.AccessDeniedException;
 import apolo.common.exception.BusinessException;
 import apolo.common.util.ApoloCrypt;
 import apolo.common.util.MessageBundle;
+import apolo.data.enums.Skin;
 import apolo.data.enums.Status;
 import apolo.data.enums.UserStatus;
 import apolo.data.model.Tenant;
@@ -45,16 +46,16 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 
 	@Inject
 	private UserRepository userRepository;
-	
+
 	@Inject
 	private UserGroupRepository userGroupRepository;
-	
+
 	@Inject
 	private FileService<User> fileService;
-	
+
 	@Inject
 	private ApplicationProperties applicationProperties;
-	
+
 	@Inject
 	private TenantService tenantService;
 
@@ -64,32 +65,32 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 	@Inject
 	@Named("smtpEmailService")
 	private EmailService emailService;
-	
+
 	public List<User> list(Tenant tenant) {
 		PageRequest request = new PageRequest(1, PAGE_SIZE, Sort.Direction.ASC, "name");
-		
+
 		Page<User> result = userRepository.findByTenantAndUserStatusNotOrderByNameAsc(
-				tenant, 
-				UserStatus.LOCKED, 
+				tenant,
+				UserStatus.LOCKED,
 				request
-			);
-		
+		);
+
 		return result.getContent();
 	}
-	
+
 	public Page<User> list(Tenant tenant, Integer pageNumber) {
 		if (pageNumber < 1) {
 			pageNumber = 1;
 		}
-		
+
 		PageRequest request = new PageRequest(pageNumber - 1, PAGE_SIZE, Sort.Direction.ASC, "name");
-		
+
 		Page<User> result = userRepository.findByTenantAndUserStatusNotOrderByNameAsc(
-				tenant, 
-				UserStatus.LOCKED, 
+				tenant,
+				UserStatus.LOCKED,
 				request
-			);
-		
+		);
+
 		return result;
 	}
 
@@ -158,10 +159,10 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 			if (user != null) {
 				try {
 					String token = apoloCrypt.encode(
-                            user.getEmail(),
-                            user.getDbTenant().getName() + user.getName(),
-                            applicationProperties.getIvKey()
-                    	);
+							user.getEmail(),
+							user.getDbTenant().getName() + user.getName(),
+							applicationProperties.getIvKey()
+					);
 
 					user.setResetPasswordToken(token);
 					user.setResetPasswordSentAt(new Date());
@@ -229,9 +230,9 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 		User user = null;
 		try {
 			user = userRepository.findByEmailAndPassword(
-                    username,
-                    apoloCrypt.encode(password)
-                );
+					username,
+					apoloCrypt.encode(password)
+			);
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 			String message = MessageBundle.getMessageBundle("user.msg.password.encrypt.error");
@@ -242,23 +243,23 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 			String message = MessageBundle.getMessageBundle("user.msg.no.data.found");
 			throw new UsernameNotFoundException(message);
 		}
-				
+
 		return user;
 	}
-	
+
 	@Transactional
 	public User save(User entity) {
 		if (entity != null) {
 			entity.setUpdatedBy(getAuthenticatedUser());
 			entity.setUpdatedAt(new Date());
 		}
-		
+
 		return save(null, entity, false, null);
 	}
 
 	@Transactional
 	public User save(String serverUrl, User user, boolean changePassword, FileContent file) {
-		if (UserStatus.ADMIN.equals(user.getStatus()) 
+		if (UserStatus.ADMIN.equals(user.getStatus())
 				&& !user.getPermissions().contains(UserPermission.ADMIN)) {
 			String message = MessageBundle.getMessageBundle("user.edit.msg.error.admin.permission");
 			throw new BusinessException(message);
@@ -282,13 +283,13 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 				log.error(e.getMessage(), e);
 			}
 		}
-		
+
 		if (changePassword) {
 			Md5PasswordEncoder encoder = new Md5PasswordEncoder();
 			try {
 				user.setPassword(
-                        apoloCrypt.encode(user.getPassword())
-                    );
+						apoloCrypt.encode(user.getPassword())
+				);
 			} catch (Exception e) {
 				log.error(e.getMessage(), e);
 				String message = MessageBundle.getMessageBundle("user.msg.password.encrypt.error");
@@ -298,28 +299,28 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 			User dbUser = this.find(user.getId());
 			user.setPassword(dbUser.getPassword());
 		}
-		
+
 		if (file != null) {
-			if (file != null 
-					&& file.getFile() != null 
-					&& file.getFile().getOriginalFilename() != null 
+			if (file != null
+					&& file.getFile() != null
+					&& file.getFile().getOriginalFilename() != null
 					&& !file.getFile().getOriginalFilename().isEmpty()) {
-				
+
 				if (user.getId() == null) {
-					userRepository.saveAndFlush(user);	
+					userRepository.saveAndFlush(user);
 				}
-				
+
 				user.setAvatarOriginalName(file.getFile().getOriginalFilename());
 				try {
 					user.setAvatarFileName(
 							fileService.uploadFile(
-									user.getTenant(), 
-									user, 
+									user.getTenant(),
+									user,
 									file,
-                                    "picture",
+									"picture",
 									file.getFile().getInputStream()
-								)
-						);
+							)
+					);
 
 					user.setAvatarFileSize(file.getFile().getSize());
 					user.setAvatarContentType(file.getFile().getContentType());
@@ -330,7 +331,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 				}
 			}
 		}
-		
+
 		if (user.getCustomFields() != null && !user.getCustomFields().isEmpty()) {
 			for (UserCustomFieldValue field : user.getCustomFields()) {
 				field.setUser(user);
@@ -363,25 +364,25 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 				log.error(e.getMessage(), e);
 			}
 		}
-		
+
 		return user;
 	}
-	
+
 	@Transactional
 	public void remove(User user) {
 		if (!user.getStatus().isChangeable()) {
 			String message = MessageBundle.getMessageBundle("user.remove.msg.error.admin");
 			throw new BusinessException(message);
 		}
-		
+
 		userRepository.delete(user);
 	}
 
 	public Collection<GrantedAuthority> loadUserAuthorities(User user) {
 		Collection<GrantedAuthority> result = new ArrayList<GrantedAuthority>();
 
-		if (user != null 
-				&& user.getGroups() != null 
+		if (user != null
+				&& user.getGroups() != null
 				&& !user.getGroups().isEmpty()) {
 			for (UserGroup group : user.getGroups()) {
 				if (group != null
@@ -390,10 +391,10 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 						&& !group.getPermissions().isEmpty()) {
 					for (UserPermission permission : group.getPermissions()) {
 						result.add(new SimpleGrantedAuthority(permission.getAttribute()));
-					}					
+					}
 				}
 			}
-			
+
 		}
 
 		return result;
@@ -403,20 +404,20 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 		if (pageNumber < 1) {
 			pageNumber = 1;
 		}
-		
+
 		PageRequest request = new PageRequest(pageNumber - 1, PAGE_SIZE, Sort.Direction.ASC, "name");
-		
+
 		if (param != null) {
-			param = "%" + param + "%";	
+			param = "%" + param + "%";
 		}
-		
+
 		Page<User> result = userRepository.findByTenantAndNameLikeOrEmailLikeOrderByNameAsc(
 				tenant,
-				param, 
+				param,
 				param,
 				request
-			);
-		
+		);
+
 		return result;
 	}
 
@@ -428,12 +429,12 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 			String message = MessageBundle.getMessageBundle("error.403.5");
 			throw new AccessDeniedException(5, message);
 		}
-		
+
 		User dbUser = this.find(user.getId());
 		user.setPassword(dbUser.getPassword());
 		user.setStatus(UserStatus.LOCKED);
 		user.setEnabled(false);
-		
+
 		return userRepository.save(user);
 	}
 
@@ -442,63 +443,66 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 			String message = MessageBundle.getMessageBundle("error.403.4");
 			throw new AccessDeniedException(4, message);
 		}
-		
+
 		User dbUser = this.find(user.getId());
 		user.setPassword(dbUser.getPassword());
 		user.setStatus(UserStatus.ACTIVE);
 		user.setEnabled(true);
-		
+
 		return userRepository.save(user);
 	}
-	
+
 	public Page<User> listLocked(Tenant tenant, Integer pageNumber) {
 		if (pageNumber < 1) {
 			pageNumber = 1;
 		}
-		
+
 		PageRequest request = new PageRequest(pageNumber - 1, PAGE_SIZE, Sort.Direction.ASC, "name");
-		
+
 		return userRepository.findByTenantAndUserStatus(tenant, UserStatus.LOCKED, request);
 	}
 
 	public User getSystemAdministrator() {
 		User user = null;
-		
+
 		List<User> userList = userRepository.findByUserStatus(UserStatus.ADMIN);
-		
+
 		if (userList != null && !userList.isEmpty()) {
 			user = userList.get(0);
 		}
-		
+
 		return user;
 	}
 
 	@Transactional
 	public boolean systemSetup(String serverUrl, InstallFormModel formModel, FileContent file) {
 		boolean result = false;
-		
+
 		Collection<GrantedAuthority> authorities = loadUserAuthorities(formModel.getUser());
-		
+
 		new CurrentUser(
-				1L, 
-				formModel.getUser().getEmail(), 
-				formModel.getUser().getPassword().toLowerCase(), 
-				formModel.getUser(), 
+				1L,
+				formModel.getUser().getEmail(),
+				formModel.getUser().getPassword().toLowerCase(),
+				formModel.getUser(),
 				authorities
-			);
-		
+		);
+
 		Tenant tenant = tenantService.findByUrl(applicationProperties.getDefaultTenant());
-		
+
 		if (tenant == null) {
 			tenant = new Tenant();
-			
+
 			tenant.setName(applicationProperties.getDefaultTenant());
 			tenant.setLogoHeight(20);
 			tenant.setLogoWidth(15);
 			tenant.setUrl(applicationProperties.getDefaultTenant());
 			tenant.setStatus(Status.ACTIVE);
 
+			tenant.setSkin(Skin.SKIN_BLACK);
+
 			tenant.setEmailFrom(applicationProperties.getEmailFrom());
+			tenant.setEmailUsername(applicationProperties.getEmailUsername());
 			tenant.setEmailPassword(applicationProperties.getEmailPassword());
 			tenant.setSmtpHost(applicationProperties.getSmtpHost());
 			tenant.setSmtpPort(applicationProperties.getSmtpPort());
@@ -511,21 +515,21 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 			tenant.setGoogleAnalyticsUserAccount(applicationProperties.getGoogleAnalyticsUserAccount());
 
 			formModel.getUser().setTenant(tenant);
-			
+
 			tenantService.save(tenant);
 		}
-		
-		
+
+
 		if (formModel.getUser() != null) {
 			// Create system administrator
 			User dbUser = null;
 			if (formModel.getUser().getEmail() != null && !"".equals(formModel.getUser().getEmail())) {
-				dbUser = findByLogin(formModel.getUser().getEmail());	
+				dbUser = findByLogin(formModel.getUser().getEmail());
 			}
-			
+
 			if (dbUser == null) {
 				UserGroup adminUserGroup = null;
-				
+
 				// Create admin group
 				try {
 					adminUserGroup = userGroupRepository.findByName(MessageBundle.getMessageBundle("user.permission.ADMIN"));
@@ -536,37 +540,37 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 					 */
 					LOG.error(e.getMessage(), e);
 				}
-				
-				if (adminUserGroup == null 
-						|| (adminUserGroup.getPermissions() != null 
+
+				if (adminUserGroup == null
+						|| (adminUserGroup.getPermissions() != null
 						&& !adminUserGroup.getPermissions().contains(UserPermission.ADMIN))
 						) {
 					adminUserGroup = new UserGroup();
-					
+
 					adminUserGroup.setName(MessageBundle.getMessageBundle("user.permission.ADMIN"));
 					adminUserGroup.setStatus(UserStatus.ADMIN);
-					
+
 					Set<UserPermission> perms = new HashSet<UserPermission>();
 					perms.add(UserPermission.ADMIN);
-					
+
 					adminUserGroup.setPermissions(perms);
-					
+
 					adminUserGroup.setCreatedBy(formModel.getUser());
 					adminUserGroup.setCreatedAt(new Date());
 					adminUserGroup.setTenant(tenant);
-					
+
 					adminUserGroup = userGroupRepository.save(adminUserGroup);
 				}
-				
+
 				// Admin groups
 				Set<UserGroup> adminGroups = new HashSet<UserGroup>();
 				adminGroups.add(adminUserGroup);
-				
+
 				formModel.getUser().setGroups(adminGroups);
-				
+
 				formModel.getUser().setStatus(UserStatus.ADMIN);
 				formModel.getUser().setEnabled(true);
-				
+
 				formModel.getUser().setCreatedBy(formModel.getUser());
 				formModel.getUser().setCreatedAt(new Date());
 				
@@ -579,9 +583,9 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 				 * Save again to tell to the system that the administrator create yourself
 				 */
 				formModel.getUser().setCreatedBy(dbUser);
-				
+
 				formModel.getUser().setTenant(tenant);
-				
+
 				this.save(serverUrl, dbUser, false, null);
 				
 				/*
@@ -589,24 +593,24 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 				 */
 				adminUserGroup.setCreatedBy(dbUser);
 				userGroupRepository.save(adminUserGroup);
-				
+
 				result = true;
 			} else {
 				dbUser.setStatus(UserStatus.ADMIN);
 				dbUser.setPassword(formModel.getUser().getPassword());
-				
+
 				this.save(serverUrl, dbUser, true, file);
-				
+
 				result = true;
 			}
-			
+
 			// insert createdby in tenant
 			tenant.setCreatedBy(dbUser);
 			tenant.setCreatedAt(new Date());
-			
+
 			tenantService.save(tenant);
 		}
-		
+
 		return result;
 	}
 

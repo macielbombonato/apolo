@@ -28,24 +28,24 @@ import java.util.List;
 
 @Controller
 public class AppController extends BaseController<User> {
-	
+
 	private static final Logger log = LoggerFactory.getLogger(BaseController.class);
-	
+
 	@Autowired
 	private UserService userService;
-	
+
 	@Autowired
 	private UserController userController;
-	
+
 	@Autowired
 	private ApplicationProperties applicationProperties;
-		
+
 	@Autowired
 	private LocaleResolver localeResolver;
-	
+
 	@Autowired
 	private AuthController authController;
-	
+
 	/**
 	 * System installation (setup) page
 	 * @param model
@@ -56,22 +56,22 @@ public class AppController extends BaseController<User> {
 	@RequestMapping(value = "/install", method = RequestMethod.GET)
 	public ModelAndView install(Model model, HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView(Navigation.INSTALL_NEW.getPath());
-		
+
 		if (hasSystemAdministrator()) {
 			mav = userController.index(
-					applicationProperties.getDefaultTenant(), 
+					applicationProperties.getDefaultTenant(),
 					request
-				);
+			);
 			mav.addObject("error", true);
 			mav.addObject("message", MessageBundle.getMessageBundle("install.msg.error.system.installed"));
 		} else {
 			InstallFormModel installFormModel = new InstallFormModel();
 			mav.addObject("install", installFormModel);
 		}
-		
+
 		return mav;
 	}
-	
+
 	/**
 	 * Save installation settings
 	 * @param install
@@ -80,74 +80,74 @@ public class AppController extends BaseController<User> {
 	@PreAuthorize("permitAll")
 	@RequestMapping(value = "/install/save", method = RequestMethod.POST)
 	public ModelAndView save(
-				@ModelAttribute("install") InstallFormModel install, 
-				Model model, 
-				HttpServletRequest request
-			) {
-		
+			@ModelAttribute("install") InstallFormModel install,
+			Model model,
+			HttpServletRequest request
+	) {
+
 		boolean success = false;
-		
+
 		ModelAndView mav = new ModelAndView();
-		
+
 		if (hasSystemAdministrator()) {
 			mav = userController.index(
-					applicationProperties.getDefaultTenant(), 
+					applicationProperties.getDefaultTenant(),
 					request
-				);
-			
+			);
+
 			mav.addObject("error", true);
 			mav.addObject("message", MessageBundle.getMessageBundle("install.msg.error.system.installed"));
 		} else {
 			MultipartFile objectFile = null;
-			
+
 			List<MultipartFile> files = null;
-			
+
 			if (install != null
 					&& install.getUser() != null
 					&& install.getUser().getPicturefiles() != null) {
 				files = install.getUser().getPicturefiles();
 			}
-				
+
 			if(files != null && !files.isEmpty()) {
 				for (MultipartFile multipartFile : files) {
 					objectFile = multipartFile;
 				}
 			}
-			
-			if (objectFile != null 
-					&& objectFile.getOriginalFilename() != null 
+
+			if (objectFile != null
+					&& objectFile.getOriginalFilename() != null
 					&& !objectFile.getOriginalFilename().isEmpty()) {
 				install.getUser().setAvatarOriginalName(objectFile.getOriginalFilename());
 				install.getUser().setAvatarFileName(objectFile.getOriginalFilename());
 			}
-			
+
 			if (install != null) {
-				
+
 				if (install.getUser() != null) {
 					FileContent file = null;
-					
+
 					if (objectFile != null) {
 						file = new FileContent();
 						file.setFile(objectFile);
 					}
-					
+
 					try {
 						success = userService.systemSetup(
 								getServerUrl(
 										request,
-										install.getUser().getDbTenant().getUrl()
-									),
+										applicationProperties.getDefaultTenant()
+								),
 								install,
 								file
-							);
+						);
 					} catch (Throwable e) {
 						log.error(e.getMessage(), e);
-					}				
+					}
 				}
-				
+
 				if (success) {
 					mav.addObject("msg", true);
-					mav.addObject("message", MessageBundle.getMessageBundle("install.msg.success"));				
+					mav.addObject("message", MessageBundle.getMessageBundle("install.msg.success"));
 				} else {
 					mav.addObject("error", true);
 					mav.addObject("message", MessageBundle.getMessageBundle("install.msg.error"));
@@ -155,17 +155,17 @@ public class AppController extends BaseController<User> {
 
 			}
 		}
-		
+
 		mav = authController.login(null, request);
-		
+
 		return mav;
 	}
-	
+
 	@PreAuthorize("@apoloSecurity.hasPermission('ADMIN')")
 	@RequestMapping(value = "/version", method = RequestMethod.GET)
 	public ModelAndView version(HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView(Navigation.VERSION.getPath());
-		
+
 		mav.addObject("readOnly", true);
 		return mav;
 	}
@@ -215,19 +215,19 @@ public class AppController extends BaseController<User> {
 
 		return mav;
 	}
-	
+
 	/**
 	 * Verify if the system has an administrator in the database 
 	 * @return boolean
 	 */
 	private boolean hasSystemAdministrator() {
 		boolean result = false;
-		
+
 		User systemAdmin = userService.getSystemAdministrator();
 		if (systemAdmin != null) {
 			result = true;
 		}
-		
+
 		return result;
 	}
 }
