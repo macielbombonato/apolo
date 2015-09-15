@@ -98,16 +98,13 @@
                         <i class="fa fa-angle-left pull-right"></i>
                     </a>
                     <ul class="treeview-menu">
-
-
-
                         <li class="treeview"
-                            sec:authorize="@apoloSecurity.hasPermission('USER_LIST', 'USER_MANAGER', 'USER_CREATE')">
+                            sec:authorize="@apoloSecurity.hasPermission('USER_LIST', 'USER_MANAGER', 'USER_CREATE', 'TENANT_LIST', 'TENANT_CREATE', 'USER_PERMISSION_LIST', 'USER_PERMISSION_CREATE')">
                             <a href="#">
                                 <i class="icon fa fa-users"></i>
-                    <span class="text" th:text="#{menu.sysadmin.user}">
-                        menu.sysadmin.user
-                    </span>
+                                <span class="text" th:text="#{menu.sysadmin.user}">
+                                    menu.sysadmin.user
+                                </span>
                                 <i class="fa fa-angle-left pull-right"></i>
                             </a>
                             <ul class="treeview-menu">
@@ -140,9 +137,9 @@
                         <li class="treeview" sec:authorize="@apoloSecurity.hasPermission('TENANT_LIST', 'TENANT_CREATE')">
                             <a href="#">
                                 <i class="icon fa fa-ship"></i>
-                    <span class="text" th:text="#{tenant}" >
-                        tenant
-                    </span>
+                                <span class="text" th:text="#{tenant}" >
+                                    tenant
+                                </span>
                                 <i class="fa fa-angle-left pull-right"></i>
                             </a>
                             <ul class="treeview-menu">
@@ -167,9 +164,9 @@
                         <li class="treeview" sec:authorize="@apoloSecurity.hasPermission('USER_PERMISSION_LIST', 'USER_PERMISSION_CREATE')">
                             <a href="#">
                                 <i class="icon fa fa-arrows-alt"></i>
-                    <span class="text" th:text="#{menu.sysadmin.groups}" >
-                        menu.sysadmin.groups
-                    </span>
+                                <span class="text" th:text="#{menu.sysadmin.groups}" >
+                                    menu.sysadmin.groups
+                                </span>
                                 <i class="fa fa-angle-left pull-right"></i>
                             </a>
                             <ul class="treeview-menu">
@@ -199,8 +196,7 @@
                             </a>
                         </li>
 
-
-
+                        <!-- Application menu has to be inserted here -->
 
                     </ul>
                 </li>
