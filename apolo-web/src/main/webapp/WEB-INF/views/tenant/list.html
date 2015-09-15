@@ -112,6 +112,24 @@
                             </a>
 
                             <a sec:authorize="@apoloSecurity.hasPermission('TENANT_MANAGER')"
+                               th:if="${T(apolo.data.enums.Status).ACTIVE == tenant.status}"
+                               th:href='@{|/tenant/lock/${tenant.id}|}'
+                               class="btn btn-danger btn-small"
+                               data-toggle="tooltip"
+                               th:title="#{common.lock}">
+                                <i class="fa fa-lock"></i>
+                            </a>
+
+                            <a sec:authorize="@apoloSecurity.hasPermission('TENANT_MANAGER')"
+                               th:if="${T(apolo.data.enums.Status).LOCKED == tenant.status}"
+                               th:href='@{|/tenant/unlock/${tenant.id}|}'
+                               class="btn btn-success btn-small"
+                               data-toggle="tooltip"
+                               th:title="#{common.unlock}">
+                                <i class="fa fa-unlock"></i>
+                            </a>
+
+                            <a sec:authorize="@apoloSecurity.hasPermission('TENANT_MANAGER')"
                                th:href='@{|/tenant/change/${tenant.url}|}'
                                class="btn btn-default btn-small"
                                data-toggle="tooltip"

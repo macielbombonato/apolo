@@ -332,7 +332,7 @@ public class TenantController extends BaseController<Tenant> {
 			
 			tenantService.lock(tenant);
 			
-			mav = view(tenant.getId(), request);
+			mav = list(request);
 			
 			mav.addObject("msg", true);
 			mav.addObject("message", MessageBundle.getMessageBundle("common.msg.save.success"));
@@ -355,8 +355,8 @@ public class TenantController extends BaseController<Tenant> {
 		if (tenant != null) {
 			
 			tenantService.unlock(tenant);
-			
-			mav = view(tenant.getId(), request);
+
+			mav = list(request);
 			
 			mav.addObject("msg", true);
 			mav.addObject("message", MessageBundle.getMessageBundle("common.msg.save.success"));
