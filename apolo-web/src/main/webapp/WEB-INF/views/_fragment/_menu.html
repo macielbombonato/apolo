@@ -99,7 +99,7 @@
                     </a>
                     <ul class="treeview-menu">
                         <li class="treeview"
-                            sec:authorize="@apoloSecurity.hasPermission('USER_LIST', 'USER_MANAGER', 'USER_CREATE', 'TENANT_LIST', 'TENANT_CREATE', 'USER_PERMISSION_LIST', 'USER_PERMISSION_CREATE')">
+                            sec:authorize="@apoloSecurity.hasPermission('USER_LIST', 'USER_MANAGER', 'USER_CREATE')">
                             <a href="#">
                                 <i class="icon fa fa-users"></i>
                                 <span class="text" th:text="#{menu.sysadmin.user}">
