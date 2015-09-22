@@ -10,12 +10,14 @@ import apolo.common.util.MessageBundle;
 import apolo.data.model.BaseEntity;
 import apolo.data.model.Tenant;
 import apolo.data.model.User;
+import apolo.security.ApoloSecurityService;
 import apolo.security.CurrentUser;
 import apolo.security.UserPermission;
 import apolo.web.enums.Navigation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.context.ApplicationContext;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
@@ -24,6 +26,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.context.ContextLoader;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.NestedServletException;
 
@@ -38,44 +41,47 @@ import java.util.Collection;
 import java.util.Date;
 
 public abstract class BaseController<E extends BaseEntity> {
-	
+
 	protected static final Logger log = LoggerFactory.getLogger(BaseController.class);
 
 	@Inject
 	protected TenantService tenantService;
-	
+
 	@Inject
 	protected UserService userService;
 
 	@Inject
 	protected ApplicationProperties applicationProperties;
-	
+
+	@Inject
+	protected ApoloSecurityService apoloSecurityService;
+
 	@InitBinder
 	protected void dateBinder(WebDataBinder binder) {
 		//The date format to parse or output your dates
 		SimpleDateFormat dateFormat = new SimpleDateFormat(MessageBundle.getMessageBundle("common.datePattern"));
-	    //Create a new CustomDateEditor
-	    CustomDateEditor editor = new CustomDateEditor(dateFormat, true);
-	    //Register it as custom editor for the Date type
-	    binder.registerCustomEditor(Date.class, editor);
+		//Create a new CustomDateEditor
+		CustomDateEditor editor = new CustomDateEditor(dateFormat, true);
+		//Register it as custom editor for the Date type
+		binder.registerCustomEditor(Date.class, editor);
 	}
-	
+
 	protected boolean authenticatedUserHasPermission(BaseService<E> service, User editingUser, UserPermission neededPermission, boolean isEditing) {
 		User authenticatedUser = service.getAuthenticatedUser();
-		
-		boolean result = authenticatedUser != null 
-				&& (authenticatedUser.getId().equals(editingUser.getId()) 
-						|| (authenticatedUser.getPermissions().contains(UserPermission.ADMIN) 
-								|| authenticatedUser.getPermissions().contains(neededPermission)
-							)
-					);
-		
+
+		boolean result = authenticatedUser != null
+				&& (authenticatedUser.getId().equals(editingUser.getId())
+				|| (authenticatedUser.getPermissions().contains(UserPermission.ADMIN)
+				|| authenticatedUser.getPermissions().contains(neededPermission)
+		)
+		);
+
 		if (isEditing
 				&& editingUser.getPermissions().contains(UserPermission.ADMIN)
 				&& !authenticatedUser.getPermissions().contains(UserPermission.ADMIN)) {
 			result = false;
 		}
-		
+
 		return result;
 	}
 
@@ -103,29 +109,29 @@ public abstract class BaseController<E extends BaseEntity> {
 
 		return serverUrl;
 	}
-	
+
 	protected void configurePageable(String tenant, ModelAndView mav, Page<E> page, String url) {
 		int current = page.getNumber() + 1;
-	    int begin = Math.max(1, current - 5);
-	    int end = Math.min(begin + 10, page.getTotalPages());
-	    
-	    mav.addObject("beginIndex", begin);
-	    mav.addObject("endIndex", end);
-	    mav.addObject("currentIndex", current);
-	    
-	    if (tenant != null 
-	    		&& !tenant.isEmpty()) {
-	    	mav.addObject("url", "/" + tenant + url);	
-	    } else {
-	    	mav.addObject("url", "/" + url);
-	    }
-	    
+		int begin = Math.max(1, current - 5);
+		int end = Math.min(begin + 10, page.getTotalPages());
+
+		mav.addObject("beginIndex", begin);
+		mav.addObject("endIndex", end);
+		mav.addObject("currentIndex", current);
+
+		if (tenant != null
+				&& !tenant.isEmpty()) {
+			mav.addObject("url", "/" + tenant + url);
+		} else {
+			mav.addObject("url", "/" + url);
+		}
+
 		mav.addObject("page", page);
 	}
-	
+
 	protected Tenant getDBTenant(String url) {
 		Tenant tenant = null;
-		
+
 		tenant = tenantService.getValidatedTenant(url);
 
 		User user = userService.getAuthenticatedUser();
@@ -136,8 +142,8 @@ public abstract class BaseController<E extends BaseEntity> {
 			if (user.getPermissions() != null
 					&& !user.getPermissions().isEmpty()
 					&& (
-						user.getPermissions().contains(UserPermission.ADMIN)
-					|| user.getPermissions().contains(UserPermission.TENANT_MANAGER)
+					user.getPermissions().contains(UserPermission.ADMIN)
+							|| user.getPermissions().contains(UserPermission.TENANT_MANAGER)
 			)) {
 				user.getDbTenant();
 				user.setTenant(tenant);
@@ -151,24 +157,24 @@ public abstract class BaseController<E extends BaseEntity> {
 
 		return tenant;
 	}
-	
+
 	protected void reconstructAuthenticatedUser(User user) {
-		Collection<GrantedAuthority> authorities = 
+		Collection<GrantedAuthority> authorities =
 				userService.loadUserAuthorities(
 						userService.getAuthenticatedUser()
-					);
-        
-        Authentication newAuth = new CurrentUser(
-        		user.getId(), 
-        		user.getEmail(), 
-        		user.getPassword(), 
-        		user, 
-        		authorities
-        	);
-        
-        SecurityContextHolder.getContext().setAuthentication(newAuth);
+				);
+
+		Authentication newAuth = new CurrentUser(
+				user.getId(),
+				user.getEmail(),
+				user.getPassword(),
+				user,
+				authorities
+		);
+
+		SecurityContextHolder.getContext().setAuthentication(newAuth);
 	}
-	
+
 	/**
 	 * This method was created to be used in save methods.
 	 * In error cases the system can redirect the user to origin path to fix data to submit it again.
@@ -188,19 +194,19 @@ public abstract class BaseController<E extends BaseEntity> {
 			redirectionPath = secondOption.getPath();
 			navChoice = secondOption;
 		}
-		
+
 		return redirectionPath;
 	}
-	
+
 	public String redirect(Navigation nav) {
 		String path = "redirect:";
-		
+
 		if (nav != null) {
 			path += nav.getPath();
 		} else {
 			path += Navigation.USER_INDEX.getPath();
 		}
-		
+
 		return path;
 	}
 
@@ -210,15 +216,15 @@ public abstract class BaseController<E extends BaseEntity> {
 
 		ModelAndView mav = new ModelAndView(Navigation.ERROR.getPath());
 		String errorCode = "500";
-		
+
 		if (ex.getPrincipalCode() != null) {
 			errorCode = ex.getPrincipalCode()+"";
 		}
-		
+
 		if (ex.getSecondCode() != null) {
 			errorCode += "." + ex.getSecondCode();
 		}
-		
+
 		mav.addObject("code", errorCode);
 		mav.addObject("title", MessageBundle.getMessageBundle("error.500"));
 		mav.addObject("message", ex.getCustomMsg());
@@ -226,22 +232,22 @@ public abstract class BaseController<E extends BaseEntity> {
 
 		return mav;
 	}
-	
+
 	@ExceptionHandler(GenericException.class)
 	public ModelAndView handleGenericException(GenericException ex) {
 		ex.printStackTrace();
 
 		ModelAndView mav = new ModelAndView(Navigation.ERROR.getPath());
 		String errorCode = "500";
-		
+
 		if (ex.getPrincipalCode() != null) {
 			errorCode = ex.getPrincipalCode()+"";
 		}
-		
+
 		if (ex.getSecondCode() != null) {
 			errorCode += "." + ex.getSecondCode();
 		}
-		
+
 		mav.addObject("code", errorCode);
 		mav.addObject("title", MessageBundle.getMessageBundle("error.500"));
 		mav.addObject("message", ex.getCustomMsg());
@@ -280,44 +286,61 @@ public abstract class BaseController<E extends BaseEntity> {
 
 		return mav;
 	}
-	
+
 	@ExceptionHandler(apolo.common.exception.AccessDeniedException.class)
-	public ModelAndView handleException(apolo.common.exception.AccessDeniedException ex) {
+	public ModelAndView handleException(apolo.common.exception.AccessDeniedException ex, HttpServletRequest request) {
 		ex.printStackTrace();
 
 		ModelAndView mav = new ModelAndView(Navigation.ERROR.getPath());
-		
+
 		String errorCode = "403";
-		
+
 		if (ex.getPrincipalCode() != null) {
 			errorCode = ex.getPrincipalCode()+"";
 		}
-		
+
 		if (ex.getSecondCode() != null) {
 			errorCode += "." + ex.getSecondCode();
 		}
-		
-		mav.addObject("code", errorCode);
-		mav.addObject("title", MessageBundle.getMessageBundle("error.403"));
-		mav.addObject("message", ex.getCustomMsg());
-		mav.addObject("exception", ex);
-		
+
+		if (apoloSecurityService.isAuthenticated()) {
+			mav.addObject("code", errorCode);
+			mav.addObject("title", MessageBundle.getMessageBundle("error.403"));
+			mav.addObject("message", ex.getCustomMsg());
+			mav.addObject("exception", ex);
+		} else {
+			ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+
+			AuthController authController = (AuthController) ctx.getBean("authController");
+
+			mav = authController.login(request);
+		}
+
 		return mav;
 	}
-	
+
 	@ExceptionHandler(AccessDeniedException.class)
-	public ModelAndView handleException(AccessDeniedException ex) {
+	public ModelAndView handleException(AccessDeniedException ex, HttpServletRequest request) {
 		ex.printStackTrace();
 
 		ModelAndView mav = new ModelAndView(Navigation.ERROR.getPath());
-		mav.addObject("code", 403);
-		mav.addObject("title", MessageBundle.getMessageBundle("error.403"));
-		mav.addObject("message", MessageBundle.getMessageBundle("error.403.msg"));
-		mav.addObject("exception", ex);
-		
+
+		if (apoloSecurityService.isAuthenticated()) {
+			mav.addObject("code", 403);
+			mav.addObject("title", MessageBundle.getMessageBundle("error.403"));
+			mav.addObject("message", MessageBundle.getMessageBundle("error.403.msg"));
+			mav.addObject("exception", ex);
+		} else {
+			ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+
+			AuthController authController = (AuthController) ctx.getBean("authController");
+
+			mav = authController.login(request);
+		}
+
 		return mav;
 	}
-	
+
 	@ExceptionHandler(NestedServletException.class)
 	public ModelAndView handleException(NestedServletException ex) {
 		ex.printStackTrace();
@@ -327,7 +350,7 @@ public abstract class BaseController<E extends BaseEntity> {
 		mav.addObject("title", MessageBundle.getMessageBundle("error.500"));
 		mav.addObject("message", MessageBundle.getMessageBundle("error.500.msg"));
 		mav.addObject("exception", ex);
-		
+
 		return mav;
 	}
 
