@@ -2,418 +2,52 @@ package apolo.web.enums;
 
 
 public enum Navigation {
-	
-	INDEX("/index") {
-		@Override
-		public String getNodeName() {
-			return "view.index";
-		}
 
-		@Override
-		public int getNodeLevel() {
-			return 1;
-		}
-	},
-	VERSION("/version") {
-		@Override
-		public String getNodeName() {
-			return "view.version";
-		}
+	INDEX("/index"),
+	VERSION("/version"),
+	INSTALL("/install"),
+	INSTALL_NEW("/install/new"),
 
-		@Override
-		public int getNodeLevel() {
-			return 1;
-		}
-	},
-	INSTALL("/install") {
-		@Override
-		public String getNodeName() {
-			return null;
-		}
+	USER_INDEX("user"),
+	USER_NEW("user/new"),
+	USER_EDIT("user/edit"),
+	USER_LIST("user/list"),
+	USER_SEARCH("user/search"),
+	USER_VIEW("user/view"),
+	USER_CHANGE_PASSWORD("user/change-password"),
+	USER_FORGOT_PASSWORD("user/forgot-password"),
 
-		@Override
-		public int getNodeLevel() {
-			return 0;
-		}
-	},
-	INSTALL_NEW("/install/new") {
-		@Override
-		public String getNodeName() {
-			return null;
-		}
+	USER_RESET_PASSWORD("user/reset-password"),
 
-		@Override
-		public int getNodeLevel() {
-			return 0;
-		}
-	},
-	
-	USER_INDEX("user") {
-		@Override
-		public String getNodeName() {
-			return "user.dashboard";
-		}
+	USER_PERMISSION_LIST("user-group/list"),
+	USER_PERMISSION_SEARCH("user-group/search"),
+	USER_PERMISSION_NEW("user-group/new"),
+	USER_PERMISSION_EDIT("user-group/edit"),
+	USER_PERMISSION_VIEW("user-group/view"),
 
-		@Override
-		public int getNodeLevel() {
-			return 1;
-		}
-		
-		@Override
-		public String getPath() {
-			return this.path + "/index";
-		}
-	},
-	USER_NEW("user/new") {
-		@Override
-		public String getNodeName() {
-			return "user.new";
-		}
+	USER_CUSTOM_FIELD_LIST("user-custom-field/list"),
+	USER_CUSTOM_FIELD_SEARCH("user-custom-field/search"),
+	USER_CUSTOM_FIELD_NEW("user-custom-field/new"),
+	USER_CUSTOM_FIELD_EDIT("user-custom-field/edit"),
+	USER_CUSTOM_FIELD_VIEW("user-custom-field/view"),
 
-		@Override
-		public int getNodeLevel() {
-			return 1;
-		}
-	},
-	USER_EDIT("user/edit") {
-		@Override
-		public String getNodeName() {
-			return "user.edit";
-		}
+	CONFIGURATION_LIST("configuration/list"),
+	CONFIGURATION_NEW("configuration/new"),
+	CONFIGURATION_EDIT("configuration/edit"),
+	CONFIGURATION_VIEW("configuration/view"),
 
-		@Override
-		public int getNodeLevel() {
-			return 2;
-		}
-	},
-	USER_LIST("user/list") {
-		@Override
-		public String getNodeName() {
-			return "user.list";
-		}
+	AUTH_LOGIN("login"),
+	AUTH_LOGOUT("logout"),
 
-		@Override
-		public int getNodeLevel() {
-			return 1;
-		}
-	},
-	USER_SEARCH("user/search") {
-		@Override
-		public String getNodeName() {
-			return "user.search";
-		}
+	AUDIT_LOG_LIST("auditlog/list"),
 
-		@Override
-		public int getNodeLevel() {
-			return 1;
-		}
-	},
-	USER_VIEW("user/view") {
-		@Override
-		public String getNodeName() {
-			return "user";
-		}
+	ERROR("error/error"),
 
-		@Override
-		public int getNodeLevel() {
-			return 2;
-		}
-	},
-	USER_CHANGE_PASSWORD("user/change-password") {
-		@Override
-		public String getNodeName() {
-			return "user.change-password";
-		}
-
-		@Override
-		public int getNodeLevel() {
-			return 1;
-		}
-	},
-	USER_FORGOT_PASSWORD("user/forgot-password") {
-		@Override
-		public String getNodeName() {
-			return "user.forgot-password";
-		}
-
-		@Override
-		public int getNodeLevel() {
-			return 1;
-		}
-	},
-
-	USER_RESET_PASSWORD("user/reset-password") {
-		@Override
-		public String getNodeName() {
-			return "user.reset-password";
-		}
-
-		@Override
-		public int getNodeLevel() {
-			return 1;
-		}
-	},
-
-	
-	USER_PERMISSION_LIST("user-group/list") {
-		@Override
-		public String getNodeName() {
-			return "user.group.list";
-		}
-
-		@Override
-		public int getNodeLevel() {
-			return 1;
-		}
-	},
-	USER_PERMISSION_SEARCH("user-group/search") {
-		@Override
-		public String getNodeName() {
-			return "user.group.search.title";
-		}
-
-		@Override
-		public int getNodeLevel() {
-			return 1;
-		}
-	},
-	USER_PERMISSION_NEW("user-group/new") {
-		@Override
-		public String getNodeName() {
-			return "user.group.new";
-		}
-
-		@Override
-		public int getNodeLevel() {
-			return 1;
-		}
-	},
-	USER_PERMISSION_EDIT("user-group/edit") {
-		@Override
-		public String getNodeName() {
-			return "user.group.edit.title";
-		}
-
-		@Override
-		public int getNodeLevel() {
-			return 2;
-		}
-	},
-	USER_PERMISSION_VIEW("user-group/view") {
-		@Override
-		public String getNodeName() {
-			return "user.group";
-		}
-
-		@Override
-		public int getNodeLevel() {
-			return 2;
-		}
-	},
-	
-	USER_CUSTOM_FIELD_LIST("user-custom-field/list") {
-		@Override
-		public String getNodeName() {
-			return "user.custom.field.list";
-		}
-
-		@Override
-		public int getNodeLevel() {
-			return 1;
-		}
-	},
-	USER_CUSTOM_FIELD_SEARCH("user-custom-field/search") {
-		@Override
-		public String getNodeName() {
-			return "user.custom.field.search";
-		}
-
-		@Override
-		public int getNodeLevel() {
-			return 1;
-		}
-	},
-	USER_CUSTOM_FIELD_NEW("user-custom-field/new") {
-		@Override
-		public String getNodeName() {
-			return "user.custom.field.new";
-		}
-
-		@Override
-		public int getNodeLevel() {
-			return 1;
-		}
-	},
-	USER_CUSTOM_FIELD_EDIT("user-custom-field/edit") {
-		@Override
-		public String getNodeName() {
-			return "user.custom.field.edit";
-		}
-
-		@Override
-		public int getNodeLevel() {
-			return 2;
-		}
-	},
-	USER_CUSTOM_FIELD_VIEW("user-custom-field/view") {
-		@Override
-		public String getNodeName() {
-			return "user.custom.field";
-		}
-
-		@Override
-		public int getNodeLevel() {
-			return 2;
-		}
-	},
-	
-	CONFIGURATION_LIST("configuration/list") {
-		@Override
-		public String getNodeName() {
-			return "configuration.list";
-		}
-
-		@Override
-		public int getNodeLevel() {
-			return 1;
-		}
-	},
-	CONFIGURATION_NEW("configuration/new") {
-		@Override
-		public String getNodeName() {
-			return "configuration.new";
-		}
-
-		@Override
-		public int getNodeLevel() {
-			return 1;
-		}
-	},
-	CONFIGURATION_EDIT("configuration/edit") {
-		@Override
-		public String getNodeName() {
-			return "configuration.edit";
-		}
-
-		@Override
-		public int getNodeLevel() {
-			return 2;
-		}
-	},
-	CONFIGURATION_VIEW("configuration/view") {
-		@Override
-		public String getNodeName() {
-			return "configuration";
-		}
-
-		@Override
-		public int getNodeLevel() {
-			return 2;
-		}
-	},
-	
-	AUTH_LOGIN("login") {
-		@Override
-		public String getNodeName() {
-			return null;
-		}
-
-		@Override
-		public int getNodeLevel() {
-			return 0;
-		}
-	},
-	AUTH_LOGOUT("logout") {
-		@Override
-		public String getNodeName() {
-			return null;
-		}
-
-		@Override
-		public int getNodeLevel() {
-			return 0;
-		}
-	},
-	
-	AUDIT_LOG_LIST("auditlog/list") {
-		@Override
-		public String getNodeName() {
-			return "auditlog.list";
-		}
-
-		@Override
-		public int getNodeLevel() {
-			return 1;
-		}
-	},
-	
-	ERROR("error/error") {
-		@Override
-		public String getNodeName() {
-			return null;
-		}
-
-		@Override
-		public int getNodeLevel() {
-			return 0;
-		}
-	},
-	
-	TENANT_LIST("tenant/list") {
-		@Override
-		public String getNodeName() {
-			return "tenant.list";
-		}
-
-		@Override
-		public int getNodeLevel() {
-			return 1;
-		}
-	},
-	TENANT_SEARCH("tenant/search") {
-		@Override
-		public String getNodeName() {
-			return "tenant.search.title";
-		}
-
-		@Override
-		public int getNodeLevel() {
-			return 1;
-		}
-	},
-	TENANT_NEW("tenant/new") {
-		@Override
-		public String getNodeName() {
-			return "tenant.create";
-		}
-
-		@Override
-		public int getNodeLevel() {
-			return 1;
-		}
-	},
-	TENANT_EDIT("tenant/edit") {
-		@Override
-		public String getNodeName() {
-			return "tenant.edit.title";
-		}
-
-		@Override
-		public int getNodeLevel() {
-			return 2;
-		}
-	},
-	TENANT_VIEW("tenant/view") {
-		@Override
-		public String getNodeName() {
-			return "tenant";
-		}
-
-		@Override
-		public int getNodeLevel() {
-			return 2;
-		}
-	},
+	TENANT_LIST("tenant/list"),
+	TENANT_SEARCH("tenant/search"),
+	TENANT_NEW("tenant/new"),
+	TENANT_EDIT("tenant/edit"),
+	TENANT_VIEW("tenant/view"),
 	
 	;
 	
@@ -427,10 +61,4 @@ public enum Navigation {
 		return path;
 	}
 	
-	public abstract String getNodeName();
-	
-	public abstract int getNodeLevel();
-	
-	
-
 }
