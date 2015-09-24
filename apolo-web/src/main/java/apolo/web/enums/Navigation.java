@@ -8,7 +8,7 @@ public enum Navigation {
 	INSTALL("/install"),
 	INSTALL_NEW("/install/new"),
 
-	USER_INDEX("user"),
+	USER_INDEX("user/index"),
 	USER_NEW("user/new"),
 	USER_EDIT("user/edit"),
 	USER_LIST("user/list"),
