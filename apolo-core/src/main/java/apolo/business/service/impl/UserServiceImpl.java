@@ -348,7 +348,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 
 		if (sendEmail) {
 			try {
-				emailService.send(
+				emailService.sendAsync(
 						user.getDbTenant(),
 						user.getDbTenant().getName(),
 						user.getDbTenant().getEmailFrom(),
