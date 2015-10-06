@@ -33,13 +33,13 @@ public class MandrillEmailService<E extends BaseEntity> implements EmailService<
 
     @Override
     public EmailStatusReport send(
-                Tenant tenant,
-                String fromName,
-                String from,
-                String toName,
-                String to,
-                String subject,
-                String message) {
+            Tenant tenant,
+            String fromName,
+            String from,
+            String toName,
+            String to,
+            String subject,
+            String message) {
         EmailStatusReport result = new EmailStatusReport();
 
         String mandrillApiKey = createSession(tenant);
@@ -53,6 +53,12 @@ public class MandrillEmailService<E extends BaseEntity> implements EmailService<
 
         mandrillMessage.setAutoText(true);
         mandrillMessage.setFromName(fromName);
+
+        if (from == null
+                || "".equals(from)) {
+            from = applicationProperties.getEmailFrom();
+        }
+
         mandrillMessage.setFromEmail(from);
 
         List<MandrillMessage.Recipient> recipients = new ArrayList<MandrillMessage.Recipient>();
@@ -103,13 +109,12 @@ public class MandrillEmailService<E extends BaseEntity> implements EmailService<
     }
 
     private String createSession(Tenant tenant) {
-        String mandrillApiKey = "";
+        String mandrillApiKey = applicationProperties.getEmailPassword();
 
         if (tenant != null
-                && tenant.getEmailPassword() != null) {
+                && tenant.getEmailUseTenantConfig() != null
+                && Boolean.TRUE.equals(tenant.getEmailUseTenantConfig())) {
             mandrillApiKey = tenant.getEmailPassword();
-        } else {
-            mandrillApiKey = applicationProperties.getEmailPassword();
         }
 
         if (mandrillApiKey == null || "".equals(mandrillApiKey)) {
@@ -121,12 +126,12 @@ public class MandrillEmailService<E extends BaseEntity> implements EmailService<
 
     @Override
     public List<EmailStatusReport> send(
-                Tenant tenant,
-                String fromName,
-                String from,
-                List<String> toList,
-                String subject,
-                String message) {
+            Tenant tenant,
+            String fromName,
+            String from,
+            List<String> toList,
+            String subject,
+            String message) {
         List<EmailStatusReport> resultList = new ArrayList<EmailStatusReport>();
 
         String mandrillApiKey = createSession(tenant);
@@ -140,6 +145,12 @@ public class MandrillEmailService<E extends BaseEntity> implements EmailService<
 
         mandrillMessage.setAutoText(true);
         mandrillMessage.setFromName(fromName);
+
+        if (from == null
+                || "".equals(from)) {
+            from = applicationProperties.getEmailFrom();
+        }
+
         mandrillMessage.setFromEmail(from);
 
 

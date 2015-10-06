@@ -14,7 +14,7 @@
     <parent>
         <groupId>apolo</groupId>
         <artifactId>apolo</artifactId>
-        <version>3.2.0</version>
+        <version>3.4.0</version>
     </parent>
 
     <properties>

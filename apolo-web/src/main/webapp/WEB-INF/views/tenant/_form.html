@@ -237,6 +237,20 @@
         </div>
 
         <div class="form-group">
+            <label for="emailUseTenantConfig" class="control-label" th:text="#{tenant.emailUseTenantConfig}">
+                emailUseTenantConfig
+            </label>
+
+            <input type="checkbox"
+                   id="emailUseTenantConfig"
+                   name="emailUseTenantConfig"
+                   value="true"
+                   th:disabled="${readOnly}"
+                   th:checked="${tenant.emailUseTenantConfig}"
+                    />
+        </div>
+
+        <div class="form-group">
             <label for="showAdds" class="control-label" th:text="#{tenant.showAdds}">
                 tenant.showAdds
             </label>

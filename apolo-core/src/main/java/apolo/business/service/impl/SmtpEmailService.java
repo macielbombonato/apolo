@@ -32,13 +32,13 @@ public class SmtpEmailService<E extends BaseEntity> implements EmailService<E> {
 
     @Override
     public EmailStatusReport send(
-            final Tenant tenant,
-            final String fromName,
-            final String from,
-            final String toName,
-            final String to,
-            final String subject,
-            final String message
+            Tenant tenant,
+            String fromName,
+            String from,
+            String toName,
+            String to,
+            String subject,
+            String message
     ) {
         EmailStatusReport result = new EmailStatusReport();
 
@@ -48,11 +48,16 @@ public class SmtpEmailService<E extends BaseEntity> implements EmailService<E> {
         try {
             MimeMessage mimeMessage = new MimeMessage(session);
 
+            if (from == null
+                    || "".equals(from)) {
+                from = applicationProperties.getEmailFrom();
+            }
+
             mimeMessage.setFrom(
                     new InternetAddress(
                             from,
                             fromName
-                        )
+                    )
             );
 
             mimeMessage.addRecipient(
@@ -60,7 +65,7 @@ public class SmtpEmailService<E extends BaseEntity> implements EmailService<E> {
                     new InternetAddress(
                             to,
                             toName
-                        )
+                    )
             );
 
             mimeMessage.setSubject(subject);
@@ -103,12 +108,12 @@ public class SmtpEmailService<E extends BaseEntity> implements EmailService<E> {
 
     @Override
     public List<EmailStatusReport> send(
-            final Tenant tenant,
-            final String fromName,
-            final String from,
-            final List<String> toList,
-            final String subject,
-            final String message
+            Tenant tenant,
+            String fromName,
+            String from,
+            List<String> toList,
+            String subject,
+            String message
     ) {
         List<EmailStatusReport> resultList = new ArrayList<EmailStatusReport>();
 
@@ -118,11 +123,16 @@ public class SmtpEmailService<E extends BaseEntity> implements EmailService<E> {
         try {
             MimeMessage mimeMessage = new MimeMessage(session);
 
+            if (from == null
+                    || "".equals(from)) {
+                from = applicationProperties.getEmailFrom();
+            }
+
             mimeMessage.setFrom(
                     new InternetAddress(
                             from,
                             fromName
-                        )
+                    )
             );
 
             if (toList != null && !toList.isEmpty()) {
@@ -136,7 +146,7 @@ public class SmtpEmailService<E extends BaseEntity> implements EmailService<E> {
                 mimeMessage.addRecipients(
                         Message.RecipientType.TO,
                         (Address[]) addresses.toArray()
-                    );
+                );
 
                 mimeMessage.setSubject(subject);
 
@@ -210,17 +220,28 @@ public class SmtpEmailService<E extends BaseEntity> implements EmailService<E> {
         // Get the session object
         Properties props = new Properties();
 
-        if (tenant != null && tenant.isUseTLS() != null && Boolean.TRUE.equals(tenant.isUseTLS())) {
+        boolean hasUseTLS = applicationProperties.getUseTLS();
+        String smtpHost = applicationProperties.getSmtpHost();
+        String smtpPort = applicationProperties.getSmtpPort();
+        String emailUsername = applicationProperties.getEmailFrom();
+        String emailPassword = applicationProperties.getEmailPassword();
+
+        if (tenant != null
+                && tenant.getEmailUseTenantConfig() != null
+                && Boolean.TRUE.equals(tenant.getEmailUseTenantConfig())) {
+            hasUseTLS = tenant.getUseTLS();
+            smtpHost = tenant.getSmtpHost();
+            smtpPort = tenant.getSmtpPort();
+            emailUsername = tenant.getEmailFrom();
+            emailPassword = tenant.getEmailPassword();
+        }
+
+        if (tenant != null && tenant.isUseTLS() != null
+                && Boolean.TRUE.equals(tenant.isUseTLS())) {
             props.put(
                     "mail.smtp.starttls.enable",
                     "true"
             );
-        }
-
-        String smtpHost = tenant.getSmtpHost();
-
-        if (smtpHost == null || "".equals(smtpHost)) {
-            smtpHost = applicationProperties.getSmtpHost();
         }
 
         if (smtpHost != null) {
@@ -230,12 +251,6 @@ public class SmtpEmailService<E extends BaseEntity> implements EmailService<E> {
             );
         } else {
             throw new BusinessException(1, MessageBundle.getMessageBundle("error.500.7"));
-        }
-
-        String smtpPort = tenant.getSmtpPort();
-
-        if (smtpPort == null || "".equals(smtpPort)) {
-            smtpPort = applicationProperties.getSmtpPort();
         }
 
         if (smtpPort != null) {
@@ -260,18 +275,6 @@ public class SmtpEmailService<E extends BaseEntity> implements EmailService<E> {
                 "mail.smtp.auth",
                 "true"
         );
-
-        String emailUsername = tenant.getEmailUsername();
-
-        if (emailUsername == null || "".equals(emailUsername)) {
-            emailUsername = applicationProperties.getEmailFrom();
-        }
-
-        String emailPassword = tenant.getEmailPassword();
-
-        if (emailPassword == null || "".equals(emailPassword)) {
-            emailPassword = applicationProperties.getEmailPassword();
-        }
 
         if (emailUsername == null) {
             throw new BusinessException(3, MessageBundle.getMessageBundle("error.500.9"));

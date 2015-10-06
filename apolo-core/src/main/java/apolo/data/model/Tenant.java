@@ -90,6 +90,10 @@ public class Tenant extends AuditableBaseEntity {
 	@Type(type="yes_no")
 	private Boolean sendAuthEmail;
 
+	@Column(name = "email_use_tenant_config", nullable = true)
+	@Type(type="yes_no")
+	private Boolean emailUseTenantConfig;
+
 	@Transient
 	private List<MultipartFile> logoFile;
 
@@ -298,5 +302,13 @@ public class Tenant extends AuditableBaseEntity {
 
 	public void setSkin(Skin skin) {
 		this.skin = skin;
+	}
+
+	public Boolean getEmailUseTenantConfig() {
+		return emailUseTenantConfig;
+	}
+
+	public void setEmailUseTenantConfig(Boolean emailUseTenantConfig) {
+		this.emailUseTenantConfig = emailUseTenantConfig;
 	}
 }
