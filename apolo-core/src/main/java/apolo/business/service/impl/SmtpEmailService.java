@@ -236,15 +236,15 @@ public class SmtpEmailService<E extends BaseEntity> implements EmailService<E> {
             emailPassword = tenant.getEmailPassword();
         }
 
-        if (tenant != null && tenant.isUseTLS() != null
-                && Boolean.TRUE.equals(tenant.isUseTLS())) {
+        if (hasUseTLS) {
             props.put(
                     "mail.smtp.starttls.enable",
                     "true"
             );
         }
 
-        if (smtpHost != null) {
+        if (smtpHost != null
+                && !"".equals(smtpHost)) {
             props.put(
                     "mail.smtp.host",
                     smtpHost
@@ -253,7 +253,8 @@ public class SmtpEmailService<E extends BaseEntity> implements EmailService<E> {
             throw new BusinessException(1, MessageBundle.getMessageBundle("error.500.7"));
         }
 
-        if (smtpPort != null) {
+        if (smtpPort != null
+                && !"".equals(smtpPort)) {
             props.put(
                     "mail.smtp.port",
                     smtpPort
@@ -266,34 +267,33 @@ public class SmtpEmailService<E extends BaseEntity> implements EmailService<E> {
             throw new BusinessException(2, MessageBundle.getMessageBundle("error.500.8"));
         }
 
-        props.put(
-                "mail.smtp.socketFactory.class",
-                "javax.net.ssl.SSLSocketFactory"
-        );
+        if (emailUsername != null
+                && !"".equals(emailUsername)) {
+            props.put(
+                    "mail.smtp.socketFactory.class",
+                    "javax.net.ssl.SSLSocketFactory"
+            );
 
-        props.put(
-                "mail.smtp.auth",
-                "true"
-        );
+            props.put(
+                    "mail.smtp.auth",
+                    "true"
+            );
 
-        if (emailUsername == null) {
-            throw new BusinessException(3, MessageBundle.getMessageBundle("error.500.9"));
-        } else if (emailPassword == null) {
-            throw new BusinessException(4, MessageBundle.getMessageBundle("error.500.10"));
-        }
+            final String USERNAME = emailUsername;
+            final String PASSWORD = emailPassword;
 
-        final String USERNAME = emailUsername;
-        final String PASSWORD = emailPassword;
-
-        return Session.getDefaultInstance(props,
-                new Authenticator() {
-                    protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication(
-                                USERNAME,
-                                PASSWORD
-                        );
+            return Session.getDefaultInstance(props,
+                    new Authenticator() {
+                        protected PasswordAuthentication getPasswordAuthentication() {
+                            return new PasswordAuthentication(
+                                    USERNAME,
+                                    PASSWORD
+                            );
+                        }
                     }
-                }
-        );
+            );
+        } else {
+            return Session.getDefaultInstance(props);
+        }
     }
 }
