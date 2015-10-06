@@ -32,12 +32,12 @@
 
         <footer class="main-footer">
             <div class="pull-right hidden-xs">
-                <b th:text="#{view.version}">
-                    Version
+                <b class="small" th:text="#{app.developer.msg}">
+                    app.developer.msg
                 </b>
-                <span th:text="#{version}">
-                    version
-                </span>
+                <a th:href="#{app.developer.url}" th:text="#{app.developer.name}" target="_blank">
+                    app.developer.name
+                </a>
             </div>
             <a sec:authorize="@apoloSecurity.hasPermission('ADMIN')"
                th:href='@{|/version|}'>
