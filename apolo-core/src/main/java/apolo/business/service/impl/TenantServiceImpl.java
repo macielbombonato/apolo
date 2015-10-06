@@ -27,37 +27,37 @@ public class TenantServiceImpl extends BaseServiceImpl<Tenant> implements Tenant
 
 	@Autowired
 	private TenantRepository tenantRepository;
-	
+
 	@Autowired
 	private FileService<Tenant> fileService;
-	
+
 	@Autowired
 	private ApplicationProperties applicationProperties;
-	
+
 	public List<Tenant> list() {
-        PageRequest request = new PageRequest(1, PAGE_SIZE, Sort.Direction.ASC, "name");
+		PageRequest request = new PageRequest(1, PAGE_SIZE, Sort.Direction.ASC, "name");
 
-        Page<Tenant> result = tenantRepository.findByStatusOrderByNameAsc(
-                Status.LOCKED,
-                request
-        );
+		Page<Tenant> result = tenantRepository.findByStatusOrderByNameAsc(
+				Status.LOCKED,
+				request
+		);
 
-        return result.getContent();
+		return result.getContent();
 	}
-	
+
 	public Page<Tenant> list(Integer pageNumber) {
 		if (pageNumber < 1) {
 			pageNumber = 1;
 		}
-		
+
 		PageRequest request = new PageRequest(pageNumber - 1, PAGE_SIZE, Sort.Direction.ASC, "name");
-		
+
 		return tenantRepository.findAll(request);
 	}
 
 	public Tenant find(Long id) {
 		Tenant result = null;
-		
+
 		// Only users with permission can find anothers tenants, unless, they only can view your own tenant.
 		if (getAuthenticatedUser() != null) {
 			if (getAuthenticatedUser().getPermissions().contains(UserPermission.ADMIN)
@@ -67,10 +67,10 @@ public class TenantServiceImpl extends BaseServiceImpl<Tenant> implements Tenant
 				result = getAuthenticatedUser().getTenant();
 			}
 		}
-		
+
 		return result;
 	}
-	
+
 	public Tenant find(Tenant tenant, Long id) {
 		return find(id);
 	}
@@ -79,7 +79,7 @@ public class TenantServiceImpl extends BaseServiceImpl<Tenant> implements Tenant
 	public Tenant save(Tenant entity) {
 		return save(entity, null, null);
 	}
-	
+
 	@Transactional
 	public Tenant save(Tenant tenant, FileContent logo, FileContent icon) {
 
@@ -90,61 +90,61 @@ public class TenantServiceImpl extends BaseServiceImpl<Tenant> implements Tenant
 		} else if (tenant != null
 				&& tenant.getId() != null
 				&& (tenant.getEmailPassword() == null
-					|| "".equals(tenant.getEmailPassword()))) {
+				|| "".equals(tenant.getEmailPassword()))) {
 			Tenant dbTenant = this.find(tenant.getId());
 
 			tenant.setEmailPassword(dbTenant.getEmailPassword());
 		}
-		
-        if (logo != null
-                && logo.getFile() != null
-                && logo.getFile().getOriginalFilename() != null
-                && !logo.getFile().getOriginalFilename().isEmpty()) {
 
-            if (tenant.getId() == null) {
-                tenantRepository.saveAndFlush(tenant);
-            }
+		if (logo != null
+				&& logo.getFile() != null
+				&& logo.getFile().getOriginalFilename() != null
+				&& !logo.getFile().getOriginalFilename().isEmpty()) {
 
-            try {
-                tenant.setLogo(
-                        fileService.uploadFile(
-                                tenant,
-                                tenant,
-                                logo,
-                                "logo",
-                                logo.getFile().getInputStream()
-                            )
-                    );
-            } catch (IOException e) {
-                String message = MessageBundle.getMessageBundle("error.500.5");
-                throw new BusinessException(5, message);
-            }
-        }
+			if (tenant.getId() == null) {
+				tenantRepository.saveAndFlush(tenant);
+			}
 
-        if (icon != null
-                && icon.getFile() != null
-                && icon.getFile().getOriginalFilename() != null
-                && !icon.getFile().getOriginalFilename().isEmpty()) {
+			try {
+				tenant.setLogo(
+						fileService.uploadFile(
+								tenant,
+								tenant,
+								logo,
+								"logo",
+								logo.getFile().getInputStream()
+						)
+				);
+			} catch (IOException e) {
+				String message = MessageBundle.getMessageBundle("error.500.5");
+				throw new BusinessException(5, message);
+			}
+		}
 
-            if (tenant.getId() == null) {
-                tenantRepository.saveAndFlush(tenant);
-            }
+		if (icon != null
+				&& icon.getFile() != null
+				&& icon.getFile().getOriginalFilename() != null
+				&& !icon.getFile().getOriginalFilename().isEmpty()) {
 
-            try {
-                tenant.setIcon(
-                        fileService.uploadFile(
-                                tenant,
-                                tenant,
-                                icon,
-                                "icon",
-                                icon.getFile().getInputStream()
-                        )
-                );
-            } catch (IOException e) {
-                String message = MessageBundle.getMessageBundle("error.500.5");
-                throw new BusinessException(5, message);
-            }
-        }
+			if (tenant.getId() == null) {
+				tenantRepository.saveAndFlush(tenant);
+			}
+
+			try {
+				tenant.setIcon(
+						fileService.uploadFile(
+								tenant,
+								tenant,
+								icon,
+								"icon",
+								icon.getFile().getInputStream()
+						)
+				);
+			} catch (IOException e) {
+				String message = MessageBundle.getMessageBundle("error.500.5");
+				throw new BusinessException(5, message);
+			}
+		}
 
 		Tenant result = null;
 
@@ -172,21 +172,21 @@ public class TenantServiceImpl extends BaseServiceImpl<Tenant> implements Tenant
 		if (pageNumber < 1) {
 			pageNumber = 1;
 		}
-		
+
 		PageRequest request = new PageRequest(pageNumber - 1, PAGE_SIZE, Sort.Direction.ASC, "name");
-		
+
 		if (param != null) {
-			param = "%" + param + "%";	
+			param = "%" + param + "%";
 		}
-		
+
 		return tenantRepository.findByUrlLikeOrNameLikeOrderByNameAsc(param, param, request);
 	}
-	
+
 	public Tenant findByUrl(String url) {
 		Tenant result = null;
 
 		result = tenantRepository.findByUrl(url);
-		
+
 		return result;
 	}
 
@@ -209,7 +209,7 @@ public class TenantServiceImpl extends BaseServiceImpl<Tenant> implements Tenant
 			throw new AccessDeniedException(7, message);
 		} else {
 			entity.setStatus(Status.LOCKED);
-			return tenantRepository.save(entity);			
+			return tenantRepository.save(entity);
 		}
 	}
 
@@ -238,13 +238,6 @@ public class TenantServiceImpl extends BaseServiceImpl<Tenant> implements Tenant
 				tenant.setSendAuthEmail(applicationProperties.getSendAuthEmail());
 			}
 
-			if (tenant.getGoogleAdClient() == null || "".equals(tenant.getGoogleAdClient())) {
-				tenant.setGoogleAdClient(applicationProperties.getGoogleAdClient());
-				tenant.setGoogleAdSlotOne(applicationProperties.getGoogleAdSlotOne());
-				tenant.setGoogleAdSlotTwo(applicationProperties.getGoogleAdSlotTwo());
-				tenant.setGoogleAdSlotThree(applicationProperties.getGoogleAdSlotThree());
-				tenant.setGoogleAnalyticsUserAccount(applicationProperties.getGoogleAnalyticsUserAccount());
-			}
 		} else {
 			String message = MessageBundle.getMessageBundle("tenant.not.found");
 			throw new org.springframework.security.access.AccessDeniedException(message);

@@ -66,7 +66,7 @@
                    name="name"
                    th:value="${tenant.name}"
                    th:readonly="${readOnly}"
-            />
+                    />
         </div>
         <div class="form-group">
             <label for="showName" class="control-label" th:text="#{tenant.showName}">
@@ -91,9 +91,9 @@
                    name="url"
                    th:value="${tenant.url}"
                    th:readonly="${readOnly}"
-            />
+                    />
             <blockquote th:with="visible=${readOnly ? 'display: none;' : 'display: block;' }"
-                    th:style="${visible}" >
+                        th:style="${visible}" >
                 <small th:text="#{tenant.url.change.advice}">
                     tenant.url.change.advice
                 </small>
@@ -110,7 +110,7 @@
                    name="logoWidth"
                    th:value="${tenant.logoWidth}"
                    th:readonly="${readOnly}"
-            />
+                    />
         </div>
 
         <div class="form-group">
@@ -123,7 +123,7 @@
                    name="logoHeight"
                    th:value="${tenant.logoHeight}"
                    th:readonly="${readOnly}"
-            />
+                    />
         </div>
 
         <div class="form-group" th:if="${!readOnly}">
@@ -249,75 +249,6 @@
                     />
         </div>
 
-        <div class="form-group">
-            <label for="googleAdClient" class="control-label" th:text="#{tenant.googleAdClient}">
-                googleAdClient
-            </label>
-
-            <input type="text"
-                   id="googleAdClient"
-                   name="googleAdClient"
-                   class="form-control"
-                   th:value="${tenant.googleAdClient}"
-                   th:readonly="${readOnly}"
-                    />
-        </div>
-
-        <div class="form-group">
-            <label for="googleAdSlotOne" class="control-label" th:text="#{tenant.googleAdSlotOne}">
-                googleAdSlotOne
-            </label>
-
-            <input type="number"
-                   id="googleAdSlotOne"
-                   name="googleAdSlotOne"
-                   class="form-control"
-                   th:value="${tenant.googleAdSlotOne}"
-                   th:readonly="${readOnly}"
-                    />
-        </div>
-
-        <div class="form-group">
-            <label for="googleAdSlotTwo" class="control-label" th:text="#{tenant.googleAdSlotTwo}">
-                googleAdSlotTwo
-            </label>
-
-            <input type="number"
-                   id="googleAdSlotTwo"
-                   name="googleAdSlotTwo"
-                   class="form-control"
-                   th:value="${tenant.googleAdSlotTwo}"
-                   th:readonly="${readOnly}"
-                    />
-        </div>
-
-        <div class="form-group">
-            <label for="googleAdSlotThree" class="control-label" th:text="#{tenant.googleAdSlotThree}">
-                googleAdSlotThree
-            </label>
-
-            <input type="number"
-                   id="googleAdSlotThree"
-                   name="googleAdSlotThree"
-                   class="form-control"
-                   th:value="${tenant.googleAdSlotThree}"
-                   th:readonly="${readOnly}"
-                    />
-        </div>
-
-        <div class="form-group">
-            <label for="googleAnalyticsUserAccount" class="control-label" th:text="#{tenant.googleAnalyticsUserAccount}">
-                googleAnalyticsUserAccount
-            </label>
-
-            <input type="text"
-                   id="googleAnalyticsUserAccount"
-                   name="googleAnalyticsUserAccount"
-                   class="form-control"
-                   th:value="${tenant.googleAnalyticsUserAccount}"
-                   th:readonly="${readOnly}"
-                    />
-        </div>
     </div>
 
     <div class="tab-pane" id="authorShipTab">

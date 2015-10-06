@@ -508,12 +508,6 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 			tenant.setSmtpPort(applicationProperties.getSmtpPort());
 			tenant.setUseTLS(applicationProperties.getUseTLS());
 
-			tenant.setGoogleAdClient(applicationProperties.getGoogleAdClient());
-			tenant.setGoogleAdSlotOne(applicationProperties.getGoogleAdSlotOne());
-			tenant.setGoogleAdSlotTwo(applicationProperties.getGoogleAdSlotTwo());
-			tenant.setGoogleAdSlotThree(applicationProperties.getGoogleAdSlotThree());
-			tenant.setGoogleAnalyticsUserAccount(applicationProperties.getGoogleAnalyticsUserAccount());
-
 			formModel.getUser().setTenant(tenant);
 
 			tenantService.save(tenant);

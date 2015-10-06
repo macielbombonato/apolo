@@ -1,12 +1,16 @@
 package apolo.data.model;
 
+import apolo.common.config.model.ApplicationProperties;
 import apolo.data.entitylistener.AuditLogListener;
 import apolo.data.enums.Skin;
 import apolo.data.enums.Status;
 import apolo.data.util.InputLength;
 import org.hibernate.annotations.Type;
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.ContextLoader;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.inject.Inject;
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
@@ -20,27 +24,27 @@ import java.util.List;
 public class Tenant extends AuditableBaseEntity {
 
 	private static final long serialVersionUID = 7470619953861313459L;
-	
+
 	@Column(name = "url", length = InputLength.TINY, nullable = false, unique = true)
 	@NotNull
 	@Size(min = 1, max = InputLength.TINY)
 	private String url;
-	
+
 	@Column(name = "name", length = InputLength.NAME, nullable = false)
-    @NotNull
-    @Size(min = 1, max = InputLength.NAME)
+	@NotNull
+	@Size(min = 1, max = InputLength.NAME)
 	private String name;
-	
+
 	@Column(name = "logo", length = InputLength.MEDIUM, nullable = true)
 	private String logo;
 
-    @Column(name = "icon", length = InputLength.MEDIUM, nullable = true)
-    private String icon;
-	
+	@Column(name = "icon", length = InputLength.MEDIUM, nullable = true)
+	private String icon;
+
 	@Column(name = "logo_width", nullable = true)
 	@Max(160)
 	private Integer logoWidth;
-	
+
 	@Column(name = "logo_height", nullable = true)
 	@Max(40)
 	private Integer logoHeight;
@@ -49,19 +53,19 @@ public class Tenant extends AuditableBaseEntity {
 	@Type(type = "apolo.data.enums.usertype.SkinUserType")
 	@NotNull
 	private Skin skin;
-	
+
 	@Column(name = "status", nullable = false)
 	@Type(type = "apolo.data.enums.usertype.StatusUserType")
 	@NotNull
 	private Status status;
 
-    @Column(name = "has_show_name", nullable = true)
-    @Type(type="yes_no")
-    private Boolean showName;
+	@Column(name = "has_show_name", nullable = true)
+	@Type(type="yes_no")
+	private Boolean showName;
 
-    @Column(name = "has_show_adds", nullable = true)
-    @Type(type="yes_no")
-    private Boolean showAdds;
+	@Column(name = "has_show_adds", nullable = true)
+	@Type(type="yes_no")
+	private Boolean showAdds;
 
 	@Column(name = "email_from", length = InputLength.NAME, nullable = true)
 	private String emailFrom;
@@ -82,37 +86,54 @@ public class Tenant extends AuditableBaseEntity {
 	@Type(type="yes_no")
 	private Boolean useTLS;
 
-	@Column(name = "google_ad_client", length = InputLength.NAME, nullable = true)
-	private String googleAdClient;
-
-	@Column(name = "google_ad_slot_one", length = InputLength.NAME, nullable = true)
-	private String googleAdSlotOne;
-
-	@Column(name = "google_ad_slot_two", length = InputLength.NAME, nullable = true)
-	private String googleAdSlotTwo;
-
-	@Column(name = "google_ad_slot_three", length = InputLength.NAME, nullable = true)
-	private String googleAdSlotThree;
-
-	@Column(name = "google_analytics_user", length = InputLength.NAME, nullable = true)
-	private String googleAnalyticsUserAccount;
-
 	@Column(name = "auth_email", nullable = true)
 	@Type(type="yes_no")
 	private Boolean sendAuthEmail;
-	
+
 	@Transient
 	private List<MultipartFile> logoFile;
 
-    @Transient
-    private List<MultipartFile> iconFile;
+	@Transient
+	private List<MultipartFile> iconFile;
 
-	public String getGoogleAdSlotThree() {
-		return googleAdSlotThree;
+	@Transient
+	@Inject
+	private ApplicationProperties applicationProperties;
+
+	public ApplicationProperties getApplicationProperties() {
+		ApplicationProperties result = null;
+
+		if (applicationProperties != null) {
+			result = applicationProperties;
+		} else {
+			ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+
+			applicationProperties = (ApplicationProperties) ctx.getBean("applicationProperties");
+
+			result = applicationProperties;
+		}
+
+		return result;
 	}
 
-	public void setGoogleAdSlotThree(String googleAdSlotThree) {
-		this.googleAdSlotThree = googleAdSlotThree;
+	public String getGoogleAnalyticsUserAccount() {
+		return getApplicationProperties().getGoogleAnalyticsUserAccount();
+	}
+
+	public String getGoogleAdClient() {
+		return getApplicationProperties().getGoogleAdClient();
+	}
+
+	public String getGoogleAdSlotOne() {
+		return getApplicationProperties().getGoogleAdSlotOne();
+	}
+
+	public String getGoogleAdSlotTwo() {
+		return getApplicationProperties().getGoogleAdSlotTwo();
+	}
+
+	public String getGoogleAdSlotThree() {
+		return getApplicationProperties().getGoogleAdSlotThree();
 	}
 
 	public String getEmailFrom() {
@@ -157,30 +178,6 @@ public class Tenant extends AuditableBaseEntity {
 
 	public void setUseTLS(Boolean useTLS) {
 		this.useTLS = useTLS;
-	}
-
-	public String getGoogleAdClient() {
-		return googleAdClient;
-	}
-
-	public void setGoogleAdClient(String googleAdClient) {
-		this.googleAdClient = googleAdClient;
-	}
-
-	public String getGoogleAdSlotOne() {
-		return googleAdSlotOne;
-	}
-
-	public void setGoogleAdSlotOne(String googleAdSlotOne) {
-		this.googleAdSlotOne = googleAdSlotOne;
-	}
-
-	public String getGoogleAdSlotTwo() {
-		return googleAdSlotTwo;
-	}
-
-	public void setGoogleAdSlotTwo(String googleAdSlotTwo) {
-		this.googleAdSlotTwo = googleAdSlotTwo;
 	}
 
 	public String getUrl() {
@@ -239,52 +236,44 @@ public class Tenant extends AuditableBaseEntity {
 		this.logoFile = logoFile;
 	}
 
-    public Boolean isShowName() {
-        return this.showName;
-    }
-
-    public Boolean getShowName() {
-        return this.showName;
-    }
-
-    public void setShowName(Boolean showName) {
-        this.showName = showName;
-    }
-
-    public Boolean isShowAdds() {
-        return this.showAdds;
-    }
-
-    public Boolean getShowAdds() {
-        return this.showAdds;
-    }
-
-    public void setShowAdds(Boolean showAdds) {
-        this.showAdds = showAdds;
-    }
-
-    public String getIcon() {
-        return icon;
-    }
-
-    public void setIcon(String icon) {
-        this.icon = icon;
-    }
-
-    public List<MultipartFile> getIconFile() {
-        return iconFile;
-    }
-
-    public void setIconFile(List<MultipartFile> iconFile) {
-        this.iconFile = iconFile;
-    }
-
-	public String getGoogleAnalyticsUserAccount() {
-		return googleAnalyticsUserAccount;
+	public Boolean isShowName() {
+		return this.showName;
 	}
 
-	public void setGoogleAnalyticsUserAccount(String googleAnalyticsUserAccount) {
-		this.googleAnalyticsUserAccount = googleAnalyticsUserAccount;
+	public Boolean getShowName() {
+		return this.showName;
+	}
+
+	public void setShowName(Boolean showName) {
+		this.showName = showName;
+	}
+
+	public Boolean isShowAdds() {
+		return this.showAdds;
+	}
+
+	public Boolean getShowAdds() {
+		return this.showAdds;
+	}
+
+	public void setShowAdds(Boolean showAdds) {
+		this.showAdds = showAdds;
+	}
+
+	public String getIcon() {
+		return icon;
+	}
+
+	public void setIcon(String icon) {
+		this.icon = icon;
+	}
+
+	public List<MultipartFile> getIconFile() {
+		return iconFile;
+	}
+
+	public void setIconFile(List<MultipartFile> iconFile) {
+		this.iconFile = iconFile;
 	}
 
 	public Boolean getSendAuthEmail() {
