@@ -223,7 +223,7 @@ public class SmtpEmailService<E extends BaseEntity> implements EmailService<E> {
         boolean hasUseTLS = applicationProperties.getUseTLS();
         String smtpHost = applicationProperties.getSmtpHost();
         String smtpPort = applicationProperties.getSmtpPort();
-        String emailUsername = applicationProperties.getEmailFrom();
+        String emailUsername = applicationProperties.getEmailUsername();
         String emailPassword = applicationProperties.getEmailPassword();
 
         if (tenant != null
@@ -263,8 +263,6 @@ public class SmtpEmailService<E extends BaseEntity> implements EmailService<E> {
                     "mail.smtp.socketFactory.port",
                     smtpPort
             );
-        } else {
-            throw new BusinessException(2, MessageBundle.getMessageBundle("error.500.8"));
         }
 
         if (emailUsername != null
@@ -293,6 +291,11 @@ public class SmtpEmailService<E extends BaseEntity> implements EmailService<E> {
                     }
             );
         } else {
+            props.put(
+                    "mail.smtp.auth",
+                    "false"
+            );
+
             return Session.getDefaultInstance(props);
         }
     }
