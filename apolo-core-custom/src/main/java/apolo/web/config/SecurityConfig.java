@@ -1,14 +1,13 @@
 package apolo.web.config;
 
 import apolo.common.config.model.ApplicationProperties;
-import apolo.common.util.ApoloCrypt;
 import apolo.security.UserPermission;
-import apolo.web.service.UserAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -18,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.context.ContextLoader;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
 @Configuration
 @EnableWebSecurity
@@ -25,7 +25,12 @@ import javax.inject.Inject;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Inject
-    private UserAuthenticationProvider userAuthenticationProvider;
+    @Named("userAuthenticationProvider")
+    private AuthenticationProvider userAuthenticationProvider;
+
+    @Inject
+    @Named("apoloCrypt")
+    private PasswordEncoder apoloCrypt;
 
     @Autowired
     private ApplicationProperties applicationProperties;
@@ -42,7 +47,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new ApoloCrypt();
+		/*
+		 * This class is created by jpa engine and because this is necessary get dependencies in spring context.
+		 */
+        if (apoloCrypt == null) {
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+
+            apoloCrypt = (PasswordEncoder) ctx.getBean("apoloCrypt");
+        }
+
+        return apoloCrypt;
     }
 
     @Override

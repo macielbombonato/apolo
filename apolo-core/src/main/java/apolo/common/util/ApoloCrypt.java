@@ -15,11 +15,11 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.security.NoSuchAlgorithmException;
 
-@Component
+@Component("apoloCrypt")
 public class ApoloCrypt implements PasswordEncoder {
-	
+
 	private static final Logger LOG = LoggerFactory.getLogger(ApoloCrypt.class);
-	
+
 	private String algorithm = "AES";
 	private String transformation = "AES/CBC/NoPadding";
 	private String encoding = "UTF-8";
@@ -57,7 +57,7 @@ public class ApoloCrypt implements PasswordEncoder {
 		String encoded = this.encode(rawPassword);
 		return matches(encoded.getBytes(), encodedPassword.getBytes());
 	}
-	
+
 	public String encode(String text, String secretKey, String iv) throws Exception {
 		byte[] ivBytes = new byte[16];
 		byte[] generatedIV = buildKey(iv.trim()).getBytes(encoding);
@@ -90,7 +90,7 @@ public class ApoloCrypt implements PasswordEncoder {
 		} catch (NoSuchPaddingException e) {
 			LOG.error(e.getMessage(), e);
 		}
-		
+
 		if (text == null || text.length() == 0)
 			throw new Exception("Empty string");
 
@@ -112,10 +112,10 @@ public class ApoloCrypt implements PasswordEncoder {
 
 		try {
 			result = this.decode(
-                            code,
-                            this.getApplicationProperties().getSecretKey(),
-                            this.getApplicationProperties().getIvKey()
-                        );
+					code,
+					this.getApplicationProperties().getSecretKey(),
+					this.getApplicationProperties().getIvKey()
+			);
 		} catch (Exception e) {
 			LOG.error(e.getMessage(), e);
 		}
@@ -136,7 +136,7 @@ public class ApoloCrypt implements PasswordEncoder {
 		} catch (NoSuchPaddingException e) {
 			LOG.error(e.getMessage(), e);
 		}
-		
+
 		if (code == null || code.length() == 0)
 			throw new Exception("Empty string");
 
@@ -161,9 +161,9 @@ public class ApoloCrypt implements PasswordEncoder {
 		String str = "";
 		for (int i = 0; i < len; i++) {
 			if ((data[i] & 0xFF) < 16)
-				str = str + "0" + java.lang.Integer.toHexString(data[i] & 0xFF);
+				str = str + "0" + Integer.toHexString(data[i] & 0xFF);
 			else
-				str = str + java.lang.Integer.toHexString(data[i] & 0xFF);
+				str = str + Integer.toHexString(data[i] & 0xFF);
 		}
 		return str;
 	}
@@ -215,7 +215,7 @@ public class ApoloCrypt implements PasswordEncoder {
 			if (diference > 0) {
 				for (int i = 0; i < diference; i++) {
 					newCode += "0";
-				}				
+				}
 			} else {
 				newCode = code.substring(0, 16);
 			}

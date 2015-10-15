@@ -29,14 +29,14 @@ import javax.inject.Named;
 import java.util.ArrayList;
 import java.util.Collection;
 
-@Component
+@Component("userAuthenticationProvider")
 public class UserAuthenticationProvider implements AuthenticationProvider {
 
 	private static final Logger log = LoggerFactory.getLogger(UserAuthenticationProvider.class);
 
 	@Inject
 	private UserService userService;
-	
+
 	@Inject
 	private ApplicationProperties applicationProperties;
 
@@ -49,10 +49,10 @@ public class UserAuthenticationProvider implements AuthenticationProvider {
 
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 		User user = userService.loadByUsernameAndPassword(
-				authentication.getName(), 
-				authentication.getCredentials().toString() 
-			);
-		
+				authentication.getName(),
+				authentication.getCredentials().toString()
+		);
+
 		if (user != null) {
 			if (UserStatus.LOCKED.equals(user.getStatus())) {
 				String message = MessageBundle.getMessageBundle("error.403.2");
@@ -78,12 +78,12 @@ public class UserAuthenticationProvider implements AuthenticationProvider {
 				log.error("********* => Error when try to count the login sequence");
 				log.error(e.getMessage(), e);
 			}
-			
+
 			// Set permission to see only the code screen.
 			Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-			
+
 			authorities = userService.loadUserAuthorities(user);
-			
+
 			ThreadLocalContextUtil.setTenantId(user.getTenant().getUrl());
 
 			Tenant tenant = tenantService.getValidatedTenant(user.getTenant().getUrl());
@@ -116,12 +116,12 @@ public class UserAuthenticationProvider implements AuthenticationProvider {
 			}
 
 			return new CurrentUser(
-					user.getId(), 
-					user.getEmail(), 
-					user.getPassword().toLowerCase(), 
-					user, 
+					user.getId(),
+					user.getEmail(),
+					user.getPassword().toLowerCase(),
+					user,
 					authorities
-				);
+			);
 		} else {
 			throw new BadCredentialsException(MessageBundle.getMessageBundle("error.403.1"));
 		}
