@@ -109,6 +109,7 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
     	result.setUploadedFilesPath(uploadedFilesPath);
 
 		result.setEmailFrom(emailFrom);
+		result.setEmailUsername(emailUsername);
 		result.setEmailPassword(emailPassword);
 		result.setSmtpHost(smtpHost);
 		result.setSmtpPort(smtpPort);

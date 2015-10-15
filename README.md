@@ -77,7 +77,7 @@ Abaixo estão as variáveis de ambiente que devem ser configuradas em seu servid
 	export APOLO_DATASOURCE_PASSWORD="pass"
 	export APOLO_HIBERNATE_SHOW_AND_FORMAT_SQL="true"
 
-	export APOLO_FACEBOOK_APP_ID="YORAPPID"
+	export APOLO_FACEBOOK_APP_ID="YOURAPPID"
 	export APOLO_FACEBOOK_APP_SECRET="YOURAPPSECRET"
 
 ## Primeiros passos
