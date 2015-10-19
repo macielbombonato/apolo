@@ -2,16 +2,15 @@ package apolo.data.repository;
 
 import apolo.data.model.Tenant;
 import apolo.data.model.UserGroup;
-
-import java.util.List;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
 
-public interface UserGroupRepository extends JpaRepository<UserGroup, Long>, UserGroupRepositoryCustom {
+import java.util.List;
+
+public interface UserGroupRepository extends JpaRepository<UserGroup, Long> {
 
 	UserGroup findByName(
 			String name

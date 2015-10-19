@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:include="@{_fragment/_headTag} :: headTag">
+</head>
+<body>
+<div th:remove="tag" th:include="@{_fragment/_apolo-template} :: apolo-template"></div>
+
+<div id="page-content">
+    <section class="content-header">
+        <h1 th:text="#{application.list}">
+            Widgets
+        </h1>
+    </section>
+
+    <section class="content">
+        <div th:with="searchUrlParam=${'/'} + ${#authentication.systemUser.tenant.url} + ${'/application/search'}">
+            <div th:remove="tag"
+                 th:include="@{_fragment/_search} ::
+                        search (
+                                searchUrl=${searchUrlParam},
+                                placeholderTerm=${'application.search.field'}
+                                )"
+                    >
+                search Form
+            </div>
+        </div>
+
+        <br />
+        <center>
+            <div th:remove="tag" th:include="@{_fragment/_pagination} :: pagination"></div>
+        </center>
+        <div class="table-responsive" th:if="${appList != null} and ${!appList.isEmpty()}">
+            <table class="table table-striped table-hover table-bordered">
+                <thead>
+                <tr>
+                    <th th:text="#{application.name}">
+                        app.name
+                    </th>
+                    <th th:text="#{application.groups}">
+                        application.groups
+                    </th>
+                    <th th:text="#{application.status}">
+                        application.status
+                    </th>
+                    <th th:text="#{common.actions}"
+                        sec:authorize="@apoloSecurity.hasPermission('APPLICATION_EDIT', 'APPLICATION_REMOVE')">
+                        common.actions
+                    </th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr th:each="app : ${appList}"
+                    th:id="${'app_'} + ${app.id}">
+
+                    <td>
+                        <a th:text="${app.name}"
+                           th:href='@{|/${#authentication.systemUser.tenant.url}/application/view/${app.id}|}'
+                           class="btn btn-link">
+                            ${app.name}
+                        </a>
+                    </td>
+
+                    <td>
+                        <ul class="list-group">
+                            <li th:each="group : ${app.groups}"
+                                th:text="${group.name}"
+                                class="list-group-item">
+                                permissionName
+                            </li>
+                        </ul>
+                    </td>
+                    <td th:with="appStatus=${'common.status.'} + ${app.status}"
+                        th:text="#{${appStatus}}">
+                        appStatus
+                    </td>
+
+
+                    <td sec:authorize="@apoloSecurity.hasPermission('APPLICATION_EDIT', 'APPLICATION_REMOVE')">
+                        <div class="btn-group btn-group-sm">
+                            <a th:href='@{|/${#authentication.systemUser.tenant.url}/application/view/${app.id}|}'
+                               class="btn btn-default"
+                               data-toggle="tooltip"
+                               th:title="#{common.show}">
+                                <i class="fa fa-search-plus"></i>
+                            </a>
+                            <a sec:authorize="@apoloSecurity.hasPermission('APPLICATION_EDIT')"
+                               th:href='@{|/${#authentication.systemUser.tenant.url}/application/edit/${app.id}|}'
+                               class="btn btn-default"
+                               data-toggle="tooltip"
+                               th:title="#{common.edit}">
+                                <i class="fa fa-pencil-square-o"></i>
+                            </a>
+                            <a sec:authorize="@apoloSecurity.hasPermission('APPLICATION_REMOVE')"
+                               href='#'
+                               class="btn btn-default"
+                               th:with="removeAction=${'removeConfirmationDialogOpen('''} + ${'/'} + ${#authentication.systemUser.tenant.url} + ${'/application/remove/'} + ${app.id} + ${''', ''app_'} + ${app.id} + ${''');'}"
+                               th:onclick="${removeAction}"
+                               data-toggle="tooltip"
+                               th:title="#{common.remove}">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="panel-body" th:if="${appList == null} or ${appList.isEmpty()}">
+            <p th:text="#{common.nodatafound}">
+                common.nodatafound
+            </p>
+        </div>
+        <center>
+            <div th:remove="tag" th:include="@{_fragment/_pagination} :: pagination"></div>
+        </center>
+    </section>
+</div>
+</body>
+</html>

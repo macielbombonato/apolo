@@ -48,6 +48,12 @@ public enum Navigation {
 	TENANT_NEW("tenant/new"),
 	TENANT_EDIT("tenant/edit"),
 	TENANT_VIEW("tenant/view"),
+
+	APPLICATION_LIST("application/list"),
+	APPLICATION_SEARCH("application/search"),
+	APPLICATION_NEW("application/new"),
+	APPLICATION_EDIT("application/edit"),
+	APPLICATION_VIEW("application/view"),
 	
 	;
 	
