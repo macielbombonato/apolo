@@ -14,7 +14,7 @@
     </section>
 
     <section class="content">
-        <div th:with="searchUrlParam=${'/'} + ${#authentication.systemUser.tenant.url} + ${'/user/search'}">
+        <div th:with="searchUrlParam=${'/web/'} + ${#authentication.systemUser.tenant.url} + ${'/user/search'}">
             <div th:remove="tag"
                  th:include="@{_fragment/_search} ::
                         search (
@@ -63,7 +63,7 @@
                         <center>
                             <img th:if="${user.avatarFileName != null} and ${user.avatarFileName != ''}"
                                  class="img-thumbnail"
-                                 th:src="@{|/${#authentication.systemUser.tenant.url}/uploadedfiles/User/${user.id}/${user.avatarFileName}|}"
+                                 th:src="@{|/web/${#authentication.systemUser.tenant.url}/uploadedfiles/User/${user.id}/${user.avatarFileName}|}"
                                  style="width: 40px;"
                                  width="40"
                                     />
@@ -71,7 +71,7 @@
                         </center>
                     </td>
                     <td>
-                        <a th:href='@{|/${#authentication.systemUser.tenant.url}/user/view/${user.id}|}'
+                        <a th:href='@{|/web/${#authentication.systemUser.tenant.url}/user/view/${user.id}|}'
                            th:text="${user.name}"
                            class="btn btn-link" >
                             ${user.name}
@@ -89,14 +89,14 @@
                     </td>
                     <td sec:authorize="@apoloSecurity.hasPermission('USER_LIST', 'USER_MANAGER', 'USER_REMOVE')">
                         <div class="btn-group btn-group-sm">
-                            <a th:href='@{|/${#authentication.systemUser.tenant.url}/user/view/${user.id}|}'
+                            <a th:href='@{|/web/${#authentication.systemUser.tenant.url}/user/view/${user.id}|}'
                                class="btn btn-default"
                                data-toggle="tooltip"
                                th:title="#{common.show}">
                                 <i class="fa fa-search-plus"></i>
                             </a>
                             <a sec:authorize="@apoloSecurity.hasPermission('USER_EDIT')"
-                               th:href='@{|/${#authentication.systemUser.tenant.url}/user/edit/${user.id}|}'
+                               th:href='@{|/web/${#authentication.systemUser.tenant.url}/user/edit/${user.id}|}'
                                class="btn btn-default"
                                data-toggle="tooltip"
                                th:title="#{common.edit}">
@@ -106,7 +106,7 @@
                                th:if="${#authentication.systemUser.id != user.id}"
                                href='#'
                                class="btn btn-default"
-                               th:with="removeAction=${'removeConfirmationDialogOpen('''} + ${'/'} + ${#authentication.systemUser.tenant.url} + ${'/user/remove/'} + ${user.id} + ${''', ''user_'} + ${user.id} + ${''');'}"
+                               th:with="removeAction=${'removeConfirmationDialogOpen('''} + ${'/web/'} + ${#authentication.systemUser.tenant.url} + ${'/user/remove/'} + ${user.id} + ${''', ''user_'} + ${user.id} + ${''');'}"
                                th:onclick="${removeAction}"
                                data-toggle="tooltip"
                                th:title="#{common.remove}">

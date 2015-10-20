@@ -19,7 +19,7 @@
 
             <div class="btn-group" role="group">
                 <a sec:authorize="@apoloSecurity.hasPermission('USER_EDIT')"
-                   th:href='@{|/${#authentication.systemUser.tenant.url}/application/edit/${app.id}|}' class="btn btn-default">
+                   th:href='@{|/web/${#authentication.systemUser.tenant.url}/application/edit/${app.id}|}' class="btn btn-default">
                     <i class="fa fa-pencil-square-o"></i>
                     <span th:text="#{common.edit}" />
                 </a>

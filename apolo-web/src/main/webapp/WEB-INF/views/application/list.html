@@ -14,7 +14,7 @@
     </section>
 
     <section class="content">
-        <div th:with="searchUrlParam=${'/'} + ${#authentication.systemUser.tenant.url} + ${'/application/search'}">
+        <div th:with="searchUrlParam=${'/web/'} + ${#authentication.systemUser.tenant.url} + ${'/application/search'}">
             <div th:remove="tag"
                  th:include="@{_fragment/_search} ::
                         search (
@@ -30,7 +30,9 @@
         <center>
             <div th:remove="tag" th:include="@{_fragment/_pagination} :: pagination"></div>
         </center>
-        <div class="table-responsive" th:if="${appList != null} and ${!appList.isEmpty()}">
+        <div class="table-responsive"
+             th:if="${appList != null}
+                    and ${!appList.isEmpty()}">
             <table class="table table-striped table-hover table-bordered">
                 <thead>
                 <tr>
@@ -56,7 +58,7 @@
 
                     <td>
                         <a th:text="${app.name}"
-                           th:href='@{|/${#authentication.systemUser.tenant.url}/application/view/${app.id}|}'
+                           th:href='@{|/web/${#authentication.systemUser.tenant.url}/application/view/${app.id}|}'
                            class="btn btn-link">
                             ${app.name}
                         </a>
@@ -79,14 +81,14 @@
 
                     <td sec:authorize="@apoloSecurity.hasPermission('APPLICATION_EDIT', 'APPLICATION_REMOVE')">
                         <div class="btn-group btn-group-sm">
-                            <a th:href='@{|/${#authentication.systemUser.tenant.url}/application/view/${app.id}|}'
+                            <a th:href='@{|/web/${#authentication.systemUser.tenant.url}/application/view/${app.id}|}'
                                class="btn btn-default"
                                data-toggle="tooltip"
                                th:title="#{common.show}">
                                 <i class="fa fa-search-plus"></i>
                             </a>
                             <a sec:authorize="@apoloSecurity.hasPermission('APPLICATION_EDIT')"
-                               th:href='@{|/${#authentication.systemUser.tenant.url}/application/edit/${app.id}|}'
+                               th:href='@{|/web/${#authentication.systemUser.tenant.url}/application/edit/${app.id}|}'
                                class="btn btn-default"
                                data-toggle="tooltip"
                                th:title="#{common.edit}">
@@ -95,7 +97,7 @@
                             <a sec:authorize="@apoloSecurity.hasPermission('APPLICATION_REMOVE')"
                                href='#'
                                class="btn btn-default"
-                               th:with="removeAction=${'removeConfirmationDialogOpen('''} + ${'/'} + ${#authentication.systemUser.tenant.url} + ${'/application/remove/'} + ${app.id} + ${''', ''app_'} + ${app.id} + ${''');'}"
+                               th:with="removeAction=${'removeConfirmationDialogOpen('''} + ${'/web/'} + ${#authentication.systemUser.tenant.url} + ${'/application/remove/'} + ${app.id} + ${''', ''app_'} + ${app.id} + ${''');'}"
                                th:onclick="${removeAction}"
                                data-toggle="tooltip"
                                th:title="#{common.remove}">

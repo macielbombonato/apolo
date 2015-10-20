@@ -7,7 +7,7 @@
 
         <div class="login-box">
             <div class="login-logo">
-                <a th:href="${#authorization.expression('@apoloSecurity.isAuthenticated()') == true} ? @{|/${#authentication.systemUser.tenant.url}/user|} : @{'/'}">
+                <a th:href="${#authorization.expression('@apoloSecurity.isAuthenticated()') == true} ? @{|/web/${#authentication.systemUser.tenant.url}/user|} : @{'/web/'}">
                     <h3 th:if="${tenant == null}">
                         <img th:if="${tenant == null}"
                              th:src="@{'/resources/app/img/favicon.png'}"
@@ -20,7 +20,7 @@
                     <h3 th:if="${tenant != null}">
                         <img th:if="${tenant != null}
                                         and ${tenant.logo != null}"
-                             th:src="@{|/${tenant.url}/uploadedfiles/Tenant/${tenant.id}/${tenant.logo}|}"
+                             th:src="@{|/web/${tenant.url}/uploadedfiles/Tenant/${tenant.id}/${tenant.logo}|}"
                              th:width="${tenant.logoWidth * 2} + ${'px'}"
                              th:height="${tenant.logoHeight * 2} + ${'px'}"
                              th:style="${'width: '} + ${tenant.logoWidth * 2} + ${'px; height: '} + ${tenant.logoHeight * 2} + ${'px;'}"
@@ -65,7 +65,7 @@
                     <br />
                     <div class="row">
                         <div class="col-xs-12">
-                            <a th:with="url=${tenant != null ? '/' + tenant.url : ''}"
+                            <a th:with="url=${tenant != null ? '/web/' + tenant.url : '/web'}"
                                     th:href="@{|${url}/forgot-password|}" class="pull-right" th:text="#{user.forgot-password}">
                                 Esqueci minha senha
                             </a>

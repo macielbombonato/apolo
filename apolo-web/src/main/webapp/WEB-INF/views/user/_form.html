@@ -208,7 +208,7 @@
                                 class="list-group-item">
 
                                 <a sec:authorize="@apoloSecurity.hasPermission('USER_LIST', 'USER_PERMISSION_LIST', 'USER_PERMISSION_VIEW')"
-                                   th:href='@{|/${#authentication.systemUser.tenant.url}/user-group/view/${group.id}|}'
+                                   th:href='@{|/web/${#authentication.systemUser.tenant.url}/user-group/view/${group.id}|}'
                                         th:text="${group.name}"
                                         />
 

@@ -1,37 +1,45 @@
 package apolo.web.controller;
 
+import apolo.business.service.ApplicationService;
 import apolo.business.service.UserGroupService;
 import apolo.common.exception.AccessDeniedException;
 import apolo.common.util.MessageBundle;
-import apolo.data.model.UserGroup;
+import apolo.data.model.Application;
+import apolo.web.controller.abstracts.BaseWebController;
 import apolo.web.enums.Navigation;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomCollectionEditor;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.Date;
+import java.util.Set;
 
 @Controller
-@RequestMapping(value = "/{tenant-url}/user-group")
-public class UserGroupController extends BaseController<UserGroup> {
+@RequestMapping(value = "/web/{tenant-url}/application")
+public class ApplicationWebController extends BaseWebController<Application> {
+
+	@Autowired
+	private ApplicationService applicationService;
 
 	@Autowired
 	private UserGroupService userGroupService;
 	
-	@PreAuthorize("@apoloSecurity.hasPermission('USER_PERMISSION_CREATE', 'USER_PERMISSION_EDIT')")
+	@PreAuthorize("@apoloSecurity.hasPermission('APPLICATION_CREATE', 'APPLICATION_EDIT')")
 	@RequestMapping(value = "save", method = RequestMethod.POST)
 	public ModelAndView save(
 				@PathVariable("tenant-url") String tenant, 
-				@Valid @ModelAttribute("entity") UserGroup entity, 
+				@Valid @ModelAttribute("entity") Application entity,
 				BindingResult result, 
 				HttpServletRequest request
 			) {
@@ -46,13 +54,13 @@ public class UserGroupController extends BaseController<UserGroup> {
 					getRedirectionPath(
 							tenant, 
 							request, 
-							Navigation.USER_PERMISSION_NEW, 
-							Navigation.USER_PERMISSION_EDIT
+							Navigation.APPLICATION_NEW,
+							Navigation.APPLICATION_EDIT
 						)
 				);
 			
-			mav.addObject("userGroup", entity);
-			mav.addObject("permissionList", userGroupService.getUserPermissionList());
+			mav.addObject("app", entity);
+			mav.addObject("groupList", userGroupService.list(getDBTenant(tenant)));
 			mav.addObject("readOnly", false);
 			mav.addObject("error", true);
 			
@@ -60,7 +68,7 @@ public class UserGroupController extends BaseController<UserGroup> {
 			for (ObjectError error : result.getAllErrors()) {
 				DefaultMessageSourceResolvable argument = (DefaultMessageSourceResolvable) error.getArguments()[0];
 				
-				message.append(MessageBundle.getMessageBundle("common.field") + " " + MessageBundle.getMessageBundle("user.group." + argument.getDefaultMessage()) + ": " + error.getDefaultMessage() + "\n <br />");
+				message.append(MessageBundle.getMessageBundle("common.field") + " " + MessageBundle.getMessageBundle("application." + argument.getDefaultMessage()) + ": " + error.getDefaultMessage() + "\n <br />");
 			}
 			
 			mav.addObject("message", message.toString());
@@ -70,7 +78,9 @@ public class UserGroupController extends BaseController<UserGroup> {
 		
 		if (entity != null) {
 			try {
-				userGroupService.save(entity);
+				entity.setApplicationKey(null);
+
+				applicationService.save(entity);
 				
 				mav = view(tenant, entity.getId(), request);
 				mav.addObject("msg", true);
@@ -85,7 +95,7 @@ public class UserGroupController extends BaseController<UserGroup> {
 		return mav;
 	}
 
-	@PreAuthorize("@apoloSecurity.hasPermission('USER_PERMISSION_LIST')")
+	@PreAuthorize("@apoloSecurity.hasPermission('APPLICATION_LIST')")
 	@RequestMapping(value = "list", method = RequestMethod.GET)
 	public ModelAndView list(
 				@PathVariable("tenant-url") String tenant, 
@@ -95,7 +105,7 @@ public class UserGroupController extends BaseController<UserGroup> {
 		return list(tenant, 1, request);
 	}
 	
-	@PreAuthorize("@apoloSecurity.hasPermission('USER_PERMISSION_LIST')")
+	@PreAuthorize("@apoloSecurity.hasPermission('APPLICATION_LIST')")
 	@RequestMapping(value = "list/{pageNumber}", method = RequestMethod.GET)
 	public ModelAndView list(
 				@PathVariable("tenant-url") String tenant, 
@@ -103,48 +113,48 @@ public class UserGroupController extends BaseController<UserGroup> {
 				HttpServletRequest request
 			) {
 
-		ModelAndView mav = new ModelAndView(Navigation.USER_PERMISSION_LIST.getPath());
+		ModelAndView mav = new ModelAndView(Navigation.APPLICATION_LIST.getPath());
 		
-		Page<UserGroup> page = userGroupService.list(getDBTenant(tenant), pageNumber);
+		Page<Application> page = applicationService.list(getDBTenant(tenant), pageNumber);
 		
-	    configurePageable(tenant, mav, page, "/user-group/list");
+	    configurePageable(tenant, mav, page, "/application/list");
 	    
 	    mav.addObject("searchParameter", "");
 		
 		if (page != null && page.getContent() != null) {
-			mav.addObject("userGroupList", page.getContent());	
+			mav.addObject("appList", page.getContent());
 		}
 		
 		return mav;
 	}
 
-	@PreAuthorize("@apoloSecurity.hasPermission('USER_PERMISSION_CREATE')")
+	@PreAuthorize("@apoloSecurity.hasPermission('APPLICATION_CREATE')")
 	@RequestMapping(value = "new", method = RequestMethod.GET)
 	public ModelAndView create(
 				@PathVariable("tenant-url") String tenant, 
 				HttpServletRequest request
 			) {
 
-		ModelAndView mav = new ModelAndView(Navigation.USER_PERMISSION_NEW.getPath());
+		ModelAndView mav = new ModelAndView(Navigation.APPLICATION_NEW.getPath());
 		
-		UserGroup userGroup = new UserGroup();
+		Application app = new Application();
 		
-		userGroup.setCreatedBy(userGroupService.getAuthenticatedUser());
-		userGroup.setCreatedAt(new Date());
+		app.setCreatedBy(userGroupService.getAuthenticatedUser());
+		app.setCreatedAt(new Date());
 		
-		userGroup.setUpdatedBy(userGroupService.getAuthenticatedUser());
-		userGroup.setUpdatedAt(new Date());
+		app.setUpdatedBy(userGroupService.getAuthenticatedUser());
+		app.setUpdatedAt(new Date());
 		
-		userGroup.setTenant(getDBTenant(tenant));
+		app.setTenant(getDBTenant(tenant));
 		
-		mav.addObject("userGroup", userGroup);
-		mav.addObject("permissionList", userGroupService.getUserPermissionList());
+		mav.addObject("app", app);
+		mav.addObject("groupList", userGroupService.list(getDBTenant(tenant)));
 		mav.addObject("readOnly", false);
 		
 		return mav;
 	}
 	
-	@PreAuthorize("@apoloSecurity.hasPermission('USER_PERMISSION_EDIT')")
+	@PreAuthorize("@apoloSecurity.hasPermission('APPLICATION_EDIT')")
 	@RequestMapping(value = "edit/{id}", method = RequestMethod.GET)
 	public ModelAndView edit(
 				@PathVariable("tenant-url") String tenant, 
@@ -152,21 +162,21 @@ public class UserGroupController extends BaseController<UserGroup> {
 				HttpServletRequest request
 			) {
 
-		ModelAndView mav = new ModelAndView(Navigation.USER_PERMISSION_EDIT.getPath());
+		ModelAndView mav = new ModelAndView(Navigation.APPLICATION_EDIT.getPath());
 		
-		UserGroup userGroup = userGroupService.find(getDBTenant(tenant), id);
+		Application app = applicationService.find(getDBTenant(tenant), id);
 		
-		userGroup.setUpdatedBy(userGroupService.getAuthenticatedUser());
-		userGroup.setUpdatedAt(new Date());
+		app.setUpdatedBy(applicationService.getAuthenticatedUser());
+		app.setUpdatedAt(new Date());
 		
-		mav.addObject("userGroup", userGroup);
-		mav.addObject("permissionList", userGroupService.getUserPermissionList());
+		mav.addObject("app", app);
+		mav.addObject("groupList", userGroupService.list(getDBTenant(tenant)));
 		mav.addObject("readOnly", false);
 		
 		return mav;
 	}
 	
-	@PreAuthorize("@apoloSecurity.hasPermission('USER_PERMISSION_REMOVE')")
+	@PreAuthorize("@apoloSecurity.hasPermission('APPLICATION_REMOVE')")
 	@RequestMapping(value = "remove/{id}", method = RequestMethod.GET)
 	public @ResponseBody String remove(
 				@PathVariable("tenant-url") String tenant, 
@@ -178,22 +188,17 @@ public class UserGroupController extends BaseController<UserGroup> {
 		JSONObject jsonSubject = new JSONObject();
 		JSONObject jsonItem = new JSONObject();
 		
-		UserGroup userGroup = userGroupService.find(getDBTenant(tenant), id);
+		Application app = applicationService.find(getDBTenant(tenant), id);
 		
-		if (userGroup != null) {
-			if (userGroup.getUsers() != null && !userGroup.getUsers().isEmpty()) {
-				result = MessageBundle.getMessageBundle("user.group.msg.error.has.associated.users");
+		if (app != null) {
+			try {
+				applicationService.remove(app);
+
+				result = MessageBundle.getMessageBundle("common.msg.remove.success");
+				jsonItem.put("success", true);
+			} catch (Throwable e) {
+				result = MessageBundle.getMessageBundle("common.remove.msg.error");
 				jsonItem.put("success", false);
-			} else {
-				try {
-					userGroupService.remove(userGroup);
-					
-					result = MessageBundle.getMessageBundle("common.msg.remove.success");
-					jsonItem.put("success", true);
-				} catch (Throwable e) {
-					result = MessageBundle.getMessageBundle("common.remove.msg.error");
-					jsonItem.put("success", false);
-				}
 			}
 		}
 		
@@ -203,7 +208,7 @@ public class UserGroupController extends BaseController<UserGroup> {
 		return jsonSubject.toString();
 	}
 	
-	@PreAuthorize("@apoloSecurity.hasPermission('USER_PERMISSION_REMOVE')")
+	@PreAuthorize("@apoloSecurity.hasPermission('APPLICATION_REMOVE')")
 	@RequestMapping(value = "remove-registry/{id}", method = RequestMethod.GET)
 	public ModelAndView removeRegistry(
 				@PathVariable("tenant-url") String tenant, 
@@ -211,13 +216,13 @@ public class UserGroupController extends BaseController<UserGroup> {
 				HttpServletRequest request
 			) {
 
-		ModelAndView mav = new ModelAndView(Navigation.USER_PERMISSION_LIST.getPath());
+		ModelAndView mav = new ModelAndView(Navigation.APPLICATION_LIST.getPath());
 		
-		UserGroup userGroup = userGroupService.find(getDBTenant(tenant), id);
+		Application app = applicationService.find(getDBTenant(tenant), id);
 		
-		if (userGroup != null) {
+		if (app != null) {
 			try {
-				userGroupService.remove(userGroup);
+				applicationService.remove(app);
 
 				mav = list(tenant, request);
 				mav.addObject("msg", true);
@@ -232,7 +237,7 @@ public class UserGroupController extends BaseController<UserGroup> {
 		return mav;
 	}
 	
-	@PreAuthorize("@apoloSecurity.hasPermission('USER_PERMISSION_VIEW', 'USER_PERMISSION_LIST', 'USER_LIST')")
+	@PreAuthorize("@apoloSecurity.hasPermission('APPLICATION_LIST')")
 	@RequestMapping(value = "view/{id}", method = RequestMethod.GET)
 	public ModelAndView view(
 				@PathVariable("tenant-url") String tenant, 
@@ -240,17 +245,17 @@ public class UserGroupController extends BaseController<UserGroup> {
 				HttpServletRequest request
 			) {
 
-		ModelAndView mav = new ModelAndView(Navigation.USER_PERMISSION_VIEW.getPath());
+		ModelAndView mav = new ModelAndView(Navigation.APPLICATION_VIEW.getPath());
 		
-		UserGroup userGroup = userGroupService.find(getDBTenant(tenant), id);
+		Application app = applicationService.find(getDBTenant(tenant), id);
 		
-		mav.addObject("userGroup", userGroup);
+		mav.addObject("app", app);
 		mav.addObject("readOnly", true);
 		
 		return mav;
 	}
 
-	@PreAuthorize("@apoloSecurity.hasPermission('USER_PERMISSION_LIST')")
+	@PreAuthorize("@apoloSecurity.hasPermission('APPLICATION_LIST')")
 	@RequestMapping(value = "search", method = RequestMethod.POST)
 	public ModelAndView search(
 				@PathVariable("tenant-url") String tenant, 
@@ -261,7 +266,7 @@ public class UserGroupController extends BaseController<UserGroup> {
 		return search(tenant, 1, searchParameter, request);
 	}
 	
-	@PreAuthorize("@apoloSecurity.hasPermission('USER_PERMISSION_LIST')")
+	@PreAuthorize("@apoloSecurity.hasPermission('APPLICATION_LIST')")
 	@RequestMapping(value = "search/{pageNumber}", method = RequestMethod.GET)
 	public ModelAndView search(
 				@PathVariable("tenant-url") String tenant, 
@@ -272,7 +277,7 @@ public class UserGroupController extends BaseController<UserGroup> {
 		return search(tenant, pageNumber, "", request);
 	}
 	
-	@PreAuthorize("@apoloSecurity.hasPermission('USER_PERMISSION_LIST')")
+	@PreAuthorize("@apoloSecurity.hasPermission('APPLICATION_LIST')")
 	@RequestMapping(value = "search/{searchParameter}/{pageNumber}", method = RequestMethod.GET)
 	public ModelAndView search(
 				@PathVariable("tenant-url") String tenant, 
@@ -281,16 +286,16 @@ public class UserGroupController extends BaseController<UserGroup> {
 				HttpServletRequest request
 			) {
 
-		ModelAndView mav = new ModelAndView(Navigation.USER_PERMISSION_LIST.getPath());
+		ModelAndView mav = new ModelAndView(Navigation.APPLICATION_LIST.getPath());
 		
-		Page<UserGroup> page = userGroupService.search(getDBTenant(tenant), pageNumber, searchParameter);
+		Page<Application> page = applicationService.search(getDBTenant(tenant), pageNumber, searchParameter);
 		
 		String url = "";
 		
 		if (searchParameter == null || "".equalsIgnoreCase(searchParameter)) {
-			url = "/user-group/search";
+			url = "/application/search";
 		} else {
-			url = "/user-group/search/"+searchParameter;
+			url = "/application/search/"+searchParameter;
 		}
 		
 		configurePageable(tenant, mav, page, url);
@@ -298,26 +303,25 @@ public class UserGroupController extends BaseController<UserGroup> {
 		mav.addObject("searchParameter", searchParameter);
 		
 		if (page != null && page.getContent() != null) {
-			mav.addObject("userGroupList", page.getContent());	
+			mav.addObject("appList", page.getContent());
 		}
-		
-		
+
 		return mav;
 	}
 	
-	@PreAuthorize("@apoloSecurity.hasPermission('USER_PERMISSION_LIST')")
+	@PreAuthorize("@apoloSecurity.hasPermission('APPLICATION_LIST')")
 	@RequestMapping(value = "search-form", method = RequestMethod.GET)
 	public ModelAndView searchForm(
 				@PathVariable("tenant-url") String tenant, 
 				HttpServletRequest request
 			) {
 
-		ModelAndView mav = new ModelAndView(Navigation.USER_PERMISSION_SEARCH.getPath());
+		ModelAndView mav = new ModelAndView(Navigation.APPLICATION_SEARCH.getPath());
 		
 		return mav;
 	}
 	
-	@PreAuthorize("@apoloSecurity.hasPermission('USER_PERMISSION_EDIT')")
+	@PreAuthorize("@apoloSecurity.hasPermission('APPLICATION_EDIT')")
 	@RequestMapping(value = "lock/{id}", method = RequestMethod.GET)
 	public ModelAndView lock(
 				@PathVariable("tenant-url") String tenant, 
@@ -325,15 +329,15 @@ public class UserGroupController extends BaseController<UserGroup> {
 				HttpServletRequest request
 			) {
 
-		ModelAndView mav = new ModelAndView(Navigation.USER_PERMISSION_VIEW.getPath());
+		ModelAndView mav = new ModelAndView(Navigation.APPLICATION_VIEW.getPath());
 		
-		UserGroup userGroup = userGroupService.find(getDBTenant(tenant), id);
+		Application app = applicationService.find(getDBTenant(tenant), id);
 		
-		if (userGroup != null) {
+		if (app != null) {
 			
-			userGroupService.lock(userGroup);
+			applicationService.lock(app);
 			
-			mav = view(tenant, userGroup.getId(), request);
+			mav = view(tenant, app.getId(), request);
 			
 			mav.addObject("msg", true);
 			mav.addObject("message", MessageBundle.getMessageBundle("common.msg.save.success"));
@@ -342,7 +346,7 @@ public class UserGroupController extends BaseController<UserGroup> {
 		return mav;
 	}
 	
-	@PreAuthorize("@apoloSecurity.hasPermission('USER_PERMISSION_EDIT')")
+	@PreAuthorize("@apoloSecurity.hasPermission('APPLICATION_EDIT')")
 	@RequestMapping(value = "unlock/{id}", method = RequestMethod.GET)
 	public ModelAndView unlock(
 				@PathVariable("tenant-url") String tenant, 
@@ -350,20 +354,46 @@ public class UserGroupController extends BaseController<UserGroup> {
 				HttpServletRequest request
 			) {
 
-		ModelAndView mav = new ModelAndView(Navigation.USER_PERMISSION_VIEW.getPath());
+		ModelAndView mav = new ModelAndView(Navigation.APPLICATION_VIEW.getPath());
 		
-		UserGroup userGroup = userGroupService.find(getDBTenant(tenant), id);
+		Application app = applicationService.find(getDBTenant(tenant), id);
 		
-		if (userGroup != null) {
+		if (app != null) {
 			
-			userGroupService.unlock(userGroup);
+			applicationService.unlock(app);
 			
-			mav = view(tenant, userGroup.getId(), request);
+			mav = view(tenant, app.getId(), request);
 			
 			mav.addObject("msg", true);
 			mav.addObject("message", MessageBundle.getMessageBundle("common.msg.save.success"));
 		}
 		
 		return mav;
+	}
+
+	@InitBinder
+	protected void initBinder(WebDataBinder binder) {
+		binder.registerCustomEditor(Set.class, "groups", new CustomCollectionEditor(Set.class) {
+			@Override
+			protected Object convertElement(Object element) {
+				Long id = null;
+
+				if(element instanceof String && !((String)element).equals("")){
+					//From the JSP 'element' will be a String
+					try{
+						id = Long.parseLong((String) element);
+					} catch (NumberFormatException e) {
+						log.error("Element was " + ((String) element), e);
+					}
+				} else if(element instanceof Long) {
+					//From the database 'element' will be a Long
+					id = (Long) element;
+				}
+
+				return id != null ? userGroupService.find(id) : null;
+			}
+		});
+
+		super.initBinder(binder);
 	}
 }

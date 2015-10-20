@@ -10,12 +10,12 @@
             <div class="navbar-header align-center">
                 <a class="align-center col-sm-12 navbar-brand"
                    style="text-align: center;"
-                   th:href="${#authorization.expression('@apoloSecurity.isAuthenticated()') == true} ? @{|/${#authentication.systemUser.tenant.url}/user|} : @{'/'}">
+                   th:href="${#authorization.expression('@apoloSecurity.isAuthenticated()') == true} ? @{|/${#authentication.systemUser.tenant.url}/web/user|} : @{'/'}">
                     <strong>
                         <img class="normal-logo logo-white"
                              th:if="${#authorization.expression('@apoloSecurity.isAuthenticated()') == true}
                                             and ${#authentication.systemUser.tenant.logo != null}"
-                             th:src="@{|/${#authentication.systemUser.tenant.url}/uploadedfiles/Tenant/${#authentication.systemUser.tenant.id}/${#authentication.systemUser.tenant.logo}|}"
+                             th:src="@{|/${#authentication.systemUser.tenant.url}/web/uploadedfiles/Tenant/${#authentication.systemUser.tenant.id}/${#authentication.systemUser.tenant.logo}|}"
                              th:width="${#authentication.systemUser.tenant.logoWidth} + ${'px'}"
                              th:height="${#authentication.systemUser.tenant.logoHeight} + ${'px'}"
                              th:style="${'width: '} + ${#authentication.systemUser.tenant.logoWidth} + ${'px; height: '} + ${#authentication.systemUser.tenant.logoHeight} + ${'px;'}"
@@ -28,13 +28,15 @@
 
                             </span>
                         <img class="normal-logo logo-white"
-                             th:if="${#authorization.expression('@apoloSecurity.isAuthenticated()') == false} or ${#authentication.systemUser.tenant.logo == null}"
+                             th:if="${#authorization.expression('@apoloSecurity.isAuthenticated()') == false}
+                                    or ${#authentication.systemUser.tenant.logo == null}"
                              th:src="@{'/resources/app/img/logo.png'}"
                              width="15"
                              height="20"
                              style="width: 15px; height: 20px;"
                                 />
-                        <span th:if="${#authorization.expression('@apoloSecurity.isAuthenticated()') == false} or ${#authentication.systemUser.tenant.logo == null}"
+                        <span th:if="${#authorization.expression('@apoloSecurity.isAuthenticated()') == false}
+                                or ${#authentication.systemUser.tenant.logo == null}"
                               th:text="#{app.title}"
                                 />
                     </strong>

@@ -14,7 +14,7 @@
     </section>
 
     <section class="content">
-        <div th:with="searchUrlParam=${'/tenant/search'}">
+        <div th:with="searchUrlParam=${'/web/tenant/search'}">
             <div th:remove="tag"
                  th:include="@{_fragment/_search} ::
                         search (
@@ -61,7 +61,7 @@
                         <center>
                             <img th:if="${tenant.logo != null} and ${tenant.logo != ''}"
                                  class="img-thumbnail"
-                                 th:src="@{|/${tenant.url}/uploadedfiles/Tenant/${tenant.id}/${tenant.logo}|}"
+                                 th:src="@{|/web/${tenant.url}/uploadedfiles/Tenant/${tenant.id}/${tenant.logo}|}"
                                  style="width: 40px;"
                                  width="40"
                                     />
@@ -71,7 +71,7 @@
 
                     <td>
                         <a th:text="${tenant.name}"
-                           th:href='@{|/tenant/view/${tenant.id}|}'
+                           th:href='@{|/web/tenant/view/${tenant.id}|}'
                            class="btn btn-link">
                             ${tenant.name}
                         </a>
@@ -88,14 +88,14 @@
 
                     <td sec:authorize="@apoloSecurity.hasPermission('TENANT_LIST', 'TENANT_EDIT', 'TENANT_REMOVE', 'TENANT_MANAGER')">
                         <div class="btn-group btn-group-sm">
-                            <a th:href='@{|/tenant/view/${tenant.id}|}'
+                            <a th:href='@{|/web/tenant/view/${tenant.id}|}'
                                class="btn btn-default"
                                data-toggle="tooltip"
                                th:title="#{common.show}">
                                 <i class="fa fa-search-plus"></i>
                             </a>
                             <a sec:authorize="@apoloSecurity.hasPermission('TENANT_EDIT')"
-                               th:href='@{|/tenant/edit/${tenant.id}|}'
+                               th:href='@{|/web/tenant/edit/${tenant.id}|}'
                                class="btn btn-default"
                                data-toggle="tooltip"
                                th:title="#{common.edit}">
@@ -104,7 +104,7 @@
                             <a sec:authorize="@apoloSecurity.hasPermission('TENANT_REMOVE')"
                                href='#'
                                class="btn btn-default"
-                               th:with="removeAction=${'removeConfirmationDialogOpen('''} + ${'/tenant/remove/'} + ${tenant.id} + ${''', ''tenant_'} + ${tenant.id} + ${''');'}"
+                               th:with="removeAction=${'removeConfirmationDialogOpen('''} + ${'/web/tenant/remove/'} + ${tenant.id} + ${''', ''tenant_'} + ${tenant.id} + ${''');'}"
                                th:onclick="${removeAction}"
                                data-toggle="tooltip"
                                th:title="#{common.remove}">
@@ -113,7 +113,7 @@
 
                             <a sec:authorize="@apoloSecurity.hasPermission('TENANT_MANAGER')"
                                th:if="${T(apolo.data.enums.Status).ACTIVE == tenant.status}"
-                               th:href='@{|/tenant/lock/${tenant.id}|}'
+                               th:href='@{|/web/tenant/lock/${tenant.id}|}'
                                class="btn btn-danger btn-small"
                                data-toggle="tooltip"
                                th:title="#{common.lock}">
@@ -122,7 +122,7 @@
 
                             <a sec:authorize="@apoloSecurity.hasPermission('TENANT_MANAGER')"
                                th:if="${T(apolo.data.enums.Status).LOCKED == tenant.status}"
-                               th:href='@{|/tenant/unlock/${tenant.id}|}'
+                               th:href='@{|/web/tenant/unlock/${tenant.id}|}'
                                class="btn btn-success btn-small"
                                data-toggle="tooltip"
                                th:title="#{common.unlock}">
@@ -130,7 +130,7 @@
                             </a>
 
                             <a sec:authorize="@apoloSecurity.hasPermission('TENANT_MANAGER')"
-                               th:href='@{|/tenant/change/${tenant.url}|}'
+                               th:href='@{|/web/tenant/change/${tenant.url}|}'
                                class="btn btn-default btn-small"
                                data-toggle="tooltip"
                                th:title="#{tenant.change}">

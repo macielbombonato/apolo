@@ -9,11 +9,13 @@
         <meta http-equiv="X-Frame-Options" content="allow" />
 
         <!-- title selection -->
-        <title th:if="${#authorization.expression('@apoloSecurity.isAuthenticated()') == true} and ${#authentication.systemUser.tenant.name != null}"
+        <title th:if="${#authorization.expression('@apoloSecurity.isAuthenticated()') == true}
+                        and ${#authentication.systemUser.tenant.name != null}"
                th:text="${#authentication.systemUser.tenant.name}"
                 >
         </title>
-        <title th:if="${#authorization.expression('@apoloSecurity.isAuthenticated()') == true} and ${#authentication.systemUser.tenant.name == null}"
+        <title th:if="${#authorization.expression('@apoloSecurity.isAuthenticated()') == true}
+                        and ${#authentication.systemUser.tenant.name == null}"
                th:text="#{app.title}"
                 >
         </title>
@@ -23,12 +25,14 @@
         </title>
 
         <!-- icon selection -->
-        <link th:if="${#authorization.expression('@apoloSecurity.isAuthenticated()') == true} and ${#authentication.systemUser.tenant.icon != null}"
+        <link th:if="${#authorization.expression('@apoloSecurity.isAuthenticated()') == true}
+                        and ${#authentication.systemUser.tenant.icon != null}"
               rel="icon"
               type="image/png"
-              th:src="@{|/${#authentication.systemUser.tenant.url}/uploadedfiles/Tenant/${#authentication.systemUser.tenant.id}/${#authentication.systemUser.tenant.icon}|}"
+              th:src="@{|/${#authentication.systemUser.tenant.url}/web/uploadedfiles/Tenant/${#authentication.systemUser.tenant.id}/${#authentication.systemUser.tenant.icon}|}"
           />
-        <link th:if="${#authorization.expression('@apoloSecurity.isAuthenticated()') == true} and ${#authentication.systemUser.tenant.icon == null}"
+        <link th:if="${#authorization.expression('@apoloSecurity.isAuthenticated()') == true}
+                        and ${#authentication.systemUser.tenant.icon == null}"
               rel="icon"
               type="image/png"
               th:href="@{|/resources/app/img/favicon.png|}"

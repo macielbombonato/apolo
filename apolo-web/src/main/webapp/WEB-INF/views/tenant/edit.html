@@ -14,7 +14,7 @@
     </section>
 
     <section class="content">
-        <form id="userForm" th:action="@{|/tenant/save|}" role="form" method="post" enctype="multipart/form-data">
+        <form id="userForm" th:action="@{|/web/tenant/save|}" role="form" method="post" enctype="multipart/form-data">
             <div th:remove="tag" th:include="@{tenant/_form} :: tenant-form"></div>
 
             <div class="form-actions">
@@ -24,12 +24,12 @@
                 </button>
 
                 <a th:if="${tenant.id != null}"
-                   th:href='@{|/tenant/view/${tenant.id}|}' class="btn btn-default">
+                   th:href='@{|/web/tenant/view/${tenant.id}|}' class="btn btn-default">
                     <i class="fa fa-times"></i>
                     <span th:text="#{common.cancel}" />
                 </a>
                 <a th:if="${tenant.id == null}"
-                   th:href='@{|/tenant/list|}' class="btn btn-default">
+                   th:href='@{|/web/tenant/list|}' class="btn btn-default">
                     <i class="fa fa-times"></i>
                     <span th:text="#{common.cancel}" />
                 </a>

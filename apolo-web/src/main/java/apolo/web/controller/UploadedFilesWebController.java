@@ -2,6 +2,7 @@ package apolo.web.controller;
 
 import apolo.common.config.model.ApplicationProperties;
 import apolo.data.model.User;
+import apolo.web.controller.abstracts.BaseWebController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpStatus;
@@ -15,7 +16,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import java.io.File;
 
 @Controller
-public class UploadedFilesController extends BaseController<User> {
+@RequestMapping(value = "/web")
+public class UploadedFilesWebController extends BaseWebController<User> {
 
 	@Autowired
 	ApplicationProperties applicationProperties;

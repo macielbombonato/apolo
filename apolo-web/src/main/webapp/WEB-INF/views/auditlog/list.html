@@ -14,7 +14,7 @@
     </section>
 
     <section class="content">
-        <div th:with="searchUrlParam=${'/'} + ${#authentication.systemUser.tenant.url} + ${'/auditlog/search'}">
+        <div th:with="searchUrlParam=${'/web/'} + ${#authentication.systemUser.tenant.url} + ${'/auditlog/search'}">
             <div th:remove="tag"
                  th:include="@{_fragment/_search} ::
                         search (

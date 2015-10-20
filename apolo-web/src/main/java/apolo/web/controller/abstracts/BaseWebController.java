@@ -1,4 +1,4 @@
-package apolo.web.controller;
+package apolo.web.controller.abstracts;
 
 import apolo.business.service.BaseService;
 import apolo.business.service.TenantService;
@@ -13,6 +13,7 @@ import apolo.data.model.User;
 import apolo.security.ApoloSecurityService;
 import apolo.security.CurrentUser;
 import apolo.security.UserPermission;
+import apolo.web.controller.ApoloAuthWebController;
 import apolo.web.enums.Navigation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,9 +41,9 @@ import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
 
-public abstract class BaseController<E extends BaseEntity> {
+public abstract class BaseWebController<E extends BaseEntity> {
 
-	protected static final Logger log = LoggerFactory.getLogger(BaseController.class);
+	protected static final Logger log = LoggerFactory.getLogger(BaseWebController.class);
 
 	@Inject
 	protected TenantService tenantService;
@@ -99,7 +100,7 @@ public abstract class BaseController<E extends BaseEntity> {
 			String query = (String) request.getAttribute("javax.servlet.forward.query_string");
 			URI uri = new URI(scheme,userInfo,host,port,path,query,null);
 
-			serverUrl = uri.toString() + "/" + tenant + "/";
+			serverUrl = uri.toString() + "/web/" + tenant + "/";
 
 		} catch (MalformedURLException e) {
 			log.error(e.getMessage(), e);
@@ -121,9 +122,9 @@ public abstract class BaseController<E extends BaseEntity> {
 
 		if (tenant != null
 				&& !tenant.isEmpty()) {
-			mav.addObject("url", "/" + tenant + url);
+			mav.addObject("url", "/web/" + tenant + url);
 		} else {
-			mav.addObject("url", "/" + url);
+			mav.addObject("url", "/web/" + url);
 		}
 
 		mav.addObject("page", page);
@@ -311,9 +312,9 @@ public abstract class BaseController<E extends BaseEntity> {
 		} else {
 			ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
 
-			AuthController authController = (AuthController) ctx.getBean("authController");
+			ApoloAuthWebController apoloAuthController = (ApoloAuthWebController) ctx.getBean("authController");
 
-			mav = authController.login(request);
+			mav = apoloAuthController.login(request);
 		}
 
 		return mav;
@@ -333,9 +334,9 @@ public abstract class BaseController<E extends BaseEntity> {
 		} else {
 			ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
 
-			AuthController authController = (AuthController) ctx.getBean("authController");
+			ApoloAuthWebController apoloAuthController = (ApoloAuthWebController) ctx.getBean("authController");
 
-			mav = authController.login(request);
+			mav = apoloAuthController.login(request);
 		}
 
 		return mav;

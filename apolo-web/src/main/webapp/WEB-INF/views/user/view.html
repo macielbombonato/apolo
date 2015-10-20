@@ -18,7 +18,7 @@
             <center>
                 <img th:if="${user.avatarFileName != null} and ${user.avatarFileName != ''}"
                      class="img-thumbnail"
-                     th:src="@{|/${#authentication.systemUser.tenant.url}/uploadedfiles/User/${user.id}/${user.avatarFileName}|}"
+                     th:src="@{|/web/${#authentication.systemUser.tenant.url}/uploadedfiles/User/${user.id}/${user.avatarFileName}|}"
                         />
                 <i th:if="${user.avatarFileName == null} or ${user.avatarFileName == ''}" class="fa fa-user fa-5x" />
             </center>
@@ -29,26 +29,26 @@
 
             <div class="btn-group" role="group" th:with="userStatus=${''} + ${user.status}">
                 <a sec:authorize="@apoloSecurity.hasPermission('USER_EDIT')"
-                   th:href='@{|/${#authentication.systemUser.tenant.url}/user/edit/${user.id}|}' class="btn btn-default">
+                   th:href='@{|/web/${#authentication.systemUser.tenant.url}/user/edit/${user.id}|}' class="btn btn-default">
                     <i class="fa fa-pencil-square-o"></i>
                     <span th:text="#{common.edit}" />
                 </a>
                 <a sec:authorize="!@apoloSecurity.hasPermission('USER_EDIT')"
                    th:if="${#authentication.systemUser.id == user.id}"
-                   th:href='@{|/${#authentication.systemUser.tenant.url}/user/edit/${user.id}|}' class="btn btn-default">
+                   th:href='@{|/web/${#authentication.systemUser.tenant.url}/user/edit/${user.id}|}' class="btn btn-default">
                     <i class="fa fa-pencil-square-o"></i>
                     <span th:text="#{common.edit}" />
                 </a>
                 <a sec:authorize="@apoloSecurity.hasPermission('USER_MANAGER')"
                    th:if="${user.status.changeable} and ${userStatus == 'ACTIVE'}"
-                   th:href='@{|/${#authentication.systemUser.tenant.url}/user/lock/${user.id}|}'
+                   th:href='@{|/web/${#authentication.systemUser.tenant.url}/user/lock/${user.id}|}'
                    class="btn btn-danger">
                     <i class="fa fa-eye-slash"></i>
                     <span th:text="#{common.lock}" />
                 </a>
                 <a sec:authorize="@apoloSecurity.hasPermission('USER_MANAGER')"
                    th:if="${user.status.changeable} and ${userStatus != 'ACTIVE'}"
-                   th:href='@{|/${#authentication.systemUser.tenant.url}/user/unlock/${user.id}|}'
+                   th:href='@{|/web/${#authentication.systemUser.tenant.url}/user/unlock/${user.id}|}'
                    class="btn btn-success">
                     <i class="fa fa-eye"></i>
                     <span th:text="#{common.unlock}" />

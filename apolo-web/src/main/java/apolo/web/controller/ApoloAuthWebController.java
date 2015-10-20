@@ -3,6 +3,7 @@ package apolo.web.controller;
 import apolo.business.service.UserService;
 import apolo.common.util.MessageBundle;
 import apolo.data.model.User;
+import apolo.web.controller.abstracts.BaseWebController;
 import apolo.web.enums.Navigation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,7 +24,8 @@ import javax.servlet.http.HttpServletRequest;
 
 @SuppressWarnings("rawtypes")
 @Controller
-public class AuthController extends BaseController {
+@RequestMapping(value = "/web")
+public class ApoloAuthWebController extends BaseWebController {
 	
 	private Facebook facebook;
 
@@ -31,13 +33,13 @@ public class AuthController extends BaseController {
 	private UserService userService;
 	
 	@Autowired
-	private UserController userController;
+	private UserWebController userController;
 	
 	@Autowired
-	private AppController appController;
+	private ApoloWebController apoloController;
 
 	@Inject
-	public AuthController(Facebook facebook) {
+	public ApoloAuthWebController(Facebook facebook) {
 		this.facebook = facebook;
 	}
 
@@ -165,7 +167,7 @@ public class AuthController extends BaseController {
 				email
 		);
 
-		ModelAndView mav = appController.index(tenant, request);
+		ModelAndView mav = apoloController.index(tenant, request);
 
 		mav.addObject("warn", true);
 		mav.addObject("message", MessageBundle.getMessageBundle("user.forgot-password.msg"));
@@ -214,7 +216,7 @@ public class AuthController extends BaseController {
 				);
 		}
 
-		ModelAndView mav = appController.index(tenant, request);
+		ModelAndView mav = apoloController.index(tenant, request);
 
 		mav.addObject("msg", true);
 		mav.addObject("message", MessageBundle.getMessageBundle("user.reset-password.msg"));

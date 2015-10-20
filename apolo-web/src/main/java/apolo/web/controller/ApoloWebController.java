@@ -7,6 +7,7 @@ import apolo.common.config.model.ApplicationProperties;
 import apolo.common.util.MessageBundle;
 import apolo.data.model.Tenant;
 import apolo.data.model.User;
+import apolo.web.controller.abstracts.BaseWebController;
 import apolo.web.enums.Navigation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,15 +28,15 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
-public class AppController extends BaseController<User> {
+public class ApoloWebController extends BaseWebController<User> {
 
-	private static final Logger log = LoggerFactory.getLogger(BaseController.class);
+	private static final Logger log = LoggerFactory.getLogger(BaseWebController.class);
 
 	@Autowired
 	private UserService userService;
 
 	@Autowired
-	private UserController userController;
+	private UserWebController userController;
 
 	@Autowired
 	private ApplicationProperties applicationProperties;
@@ -44,7 +45,7 @@ public class AppController extends BaseController<User> {
 	private LocaleResolver localeResolver;
 
 	@Autowired
-	private AuthController authController;
+	private ApoloAuthWebController apoloAuthController;
 
 	/**
 	 * System installation (setup) page
@@ -156,7 +157,7 @@ public class AppController extends BaseController<User> {
 			}
 		}
 
-		mav = authController.login(null, request);
+		mav = apoloAuthController.login(null, request);
 
 		return mav;
 	}

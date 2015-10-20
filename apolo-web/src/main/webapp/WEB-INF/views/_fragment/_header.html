@@ -8,7 +8,7 @@
     <header class="main-header navbar-opacity">
 
         <a class="logo"
-           th:href="${#authorization.expression('@apoloSecurity.isAuthenticated()') == true} ? @{|/${#authentication.systemUser.tenant.url}/user|} : @{'/'}">
+           th:href="${#authorization.expression('@apoloSecurity.isAuthenticated()') == true} ? @{|/web/${#authentication.systemUser.tenant.url}/user|} : @{'/'}">
 
             <!-- mini logo for sidebar mini 50x50 pixels -->
             <span class="logo-mini">
@@ -20,15 +20,16 @@
                 <strong>
                     <img class="logo-opacity" th:if="${#authorization.expression('@apoloSecurity.isAuthenticated()') == true}
                                             and ${#authentication.systemUser.tenant.logo != null}"
-                         th:src="@{|/${#authentication.systemUser.tenant.url}/uploadedfiles/Tenant/${#authentication.systemUser.tenant.id}/${#authentication.systemUser.tenant.logo}|}"
+                         th:src="@{|/web/${#authentication.systemUser.tenant.url}/uploadedfiles/Tenant/${#authentication.systemUser.tenant.id}/${#authentication.systemUser.tenant.logo}|}"
                          th:width="${#authentication.systemUser.tenant.logoWidth} + ${'px'}"
                          th:height="${#authentication.systemUser.tenant.logoHeight} + ${'px'}"
                          th:style="${'width: '} + ${#authentication.systemUser.tenant.logoWidth} + ${'px; height: '} + ${#authentication.systemUser.tenant.logoHeight} + ${'px;'}"
                             />
 
                     <img class="logo-opacity" th:if="${#authorization.expression('@apoloSecurity.isAuthenticated()') != true}
-                                            and ${tenant != null} and ${tenant.logo != null}"
-                         th:src="@{|/${tenant.url}/uploadedfiles/Tenant/${tenant.id}/${tenant.logo}|}"
+                                            and ${tenant != null}
+                                            and ${tenant.logo != null}"
+                         th:src="@{|/web/${tenant.url}/uploadedfiles/Tenant/${tenant.id}/${tenant.logo}|}"
                          th:width="${tenant.logoWidth} + ${'px'}"
                          th:height="${tenant.logoHeight} + ${'px'}"
                          th:style="${'width: '} + ${tenant.logoWidth} + ${'px; height: '} + ${tenant.logoHeight} + ${'px;'}"
@@ -50,13 +51,15 @@
 
                     </span>
 
-                    <img class="logo-opacity" th:if="${#authorization.expression('@apoloSecurity.isAuthenticated()') == false} and ${tenant == null}"
+                    <img class="logo-opacity" th:if="${#authorization.expression('@apoloSecurity.isAuthenticated()') == false}
+                                                    and ${tenant == null}"
                          th:src="@{'/resources/app/img/favicon.png'}"
                          width="20"
                          height="25"
                          style="width: 20px; height: 25px;"
                             />
-                    <span class="logo-opacity" th:if="${#authorization.expression('@apoloSecurity.isAuthenticated()') == false} and ${tenant == null}"
+                    <span class="logo-opacity" th:if="${#authorization.expression('@apoloSecurity.isAuthenticated()') == false}
+                                                    and ${tenant == null}"
                           th:text="#{app.title}"
                             />
                 </strong>

@@ -8,6 +8,7 @@ import apolo.data.enums.UserStatus;
 import apolo.data.model.Tenant;
 import apolo.data.model.User;
 import apolo.security.UserPermission;
+import apolo.web.controller.abstracts.BaseWebController;
 import apolo.web.enums.Navigation;
 import net.sf.json.JSONObject;
 import org.springframework.beans.propertyeditors.CustomCollectionEditor;
@@ -31,11 +32,9 @@ import java.util.List;
 import java.util.Set;
 
 @Controller
-@RequestMapping(value = "/{tenant-url}/user")
-public class UserController extends BaseController<User> {
+@RequestMapping(value = "/web/{tenant-url}/user")
+public class UserWebController extends BaseWebController<User> {
 
-	private final String ACCEPTED_FILE_TYPE = ".gif.jpg.png";
-	
 	@Inject
 	UserService userService;
 	
@@ -653,7 +652,6 @@ public class UserController extends BaseController<User> {
 			if (entity.getAvatarOriginalName() == null
 					|| (entity.getAvatarOriginalName() != null
 					&& entity.getAvatarOriginalName().length() > 0
-					&& !ACCEPTED_FILE_TYPE.contains(fileService.extractFileExtension(entity.getAvatarOriginalName()))
 			)) {
 				hasErrors = true;
 			}

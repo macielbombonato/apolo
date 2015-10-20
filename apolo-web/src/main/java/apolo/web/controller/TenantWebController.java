@@ -10,6 +10,7 @@ import apolo.data.enums.Spinner;
 import apolo.data.enums.Status;
 import apolo.data.model.Tenant;
 import apolo.data.model.User;
+import apolo.web.controller.abstracts.BaseWebController;
 import apolo.web.enums.Navigation;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,11 +30,9 @@ import java.util.Date;
 import java.util.List;
 
 @Controller
-@RequestMapping(value = "/tenant")
-public class TenantController extends BaseController<Tenant> {
+@RequestMapping(value = "/web/tenant")
+public class TenantWebController extends BaseWebController<Tenant> {
 
-	private final String ACCEPTED_FILE_TYPE = ".gif.jpg.png";
-	
 	@Autowired
 	private TenantService tenantService;
 	
@@ -44,7 +43,7 @@ public class TenantController extends BaseController<Tenant> {
 	private UserService userService;
 	
 	@Autowired
-	private UserController userController;
+	private UserWebController userController;
 	
 	@PreAuthorize("@apoloSecurity.hasPermission('TENANT_MANAGER')")
 	@RequestMapping(value = "change/{tenant-url}", method = RequestMethod.GET)
@@ -484,7 +483,6 @@ public class TenantController extends BaseController<Tenant> {
 		
 		if (entity.getLogo() != null
 				&& entity.getLogo().length() > 0
-				&& !ACCEPTED_FILE_TYPE.contains(fileService.extractFileExtension(entity.getLogo()))
 				) {
 			hasErrors = true;
 		}

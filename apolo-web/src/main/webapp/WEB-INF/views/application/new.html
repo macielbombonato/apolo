@@ -14,7 +14,7 @@
     </section>
 
     <section class="content">
-        <form id="userForm" th:action="@{|/${#authentication.systemUser.tenant.url}/application/save|}" role="form" method="post" enctype="multipart/form-data">
+        <form id="userForm" th:action="@{|/web/${#authentication.systemUser.tenant.url}/application/save|}" role="form" method="post" enctype="multipart/form-data">
             <div th:remove="tag" th:include="@{application/_form} :: application-form"></div>
 
             <div class="form-actions">
@@ -24,12 +24,12 @@
                 </button>
 
                 <a th:if="${app.id != null}"
-                   th:href='@{|/${#authentication.systemUser.tenant.url}/application/view/${app.id}|}' class="btn btn-default">
+                   th:href='@{|/web/${#authentication.systemUser.tenant.url}/application/view/${app.id}|}' class="btn btn-default">
                     <i class="fa fa-times"></i>
                     <span th:text="#{common.cancel}" />
                 </a>
                 <a th:if="${app.id == null}"
-                   th:href='@{|/${#authentication.systemUser.tenant.url}/application/list|}' class="btn btn-default">
+                   th:href='@{|/web/${#authentication.systemUser.tenant.url}/application/list|}' class="btn btn-default">
                     <i class="fa fa-times"></i>
                     <span th:text="#{common.cancel}" />
                 </a>

@@ -2,6 +2,7 @@ package apolo.web.controller;
 
 import apolo.business.service.AuditLogService;
 import apolo.data.model.AuditLog;
+import apolo.web.controller.abstracts.BaseWebController;
 import apolo.web.enums.Navigation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,8 +17,8 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
-@RequestMapping(value = "/{tenant}/auditlog")
-public class AuditLogController extends BaseController<AuditLog> {
+@RequestMapping(value = "/web/{tenant}/auditlog")
+public class AuditLogWebController extends BaseWebController<AuditLog> {
 
 	@Autowired
 	private AuditLogService auditLogService;

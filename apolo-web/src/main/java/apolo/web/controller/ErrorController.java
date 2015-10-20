@@ -1,17 +1,16 @@
 package apolo.web.controller;
 
-import javax.servlet.http.HttpServletRequest;
-
+import apolo.common.util.MessageBundle;
+import apolo.web.enums.Navigation;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import apolo.web.enums.Navigation;
-import apolo.common.util.MessageBundle;
+import javax.servlet.http.HttpServletRequest;
 
 @Controller
-@RequestMapping(value = "/error")
+@RequestMapping(value = "/web/error")
 public class ErrorController {
 
 	@RequestMapping(value = "403", method = RequestMethod.GET)
