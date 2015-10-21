@@ -8,7 +8,7 @@ import apolo.data.enums.UserStatus;
 import apolo.data.model.Tenant;
 import apolo.data.model.User;
 import apolo.security.UserPermission;
-import apolo.web.controller.abstracts.BaseWebController;
+import apolo.web.controller.base.BaseWebController;
 import apolo.web.enums.Navigation;
 import net.sf.json.JSONObject;
 import org.springframework.beans.propertyeditors.CustomCollectionEditor;

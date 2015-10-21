@@ -2,7 +2,7 @@ package apolo.web.controller;
 
 import apolo.business.service.AuditLogService;
 import apolo.data.model.AuditLog;
-import apolo.web.controller.abstracts.BaseWebController;
+import apolo.web.controller.base.BaseWebController;
 import apolo.web.enums.Navigation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

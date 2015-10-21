@@ -1,4 +1,4 @@
-package apolo.web.controller.abstracts;
+package apolo.web.controller.base;
 
 import apolo.business.service.BaseService;
 import apolo.business.service.TenantService;

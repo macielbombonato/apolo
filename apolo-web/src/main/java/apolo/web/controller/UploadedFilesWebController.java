@@ -2,7 +2,7 @@ package apolo.web.controller;
 
 import apolo.common.config.model.ApplicationProperties;
 import apolo.data.model.User;
-import apolo.web.controller.abstracts.BaseWebController;
+import apolo.web.controller.base.BaseWebController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpStatus;

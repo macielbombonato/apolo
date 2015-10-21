@@ -3,7 +3,7 @@ package apolo.web.controller;
 import apolo.business.service.UserService;
 import apolo.common.util.MessageBundle;
 import apolo.data.model.User;
-import apolo.web.controller.abstracts.BaseWebController;
+import apolo.web.controller.base.BaseWebController;
 import apolo.web.enums.Navigation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -123,7 +123,10 @@ public class ApoloAuthWebController extends BaseWebController {
             ModelMap model) {
         ModelAndView mav = new ModelAndView(Navigation.AUTH_LOGIN.getPath(), model);
 		mav.addObject("tenant", getDBTenant(tenant));
-        return mav;
+
+		logout();
+
+		return mav;
     }
 
 	@PreAuthorize("permitAll")

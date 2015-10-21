@@ -7,7 +7,7 @@ import apolo.common.config.model.ApplicationProperties;
 import apolo.common.util.MessageBundle;
 import apolo.data.model.Tenant;
 import apolo.data.model.User;
-import apolo.web.controller.abstracts.BaseWebController;
+import apolo.web.controller.base.BaseWebController;
 import apolo.web.enums.Navigation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

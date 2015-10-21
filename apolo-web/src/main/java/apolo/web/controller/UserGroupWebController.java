@@ -4,7 +4,7 @@ import apolo.business.service.UserGroupService;
 import apolo.common.exception.AccessDeniedException;
 import apolo.common.util.MessageBundle;
 import apolo.data.model.UserGroup;
-import apolo.web.controller.abstracts.BaseWebController;
+import apolo.web.controller.base.BaseWebController;
 import apolo.web.enums.Navigation;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;

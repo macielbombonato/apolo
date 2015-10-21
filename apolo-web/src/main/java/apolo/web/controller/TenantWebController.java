@@ -10,7 +10,7 @@ import apolo.data.enums.Spinner;
 import apolo.data.enums.Status;
 import apolo.data.model.Tenant;
 import apolo.data.model.User;
-import apolo.web.controller.abstracts.BaseWebController;
+import apolo.web.controller.base.BaseWebController;
 import apolo.web.enums.Navigation;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;

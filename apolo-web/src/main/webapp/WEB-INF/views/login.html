@@ -35,7 +35,7 @@
             <div class="login-box-body">
                 <div class="login-box-msg" th:remove="tag" th:include="@{_fragment/_message} :: message"></div>
 
-                <form th:action="@{/login}" method="post" role="form">
+                <form th:action="@{/web/login}" method="post" role="form">
                     <div class="form-group has-feedback">
                         <input type="email"
                                class="form-control focus"
@@ -78,8 +78,6 @@
                     <br />
                 </div>
 
-                <div class="col-sm-12" th:remove="tag" th:include="@{_fragment/_ad-horizontal} :: ad-horizontal"></div>
-
                 <div class="row">
                     &nbsp;
                     <br />
@@ -87,6 +85,8 @@
 
             </div>
         </div>
+
+        <div class="col-sm-12" th:remove="tag" th:include="@{_fragment/_ad-horizontal} :: ad-horizontal"></div>
 
         <div th:remove="tag" th:include="@{_fragment/_scriptsTag} :: scriptsTag"></div>
     </body>

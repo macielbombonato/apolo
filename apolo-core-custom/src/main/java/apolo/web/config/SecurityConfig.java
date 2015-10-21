@@ -84,12 +84,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(
                         "/install/**",
                         "/install",
-                        "/login",
-                        "/loginfailed",
-                        "/logout",
-                        "/index",
-                        "/",
-                        "/login",
+                        "/web/login",
+                        "/web/loginfailed",
+                        "/web/logout",
+                        "/web/index",
+                        "/web/",
                         "/resources/**",
                         "/**/uploadedfiles/**",
                         "/error/**"
@@ -103,14 +102,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin()
                 .usernameParameter("username")
                 .passwordParameter("password")
-                .loginPage("/login")
-                .loginProcessingUrl("/login")
-                    .defaultSuccessUrl("/", false)
-                            .failureUrl("/loginfailed")
+                .loginPage("/web/login")
+                .loginProcessingUrl("/web/login")
+                    .defaultSuccessUrl("/web/", false)
+                            .failureUrl("/web/loginfailed")
                     .permitAll()
             .and()
                 .logout()
-                .logoutUrl("/logout")
+                .logoutUrl("/web/logout")
                     .permitAll();
     }
 }
