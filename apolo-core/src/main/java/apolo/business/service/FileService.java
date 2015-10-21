@@ -1,7 +1,7 @@
 package apolo.business.service;
 
 import apolo.business.model.FileContent;
-import apolo.data.model.BaseEntity;
+import apolo.data.model.base.BaseEntity;
 import apolo.data.model.Tenant;
 
 import java.io.File;

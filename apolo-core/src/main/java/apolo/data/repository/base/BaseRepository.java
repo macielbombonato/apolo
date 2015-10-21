@@ -1,6 +1,6 @@
-package apolo.data.repository;
+package apolo.data.repository.base;
 
-import apolo.data.model.BaseEntity;
+import apolo.data.model.base.BaseEntity;
 
 @SuppressWarnings("rawtypes")
 public interface BaseRepository<E extends BaseEntity> {

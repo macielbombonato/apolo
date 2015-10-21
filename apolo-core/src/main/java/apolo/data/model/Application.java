@@ -2,6 +2,7 @@ package apolo.data.model;
 
 import apolo.data.entitylistener.AuditLogListener;
 import apolo.data.enums.Status;
+import apolo.data.model.base.AuditableBaseEntity;
 import apolo.data.util.InputLength;
 import apolo.security.UserPermission;
 import org.hibernate.annotations.Type;

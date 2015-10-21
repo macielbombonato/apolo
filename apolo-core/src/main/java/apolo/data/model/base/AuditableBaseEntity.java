@@ -1,6 +1,7 @@
-package apolo.data.model;
+package apolo.data.model.base;
 
 import apolo.data.entitylistener.AuditListener;
+import apolo.data.model.User;
 import apolo.data.model.interfaces.IAuditableEntity;
 import org.springframework.format.annotation.DateTimeFormat;
 

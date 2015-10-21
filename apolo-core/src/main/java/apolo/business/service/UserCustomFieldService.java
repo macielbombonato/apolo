@@ -1,5 +1,6 @@
 package apolo.business.service;
 
+import apolo.business.service.base.BaseService;
 import apolo.data.model.Tenant;
 import apolo.data.model.UserCustomField;
 

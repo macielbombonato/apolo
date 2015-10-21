@@ -4,6 +4,7 @@ import apolo.common.config.model.ApplicationProperties;
 import apolo.data.entitylistener.AuditLogListener;
 import apolo.data.enums.Skin;
 import apolo.data.enums.Status;
+import apolo.data.model.base.AuditableBaseEntity;
 import apolo.data.util.InputLength;
 import org.hibernate.annotations.Type;
 import org.springframework.context.ApplicationContext;

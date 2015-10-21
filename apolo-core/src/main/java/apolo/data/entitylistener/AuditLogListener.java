@@ -5,7 +5,7 @@ import apolo.business.service.UserService;
 import apolo.business.service.impl.AuditLogServiceImpl;
 import apolo.data.enums.DatabaseTransactionType;
 import apolo.data.model.AuditLog;
-import apolo.data.model.AuditableBaseEntity;
+import apolo.data.model.base.AuditableBaseEntity;
 import apolo.data.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

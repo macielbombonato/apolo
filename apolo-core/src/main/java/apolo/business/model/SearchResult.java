@@ -1,6 +1,6 @@
 package apolo.business.model;
 
-import apolo.data.model.BaseEntity;
+import apolo.data.model.base.BaseEntity;
 
 import java.io.Serializable;
 import java.util.List;

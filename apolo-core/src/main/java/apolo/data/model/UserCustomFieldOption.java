@@ -1,5 +1,6 @@
 package apolo.data.model;
 
+import apolo.data.model.base.BaseEntity;
 import apolo.data.util.InputLength;
 
 import javax.persistence.AttributeOverride;

@@ -1,4 +1,4 @@
-package apolo.data.model;
+package apolo.data.model.base;
 
 import javax.persistence.*;
 import java.io.Serializable;

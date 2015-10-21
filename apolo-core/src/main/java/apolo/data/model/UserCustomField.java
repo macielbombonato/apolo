@@ -2,6 +2,7 @@ package apolo.data.model;
 
 import apolo.data.entitylistener.AuditLogListener;
 import apolo.data.enums.FieldType;
+import apolo.data.model.base.AuditableBaseEntity;
 import apolo.data.util.InputLength;
 
 import java.util.HashSet;

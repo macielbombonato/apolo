@@ -1,5 +1,7 @@
 package apolo.data.model;
 
+import apolo.data.model.base.BaseEntity;
+
 import javax.persistence.*;
 import java.util.Date;
 

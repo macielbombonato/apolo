@@ -1,6 +1,6 @@
-package apolo.business.service;
+package apolo.business.service.base;
 
-import apolo.data.model.BaseEntity;
+import apolo.data.model.base.BaseEntity;
 import apolo.data.model.Tenant;
 import apolo.data.model.User;
 

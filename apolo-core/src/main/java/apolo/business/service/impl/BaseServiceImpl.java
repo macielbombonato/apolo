@@ -1,7 +1,7 @@
 package apolo.business.service.impl;
 
-import apolo.business.service.BaseService;
-import apolo.data.model.BaseEntity;
+import apolo.business.service.base.BaseService;
+import apolo.data.model.base.BaseEntity;
 import apolo.data.model.User;
 import apolo.security.CurrentUser;
 

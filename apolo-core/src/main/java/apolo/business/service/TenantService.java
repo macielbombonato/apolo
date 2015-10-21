@@ -1,6 +1,7 @@
 package apolo.business.service;
 
 import apolo.business.model.FileContent;
+import apolo.business.service.base.BaseService;
 import apolo.data.model.Tenant;
 import org.springframework.data.domain.Page;
 

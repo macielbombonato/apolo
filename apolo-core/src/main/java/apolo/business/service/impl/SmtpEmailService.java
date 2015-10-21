@@ -6,7 +6,7 @@ import apolo.business.service.EmailService;
 import apolo.common.config.model.ApplicationProperties;
 import apolo.common.exception.BusinessException;
 import apolo.common.util.MessageBundle;
-import apolo.data.model.BaseEntity;
+import apolo.data.model.base.BaseEntity;
 import apolo.data.model.Tenant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

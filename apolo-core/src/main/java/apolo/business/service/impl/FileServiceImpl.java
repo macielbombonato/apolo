@@ -5,7 +5,7 @@ import apolo.business.service.FileService;
 import apolo.common.config.model.ApplicationProperties;
 import apolo.common.exception.GenericException;
 import apolo.common.util.MessageBundle;
-import apolo.data.model.BaseEntity;
+import apolo.data.model.base.BaseEntity;
 import apolo.data.model.Tenant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

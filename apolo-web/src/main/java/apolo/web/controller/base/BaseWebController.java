@@ -1,13 +1,13 @@
 package apolo.web.controller.base;
 
-import apolo.business.service.BaseService;
+import apolo.business.service.base.BaseService;
 import apolo.business.service.TenantService;
 import apolo.business.service.UserService;
 import apolo.common.config.model.ApplicationProperties;
 import apolo.common.exception.BusinessException;
 import apolo.common.exception.GenericException;
 import apolo.common.util.MessageBundle;
-import apolo.data.model.BaseEntity;
+import apolo.data.model.base.BaseEntity;
 import apolo.data.model.Tenant;
 import apolo.data.model.User;
 import apolo.security.ApoloSecurityService;

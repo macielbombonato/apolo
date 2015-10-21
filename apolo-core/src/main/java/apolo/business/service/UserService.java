@@ -2,6 +2,7 @@ package apolo.business.service;
 
 import apolo.business.model.FileContent;
 import apolo.business.model.InstallFormModel;
+import apolo.business.service.base.BaseService;
 import apolo.data.model.Tenant;
 import apolo.data.model.User;
 import org.springframework.data.domain.Page;

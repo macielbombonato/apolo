@@ -1,6 +1,7 @@
 package apolo.data.model;
 
 import apolo.data.entitylistener.AuditLogListener;
+import apolo.data.model.base.AuditableBaseEntity;
 import apolo.data.util.InputLength;
 import org.hibernate.annotations.Type;
 
