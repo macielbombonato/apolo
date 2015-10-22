@@ -135,23 +135,34 @@ O primeiro passo é cadastrar sua aplicação dentro do Apolo no menu Aplicativo
 
 Abaixo as chamadas que o Apolo possui:
 
-	- Listar usuários
+### Listar usuários
+
 	GET /api/{tenant-url}/user/list
 	GET /api/{tenant-url}/user/list/{pageNumber}
 
-	**Somente para administradores do sistema**
+**Somente para administradores do sistema**
+
 	GET /api/{tenant-url}/user/list-all
 	GET /api/{tenant-url}/user/list-all/{pageNumber}
 
-	- Salvar usuário (criação e edição), será diferenciado pelo ID do usuário, caso exista, será editado
+### Buscar usuário
+
+	GET /api/{tenant-url}/user/find/{id}
+
+### Salvar usuário (criação e edição), será diferenciado pelo ID do usuário, caso exista, será editado
+
 	POST /api/{tenant-url}/user/save
 	Content-Type: application/json
+
+**Exemplo de json para postar**
+
 	{
 		"name":"Nome do Usuário",
 		"email":"email@usuario.com",
 		"groupIds":[1, 2] --> grupos de permissão de acesso
 	}
 
-	- Excluir usuário
+### Excluir usuário
+
 	DELETE /api/hermes/user/delete/6 HTTP/1.1
 
