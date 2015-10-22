@@ -153,7 +153,9 @@ Abaixo as chamadas que o Apolo possui:
 
 	GET /api/{tenant-url}/user/find-all/{id}
 
-### Salvar usuário (criação e edição), será diferenciado pelo ID do usuário, caso exista, será editado
+### Salvar usuário
+
+- Criação e Edição, será diferenciado pelo ID do usuário, caso exista, será editado
 
 	POST /api/{tenant-url}/user/save
 	Content-Type: application/json
