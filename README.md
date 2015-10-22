@@ -124,3 +124,34 @@ No final do processo, o maven irá fazer o deploy automaticamente.
 ## Licença
 
 Apolo é um software de código aberto, você pode redistribuí-lo e/ou modificá-lo conforme a licença Apache versão 2.0. Veja o arquivo LICENSE-Apache.txt
+
+## API
+
+A partir da versão 4.0 o Apolo passou a ter uma API básica de suas funcionalidades e com isso, oferece uma estrutura para que aplicações baseadas nele possam implementar APIs facilmente.
+
+O primeiro passo é cadastrar sua aplicação dentro do Apolo no menu Aplicativos e isso irá gerar uma chave, esta deve ser enviada no "header" de todas as chamadas conforme o exemplo abaixo:
+
+	key: f4a8c9c3fc9019b4d063f0cca8864e33
+
+Abaixo as chamadas que o Apolo possui:
+
+	- Listar usuários
+	GET /api/{tenant-url}/user/list
+	GET /api/{tenant-url}/user/list/{pageNumber}
+
+	**Somente para administradores do sistema**
+	GET /api/{tenant-url}/user/list-all
+	GET /api/{tenant-url}/user/list-all/{pageNumber}
+
+	- Salvar usuário (criação e edição), será diferenciado pelo ID do usuário, caso exista, será editado
+	POST /api/{tenant-url}/user/save
+	Content-Type: application/json
+	{
+		"name":"Nome do Usuário",
+		"email":"email@usuario.com",
+		"groupIds":[1, 2] --> grupos de permissão de acesso
+	}
+
+	- Excluir usuário
+	DELETE /api/hermes/user/delete/6 HTTP/1.1
+
