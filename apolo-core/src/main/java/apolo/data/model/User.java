@@ -1,23 +1,25 @@
 package apolo.data.model;
 
+import apolo.business.service.TenantService;
+import apolo.business.service.UserGroupService;
 import apolo.data.entitylistener.AuditLogListener;
 import apolo.data.enums.UserStatus;
 import apolo.data.model.base.AuditableBaseEntity;
 import apolo.data.util.InputLength;
 import apolo.security.UserPermission;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.Type;
+import org.springframework.context.ApplicationContext;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.context.ContextLoader;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @EntityListeners(value = AuditLogListener.class)
@@ -38,6 +40,7 @@ public class User extends AuditableBaseEntity {
 	private String email;
 	
 	@Column(name = "encrypted_password", length = InputLength.MEDIUM, nullable = false)
+	@JsonIgnore
 	private String password;
 
 	@Column(name = "mobile", unique = false, length = InputLength.NAME, nullable = true)
@@ -53,9 +56,11 @@ public class User extends AuditableBaseEntity {
 			joinColumns = { @JoinColumn(name = "user_id", referencedColumnName = "user_id") }, 
 			inverseJoinColumns = { @JoinColumn(name = "group_id", referencedColumnName = "user_group_id") })
 	@NotNull
+	@JsonIgnore
 	private Set<UserGroup> groups;
 
 	@Transient
+	@JsonIgnore
 	private Set<UserPermission> permissions;
 	
 	@OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
@@ -63,6 +68,7 @@ public class User extends AuditableBaseEntity {
 	private List<UserCustomFieldValue> customFields;
 	
 	@ManyToOne
+	@JsonIgnore
 	private Tenant tenant;
 	
 	@Column(name = "avatar_original_name", length = InputLength.MEDIUM, nullable = true)
@@ -86,12 +92,15 @@ public class User extends AuditableBaseEntity {
 	private Boolean enabled;
 	
 	@Transient
+	@JsonIgnore
 	private List<MultipartFile> picturefiles;
 	
 	@Transient
+	@JsonIgnore
 	private Tenant dbTenant;
 
 	@Column(name = "reset_password_token", length = InputLength.MEDIUM, nullable = true)
+	@JsonIgnore
 	private String resetPasswordToken;
 
 	@Column(name = "reset_password_sent_at")
@@ -122,6 +131,55 @@ public class User extends AuditableBaseEntity {
 
 	@Column(name = "last_sign_in_ip", length = InputLength.MEDIUM, nullable = true)
 	private String lastSignInIp;
+
+	public Long getTenantId() {
+		Long result = null;
+
+		if (this.tenant != null) {
+			result = this.tenant.getId();
+		}
+
+		return result;
+	}
+
+	public void setTenantId(Long id) {
+		if (this.tenant == null && id != null) {
+			ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+			TenantService tenantService = (TenantService) ctx.getBean("tenantService");
+
+			this.tenant = tenantService.find(id);
+		}
+	}
+
+	public List<Long> getGroupIds() {
+		List<Long> ids = null;
+
+		if (this.groups != null
+				&& !this.groups.isEmpty()) {
+
+			ids = new ArrayList<Long>();
+
+			for(UserGroup group : this.groups) {
+				ids.add(group.getId());
+			}
+		}
+
+		return ids;
+	}
+
+	public void setGroupIds(List<Long> ids) {
+		if (this.groups == null
+				&& ids != null
+				&& !ids.isEmpty()) {
+			ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+			UserGroupService userGroupService = (UserGroupService) ctx.getBean("userGroupService");
+
+			this.groups = new HashSet<UserGroup>();
+			for (Long id : ids) {
+				this.groups.add(userGroupService.find(id));
+			}
+		}
+	}
 	
 	public Tenant getDbTenant() {
 		Tenant result = null; 

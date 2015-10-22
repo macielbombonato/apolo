@@ -6,6 +6,7 @@ import apolo.data.enums.Skin;
 import apolo.data.enums.Status;
 import apolo.data.model.base.AuditableBaseEntity;
 import apolo.data.util.InputLength;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Type;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
@@ -103,6 +104,7 @@ public class Tenant extends AuditableBaseEntity {
 
 	@Transient
 	@Inject
+	@JsonIgnore
 	private ApplicationProperties applicationProperties;
 
 	public ApplicationProperties getApplicationProperties() {
@@ -121,22 +123,27 @@ public class Tenant extends AuditableBaseEntity {
 		return result;
 	}
 
+	@JsonIgnore
 	public String getGoogleAnalyticsUserAccount() {
 		return getApplicationProperties().getGoogleAnalyticsUserAccount();
 	}
 
+	@JsonIgnore
 	public String getGoogleAdClient() {
 		return getApplicationProperties().getGoogleAdClient();
 	}
 
+	@JsonIgnore
 	public String getGoogleAdSlotOne() {
 		return getApplicationProperties().getGoogleAdSlotOne();
 	}
 
+	@JsonIgnore
 	public String getGoogleAdSlotTwo() {
 		return getApplicationProperties().getGoogleAdSlotTwo();
 	}
 
+	@JsonIgnore
 	public String getGoogleAdSlotThree() {
 		return getApplicationProperties().getGoogleAdSlotThree();
 	}
@@ -171,10 +178,6 @@ public class Tenant extends AuditableBaseEntity {
 
 	public void setSmtpPort(String smtpPort) {
 		this.smtpPort = smtpPort;
-	}
-
-	public Boolean isUseTLS() {
-		return useTLS;
 	}
 
 	public Boolean getUseTLS() {
@@ -241,20 +244,12 @@ public class Tenant extends AuditableBaseEntity {
 		this.logoFile = logoFile;
 	}
 
-	public Boolean isShowName() {
-		return this.showName;
-	}
-
 	public Boolean getShowName() {
 		return this.showName;
 	}
 
 	public void setShowName(Boolean showName) {
 		this.showName = showName;
-	}
-
-	public Boolean isShowAdds() {
-		return this.showAdds;
 	}
 
 	public Boolean getShowAdds() {

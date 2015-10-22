@@ -1,17 +1,13 @@
 package apolo.web.controller.base;
 
 import apolo.business.service.base.BaseService;
-import apolo.business.service.TenantService;
-import apolo.business.service.UserService;
 import apolo.common.config.model.ApplicationProperties;
 import apolo.common.exception.BusinessException;
 import apolo.common.exception.GenericException;
 import apolo.common.util.MessageBundle;
-import apolo.data.model.base.BaseEntity;
-import apolo.data.model.Tenant;
 import apolo.data.model.User;
+import apolo.data.model.base.BaseEntity;
 import apolo.security.ApoloSecurityService;
-import apolo.security.CurrentUser;
 import apolo.security.UserPermission;
 import apolo.web.controller.ApoloAuthWebController;
 import apolo.web.enums.Navigation;
@@ -21,9 +17,6 @@ import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.context.ApplicationContext;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -33,23 +26,12 @@ import org.springframework.web.util.NestedServletException;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.text.SimpleDateFormat;
-import java.util.Collection;
 import java.util.Date;
 
-public abstract class BaseWebController<E extends BaseEntity> {
+public abstract class BaseWebController<E extends BaseEntity> extends BaseController<E> {
 
 	protected static final Logger log = LoggerFactory.getLogger(BaseWebController.class);
-
-	@Inject
-	protected TenantService tenantService;
-
-	@Inject
-	protected UserService userService;
 
 	@Inject
 	protected ApplicationProperties applicationProperties;
@@ -86,31 +68,6 @@ public abstract class BaseWebController<E extends BaseEntity> {
 		return result;
 	}
 
-	protected String getServerUrl(HttpServletRequest request, String tenant) {
-		String serverUrl = "";
-
-		try {
-			URL url = new URL(request.getRequestURL().toString());
-
-			String host  = url.getHost();
-			String userInfo = url.getUserInfo();
-			String scheme = url.getProtocol();
-			int port = url.getPort();
-			String path = (String) request.getAttribute("javax.servlet.forward.request_uri");
-			String query = (String) request.getAttribute("javax.servlet.forward.query_string");
-			URI uri = new URI(scheme,userInfo,host,port,path,query,null);
-
-			serverUrl = uri.toString() + "/web/" + tenant + "/";
-
-		} catch (MalformedURLException e) {
-			log.error(e.getMessage(), e);
-		} catch (URISyntaxException e) {
-			log.error(e.getMessage(), e);
-		}
-
-		return serverUrl;
-	}
-
 	protected void configurePageable(String tenant, ModelAndView mav, Page<E> page, String url) {
 		int current = page.getNumber() + 1;
 		int begin = Math.max(1, current - 5);
@@ -128,52 +85,6 @@ public abstract class BaseWebController<E extends BaseEntity> {
 		}
 
 		mav.addObject("page", page);
-	}
-
-	protected Tenant getDBTenant(String url) {
-		Tenant tenant = null;
-
-		tenant = tenantService.getValidatedTenant(url);
-
-		User user = userService.getAuthenticatedUser();
-
-		if (user != null
-				&& !user.getTenant().equals(tenant)) {
-
-			if (user.getPermissions() != null
-					&& !user.getPermissions().isEmpty()
-					&& (
-					user.getPermissions().contains(UserPermission.ADMIN)
-							|| user.getPermissions().contains(UserPermission.TENANT_MANAGER)
-			)) {
-				user.getDbTenant();
-				user.setTenant(tenant);
-
-				reconstructAuthenticatedUser(user);
-			} else {
-				String message = MessageBundle.getMessageBundle("error.403.msg");
-				throw new AccessDeniedException(message);
-			}
-		}
-
-		return tenant;
-	}
-
-	protected void reconstructAuthenticatedUser(User user) {
-		Collection<GrantedAuthority> authorities =
-				userService.loadUserAuthorities(
-						userService.getAuthenticatedUser()
-				);
-
-		Authentication newAuth = new CurrentUser(
-				user.getId(),
-				user.getEmail(),
-				user.getPassword(),
-				user,
-				authorities
-		);
-
-		SecurityContextHolder.getContext().setAuthentication(newAuth);
 	}
 
 	/**

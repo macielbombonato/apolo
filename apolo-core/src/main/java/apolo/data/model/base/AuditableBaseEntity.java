@@ -3,6 +3,7 @@ package apolo.data.model.base;
 import apolo.data.entitylistener.AuditListener;
 import apolo.data.model.User;
 import apolo.data.model.interfaces.IAuditableEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -20,6 +21,7 @@ public abstract class AuditableBaseEntity extends BaseEntity<Long> implements IA
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "created_by")
+	@JsonIgnore
 	private User createdBy;
 
 	@Column(name = "updated_at")
@@ -29,6 +31,7 @@ public abstract class AuditableBaseEntity extends BaseEntity<Long> implements IA
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "updated_by")
+	@JsonIgnore
 	private User updatedBy;
 
 	public Date getCreatedAt() {

@@ -94,6 +94,20 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 		return result;
 	}
 
+	public Page<User> listAll(Integer pageNumber) {
+		if (pageNumber < 1) {
+			pageNumber = 1;
+		}
+
+		PageRequest request = new PageRequest(pageNumber - 1, PAGE_SIZE, Sort.Direction.ASC, "name");
+
+		Page<User> result = userRepository.findAll(
+				request
+			);
+
+		return result;
+	}
+
 	public User find(Long id) {
 		return userRepository.findOne(id);
 	}

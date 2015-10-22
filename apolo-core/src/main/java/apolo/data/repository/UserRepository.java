@@ -56,6 +56,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
 			UserStatus userStatus, 
 			Pageable page
 		);
+
+	Page<User> findAll(
+			Pageable page
+		);
 	
 	List<User> findByUserStatus(UserStatus userStatus);
 	
