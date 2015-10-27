@@ -63,7 +63,7 @@ public abstract class BaseAPIController<E extends BaseEntity> extends BaseContro
                 } else {
                     hasAccess = false;
 
-                    throw new AccessDeniedException(403, "You have no permission to do this operation");
+                    throw new AccessDeniedException(MessageBundle.getMessageBundle("error.403"));
                 }
             }
         }
