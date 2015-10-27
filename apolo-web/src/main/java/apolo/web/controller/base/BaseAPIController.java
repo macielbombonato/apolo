@@ -2,6 +2,7 @@ package apolo.web.controller.base;
 
 import apolo.business.service.ApplicationService;
 import apolo.common.exception.AccessDeniedException;
+import apolo.common.util.MessageBundle;
 import apolo.data.model.Application;
 import apolo.data.model.base.BaseEntity;
 import apolo.security.ApoloSecurityService;
@@ -10,6 +11,7 @@ import apolo.web.apimodel.base.BaseAPIModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.http.MediaType;
 import org.springframework.social.ResourceNotFoundException;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -42,6 +44,8 @@ public abstract class BaseAPIController<E extends BaseEntity> extends BaseContro
             if (app != null) {
                 if (apoloSecurity.hasPermission(app.getPermissions(), userPermission)) {
                     hasAccess = true;
+                } else {
+                    throw new AccessDeniedException(MessageBundle.getMessageBundle("error.403"));
                 }
             }
 
@@ -58,15 +62,17 @@ public abstract class BaseAPIController<E extends BaseEntity> extends BaseContro
                     hasAccess = true;
                 } else {
                     hasAccess = false;
+
+                    throw new AccessDeniedException(403, "You have no permission to do this operation");
                 }
             }
         }
 
         if (!hasAccess) {
             model.setSuccess(false);
-            model.setMessage("Access Denied");
+            model.setMessage(MessageBundle.getMessageBundle("error.403"));
 
-            throw new AccessDeniedException(403, "Access Denied");
+            throw new AccessDeniedException(MessageBundle.getMessageBundle("error.403"));
         }
 
         return hasAccess;
@@ -99,6 +105,7 @@ public abstract class BaseAPIController<E extends BaseEntity> extends BaseContro
         model.setMessage("Internal Server Error");
 
         response.setStatus(500);
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
         return model;
     }
@@ -118,6 +125,7 @@ public abstract class BaseAPIController<E extends BaseEntity> extends BaseContro
         model.setMessage("Resource Not Found");
 
         response.setStatus(404);
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
         return model;
     }
@@ -137,6 +145,7 @@ public abstract class BaseAPIController<E extends BaseEntity> extends BaseContro
         model.setMessage(ex.getCustomMsg());
 
         response.setStatus(ex.getPrincipalCode());
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
         return model;
     }

@@ -1,5 +1,7 @@
 package apolo.web.controller;
 
+import apolo.common.exception.AccessDeniedException;
+import apolo.common.util.MessageBundle;
 import apolo.data.enums.UserStatus;
 import apolo.data.model.Application;
 import apolo.data.model.Tenant;
@@ -208,6 +210,16 @@ public class UserAPIController extends BaseAPIController<User> {
                 entity.setEnabled(true);
             }
 
+
+
+            if (entity.getPermissions().contains(UserPermission.ADMIN)) {
+                Application app = getApplication(request);
+
+                if (!app.getPermissions().contains(UserPermission.ADMIN)) {
+                    throw new AccessDeniedException(8, MessageBundle.getMessageBundle("error.403.8"));
+                }
+            }
+
             entity = userService.save(getServerUrl(request, tenantUrl), entity, hasChangePassword, null);
 
             result.setSuccess(true);
@@ -231,10 +243,20 @@ public class UserAPIController extends BaseAPIController<User> {
     ) {
         UserAPI result = new UserAPI();
 
-        if (checkAccess(result, tenant, request, UserPermission.ADMIN)) {
+        if (checkAccess(result, tenant, request, UserPermission.USER_PERMISSION_REMOVE)) {
             User user = userService.find(id);
 
             if (user != null) {
+                if (UserStatus.ADMIN.equals(user.getStatus())) {
+                    throw new AccessDeniedException(9, MessageBundle.getMessageBundle("error.403.9"));
+                } else if (user.getPermissions().contains(UserPermission.ADMIN)) {
+                    Application app = getApplication(request);
+
+                    if (!app.getPermissions().contains(UserPermission.ADMIN)) {
+                        throw new AccessDeniedException(10, MessageBundle.getMessageBundle("error.403.10"));
+                    }
+                }
+
                 userService.remove(user);
 
                 result.setSuccess(true);
