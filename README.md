@@ -153,11 +153,9 @@ Abaixo as chamadas que o Apolo possui:
 
 	GET /api/{tenant-url}/user/find-all/{id}
 
-### Salvar usuário
+### Criar usuário
 
-Criação e Edição, será diferenciado pelo ID do usuário, caso exista, será editado
-
-	POST /api/{tenant-url}/user/save
+	POST /api/{tenant-url}/user/create
 	Content-Type: application/json
 
 **Exemplo de json para postar**
@@ -167,6 +165,23 @@ Criação e Edição, será diferenciado pelo ID do usuário, caso exista, será
 		"email":"email@usuario.com",
 		"groupIds":[1, 2] --> grupos de permissão de acesso
 	}
+
+### Editar usuário
+
+	PUT /api/{tenant-url}/user/update
+	Content-Type: application/json
+
+**Exemplo de json para postar**
+
+	{
+		"id":10,
+		"name":"Nome do Usuário",
+		"email":"email@usuario.com",
+		"groupIds":[1, 2] --> grupos de permissão de acesso
+	}
+
+Somente os campos indicados no json acima poderão ser editados, os demais campos do usuário não podem ser alterados pela API.
+Este recurso é também a única maneira de alterar o Tenant de um usuário, portanto, atente-se bem ao tenant que está sendo indicado na URL, caso tenha permissão para isso, este será o novo tenant do usuário informado.
 
 ### Excluir usuário
 

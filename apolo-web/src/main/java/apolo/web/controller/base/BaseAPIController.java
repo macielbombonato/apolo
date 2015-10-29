@@ -58,7 +58,7 @@ public abstract class BaseAPIController<E extends BaseEntity> extends BaseContro
                                 UserPermission.ADMIN,
                                 UserPermission.TENANT_MANAGER
                         ))
-                ) {
+                        ) {
                     hasAccess = true;
                 } else {
                     hasAccess = false;
@@ -69,7 +69,6 @@ public abstract class BaseAPIController<E extends BaseEntity> extends BaseContro
         }
 
         if (!hasAccess) {
-            model.setSuccess(false);
             model.setMessage(MessageBundle.getMessageBundle("error.403"));
 
             throw new AccessDeniedException(MessageBundle.getMessageBundle("error.403"));
@@ -101,7 +100,6 @@ public abstract class BaseAPIController<E extends BaseEntity> extends BaseContro
 
         BaseAPIModel model = new BaseAPIModel();
 
-        model.setSuccess(false);
         model.setMessage("Internal Server Error");
 
         response.setStatus(500);
@@ -121,7 +119,6 @@ public abstract class BaseAPIController<E extends BaseEntity> extends BaseContro
 
         BaseAPIModel model = new BaseAPIModel();
 
-        model.setSuccess(false);
         model.setMessage("Resource Not Found");
 
         response.setStatus(404);
@@ -141,7 +138,6 @@ public abstract class BaseAPIController<E extends BaseEntity> extends BaseContro
 
         BaseAPIModel model = new BaseAPIModel();
 
-        model.setSuccess(false);
         model.setMessage(ex.getCustomMsg());
 
         response.setStatus(ex.getPrincipalCode());

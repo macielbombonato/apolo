@@ -1,11 +1,13 @@
 package apolo.web.controller;
 
+import apolo.business.service.UserGroupService;
 import apolo.common.exception.AccessDeniedException;
 import apolo.common.util.MessageBundle;
 import apolo.data.enums.UserStatus;
 import apolo.data.model.Application;
 import apolo.data.model.Tenant;
 import apolo.data.model.User;
+import apolo.data.model.UserGroup;
 import apolo.security.UserPermission;
 import apolo.web.apimodel.UserAPI;
 import apolo.web.apimodel.UserList;
@@ -16,12 +18,17 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 
 @Controller
 @RequestMapping(value = "/api/{tenant-url}/user")
 public class UserAPIController extends BaseAPIController<User> {
+
+    @Inject
+    private UserGroupService userGroupService;
 
     @PreAuthorize("permitAll")
     @RequestMapping(
@@ -32,9 +39,10 @@ public class UserAPIController extends BaseAPIController<User> {
     public @ResponseBody
     UserList listFirstPage(
             @PathVariable("tenant-url") String tenant,
-            HttpServletRequest request
+            HttpServletRequest request,
+            HttpServletResponse response
     ) {
-        return this.list(tenant, 1, request);
+        return this.list(tenant, 1, request, response);
     }
 
     @PreAuthorize("permitAll")
@@ -47,15 +55,17 @@ public class UserAPIController extends BaseAPIController<User> {
     UserList listSomePage(
             @PathVariable("tenant-url") String tenant,
             @PathVariable Integer pageNumber,
-            HttpServletRequest request
+            HttpServletRequest request,
+            HttpServletResponse response
     ) {
-        return this.list(tenant, pageNumber, request);
+        return this.list(tenant, pageNumber, request, response);
     }
 
     private UserList list(
             String tenant,
             Integer pageNumber,
-            HttpServletRequest request
+            HttpServletRequest request,
+            HttpServletResponse response
     ) {
 
         UserList result = new UserList();
@@ -63,11 +73,19 @@ public class UserAPIController extends BaseAPIController<User> {
         if (checkAccess(result, tenant, request, UserPermission.USER_LIST)) {
             Page<User> page = userService.list(getDBTenant(tenant), pageNumber);
 
-            result.setSuccess(true);
-            result.setTotalPages(page.getTotalPages());
-            result.setTotalElements(page.getTotalElements());
+            if (page != null) {
+                result.setTotalPages(page.getTotalPages());
+                result.setTotalElements(page.getTotalElements());
 
-            result.setUserList(page.getContent());
+                if (page.getContent() != null
+                        && !page.getContent().isEmpty()) {
+                    result.setUserList(page.getContent());
+
+                    response.setStatus(200);
+                } else {
+                    response.setStatus(204);
+                }
+            }
         }
 
         return result;
@@ -82,9 +100,10 @@ public class UserAPIController extends BaseAPIController<User> {
     public @ResponseBody
     UserList listAllFirstPage(
             @PathVariable("tenant-url") String tenant,
-            HttpServletRequest request
+            HttpServletRequest request,
+            HttpServletResponse response
     ) {
-        return this.listAll(tenant, 1, request);
+        return this.listAll(tenant, 1, request, response);
     }
 
     @PreAuthorize("permitAll")
@@ -97,15 +116,17 @@ public class UserAPIController extends BaseAPIController<User> {
     UserList listAllSomePage(
             @PathVariable("tenant-url") String tenant,
             @PathVariable Integer pageNumber,
-            HttpServletRequest request
+            HttpServletRequest request,
+            HttpServletResponse response
     ) {
-        return this.list(tenant, pageNumber, request);
+        return this.list(tenant, pageNumber, request, response);
     }
 
     private UserList listAll(
             String tenant,
             Integer pageNumber,
-            HttpServletRequest request
+            HttpServletRequest request,
+            HttpServletResponse response
     ) {
 
         UserList result = new UserList();
@@ -113,11 +134,19 @@ public class UserAPIController extends BaseAPIController<User> {
         if (checkAccess(result, tenant, request, UserPermission.ADMIN)) {
             Page<User> page = userService.listAll(pageNumber);
 
-            result.setSuccess(true);
-            result.setTotalPages(page.getTotalPages());
-            result.setTotalElements(page.getTotalElements());
+            if (page != null) {
+                result.setTotalPages(page.getTotalPages());
+                result.setTotalElements(page.getTotalElements());
 
-            result.setUserList(page.getContent());
+                if (page.getContent() != null
+                        && !page.getContent().isEmpty()) {
+                    result.setUserList(page.getContent());
+
+                    response.setStatus(200);
+                } else {
+                    response.setStatus(204);
+                }
+            }
         }
 
         return result;
@@ -133,15 +162,21 @@ public class UserAPIController extends BaseAPIController<User> {
     UserAPI find(
             @PathVariable("tenant-url") String tenant,
             @PathVariable Long id,
-            HttpServletRequest request
+            HttpServletRequest request,
+            HttpServletResponse response
     ) {
         UserAPI result = new UserAPI();
 
         if (checkAccess(result, tenant, request, UserPermission.USER_LIST)) {
             User user = userService.find(getDBTenant(tenant), id);
 
-            result.setSuccess(true);
-            result.setUser(user);
+            if (user != null) {
+                result.setUser(user);
+
+                response.setStatus(200);
+            } else {
+                response.setStatus(204);
+            }
         }
 
         return result;
@@ -157,15 +192,21 @@ public class UserAPIController extends BaseAPIController<User> {
     UserAPI findRoot(
             @PathVariable("tenant-url") String tenant,
             @PathVariable Long id,
-            HttpServletRequest request
+            HttpServletRequest request,
+            HttpServletResponse response
     ) {
         UserAPI result = new UserAPI();
 
         if (checkAccess(result, tenant, request, UserPermission.ADMIN)) {
             User user = userService.find(id);
 
-            result.setSuccess(true);
-            result.setUser(user);
+            if (user != null) {
+                result.setUser(user);
+
+                response.setStatus(200);
+            } else {
+                response.setStatus(204);
+            }
         }
 
         return result;
@@ -175,14 +216,85 @@ public class UserAPIController extends BaseAPIController<User> {
     @RequestMapping(
             produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
             consumes = MediaType.APPLICATION_JSON_VALUE,
-            value = "save",
+            value = "create",
             method = RequestMethod.POST
     )
     public @ResponseBody
-    UserAPI save(
+    UserAPI create(
             @PathVariable("tenant-url") String tenantUrl,
             @RequestBody User entity,
-            HttpServletRequest request
+            HttpServletRequest request,
+            HttpServletResponse response
+    ) {
+        UserAPI result = new UserAPI();
+
+        if (checkAccess(result, tenantUrl, request, UserPermission.USER_CREATE)) {
+            if (entity != null
+                    && entity.getEmail() != null) {
+                User dbEntity = userService.findByLogin(entity.getEmail());
+
+                if (dbEntity != null) {
+                    result.setMessage(MessageBundle.getMessageBundle("error.203.email.already.used", getDBTenant(tenantUrl).getName()));
+
+                    response.setStatus(203);
+                }
+            } else {
+                Tenant tenant = getDBTenant(tenantUrl);
+
+                entity.setTenant(tenant);
+
+                boolean hasChangePassword = true;
+
+                entity.setPassword("newUser-this-password-need-to-be-changed-!!!!!");
+
+                entity.setCreatedAt(new Date());
+
+                Application app = getApplication(request);
+
+                entity.setCreatedBy(app.getCreatedBy());
+
+                entity.setStatus(UserStatus.ACTIVE);
+                entity.setEnabled(true);
+
+                if (entity.getPermissions().contains(UserPermission.ADMIN)) {
+                    if (!app.getPermissions().contains(UserPermission.ADMIN)) {
+                        throw new AccessDeniedException(8, MessageBundle.getMessageBundle("error.403.8"));
+                    }
+                }
+
+                entity = userService.save(
+                        getServerUrl(request, tenantUrl),
+                        entity,
+                        hasChangePassword,
+                        null
+                );
+
+                if (entity != null) {
+                    result.setUser(entity);
+
+                    response.setStatus(201);
+                } else {
+                    response.setStatus(203);
+                }
+            }
+        }
+
+        return result;
+    }
+
+    @PreAuthorize("permitAll")
+    @RequestMapping(
+            produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            value = "update",
+            method = RequestMethod.PUT
+    )
+    public @ResponseBody
+    UserAPI update(
+            @PathVariable("tenant-url") String tenantUrl,
+            @RequestBody User entity,
+            HttpServletRequest request,
+            HttpServletResponse response
     ) {
         UserAPI result = new UserAPI();
 
@@ -196,34 +308,54 @@ public class UserAPIController extends BaseAPIController<User> {
             if (entity != null
                     && entity.getId() != null) {
                 hasChangePassword = false;
-            } else {
-                hasChangePassword = true;
-                entity.setPassword("newUser-this-password-need-to-be-changed-!!!!!");
 
-                entity.setCreatedAt(new Date());
+                User dbEntity = userService.find(entity.getId());
 
-                Application app = getApplication(request);
+                if (dbEntity != null) {
+                    dbEntity.setName(entity.getName());
+                    dbEntity.setEmail(entity.getEmail());
 
-                entity.setCreatedBy(app.getCreatedBy());
+                    Application app = getApplication(request);
 
-                entity.setStatus(UserStatus.ACTIVE);
-                entity.setEnabled(true);
-            }
+                    if (app.getPermissions().contains(UserPermission.ADMIN)
+                            || app.getPermissions().contains(UserPermission.TENANT_MANAGER)) {
+                        dbEntity.setTenant(entity.getTenant());
+                    }
 
+                    for (Long groupId : entity.getGroupIds()) {
+                        if (!dbEntity.getGroupIds().contains(groupId)) {
+                            UserGroup userGroup = userGroupService.find(groupId);
 
+                            dbEntity.getGroups().add(userGroup);
+                        }
+                    }
 
-            if (entity.getPermissions().contains(UserPermission.ADMIN)) {
-                Application app = getApplication(request);
+                    if (dbEntity.getPermissions().contains(UserPermission.ADMIN)) {
+                        if (!app.getPermissions().contains(UserPermission.ADMIN)) {
+                            throw new AccessDeniedException(8, MessageBundle.getMessageBundle("error.403.8"));
+                        }
+                    }
 
-                if (!app.getPermissions().contains(UserPermission.ADMIN)) {
-                    throw new AccessDeniedException(8, MessageBundle.getMessageBundle("error.403.8"));
+                    dbEntity = userService.save(
+                            getServerUrl(request, tenantUrl),
+                            dbEntity,
+                            hasChangePassword,
+                            null
+                    );
+
+                    if (dbEntity != null) {
+                        result.setUser(dbEntity);
+
+                        response.setStatus(200);
+                    } else {
+                        response.setStatus(203);
+                    }
+                } else {
+                    response.setStatus(204);
                 }
+            } else {
+                response.setStatus(204);
             }
-
-            entity = userService.save(getServerUrl(request, tenantUrl), entity, hasChangePassword, null);
-
-            result.setSuccess(true);
-            result.setUser(entity);
         }
 
         return result;
@@ -239,7 +371,8 @@ public class UserAPIController extends BaseAPIController<User> {
     UserAPI delete(
             @PathVariable("tenant-url") String tenant,
             @PathVariable Long id,
-            HttpServletRequest request
+            HttpServletRequest request,
+            HttpServletResponse response
     ) {
         UserAPI result = new UserAPI();
 
@@ -259,11 +392,13 @@ public class UserAPIController extends BaseAPIController<User> {
 
                 userService.remove(user);
 
-                result.setSuccess(true);
                 result.setUser(null);
+
+                response.setStatus(200);
             } else {
-                result.setSuccess(false);
                 result.setMessage("Not deleted");
+
+                response.setStatus(203);
             }
         }
 
