@@ -147,15 +147,13 @@ Abaixo as chamadas que o Apolo possui:
 
 ### Buscar usuário
 
-	GET /api/{tenant-url}/user/find/{id}
+	GET /api/{tenant-url}/user/{id}
 
-**Somente para administradores do sistema**
-
-	GET /api/{tenant-url}/user/find-all/{id}
+Caso a chave de acesso da API tenha permissão de administrador do sistema, o termo (tenant-url) não será considerado na busca, ou seja, o usuário será procurado apenas pelo ID, caso a chave de API não possua essa permissão, serão considerados ID e tenant URL para a busca.
 
 ### Criar usuário
 
-	POST /api/{tenant-url}/user/create
+	POST /api/{tenant-url}/user
 	Content-Type: application/json
 
 **Exemplo de json para postar**
@@ -168,7 +166,7 @@ Abaixo as chamadas que o Apolo possui:
 
 ### Editar usuário
 
-	PUT /api/{tenant-url}/user/update
+	PUT /api/{tenant-url}/user
 	Content-Type: application/json
 
 **Exemplo de json para postar**
@@ -185,5 +183,5 @@ Este recurso é também a única maneira de alterar o Tenant de um usuário, por
 
 ### Excluir usuário
 
-	DELETE /api/hermes/user/delete/6 HTTP/1.1
+	DELETE /api/{tenant-url}/user/{id}
 

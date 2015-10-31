@@ -155,7 +155,7 @@ public class UserAPIController extends BaseAPIController<User> {
     @PreAuthorize("permitAll")
     @RequestMapping(
             produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
-            value = "find/{id}",
+            value = "{id}",
             method = RequestMethod.GET
     )
     public @ResponseBody
@@ -167,38 +167,16 @@ public class UserAPIController extends BaseAPIController<User> {
     ) {
         UserAPI result = new UserAPI();
 
-        if (checkAccess(result, tenant, request, UserPermission.USER_LIST)) {
-            User user = userService.find(getDBTenant(tenant), id);
+        if (checkAccess(result, tenant, request, UserPermission.ADMIN, UserPermission.USER_LIST)) {
+            Application app = getApplication(request);
 
-            if (user != null) {
-                result.setUser(user);
+            User user = null;
 
-                response.setStatus(200);
-            } else {
-                response.setStatus(204);
+            if (app.getPermissions().contains(UserPermission.ADMIN)) {
+                user = userService.find(id);
+            } else if (app.getPermissions().contains(UserPermission.USER_LIST)) {
+                user = userService.find(getDBTenant(tenant), id);
             }
-        }
-
-        return result;
-    }
-
-    @PreAuthorize("permitAll")
-    @RequestMapping(
-            produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
-            value = "find-all/{id}",
-            method = RequestMethod.GET
-    )
-    public @ResponseBody
-    UserAPI findRoot(
-            @PathVariable("tenant-url") String tenant,
-            @PathVariable Long id,
-            HttpServletRequest request,
-            HttpServletResponse response
-    ) {
-        UserAPI result = new UserAPI();
-
-        if (checkAccess(result, tenant, request, UserPermission.ADMIN)) {
-            User user = userService.find(id);
 
             if (user != null) {
                 result.setUser(user);
@@ -216,7 +194,7 @@ public class UserAPIController extends BaseAPIController<User> {
     @RequestMapping(
             produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
             consumes = MediaType.APPLICATION_JSON_VALUE,
-            value = "create",
+            value = "",
             method = RequestMethod.POST
     )
     public @ResponseBody
@@ -286,7 +264,7 @@ public class UserAPIController extends BaseAPIController<User> {
     @RequestMapping(
             produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
             consumes = MediaType.APPLICATION_JSON_VALUE,
-            value = "update",
+            value = "",
             method = RequestMethod.PUT
     )
     public @ResponseBody
@@ -364,7 +342,7 @@ public class UserAPIController extends BaseAPIController<User> {
     @PreAuthorize("permitAll")
     @RequestMapping(
             produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
-            value = "delete/{id}",
+            value = "{id}",
             method = RequestMethod.DELETE
     )
     public @ResponseBody
