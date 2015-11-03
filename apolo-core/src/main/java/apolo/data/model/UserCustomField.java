@@ -4,26 +4,15 @@ import apolo.data.entitylistener.AuditLogListener;
 import apolo.data.enums.FieldType;
 import apolo.data.model.base.AuditableBaseEntity;
 import apolo.data.util.InputLength;
-
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.persistence.AttributeOverride;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.Type;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @EntityListeners(value = AuditLogListener.class)
@@ -59,6 +48,10 @@ public class UserCustomField extends AuditableBaseEntity {
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@OrderBy("value")
 	private Set<UserCustomFieldOption> options;
+
+	@Column(name = "multi_tenant", nullable = true)
+	@Type(type="yes_no")
+	private Boolean multiTenant;
 	
 	@Transient
 	private Set<String> optionsStringList;
@@ -126,5 +119,13 @@ public class UserCustomField extends AuditableBaseEntity {
 
 	public void setTenant(Tenant tenant) {
 		this.tenant = tenant;
+	}
+
+	public Boolean getMultiTenant() {
+		return multiTenant;
+	}
+
+	public void setMultiTenant(Boolean multiTenant) {
+		this.multiTenant = multiTenant;
 	}
 }

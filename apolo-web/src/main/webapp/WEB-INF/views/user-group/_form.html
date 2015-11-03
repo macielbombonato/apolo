@@ -93,6 +93,20 @@
             </div>
         </div>
 
+        <div class="form-group">
+            <label for="multiTenant" class="control-label" th:text="#{common.multiTenant}">
+                useTLS
+            </label>
+
+            <input type="checkbox"
+                   id="multiTenant"
+                   name="multiTenant"
+                   value="true"
+                   th:disabled="${readOnly}"
+                   th:checked="${userGroup.multiTenant}"
+                    />
+        </div>
+
 
     </div>
 

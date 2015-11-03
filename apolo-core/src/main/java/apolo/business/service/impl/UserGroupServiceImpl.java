@@ -32,17 +32,19 @@ public class UserGroupServiceImpl extends BaseServiceImpl<UserGroup> implements 
 		List<UserGroup> result = null;
 		
 		if (getAuthenticatedUser().getPermissions().contains(UserPermission.ADMIN)) {
-			result = userGroupRepository.findByTenantOrName(
-						tenant, 
-						MessageBundle.getMessageBundle("user.permission.ADMIN"),
-						request
-					);
-		} else {
-			result = userGroupRepository.findByTenantAndNameNot(
-					tenant, 
+			result = userGroupRepository.findByTenantOrNameOrMultiTenant(
+					tenant,
 					MessageBundle.getMessageBundle("user.permission.ADMIN"),
+					true,
 					request
-				);
+			);
+		} else {
+			result = userGroupRepository.findByTenantAndNameNotOrMultiTenant(
+					tenant,
+					MessageBundle.getMessageBundle("user.permission.ADMIN"),
+					true,
+					request
+			);
 		}
 		
 		return result;
@@ -58,15 +60,17 @@ public class UserGroupServiceImpl extends BaseServiceImpl<UserGroup> implements 
 		Page<UserGroup> result = null;
 		
 		if (getAuthenticatedUser().getPermissions().contains(UserPermission.ADMIN)) {
-			result = userGroupRepository.findByTenantOrName(
-						tenant, 
-						MessageBundle.getMessageBundle("user.permission.ADMIN"),
-						request
-					);
-		} else {
-			result = userGroupRepository.findByTenantAndNameNot(
-					tenant, 
+			result = userGroupRepository.findByTenantOrNameOrMultiTenant(
+					tenant,
 					MessageBundle.getMessageBundle("user.permission.ADMIN"),
+					true,
+					request
+			);
+		} else {
+			result = userGroupRepository.findByTenantAndNameNotOrMultiTenant(
+					tenant,
+					MessageBundle.getMessageBundle("user.permission.ADMIN"),
+					true,
 					request
 				);
 		}
@@ -84,8 +88,14 @@ public class UserGroupServiceImpl extends BaseServiceImpl<UserGroup> implements 
 
 	@Transactional
 	public UserGroup save(UserGroup userGroup) throws AccessDeniedException {
-		if (userGroup != null && UserStatus.ADMIN.equals(userGroup.getStatus()) && userGroup.getId() != null) {
+		if (userGroup != null
+				&& UserStatus.ADMIN.equals(userGroup.getStatus()) && userGroup.getId() != null) {
 			throw new AccessDeniedException(MessageBundle.getMessageBundle("user.group.msg.access.denied"));
+		} else if (userGroup != null
+				&& Boolean.TRUE.equals(userGroup.getMultiTenant())
+				&& getAuthenticatedUser() != null
+				&& !getAuthenticatedUser().getPermissions().contains(UserPermission.TENANT_MANAGER)) {
+			throw new AccessDeniedException(MessageBundle.getMessageBundle("user.group.msg.access.denied.multitenant"));
 		} else {
 			if (!UserStatus.ADMIN.equals(userGroup.getStatus())) {
 				userGroup.setStatus(UserStatus.ACTIVE);

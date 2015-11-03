@@ -5,27 +5,14 @@ import apolo.data.enums.UserStatus;
 import apolo.data.model.base.AuditableBaseEntity;
 import apolo.data.util.InputLength;
 import apolo.security.UserPermission;
-
-import java.util.Set;
-
-import javax.persistence.AttributeOverride;
-import javax.persistence.CascadeType;
-import javax.persistence.CollectionTable;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.Type;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.util.Set;
 
 @Entity
 @EntityListeners(value = AuditLogListener.class)
@@ -60,6 +47,10 @@ public class UserGroup extends AuditableBaseEntity {
 
 	@ManyToMany(mappedBy = "groups", cascade = CascadeType.MERGE)
 	private Set<User> users;
+
+	@Column(name = "multi_tenant", nullable = true)
+	@Type(type="yes_no")
+	private Boolean multiTenant;
 
 	public UserStatus getStatus() {
 		return userStatus;
@@ -101,4 +92,11 @@ public class UserGroup extends AuditableBaseEntity {
 		this.tenant = tenant;
 	}
 
+	public Boolean getMultiTenant() {
+		return multiTenant;
+	}
+
+	public void setMultiTenant(Boolean multiTenant) {
+		this.multiTenant = multiTenant;
+	}
 }

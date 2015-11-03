@@ -26,32 +26,37 @@ public interface UserGroupRepository extends JpaRepository<UserGroup, Long> {
 			Long id
 		);
 	
-	List<UserGroup> findByTenant(
+	List<UserGroup> findByTenantOrMultiTenant(
 			Tenant tenant,
+			Boolean multiTenant,
 			Sort page
 		);
 	
-	List<UserGroup> findByTenantOrName(
+	List<UserGroup> findByTenantOrNameOrMultiTenant(
 			Tenant tenant,
 			String name,
+			Boolean multiTenant,
 			Sort page
 		);
 	
-	Page<UserGroup> findByTenantOrName(
+	Page<UserGroup> findByTenantOrNameOrMultiTenant(
 			Tenant tenant,
 			String name,
+			Boolean multiTenant,
 			Pageable page
 		);
 	
-	List<UserGroup> findByTenantAndNameNot(
+	List<UserGroup> findByTenantAndNameNotOrMultiTenant(
 			Tenant tenant,
 			String name,
+			Boolean multiTenant,
 			Sort page
 		);
 	
-	Page<UserGroup> findByTenantAndNameNot(
+	Page<UserGroup> findByTenantAndNameNotOrMultiTenant(
 			Tenant tenant,
 			String name,
+			Boolean multiTenant,
 			Pageable page
 		);
 	
