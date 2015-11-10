@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <head>
+    </head>
+    <body th:fragment="ad-horizontal">
+
+    <div th:if="${ (#authorization.expression('@apoloSecurity.isAuthenticated()') == true and #authentication.systemUser.tenant.showAdds == true)}">
+
+        <div class="row">
+
+            <input type="hidden" id="googleAdClient" th:value="${#authentication.systemUser.tenant.googleAdClient}" />
+            <input type="hidden" id="googleAdSlotTwo" th:value="${#authentication.systemUser.tenant.googleAdSlotTwo}" />
+            <input type="hidden" id="googleAdSlotThree" th:value="${#authentication.systemUser.tenant.googleAdSlotThree}" />
+
+            <center>
+                <div id="ad-two" class="google-ad ad-mobile"
+                     data-google-ad-width="320"
+                     data-google-ad-height="100">
+                </div>
+
+                <div id="ad-three" class="google-ad ad-desktop"
+                     data-google-ad-width="728"
+                     data-google-ad-height="90">
+                </div>
+            </center>
+
+        </div>
+    </div>
+    </body>
+</html>

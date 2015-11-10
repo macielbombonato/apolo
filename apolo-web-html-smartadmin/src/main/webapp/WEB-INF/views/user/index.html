@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <head th:include="@{_fragment/_headTag} :: headTag">
+    </head>
+    <body>
+    <div th:remove="tag" th:include="@{_fragment/_apolo-template} :: apolo-template"></div>
+
+    <div id="page-header">
+        <!-- RIBBON -->
+        <div id="ribbon">
+            <ol class="breadcrumb">
+                <li th:text="#{user.index.title}">
+
+                </li>
+            </ol>
+        </div>
+        <!-- END RIBBON -->
+    </div>
+
+    <div id="page-content">
+        <section class="content">
+            <div sec:authorize="@apoloSecurity.hasPermission('ADMIN')">
+                <h3 th:text="#{menu.sysadmin}">
+                    Widgets
+                </h3>
+
+                <div class="row">
+                    <div class="col-md-3 col-sm-6 col-xs-12">
+                        <div class="alert alert-success">
+                            <i class="fa fa-user fa-4x"></i>
+                            <br/>
+                            <span>
+                                <div class="progress progress-micro">
+                                    <div class="progress-bar progress-bar-primary" role="progressbar" th:style="${'width: '} + ${#numbers.formatInteger(100,1,'POINT')} + ${'%'}"></div>
+                                </div>
+                                <span th:text="#{user.dashboard.count}">Bookmarks</span>:
+                                <span class="badge" th:text="${#numbers.formatInteger(userCount,1,'POINT')}">41,410
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 col-sm-6 col-xs-12">
+                        <div class="alert alert-success">
+                            <i class="fa fa-ship fa-4x"></i>
+                            <br/>
+                            <span>
+                                <div class="progress progress-micro">
+                                    <div class="progress-bar progress-bar-primary" role="progressbar" th:style="${'width: '} + ${#numbers.formatInteger(100,1,'POINT')} + ${'%'}"></div>
+                                </div>
+                                <span th:text="#{tenant.dashboard.count}">Bookmarks</span>:
+                                <span class="badge" th:text="${#numbers.formatInteger(tenantCount,1,'POINT')}">41,410
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="alert alert-success">
+                            <i class="fa fa-user fa-4x"></i>
+                            <br/>
+                            <span>
+                                <div class="progress progress-micro">
+                                    <div class="progress-bar progress-bar-primary" role="progressbar" th:style="${'width: '} + ${#numbers.formatInteger(userTenantCountPercent,1,'POINT')} + ${'%'}"></div>
+                                </div>
+                                <span th:text="#{user.dashboard.tenant.count}">Bookmarks</span>:
+                                <span class="badge" th:text="${#numbers.formatInteger(userTenantCount,1,'POINT')}">41,410
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Put your widgets in dashboard. Use this page only as example -->
+            <div th:remove="tag" th:include="@{_fragment/_dashboard} :: dashboard"></div>
+
+        </section>
+    </div>
+
+    </body>
+</html>

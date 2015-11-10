@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:include="@{_fragment/_headTag} :: headTag">
+</head>
+<body>
+<div th:remove="tag" th:include="@{_fragment/_apolo-template} :: apolo-template"></div>
+
+<div id="page-header">
+    <!-- RIBBON -->
+    <div id="ribbon">
+        <ol class="breadcrumb">
+            <li th:text="#{tenant.view.title}">
+
+            </li>
+        </ol>
+    </div>
+    <!-- END RIBBON -->
+</div>
+
+<div id="page-content">
+    <section class="content">
+        <div class="col-sm-2">
+            <center>
+                <img th:if="${tenant.logo != null} and ${tenant.logo != ''}"
+                     class="img-thumbnail"
+                     th:src="@{|/web/${tenant.url}/uploadedfiles/Tenant/${tenant.id}/${tenant.logo}|}"
+                        />
+                <i th:if="${tenant.logo == null} or ${tenant.logo == ''}" class="fa fa-ship fa-4x" />
+            </center>
+        </div>
+
+        <div class="col-sm-10">
+            <div th:remove="tag" th:include="@{tenant/_form} :: tenant-form"></div>
+
+            <div class="btn-group" role="group">
+                <a sec:authorize="@apoloSecurity.hasPermission('TENANT_EDIT')"
+                   th:href='@{|/web/tenant/edit/${tenant.id}|}' class="btn btn-default">
+                    <i class="fa fa-pencil-square-o"></i>
+                    <span th:text="#{common.edit}" />
+                </a>
+                <a href='#' class="btn btn-default back" >
+                    <i class="fa fa-backward"></i>
+                    <span th:text="#{common.back}" />
+                </a>
+
+                <a sec:authorize="@apoloSecurity.hasPermission('TENANT_MANAGER')"
+                   th:if="${T(apolo.data.enums.Status).ACTIVE == tenant.status}"
+                   th:href='@{|/web/tenant/lock/${tenant.id}|}'
+                   class="btn btn-danger btn-small"
+                   data-toggle="tooltip"
+                   th:title="#{common.lock}">
+                    <i class="fa fa-lock"></i>
+                    <span th:text="#{common.lock}">
+                        common.lock
+                    </span>
+                </a>
+
+                <a sec:authorize="@apoloSecurity.hasPermission('TENANT_MANAGER')"
+                   th:if="${T(apolo.data.enums.Status).LOCKED == tenant.status}"
+                   th:href='@{|/web/tenant/unlock/${tenant.id}|}'
+                   class="btn btn-success btn-small"
+                   data-toggle="tooltip">
+                    <i class="fa fa-unlock"></i>
+                    <span th:text="#{common.unlock}">
+                        common.unlock
+                    </span>
+                </a>
+
+                <a sec:authorize="@apoloSecurity.hasPermission('TENANT_MANAGER')"
+                   th:href='@{|/web/tenant/change/${tenant.url}|}'
+                   class="btn btn-default btn-small">
+                    <i class="fa fa-exchange"></i>
+                    <span th:text="#{tenant.change}">
+                        tenant.change
+                    </span>
+                </a>
+            </div>
+        </div>
+    </section>
+</div>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:include="@{_fragment/_headTag} :: headTag">
+</head>
+<body>
+<div th:remove="tag" th:include="@{_fragment/_apolo-template} :: apolo-template"></div>
+
+<div id="page-header">
+    <!-- RIBBON -->
+    <div id="ribbon">
+        <ol class="breadcrumb">
+            <li th:text="#{application.api}">
+
+            </li>
+        </ol>
+    </div>
+    <!-- END RIBBON -->
+</div>
+
+<div id="page-content">
+    <section class="content">
+        <div class="col-sm-12">
+            <div th:remove="tag" th:include="@{application/_form} :: application-form"></div>
+
+            <div class="btn-group" role="group">
+                <a sec:authorize="@apoloSecurity.hasPermission('USER_EDIT')"
+                   th:href='@{|/web/${#authentication.systemUser.tenant.url}/application/edit/${app.id}|}' class="btn btn-default">
+                    <i class="fa fa-pencil-square-o"></i>
+                    <span th:text="#{common.edit}" />
+                </a>
+                <a href='#' class="btn btn-default back" >
+                    <i class="fa fa-backward"></i>
+                    <span th:text="#{common.back}" />
+                </a>
+            </div>
+        </div>
+    </section>
+</div>
+</body>
+</html>

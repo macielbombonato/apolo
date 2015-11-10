@@ -7,7 +7,7 @@
     <groupId>apolo</groupId>
     <artifactId>apolo</artifactId>
     <packaging>pom</packaging>
-    <version>4.0.0</version>
+    <version>4.1.0</version>
 
     <url>http://dimeric.com.br</url>
 
@@ -34,7 +34,9 @@
     <modules>
     	<module>apolo-core-custom</module>
         <module>apolo-core</module>
-        <module>apolo-web</module>
+        <module>apolo-web-core</module>
+		<!--module>apolo-web-html-adminlte</module-->
+		<module>apolo-web-html-smartadmin</module>
     </modules>
 
     <repositories>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:include="@{_fragment/_headTag} :: headTag">
+</head>
+
+<!--
+BODY TAG OPTIONS:
+=================
+Apply one or more of the following classes to get the
+desired effect
+
+    * 'smart-style-{SKIN#}'
+    * 'smart-rtl'         - Switch theme mode to RTL
+    * 'menu-on-top'       - Switch to top navigation (no DOM change required)
+    * 'no-menu'			  - Hides the menu completely
+    * 'hidden-menu'       - Hides the main menu but still accessable by hovering over left edge
+    * 'fixed-header'      - Fixes the header
+    * 'fixed-navigation'  - Fixes the main menu
+    * 'fixed-ribbon'      - Fixes breadcrumb
+    * 'fixed-page-footer' - Fixes footer
+    * 'container'         - boxed layout mode (non-responsive: will not work with fixed-navigation & fixed-ribbon)
+-->
+
+<body th:fragment="apolo-template" class="fixed-header container">
+
+<div class="wrapper">
+
+    <div th:remove="tag" th:include="@{_fragment/_header} :: header"></div>
+
+    <section th:remove="tag" th:include="@{_fragment/_menu} :: menu"></section>
+
+    <div id="main" role="main">
+        <div id="header-location">
+        </div>
+
+        <div th:remove="tag" th:include="@{_fragment/_message} :: message"></div>
+
+        <div id="content">
+            <div id="content-location">
+
+            </div>
+        </div>
+
+        <div class="row">
+            &nbsp;
+        </div>
+
+        <div class="col-sm-12" th:remove="tag" th:include="@{_fragment/_ad-horizontal} :: ad-horizontal"></div>
+    </div>
+
+    <div th:remove="tag" th:include="@{_fragment/_footer} :: footer"></div>
+
+</div>
+
+<div th:if="${#authorization.expression('@apoloSecurity.isAuthenticated()') == true}">
+    <input th:if="${#authentication.systemUser.tenant != null}
+                    and ${#authentication.systemUser.tenant.skin != null}"
+           type="hidden" id="skin" th:value="${#authentication.systemUser.tenant.skin.code}" />
+
+    <input th:if="${#authentication.systemUser.tenant != null}
+                    and ${#authentication.systemUser.tenant.skin == null}"
+           type="hidden" id="skin" value="skin-black" />
+
+    <div th:if="${#authentication.systemUser.tenant == null and tenant == null}">
+        <input type="hidden" id="skin" th:value="skin-black" />
+    </div>
+
+    <div th:if="${#authentication.systemUser.tenant == null and tenant != null}">
+        <input th:if="${tenant.skin == null}"
+               type="hidden" id="skin" th:value="skin-black" />
+
+        <input th:if="${tenant.skin != null}"
+               type="hidden" id="skin" th:value="${tenant.skin.code}" />
+    </div>
+</div>
+
+<div th:if="${#authorization.expression('@apoloSecurity.isAuthenticated()') != true}">
+    <div th:if="${tenant == null}">
+        <input type="hidden" id="skin" th:value="skin-black" />
+    </div>
+
+    <div th:if="${tenant != null}">
+        <input th:if="${tenant.skin == null}"
+               type="hidden" id="skin" th:value="skin-black" />
+
+        <input th:if="${tenant.skin != null}"
+               type="hidden" id="skin" th:value="${tenant.skin.code}" />
+    </div>
+</div>
+
+<script th:inline="javascript">
+    $('body').addClass('fixed-header');
+    $('body').addClass($('#skin').val());
+</script>
+
+</body>
+</html>

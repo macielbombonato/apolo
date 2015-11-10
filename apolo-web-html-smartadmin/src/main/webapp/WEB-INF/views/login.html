@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <head th:include="@{_fragment/_headTag} :: headTag">
+    </head>
+    <body class="animated fadeInDown">
+
+    <div id="main" role="main">
+
+        <!-- MAIN CONTENT -->
+        <div id="content" class="container">
+
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-5">
+                    <div class="well no-padding">
+                        <form th:action="@{/web/login}" method="post" role="form" class="smart-form client-form">
+                            <header>
+                                <a th:href="${#authorization.expression('@apoloSecurity.isAuthenticated()') == true} ? @{|/web/${#authentication.systemUser.tenant.url}/user|} : @{'/web/'}">
+                                    <h3 th:if="${tenant == null}">
+                                        <img th:if="${tenant == null}"
+                                             th:src="@{'/resources/app/img/favicon.png'}"
+                                             width="20"
+                                             height="30"
+                                             style="width: 20px; height: 30px;"
+                                                />
+                                        <span th:text="#{app.title}"></span>
+                                    </h3>
+                                    <h3 th:if="${tenant != null}">
+                                        <img th:if="${tenant != null}
+                                        and ${tenant.logo != null}"
+                                             th:src="@{|/web/${tenant.url}/uploadedfiles/Tenant/${tenant.id}/${tenant.logo}|}"
+                                             th:width="${tenant.logoWidth} + ${'px'}"
+                                             th:height="${tenant.logoHeight} + ${'px'}"
+                                             th:style="${'width: '} + ${tenant.logoWidth} + ${'px; height: '} + ${tenant.logoHeight} + ${'px;'}"
+                                                />
+                                        <span th:if="${tenant.showName == true}"
+                                              th:text="#{app.title}">
+                                            App Name
+                                        </span>
+                                    </h3>
+                                </a>
+                            </header>
+
+                            <fieldset>
+
+                                <section>
+                                    <div class="login-box-msg" th:remove="tag" th:include="@{_fragment/_message} :: message"></div>
+                                </section>
+
+                                <section>
+                                    <label class="input">
+                                        <i class="icon-append fa fa-user"></i>
+
+                                        <input type="email"
+                                               class="focus"
+                                               id="username"
+                                               name="username"
+                                               th:placeholder="#{user.name}"
+                                                />
+
+                                        <b class="tooltip tooltip-top-right">
+                                            <i class="fa fa-user txt-color-teal"></i>
+                                            <span th:text="#{user.name}"/>
+                                        </b>
+                                    </label>
+                                </section>
+
+                                <section>
+                                    <label class="input">
+                                        <i class="icon-append fa fa-lock"></i>
+
+                                        <input type="password"
+                                               id="password"
+                                               name="password"
+                                               th:placeholder="#{user.password}"
+                                                />
+
+                                        <b class="tooltip tooltip-top-right">
+                                            <i class="fa fa-lock txt-color-teal"></i>
+                                            <span th:text="#{user.password}"/>
+                                        </b>
+                                    </label>
+
+                                    <div class="note">
+                                        <a th:with="url=${tenant != null ? '/web/' + tenant.url : '/web'}"
+                                           th:href="@{|${url}/forgot-password|}"
+                                           th:text="#{user.forgot-password}">
+                                            Esqueci minha senha
+                                        </a>
+                                    </div>
+                                </section>
+
+                            </fieldset>
+
+                            <footer>
+                                <div class="col-sm-6 pull-left">
+                                    <p class="font-xs margin-top-5 pull-left">
+                                        <b class="small" th:text="#{app.developer.msg}">
+                                            app.developer.msg
+                                        </b>
+                                        <a class="btnlink" th:href="#{app.developer.url}" th:text="#{app.developer.name}" target="_blank">
+                                            app.developer.name
+                                        </a>
+                                    </p>
+                                </div>
+                                <div class="col-sm-6 pull-right">
+                                    <button type="submit" class="btn btn-primary" th:text="#{user.login}">
+                                        Sign in
+                                    </button>
+                                </div>
+                            </footer>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="col-sm-12" th:remove="tag" th:include="@{_fragment/_ad-horizontal} :: ad-horizontal"></div>
+
+    <div th:remove="tag" th:include="@{_fragment/_scriptsTag} :: scriptsTag"></div>
+
+    <script type="text/javascript">
+        runAllForms();
+
+        $(function() {
+            // Validation
+            $("#login-form").validate({
+                // Rules for form validation
+                rules : {
+                    email : {
+                        required : true,
+                        email : true
+                    },
+                    password : {
+                        required : true
+                    }
+                },
+
+                // Messages for form validation
+                messages : {
+                    email : {
+                        required : 'Please enter your email address',
+                        email : 'Please enter a VALID email address'
+                    },
+                    password : {
+                        required : 'Please enter your password'
+                    }
+                },
+
+                // Do not change code below
+                errorPlacement : function(error, element) {
+                    error.insertAfter(element.parent());
+                }
+            });
+        });
+    </script>
+    </body>
+</html>

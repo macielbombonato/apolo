@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+    <head>
+    </head>
+    <body th:fragment="message">
+        <div th:if="${error} or ${warn} or ${msg}">
+            <div class="row ">
+                <div class="col-sm-12 ">
+                    <div th:if="${error}" >
+                        <div class="alert alert-danger" th:text="${message}"/>
+                    </div>
+
+                    <div th:if="${warn}" >
+                        <div class="alert alert-warning" th:text="${message}"/>
+                    </div>
+
+                    <div th:if="${msg}" >
+                        <div class="alert alert-info" th:text="${message}"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

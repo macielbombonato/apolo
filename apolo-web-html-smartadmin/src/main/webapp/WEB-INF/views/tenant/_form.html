@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+</head>
+<body th:fragment="tenant-form">
+
+<input type="hidden" id="id" name="id" th:value="${tenant.id}" />
+<input type="hidden" id="status" name="status" th:value="${tenant.status}" />
+<input type="hidden" id="logo" name="logo" th:value="${tenant.logo}" />
+
+<ul class="nav nav-tabs" id="formTab" th:with="style=${!readOnly ? 'display: none;' : 'display: block;' }">
+    <li class="active">
+        <a href="#home">
+            <span class="fa fa-tasks"></span>
+        </a>
+    </li>
+    <li th:style="${style}">
+        <a href="#authorShipTab">
+            <span class="fa fa-user"></span>
+        </a>
+    </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane active" id="home">
+
+        <div class="row">
+            <ul class="list-unstyled clearfix">
+
+                <li class="col-sm-4"
+                    style="float:left; padding: 5px;"
+                    th:each="skin : ${skinList}">
+                    <a href="#" style="box-shadow: 0 0 3px rgba(0,0,0,0.4)" class="clearfix full-opacity-hover">
+                        <div class="col-sm-2" th:style="${'background: '}+${skin.backgroundMenuBody}+${';'}">
+                            <input type="radio"
+                                   id="skin"
+                                   name="skin"
+                                   th:value="${skin}"
+                                   th:checked="${tenant.skin != null and tenant.skin.code eq skin.code}"
+                                   th:disabled="${readOnly}"
+                                    />
+                        </div>
+                        <div class="text-center no-margin col-sm-8 pull-left" >
+                            <span th:text="${' '} + #{${'tenant.skin.'} + ${skin}}" class="pull-left">
+
+                            </span>
+                        </div>
+
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="form-group">
+            <label for="name" class="control-label" th:text="#{tenant.name}">
+                tenant.name
+            </label>
+            <input class="form-control"
+                   type="text"
+                   id="name"
+                   name="name"
+                   th:value="${tenant.name}"
+                   th:readonly="${readOnly}"
+                    />
+        </div>
+        <div class="form-group">
+            <label for="showName" class="control-label" th:text="#{tenant.showName}">
+                tenant.hasShowName
+            </label>
+            <input type="checkbox"
+                   id="showName"
+                   name="showName"
+                   value="true"
+                   th:disabled="${readOnly}"
+                   th:checked="${tenant.showName}"
+                    />
+        </div>
+
+        <div class="form-group">
+            <label for="url" class="control-label" th:text="#{tenant.url}">
+                tenant.url
+            </label>
+            <input class="form-control"
+                   type="text"
+                   id="url"
+                   name="url"
+                   th:value="${tenant.url}"
+                   th:readonly="${readOnly}"
+                    />
+            <blockquote th:with="visible=${readOnly ? 'display: none;' : 'display: block;' }"
+                        th:style="${visible}" >
+                <small th:text="#{tenant.url.change.advice}">
+                    tenant.url.change.advice
+                </small>
+            </blockquote>
+        </div>
+
+        <div class="form-group">
+            <label for="logoWidth" class="control-label" th:text="#{tenant.logoWidth}">
+                tenant.logoWidth
+            </label>
+            <input class="form-control"
+                   type="number"
+                   id="logoWidth"
+                   name="logoWidth"
+                   th:value="${tenant.logoWidth}"
+                   th:readonly="${readOnly}"
+                    />
+        </div>
+
+        <div class="form-group">
+            <label for="logoHeight" class="control-label" th:text="#{tenant.logoHeight}">
+                tenant.logoHeight
+            </label>
+            <input class="form-control"
+                   type="number"
+                   id="logoHeight"
+                   name="logoHeight"
+                   th:value="${tenant.logoHeight}"
+                   th:readonly="${readOnly}"
+                    />
+        </div>
+
+        <div class="form-group" th:if="${!readOnly}">
+            <label for="logoFile" class="control-label" th:text="#{tenant.logo}">
+                tenant.logo
+            </label>
+            <input type="file" class="form-control" name="logoFile[0]" />
+        </div>
+
+        <div class="form-group" th:if="${!readOnly}">
+            <label for="iconFile" class="control-label" th:text="#{tenant.icon}">
+                tenant.icon
+            </label>
+            <input type="file" class="form-control" name="iconFile[0]" />
+        </div>
+
+        <div class="form-group">
+            <label for="showName" class="control-label" th:text="#{tenant.sendAuthEmail}">
+                tenant.sendAuthEmail
+            </label>
+            <input type="checkbox"
+                   id="sendAuthEmail"
+                   name="sendAuthEmail"
+                   value="true"
+                   th:disabled="${readOnly}"
+                   th:checked="${tenant.sendAuthEmail}"
+                    />
+        </div>
+
+        <div class="form-group">
+            <label for="emailFrom" class="control-label" th:text="#{tenant.emailFrom}">
+                emailFrom
+            </label>
+
+            <input type="text"
+                   id="emailFrom"
+                   name="emailFrom"
+                   class="form-control"
+                   th:value="${tenant.emailFrom}"
+                   th:readonly="${readOnly}"
+                    />
+        </div>
+
+        <div class="form-group">
+            <label for="emailUsername" class="control-label" th:text="#{tenant.emailUsername}">
+                emailUsername
+            </label>
+
+            <input type="text"
+                   id="emailUsername"
+                   name="emailUsername"
+                   class="form-control"
+                   th:value="${tenant.emailUsername}"
+                   th:readonly="${readOnly}"
+                    />
+        </div>
+
+        <div class="form-group">
+            <label for="emailPassword" class="control-label" th:text="#{tenant.emailPassword}">
+                emailPassword
+            </label>
+
+            <input type="password"
+                   id="emailPassword"
+                   name="emailPassword"
+                   class="form-control"
+                   th:readonly="${readOnly}"
+                    />
+        </div>
+
+        <div class="form-group">
+            <label for="smtpHost" class="control-label" th:text="#{tenant.smtpHost}">
+                smtpHost
+            </label>
+
+            <input type="text"
+                   id="smtpHost"
+                   name="smtpHost"
+                   class="form-control"
+                   th:value="${tenant.smtpHost}"
+                   th:readonly="${readOnly}"
+                    />
+        </div>
+
+        <div class="form-group">
+            <label for="smtpPort" class="control-label" th:text="#{tenant.smtpPort}">
+                smtpPort
+            </label>
+
+            <input type="number"
+                   id="smtpPort"
+                   name="smtpPort"
+                   class="form-control"
+                   th:value="${tenant.smtpPort}"
+                   th:readonly="${readOnly}"
+                    />
+        </div>
+
+        <div class="form-group">
+            <label for="useTLS" class="control-label" th:text="#{tenant.useTLS}">
+                useTLS
+            </label>
+
+            <input type="checkbox"
+                   id="useTLS"
+                   name="useTLS"
+                   value="true"
+                   th:disabled="${readOnly}"
+                   th:checked="${tenant.useTLS}"
+                    />
+        </div>
+
+        <div class="form-group">
+            <label for="emailUseTenantConfig" class="control-label" th:text="#{tenant.emailUseTenantConfig}">
+                emailUseTenantConfig
+            </label>
+
+            <input type="checkbox"
+                   id="emailUseTenantConfig"
+                   name="emailUseTenantConfig"
+                   value="true"
+                   th:disabled="${readOnly}"
+                   th:checked="${tenant.emailUseTenantConfig}"
+                    />
+        </div>
+
+        <div class="form-group">
+            <label for="showAdds" class="control-label" th:text="#{tenant.showAdds}">
+                tenant.showAdds
+            </label>
+            <input type="checkbox"
+                   id="showAdds"
+                   name="showAdds"
+                   value="true"
+                   th:disabled="${readOnly}"
+                   th:checked="${tenant.showAdds}"
+                    />
+        </div>
+
+    </div>
+
+    <div class="tab-pane" id="authorShipTab">
+        <div th:remove="tag" th:include="@{_fragment/_authorship} :: authorship (entity=${tenant})"></div>
+    </div>
+</div>
+<div id="overlay" class="transparent"></div>
+
+<div id="menu-space" style="display:none;">&nbsp;</div>
+</body>
+</html>

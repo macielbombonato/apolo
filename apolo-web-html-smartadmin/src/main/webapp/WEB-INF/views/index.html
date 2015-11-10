@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+      <head th:include="@{_fragment/_headTag} :: headTag">
+      </head>
+      <body>
+            <div th:remove="tag" th:include="@{_fragment/_apolo-template} :: apolo-template"></div>
+
+            <div id="page-content">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <img class="img-responsive" th:src="@{|/resources/app/img/favicon.png|}" />
+                    </div>
+                    <div class="col-sm-8" style="text-align: justify">
+                        <h4 class="media-heading" th:text="#{view.index.apolo.title}" />
+                        <p th:text="#{view.index.hello}" data-htmlEscape="false" />
+                    </div>
+                </div>
+            </div>
+      </body>
+</html>

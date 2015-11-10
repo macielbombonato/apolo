@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+</head>
+<body th:fragment="menu">
+
+<!-- #NAVIGATION -->
+<!-- Left panel : Navigation area -->
+<!-- Note: This width of the aside area can be adjusted through LESS/SASS variables -->
+<aside id="left-panel">
+
+    <!-- User info -->
+    <div class="login-info" sec:authorize="@apoloSecurity.isAuthenticated()">
+        <span> <!-- User image size is adjusted inside CSS, it should stay as is -->
+
+            <a href="javascript:void(0);" id="show-shortcut" data-action="toggleShortcut">
+                <img class="online"
+                     th:if="${#authentication.systemUser.avatarFileName != null}
+                                and ${#authentication.systemUser.avatarFileName != ''}"
+                     th:src="@{|/web/${#authentication.systemUser.dbTenant.url}/uploadedfiles/User/${#authentication.systemUser.id}/${#authentication.systemUser.avatarFileName}|}"
+                        />
+                <span th:if="${#authentication.systemUser.avatarFileName == null
+                            or #authentication.systemUser.avatarFileName == ''}"
+                      class="fa fa-user fa-4x">
+                </span>
+
+                <span th:text="${#authentication.systemUser.name}">
+                    #authentication.systemUser.name
+                </span>
+                <i class="fa fa-angle-down"></i>
+            </a>
+
+        </span>
+    </div>
+    <!-- end user info -->
+
+    <!-- NAVIGATION : This navigation is also responsive
+
+    To make this navigation dynamic please make sure to link the node
+    (the reference to the nav > ul) after page load. Or the navigation
+    will not initialize.
+    -->
+    <nav>
+        <!--
+        NOTE: Notice the gaps after each icon usage <i></i>..
+        Please note that these links work a bit different than
+        traditional href="" links. See documentation for details.
+        -->
+
+        <ul>
+            <li class="treeview"
+                sec:authorize="@apoloSecurity.hasPermission('USER_LIST',
+                                                                'USER_MANAGER',
+                                                                'USER_CREATE',
+                                                                'TENANT_LIST',
+                                                                'TENANT_CREATE',
+                                                                'USER_PERMISSION_LIST',
+                                                                'USER_PERMISSION_CREATE',
+                                                                'APPLICATION_LIST',
+                                                                'APPLICATION_CREATE'
+                                                                )">
+                <a href="#">
+                    <i class="icon fa fa-cog"></i>
+                    <span class="menu-item-parent" th:text="#{menu.sysadmin}">
+                        menu.sysadmin
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li class="treeview"
+                        sec:authorize="@apoloSecurity.hasPermission('USER_LIST',
+                                                                        'USER_MANAGER',
+                                                                        'USER_CREATE'
+                                                                        )">
+                        <a href="#">
+                            <i class="icon fa fa-users"></i>
+                                <span class="text" th:text="#{menu.sysadmin.user}">
+                                    menu.sysadmin.user
+                                </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li>
+                                <a sec:authorize="@apoloSecurity.hasPermission('USER_LIST')"
+                                   th:href='@{|/web/${#authentication.systemUser.tenant.url}/user/list|}'>
+                                    <i class="icon fa fa-list"></i>
+                                    <span class="text" th:text="#{user.list}">user.list</span>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a sec:authorize="@apoloSecurity.hasPermission('USER_MANAGER')"
+                                   th:href='@{|/web/${#authentication.systemUser.tenant.url}/user/list-locked|}'>
+                                    <i class="icon fa fa-user-secret"></i>
+                                    <span class="text" th:text="#{user.list.locked}">user.list.locked</span>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a sec:authorize="@apoloSecurity.hasPermission('USER_CREATE')"
+                                   th:href='@{|/web/${#authentication.systemUser.tenant.url}/user/new|}'>
+                                    <i class="icon fa fa-user-plus"></i>
+                                    <span class="text" th:text="#{user.new}">user.new</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="treeview" sec:authorize="@apoloSecurity.hasPermission('TENANT_LIST', 'TENANT_CREATE')">
+                        <a href="#">
+                            <i class="icon fa fa-ship"></i>
+                                <span class="text" th:text="#{tenant}" >
+                                    tenant
+                                </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li>
+                                <a sec:authorize="@apoloSecurity.hasPermission('TENANT_LIST')"
+                                   th:href='@{|/web/tenant/list|}'>
+                                    <i class="icon fa fa-list"></i>
+                                    <span class="text" th:text="#{tenant.list}">tenant.list</span>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a sec:authorize="@apoloSecurity.hasPermission('TENANT_CREATE')"
+                                   th:href='@{|/web/tenant/new|}'>
+                                    <i class="icon fa fa-user-plus"></i>
+                                    <span class="text" th:text="#{tenant.create}">tenant.create</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="treeview" sec:authorize="@apoloSecurity.hasPermission('USER_PERMISSION_LIST', 'USER_PERMISSION_CREATE')">
+                        <a href="#">
+                            <i class="icon fa fa-arrows-alt"></i>
+                                <span class="text" th:text="#{menu.sysadmin.groups}" >
+                                    menu.sysadmin.groups
+                                </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li>
+                                <a sec:authorize="@apoloSecurity.hasPermission('USER_PERMISSION_LIST')"
+                                   th:href='@{|/web/${#authentication.systemUser.tenant.url}/user-group/list|}'>
+                                    <i class="icon fa fa fa-list"></i>
+                                    <span class="text" th:text="#{user.group.list}">user.group.list</span>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a sec:authorize="@apoloSecurity.hasPermission('USER_PERMISSION_CREATE')"
+                                   th:href='@{|/web/${#authentication.systemUser.tenant.url}/user-group/new|}'>
+                                    <i class="icon fa fa fa-plus"></i>
+                                    <span class="text" th:text="#{user.group.new}">user.group.new</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="treeview" sec:authorize="@apoloSecurity.hasPermission('USER_PERMISSION_LIST', 'USER_PERMISSION_CREATE')">
+                        <a href="#">
+                            <i class="icon fa fa-code"></i>
+                                <span class="text" th:text="#{application.api}" >
+                                    application.api
+                                </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li>
+                                <a sec:authorize="@apoloSecurity.hasPermission('APPLICATION_LIST')"
+                                   th:href='@{|/web/${#authentication.systemUser.tenant.url}/application/list|}'>
+                                    <i class="icon fa fa fa-list"></i>
+                                    <span class="text" th:text="#{application.list}">application.list</span>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a sec:authorize="@apoloSecurity.hasPermission('APPLICATION_CREATE')"
+                                   th:href='@{|/web/${#authentication.systemUser.tenant.url}/application/new|}'>
+                                    <i class="icon fa fa fa-plus"></i>
+                                    <span class="text" th:text="#{application.create}">application.create</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li sec:authorize="@apoloSecurity.hasPermission('ADMIN')">
+                        <a sec:authorize="@apoloSecurity.hasPermission('ADMIN')"
+                           th:href='@{|/web/${#authentication.systemUser.tenant.url}/auditlog/list|}'>
+                            <i class="icon fa fa-list-alt"></i>
+                            <span class="text" th:text="#{auditlog.list}">auditlog.list</span>
+                        </a>
+                    </li>
+
+                    <!-- Application menu has to be inserted here -->
+
+                </ul>
+            </li>
+        </ul>
+    </nav>
+
+    <span class="minifyme" data-action="minifyMenu"> <i class="fa fa-arrow-circle-left hit"></i> </span>
+
+</aside>
+<!-- END NAVIGATION -->
+
+<!-- #SHORTCUT AREA : With large tiles (activated via clicking user name tag)
+     Note: These tiles are completely responsive, you can add as many as you like -->
+<div id="shortcut" sec:authorize="@apoloSecurity.isAuthenticated()">
+    <ul>
+        <li>
+            <a th:href="@{|/web/${#authentication.systemUser.tenant.url}/user|}"
+               class="jarvismetro-tile big-cubes bg-color-orangeDark" >
+                <span class="iconbox">
+                    <i class="fa fa-tachometer fa-4x"></i>
+                    <span th:text="#{user.dashboard}" />
+                </span>
+            </a>
+        </li>
+        <li>
+            <a th:href='@{|/web/${#authentication.systemUser.dbTenant.url}/user/view/${#authentication.systemUser.id}|}'
+               class="jarvismetro-tile big-cubes bg-color-blue">
+                <span class="iconbox">
+                    <i class="fa fa-user fa-4x"></i>
+                    <span th:text="#{user.profile}" />
+                </span>
+            </a>
+        </li>
+        <li>
+            <a th:href='@{|/web/${#authentication.systemUser.dbTenant.url}/user/change-password|}'
+               class="jarvismetro-tile big-cubes bg-color-red">
+                <span class="iconbox">
+                    <i class="fa fa-pencil-square-o fa-4x"></i>
+                    <span th:text="#{user.change.password}" />
+                </span>
+            </a>
+        </li>
+    </ul>
+</div>
+<!-- END SHORTCUT AREA -->
+
+</body>
+</html>

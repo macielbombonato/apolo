@@ -513,7 +513,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 			tenant.setUrl(applicationProperties.getDefaultTenant());
 			tenant.setStatus(Status.ACTIVE);
 
-			tenant.setSkin(Skin.SKIN_BLACK);
+			tenant.setSkin(Skin.SKIN_DEFAULT);
 
 			tenant.setEmailFrom(applicationProperties.getEmailFrom());
 			tenant.setEmailUsername(applicationProperties.getEmailUsername());

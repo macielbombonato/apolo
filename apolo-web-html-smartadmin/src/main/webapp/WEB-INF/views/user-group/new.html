@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:include="@{_fragment/_headTag} :: headTag">
+</head>
+<body>
+<div th:remove="tag" th:include="@{_fragment/_apolo-template} :: apolo-template"></div>
+
+<div id="page-header">
+    <!-- RIBBON -->
+    <div id="ribbon">
+        <ol class="breadcrumb">
+            <li th:text="#{user.group.new.title}">
+
+            </li>
+        </ol>
+    </div>
+    <!-- END RIBBON -->
+</div>
+
+<div id="page-content">
+    <section class="content">
+        <form id="userForm" th:action="@{|/web/${#authentication.systemUser.tenant.url}/user-group/save|}" role="form" method="post" enctype="multipart/form-data">
+            <div th:remove="tag" th:include="@{user-group/_form} :: user-group-form"></div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fa fa-floppy-o"></i>
+                    <span th:text="#{common.save}" />
+                </button>
+
+                <a th:if="${userGroup.id != null}"
+                   th:href='@{|/web/${#authentication.systemUser.tenant.url}/user-group/view/${userGroup.id}|}' class="btn btn-default">
+                    <i class="fa fa-times"></i>
+                    <span th:text="#{common.cancel}" />
+                </a>
+                <a th:if="${userGroup.id == null}"
+                   th:href='@{|/web/${#authentication.systemUser.tenant.url}/user-group/list|}' class="btn btn-default">
+                    <i class="fa fa-times"></i>
+                    <span th:text="#{common.cancel}" />
+                </a>
+            </div>
+        </form>
+    </section>
+</div>
+</body>
+</html>
