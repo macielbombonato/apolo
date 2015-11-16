@@ -16,7 +16,7 @@
                         <form th:action="@{/web/login}" method="post" role="form" class="smart-form client-form">
                             <header>
                                 <a th:href="${#authorization.expression('@apoloSecurity.isAuthenticated()') == true} ? @{|/web/${#authentication.systemUser.tenant.url}/user|} : @{'/web/'}">
-                                    <h3 th:if="${tenant == null or tenant.logo == null}">
+                                    <h3 th:if="${tenant == null}">
                                         <img th:if="${tenant == null or tenant.logo == null}"
                                              th:src="@{'/resources/app/img/favicon.png'}"
                                              width="25"
@@ -34,7 +34,7 @@
                                              th:style="${'width: '} + ${tenant.logoWidth} + ${'px; height: '} + ${tenant.logoHeight} + ${'px;'}"
                                                 />
                                         <span th:if="${tenant.showName == true}"
-                                              th:text="#{app.title}">
+                                              th:text="${tenant.name}">
                                             App Name
                                         </span>
                                     </h3>
