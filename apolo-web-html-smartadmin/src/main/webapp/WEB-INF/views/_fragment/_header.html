@@ -51,12 +51,21 @@
                             </span>
 
                             <img class="logo-opacity" th:if="${#authorization.expression('@apoloSecurity.isAuthenticated()') == false}
-                                                            and ${tenant == null}"
+                                                            and ${tenant == null or tenant.logo == null}"
                                  th:src="@{'/resources/app/img/favicon.png'}"
-                                 width="12"
-                                 height="15"
-                                 style="width: 12px; height: 15px;"
+                                 width="25"
+                                 height="30"
+                                 style="width: 25px; height: 30px;"
                                     />
+
+                            <img class="logo-opacity" th:if="${#authorization.expression('@apoloSecurity.isAuthenticated()') == true}
+                                                            and ${tenant == null or tenant.logo == null}"
+                                 th:src="@{'/resources/app/img/favicon.png'}"
+                                 width="25"
+                                 height="30"
+                                 style="width: 25px; height: 30px;"
+                                    />
+
                             <span class="logo-opacity" th:if="${#authorization.expression('@apoloSecurity.isAuthenticated()') == false}
                                                             and ${tenant == null}"
                                   th:text="#{app.title}"
