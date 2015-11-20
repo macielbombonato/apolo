@@ -158,7 +158,7 @@
                         </ul>
                     </li>
 
-                    <li class="treeview" sec:authorize="@apoloSecurity.hasPermission('USER_PERMISSION_LIST', 'USER_PERMISSION_CREATE')">
+                    <li class="treeview" sec:authorize="@apoloSecurity.hasPermission('APPLICATION_LIST', 'APPLICATION_CREATE')">
                         <a href="#">
                             <i class="icon fa fa-code"></i>
                                 <span class="text" th:text="#{application.api}" >

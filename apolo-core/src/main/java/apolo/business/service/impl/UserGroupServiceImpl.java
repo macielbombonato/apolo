@@ -25,12 +25,12 @@ public class UserGroupServiceImpl extends BaseServiceImpl<UserGroup> implements 
 
 	@Autowired
 	private UserGroupRepository userGroupRepository;
-	
+
 	public List<UserGroup> list(Tenant tenant) {
 		Sort request = new Sort(new Sort.Order(Sort.Direction.ASC, "name"));
-		
+
 		List<UserGroup> result = null;
-		
+
 		if (getAuthenticatedUser().getPermissions().contains(UserPermission.ADMIN)) {
 			result = userGroupRepository.findByTenantOrNameOrMultiTenant(
 					tenant,
@@ -46,19 +46,19 @@ public class UserGroupServiceImpl extends BaseServiceImpl<UserGroup> implements 
 					request
 			);
 		}
-		
+
 		return result;
 	}
-	
+
 	public Page<UserGroup> list(Tenant tenant, Integer pageNumber) {
 		if (pageNumber < 1) {
 			pageNumber = 1;
 		}
-		
+
 		PageRequest request = new PageRequest(pageNumber - 1, PAGE_SIZE, Sort.Direction.ASC, "name");
-		
+
 		Page<UserGroup> result = null;
-		
+
 		if (getAuthenticatedUser().getPermissions().contains(UserPermission.ADMIN)) {
 			result = userGroupRepository.findByTenantOrNameOrMultiTenant(
 					tenant,
@@ -72,16 +72,16 @@ public class UserGroupServiceImpl extends BaseServiceImpl<UserGroup> implements 
 					MessageBundle.getMessageBundle("user.permission.ADMIN"),
 					true,
 					request
-				);
+			);
 		}
-		
+
 		return result;
 	}
 
 	public UserGroup find(Long id) {
 		return userGroupRepository.findOne(id);
 	}
-	
+
 	public UserGroup find(Tenant tenant, Long id) {
 		return userGroupRepository.findByTenantAndId(tenant, id);
 	}
@@ -94,17 +94,20 @@ public class UserGroupServiceImpl extends BaseServiceImpl<UserGroup> implements 
 		} else if (userGroup != null
 				&& Boolean.TRUE.equals(userGroup.getMultiTenant())
 				&& getAuthenticatedUser() != null
-				&& !getAuthenticatedUser().getPermissions().contains(UserPermission.TENANT_MANAGER)) {
+				&& (!getAuthenticatedUser().getPermissions().contains(UserPermission.ADMIN)
+				&& !getAuthenticatedUser().getPermissions().contains(UserPermission.TENANT_MANAGER)
+		)
+				) {
 			throw new AccessDeniedException(MessageBundle.getMessageBundle("user.group.msg.access.denied.multitenant"));
 		} else {
 			if (!UserStatus.ADMIN.equals(userGroup.getStatus())) {
 				userGroup.setStatus(UserStatus.ACTIVE);
 			}
-			
+
 			userGroup.setUpdatedBy(getAuthenticatedUser());
 			userGroup.setUpdatedAt(new Date());
-			
-			return userGroupRepository.saveAndFlush(userGroup);	
+
+			return userGroupRepository.saveAndFlush(userGroup);
 		}
 	}
 
@@ -113,7 +116,7 @@ public class UserGroupServiceImpl extends BaseServiceImpl<UserGroup> implements 
 		if (userGroup != null && UserStatus.ADMIN.equals(userGroup.getStatus()) && userGroup.getId() != null) {
 			throw new AccessDeniedException(MessageBundle.getMessageBundle("user.group.msg.access.denied"));
 		} else {
-			userGroupRepository.delete(userGroup);	
+			userGroupRepository.delete(userGroup);
 		}
 	}
 
@@ -121,25 +124,25 @@ public class UserGroupServiceImpl extends BaseServiceImpl<UserGroup> implements 
 		if (pageNumber < 1) {
 			pageNumber = 1;
 		}
-		
+
 		PageRequest request = new PageRequest(pageNumber - 1, PAGE_SIZE, Sort.Direction.ASC, "name");
-		
+
 		if (param != null) {
-			param = "%" + param + "%";	
+			param = "%" + param + "%";
 		}
-		
+
 		Page<UserGroup> result = userGroupRepository.findByTenantAndNameLikeOrderByNameAsc(tenant, param, request);
-		
+
 		return result;
 	}
 
 	public List<UserPermission> getUserPermissionList() {
 		List<UserPermission> permissions = new ArrayList<UserPermission>();
-		
+
 		User user = getAuthenticatedUser();
-		
+
 		for (UserPermission permission : UserPermission.values()) {
-			if (UserPermission.ADMIN.equals(permission) 
+			if (UserPermission.ADMIN.equals(permission)
 					&& user.getPermissions().contains(UserPermission.ADMIN)
 					&& permission.isListable()) {
 				permissions.add(permission);
@@ -148,16 +151,16 @@ public class UserGroupServiceImpl extends BaseServiceImpl<UserGroup> implements 
 				permissions.add(permission);
 			}
 		}
-		
+
 		return permissions;
 	}
-	
+
 	public UserGroup lock(UserGroup entity) {
 		if (!entity.getStatus().isChangeable()) {
 			String message = MessageBundle.getMessageBundle("error.403.4");
 			throw new AccessDeniedException(4, message);
-		} 
-		
+		}
+
 		entity.setStatus(UserStatus.LOCKED);
 		return userGroupRepository.save(entity);
 	}
@@ -166,8 +169,8 @@ public class UserGroupServiceImpl extends BaseServiceImpl<UserGroup> implements 
 		if (!entity.getStatus().isChangeable()) {
 			String message = MessageBundle.getMessageBundle("error.403.4");
 			throw new AccessDeniedException(4, message);
-		} 
-		
+		}
+
 		entity.setStatus(UserStatus.ACTIVE);
 		return userGroupRepository.save(entity);
 	}

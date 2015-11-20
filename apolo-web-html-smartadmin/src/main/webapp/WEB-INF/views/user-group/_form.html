@@ -36,11 +36,11 @@
                    name="name"
                    th:value="${userGroup.name}"
                    th:readonly="${readOnly}"
-                />
+                    />
         </div>
 
         <div th:if="${!readOnly}"
-                class="form-group">
+             class="form-group">
             <label for="name" class="control-label">
                 <span th:text="#{user.group.permissions.selected}">
                     user.group.permissions.selected
@@ -54,7 +54,7 @@
                     class="select2"
                     th:disabled="${readOnly}"
                     th:attr="data-placeholder=#{common.select}"
-                    th:with="style=${#authorization.expression('@apoloSecurity.hasPermission(''USER_CREATE'', ''USER_EDIT'')') == false ? 'display: none;' : 'display: block;' }"
+                    th:with="style=${#authorization.expression('@apoloSecurity.hasPermission(''USER_PERMISSION_CREATE'', ''USER_PERMISSION_EDIT'')') == false ? 'display: none;' : 'display: block;' }"
                     th:style="${style}"
                     >
                 <option th:if="${permissionList != null} and ${userGroup != null} and ${userGroup.permissions == null}"
@@ -75,7 +75,7 @@
         </div>
 
         <div th:if="${readOnly}"
-                class="form-group">
+             class="form-group">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <strong th:text="#{user.group.permissions.selected}">
@@ -86,7 +86,7 @@
                     <li class="list-group-item"
                         th:each="permission : ${userGroup.permissions}"
                         th:with="permissionName=${'user.permission.'} + ${permission}"
-                            th:text="#{${permissionName}}">
+                        th:text="#{${permissionName}}">
                         user.permission.${permission}
                     </li>
                 </ul>
