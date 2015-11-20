@@ -10,7 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.inject.Inject;
 
 @Service("dashboardService")
-public class DashboardService {
+public class DashboardService extends BaseDashboardService {
 
     @Inject
     UserService userService;

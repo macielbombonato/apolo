@@ -10,7 +10,7 @@ import apolo.data.model.User;
 import apolo.security.UserPermission;
 import apolo.web.controller.base.BaseWebController;
 import apolo.web.enums.Navigation;
-import apolo.web.service.DashboardService;
+import apolo.web.service.BaseDashboardService;
 import net.sf.json.JSONObject;
 import org.springframework.beans.propertyeditors.CustomCollectionEditor;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
@@ -52,7 +52,7 @@ public class UserWebController extends BaseWebController<User> {
 	private ApplicationProperties applicationProperties;
 
 	@Inject
-	private DashboardService dashboardService;
+	private BaseDashboardService dashboardService;
 
 	@Inject
 	private TenantService tenantService;
