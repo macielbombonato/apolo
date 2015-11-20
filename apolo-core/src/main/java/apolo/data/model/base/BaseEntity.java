@@ -6,18 +6,18 @@ import java.io.Serializable;
 @MappedSuperclass
 public abstract class BaseEntity<ID extends Serializable> implements Serializable {
 
-	private static final long serialVersionUID = 1L;
-	
-	@Id
+    private static final long serialVersionUID = 1L;
+
+    @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID", nullable = false)
-    private ID id;
+    private Long id;
 
-    public ID getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(ID id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
