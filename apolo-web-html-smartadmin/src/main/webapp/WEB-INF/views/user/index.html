@@ -20,6 +20,12 @@
 
     <div id="page-content">
         <section class="content">
+
+
+            <!-- Put your widgets in dashboard. Use this page only as example -->
+            <div th:remove="tag" th:include="@{_fragment/_dashboard} :: dashboard"></div>
+
+
             <div sec:authorize="@apoloSecurity.hasPermission('ADMIN')">
                 <h3 th:text="#{menu.sysadmin}">
                     Widgets
@@ -73,9 +79,6 @@
 
                 </div>
             </div>
-
-            <!-- Put your widgets in dashboard. Use this page only as example -->
-            <div th:remove="tag" th:include="@{_fragment/_dashboard} :: dashboard"></div>
 
         </section>
     </div>
