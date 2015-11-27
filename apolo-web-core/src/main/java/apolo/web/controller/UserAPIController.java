@@ -209,7 +209,7 @@ public class UserAPIController extends BaseAPIController<User> {
         if (checkAccess(result, tenantUrl, request, UserPermission.USER_CREATE)) {
             if (entity != null
                     && entity.getEmail() != null) {
-                User dbEntity = userService.findByLogin(entity.getEmail());
+                User dbEntity = userService.findByLogin(entity.getTenant(), entity.getEmail());
 
                 if (dbEntity != null) {
                     result.setMessage(MessageBundle.getMessageBundle("error.203.email.already.used", getDBTenant(tenantUrl).getName()));

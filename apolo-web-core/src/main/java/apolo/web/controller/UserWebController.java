@@ -237,7 +237,7 @@ public class UserWebController extends BaseWebController<User> {
 				user.setTenant(user.getDbTenant());
 			}
 
-			reconstructAuthenticatedUser(user);
+			userService.reconstructAuthenticatedUser(user);
 		} else {
 			user = userService.find(getDBTenant(tenant), id);
 		}
@@ -410,7 +410,7 @@ public class UserWebController extends BaseWebController<User> {
 
 				// Reconstruct user in session
 				if (userService.getAuthenticatedUser().getId().equals(entity.getId())) {
-					reconstructAuthenticatedUser(entity);
+					userService.reconstructAuthenticatedUser(entity);
 				}
 
 				mav = view(tenant, entity.getId(), request);
@@ -625,7 +625,7 @@ public class UserWebController extends BaseWebController<User> {
 	private boolean validateEmail(User entity) {
 		boolean hasError = false;
 
-		User result = userService.findByLogin(entity.getEmail());
+		User result = userService.findByLogin(entity.getTenant(), entity.getEmail());
 
 		if(result != null
 				&& !result.getId().equals(entity.getId())){

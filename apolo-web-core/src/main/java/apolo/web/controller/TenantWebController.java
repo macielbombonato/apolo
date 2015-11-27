@@ -35,37 +35,37 @@ public class TenantWebController extends BaseWebController<Tenant> {
 
 	@Autowired
 	private TenantService tenantService;
-	
+
 	@Autowired
 	private FileService<User> fileService;
-	
+
 	@Autowired
 	private UserService userService;
-	
+
 	@Autowired
 	private UserWebController userController;
-	
+
 	@PreAuthorize("@apoloSecurity.hasPermission('TENANT_MANAGER')")
 	@RequestMapping(value = "change/{tenant-url}", method = RequestMethod.GET)
 	public ModelAndView changeTenant(
-				@PathVariable("tenant-url") String tenantUrl, 
-				HttpServletRequest request
-			) {
-		
+			@PathVariable("tenant-url") String tenantUrl,
+			HttpServletRequest request
+	) {
+
 		Tenant tenant = getDBTenant(tenantUrl);
-		
+
 		User user = userService.getAuthenticatedUser();
-		
+
 		user.setDbTenant(
 				userService.find(user.getId()).getTenant()
-			);
-		
+		);
+
 		user.setTenant(tenant);
-		
-        reconstructAuthenticatedUser(user);
-        
-        ModelAndView mav = userController.index(tenant.getUrl(), request);
-		
+
+		userService.reconstructAuthenticatedUser(user);
+
+		ModelAndView mav = userController.index(tenant.getUrl(), request);
+
 		return mav;
 	}
 
@@ -73,77 +73,77 @@ public class TenantWebController extends BaseWebController<Tenant> {
 	@RequestMapping(value = "new", method = RequestMethod.GET)
 	public ModelAndView create(HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView(Navigation.TENANT_NEW.getPath());
-		
+
 		Tenant tenant = new Tenant();
-		
+
 		tenant.setStatus(Status.ACTIVE);
 		tenant.setCreatedBy(tenantService.getAuthenticatedUser());
 		tenant.setCreatedAt(new Date());
-		
+
 		tenant.setUpdatedBy(tenantService.getAuthenticatedUser());
 		tenant.setUpdatedAt(new Date());
-		
+
 		mav.addObject("tenant", tenant);
 		mav.addObject("skinList", Skin.values());
-        mav.addObject("spinnerList", Spinner.values());
+		mav.addObject("spinnerList", Spinner.values());
 		mav.addObject("readOnly", false);
-		
+
 		return mav;
 	}
-	
+
 	@PreAuthorize("@apoloSecurity.hasPermission('TENANT_EDIT')")
 	@RequestMapping(value = "edit/{id}", method = RequestMethod.GET)
 	public ModelAndView edit(@PathVariable Long id, HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView(Navigation.TENANT_EDIT.getPath());
-		
+
 		Tenant tenant = tenantService.find(null, id);
-		
+
 		tenant.setUpdatedBy(tenantService.getAuthenticatedUser());
 		tenant.setUpdatedAt(new Date());
-		
+
 		mav.addObject("tenant", tenant);
 		mav.addObject("skinList", Skin.values());
-        mav.addObject("spinnerList", Spinner.values());
+		mav.addObject("spinnerList", Spinner.values());
 		mav.addObject("readOnly", false);
 		mav.addObject("editing", true);
-		
+
 		return mav;
 	}
 
 	@PreAuthorize("@apoloSecurity.hasPermission('TENANT_EDIT', 'TENANT_CREATE', 'TENANT_LIST', 'TENANT_MANAGER')")
 	@RequestMapping(value = "view/{id}", method = RequestMethod.GET)
 	public ModelAndView view(
-				@PathVariable Long id, 
-				HttpServletRequest request
-			) {
-		
+			@PathVariable Long id,
+			HttpServletRequest request
+	) {
+
 		ModelAndView mav = new ModelAndView(Navigation.TENANT_VIEW.getPath());
 
 		Tenant tenant = tenantService.find(null, id);
-		
+
 		mav.addObject("tenant", tenant);
 		mav.addObject("skinList", Skin.values());
-        mav.addObject("spinnerList", Spinner.values());
+		mav.addObject("spinnerList", Spinner.values());
 		mav.addObject("readOnly", true);
-		
+
 		return mav;
 	}
-	
+
 	@PreAuthorize("@apoloSecurity.hasPermission('TENANT_REMOVE')")
 	@RequestMapping(value = "remove/{id}", method = RequestMethod.GET)
 	public @ResponseBody String remove(@PathVariable Long id) {
 
 		String result = "";
-		
+
 		JSONObject jsonSubject = new JSONObject();
 		JSONObject jsonItem = new JSONObject();
-		
+
 		Tenant tenant = tenantService.find(null, id);
-		
+
 		if (tenant != null) {
 			try {
 				tenantService.remove(tenant);
-				
+
 				result = MessageBundle.getMessageBundle("common.msg.remove.success");
 				jsonItem.put("success", true);
 			} catch (Throwable e) {
@@ -151,24 +151,24 @@ public class TenantWebController extends BaseWebController<Tenant> {
 				jsonItem.put("success", false);
 			}
 		}
-		
+
 		jsonItem.put("message", result);
 		jsonSubject.accumulate("result", jsonItem);
-		
+
 		return jsonSubject.toString();
 	}
-	
+
 	@PreAuthorize("@apoloSecurity.hasPermission('TENANT_REMOVE')")
 	@RequestMapping(value = "remove-registry/{id}", method = RequestMethod.GET)
 	public ModelAndView removeRegistry(
-				@PathVariable Long id, 
-				HttpServletRequest request
-			) {
-		
+			@PathVariable Long id,
+			HttpServletRequest request
+	) {
+
 		ModelAndView mav = new ModelAndView(Navigation.TENANT_LIST.getPath());
-		
+
 		Tenant tenant = tenantService.find(null, id);
-		
+
 		if (tenant != null) {
 			try {
 				tenantService.remove(tenant);
@@ -182,28 +182,28 @@ public class TenantWebController extends BaseWebController<Tenant> {
 				mav.addObject("message", MessageBundle.getMessageBundle("common.remove.msg.error"));
 			}
 		}
-		
+
 		return mav;
 	}
-	
+
 	@PreAuthorize("@apoloSecurity.hasPermission('TENANT_EDIT', 'TENANT_CREATE', 'TENANT_LIST')")
 	@RequestMapping(value = "save", method = RequestMethod.POST)
 	public ModelAndView save(
-				@Valid @ModelAttribute("tenant") Tenant entity, 
-				BindingResult result, 
-				HttpServletRequest request 
-			) {
-		
+			@Valid @ModelAttribute("tenant") Tenant entity,
+			BindingResult result,
+			HttpServletRequest request
+	) {
+
 		ModelAndView mav = new ModelAndView();
-		
+
 		MultipartFile logoFileToUpload = null;
 
 		List<MultipartFile> logoFileList = null;
-		
+
 		if (entity.getLogoFile() != null) {
 			logoFileList = entity.getLogoFile();
 		}
-		
+
 		if(logoFileList != null && !logoFileList.isEmpty()) {
 			for (MultipartFile multipartFile : logoFileList) {
 				if (multipartFile != null
@@ -221,29 +221,29 @@ public class TenantWebController extends BaseWebController<Tenant> {
 		}
 
 
-        MultipartFile iconFileToUpload = null;
+		MultipartFile iconFileToUpload = null;
 
-        List<MultipartFile> iconFileList = null;
+		List<MultipartFile> iconFileList = null;
 
-        if (entity.getIconFile() != null) {
-            iconFileList = entity.getIconFile();
-        }
+		if (entity.getIconFile() != null) {
+			iconFileList = entity.getIconFile();
+		}
 
-        if(iconFileList != null && !iconFileList.isEmpty()) {
-            for (MultipartFile multipartFile : iconFileList) {
-                if (multipartFile != null
-                        && multipartFile.getOriginalFilename() != null
-                        && !multipartFile.getOriginalFilename().isEmpty()) {
-                    iconFileToUpload = multipartFile;
-                }
-            }
-        }
+		if(iconFileList != null && !iconFileList.isEmpty()) {
+			for (MultipartFile multipartFile : iconFileList) {
+				if (multipartFile != null
+						&& multipartFile.getOriginalFilename() != null
+						&& !multipartFile.getOriginalFilename().isEmpty()) {
+					iconFileToUpload = multipartFile;
+				}
+			}
+		}
 
-        if (iconFileToUpload != null
-                && iconFileToUpload.getOriginalFilename() != null
-                && !iconFileToUpload.getOriginalFilename().isEmpty()) {
-            entity.setIcon(iconFileToUpload.getOriginalFilename());
-        }
+		if (iconFileToUpload != null
+				&& iconFileToUpload.getOriginalFilename() != null
+				&& !iconFileToUpload.getOriginalFilename().isEmpty()) {
+			entity.setIcon(iconFileToUpload.getOriginalFilename());
+		}
 
 		/*
 		 * Object validation
@@ -251,15 +251,15 @@ public class TenantWebController extends BaseWebController<Tenant> {
 		if (result.hasErrors()) {
 			mav.setViewName(
 					getRedirectionPath(
-							null, 
-							request, 
+							null,
+							request,
 							Navigation.TENANT_NEW,
 							Navigation.TENANT_EDIT
-						)
-				);
+					)
+			);
 			mav.addObject("tenant", entity);
 			mav.addObject("skinList", Skin.values());
-            mav.addObject("spinnerList", Spinner.values());
+			mav.addObject("spinnerList", Spinner.values());
 			mav.addObject("readOnly", false);
 			mav.addObject("error", true);
 			
@@ -270,19 +270,19 @@ public class TenantWebController extends BaseWebController<Tenant> {
 			if (referer != null && referer.contains(Navigation.TENANT_EDIT.getPath())) {
 				mav.addObject("editing", true);
 			}
-			
+
 			StringBuilder message = new StringBuilder();
 			for (ObjectError error : result.getAllErrors()) {
 				DefaultMessageSourceResolvable argument = (DefaultMessageSourceResolvable) error.getArguments()[0];
-				
+
 				message.append(MessageBundle.getMessageBundle("common.field") + " " + MessageBundle.getMessageBundle("tenant." + argument.getDefaultMessage()) + ": " + error.getDefaultMessage() + "\n <br />");
 			}
-			
+
 			mav.addObject("message", message.toString());
-			
+
 			return mav;
-		} 
-		
+		}
+
 		if (entity != null) {
 			FileContent logo = null;
 			if (logoFileToUpload != null) {
@@ -290,165 +290,165 @@ public class TenantWebController extends BaseWebController<Tenant> {
 				logo.setFile(logoFileToUpload);
 			}
 
-            FileContent icon = null;
-            if (iconFileToUpload != null) {
-                icon = new FileContent();
-                icon.setFile(iconFileToUpload);
-            }
-			
+			FileContent icon = null;
+			if (iconFileToUpload != null) {
+				icon = new FileContent();
+				icon.setFile(iconFileToUpload);
+			}
+
 			tenantService.save(entity, logo, icon);
-			
+
 			if (tenantService.getAuthenticatedUser().getTenant().getId().equals(entity.getId())) {
 				tenantService.getAuthenticatedUser().setTenant(entity);
-				
-				reconstructAuthenticatedUser(tenantService.getAuthenticatedUser());
+
+				userService.reconstructAuthenticatedUser(tenantService.getAuthenticatedUser());
 			}
-			
-			
+
+
 			mav = view(entity.getId(), request);
-			
+
 			mav.addObject("msg", true);
-			mav.addObject("message", MessageBundle.getMessageBundle("common.msg.save.success"));				
+			mav.addObject("message", MessageBundle.getMessageBundle("common.msg.save.success"));
 		}
-		
+
 		return mav;
 	}
-	
+
 	@PreAuthorize("@apoloSecurity.hasPermission('TENANT_MANAGER')")
 	@RequestMapping(value = "lock/{id}", method = RequestMethod.GET)
 	public ModelAndView lock(
-				@PathVariable Long id, 
-				HttpServletRequest request
-			) {
-		
+			@PathVariable Long id,
+			HttpServletRequest request
+	) {
+
 		ModelAndView mav = new ModelAndView(Navigation.USER_INDEX.getPath());
-		
+
 		Tenant tenant = tenantService.find(null, id);
-		
+
 		if (tenant != null) {
-			
+
 			tenantService.lock(tenant);
-			
+
 			mav = list(request);
-			
+
 			mav.addObject("msg", true);
 			mav.addObject("message", MessageBundle.getMessageBundle("common.msg.save.success"));
 		}
-		
+
 		return mav;
 	}
-	
+
 	@PreAuthorize("@apoloSecurity.hasPermission('TENANT_MANAGER')")
 	@RequestMapping(value = "unlock/{id}", method = RequestMethod.GET)
 	public ModelAndView unlock(
-				@PathVariable Long id, 
-				HttpServletRequest request
-			) {
-		
+			@PathVariable Long id,
+			HttpServletRequest request
+	) {
+
 		ModelAndView mav = new ModelAndView(Navigation.USER_EDIT.getPath());
-		
+
 		Tenant tenant = tenantService.find(null, id);
-		
+
 		if (tenant != null) {
-			
+
 			tenantService.unlock(tenant);
 
 			mav = list(request);
-			
+
 			mav.addObject("msg", true);
 			mav.addObject("message", MessageBundle.getMessageBundle("common.msg.save.success"));
 		}
-		
+
 		return mav;
 	}
-	
+
 	@PreAuthorize("@apoloSecurity.hasPermission('TENANT_EDIT', 'TENANT_CREATE', 'TENANT_LIST', 'TENANT_MANAGER')")
 	@RequestMapping(value = "list", method = RequestMethod.GET)
 	public ModelAndView list(HttpServletRequest request) {
 
 		return list(1, request);
 	}
-	
+
 	@PreAuthorize("@apoloSecurity.hasPermission('TENANT_EDIT', 'TENANT_CREATE', 'TENANT_LIST', 'TENANT_MANAGER')")
 	@RequestMapping(value = "list/{pageNumber}", method = RequestMethod.GET)
 	public ModelAndView list(
-				@PathVariable Integer pageNumber, 
-				HttpServletRequest request
-			) {
-		
+			@PathVariable Integer pageNumber,
+			HttpServletRequest request
+	) {
+
 		ModelAndView mav = new ModelAndView(Navigation.TENANT_LIST.getPath());
-		
+
 		Page<Tenant> page = tenantService.list(pageNumber);
-		
+
 		configurePageable(null, mav, page, "/tenant/list");
-		
+
 		mav.addObject("searchParameter", "");
-		
+
 		if (page != null && page.getContent() != null) {
-			mav.addObject("tenantList", page.getContent());	
+			mav.addObject("tenantList", page.getContent());
 		}
-		
+
 		return mav;
 	}
-	
+
 	@PreAuthorize("@apoloSecurity.hasPermission('TENANT_EDIT', 'TENANT_CREATE', 'TENANT_LIST', 'TENANT_MANAGER')")
 	@RequestMapping(value = "search", method = RequestMethod.POST)
 	public ModelAndView search(
-				@ModelAttribute("searchParameter") String searchParameter, 
-				HttpServletRequest request
-			) {
-		
+			@ModelAttribute("searchParameter") String searchParameter,
+			HttpServletRequest request
+	) {
+
 		return search(1, searchParameter, request);
 	}
-	
+
 	@PreAuthorize("@apoloSecurity.hasPermission('TENANT_EDIT', 'TENANT_CREATE', 'TENANT_LIST', 'TENANT_MANAGER')")
 	@RequestMapping(value = "search/{pageNumber}", method = RequestMethod.GET)
 	public ModelAndView search(
-				@PathVariable("tenant-url") String tenant, 
-				@PathVariable Integer pageNumber, 
-				HttpServletRequest request
-			) {
-		
+			@PathVariable("tenant-url") String tenant,
+			@PathVariable Integer pageNumber,
+			HttpServletRequest request
+	) {
+
 		return search(pageNumber, "", request);
 	}
-	
+
 	@PreAuthorize("@apoloSecurity.hasPermission('TENANT_EDIT', 'TENANT_CREATE', 'TENANT_LIST', 'TENANT_MANAGER')")
 	@RequestMapping(value = "search/{searchParameter}/{pageNumber}", method = RequestMethod.GET)
 	public ModelAndView search(
-				@PathVariable Integer pageNumber, 
-				@PathVariable String searchParameter, 
-				HttpServletRequest request
-			) {
-		
+			@PathVariable Integer pageNumber,
+			@PathVariable String searchParameter,
+			HttpServletRequest request
+	) {
+
 		ModelAndView mav = new ModelAndView(Navigation.TENANT_LIST.getPath());
-		
+
 		Page<Tenant> page = tenantService.search(pageNumber, searchParameter);
-		
+
 		String url = "";
-		
+
 		if (searchParameter == null || "".equalsIgnoreCase(searchParameter)) {
 			url = "/tenant/search";
 		} else {
 			url = "/tenant/search/"+searchParameter;
 		}
-		
+
 		configurePageable("", mav, page, url);
-		
+
 		mav.addObject("searchParameter", searchParameter);
-		
+
 		if (page != null && page.getContent() != null) {
-			mav.addObject("tenantList", page.getContent());	
+			mav.addObject("tenantList", page.getContent());
 		}
-		
+
 		return mav;
 	}
-	
+
 	@PreAuthorize("@apoloSecurity.hasPermission('TENANT_EDIT', 'TENANT_CREATE', 'TENANT_LIST', 'TENANT_MANAGER')")
 	@RequestMapping(value = "search-form", method = RequestMethod.GET)
 	public ModelAndView searchForm(HttpServletRequest request) {
 
 		ModelAndView mav = new ModelAndView(Navigation.TENANT_SEARCH.getPath());
-		
+
 		return mav;
 	}
 }

@@ -28,17 +28,17 @@ import java.util.*;
 public class User extends AuditableBaseEntity {
 
 	private static final long serialVersionUID = 5588722501578237833L;
-	
+
 	@Column(name = "name", length = InputLength.NAME, nullable = false)
 	@NotNull
 	@Size(min = 1, max = InputLength.NAME)
 	private String name;
 
-	@Column(name = "email", unique = true, length = InputLength.NAME, nullable = false)
+	@Column(name = "email", unique = false, length = InputLength.NAME, nullable = false)
 	@NotNull
 	@Size(min = 1, max = InputLength.NAME)
 	private String email;
-	
+
 	@Column(name = "encrypted_password", length = InputLength.MEDIUM, nullable = false)
 	@JsonIgnore
 	private String password;
@@ -46,14 +46,14 @@ public class User extends AuditableBaseEntity {
 	@Column(name = "mobile", unique = false, length = InputLength.NAME, nullable = true)
 	@Size(max = InputLength.NAME)
 	private String mobile;
-	
+
 	@Column(name = "status", nullable = false)
 	@Type(type = "apolo.data.enums.usertype.UserStatusUserType")
 	private UserStatus userStatus;
 
 	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "users_in_groups", 
-			joinColumns = { @JoinColumn(name = "user_id", referencedColumnName = "user_id") }, 
+	@JoinTable(name = "users_in_groups",
+			joinColumns = { @JoinColumn(name = "user_id", referencedColumnName = "user_id") },
 			inverseJoinColumns = { @JoinColumn(name = "group_id", referencedColumnName = "user_group_id") })
 	@NotNull
 	@JsonIgnore
@@ -62,15 +62,15 @@ public class User extends AuditableBaseEntity {
 	@Transient
 	@JsonIgnore
 	private Set<UserPermission> permissions;
-	
+
 	@OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
 	@LazyCollection(LazyCollectionOption.FALSE)
 	private List<UserCustomFieldValue> customFields;
-	
+
 	@ManyToOne
 	@JsonIgnore
 	private Tenant tenant;
-	
+
 	@Column(name = "avatar_original_name", length = InputLength.MEDIUM, nullable = true)
 	private String avatarOriginalName;
 
@@ -90,11 +90,11 @@ public class User extends AuditableBaseEntity {
 
 	@Column(name = "enabled", nullable = true, columnDefinition = "int default 1")
 	private Boolean enabled;
-	
+
 	@Transient
 	@JsonIgnore
 	private List<MultipartFile> picturefiles;
-	
+
 	@Transient
 	@JsonIgnore
 	private Tenant dbTenant;
@@ -180,20 +180,20 @@ public class User extends AuditableBaseEntity {
 			}
 		}
 	}
-	
+
 	public Tenant getDbTenant() {
-		Tenant result = null; 
-		
+		Tenant result = null;
+
 		if (this.dbTenant != null) {
 			result = this.dbTenant;
 		} else {
 			this.dbTenant = this.tenant;
 			result = this.tenant;
 		}
-		
+
 		return result;
 	}
-	
+
 	public Set<UserPermission> getPermissions() {
 		if ((permissions == null || permissions.isEmpty()) && groups != null) {
 			permissions = new HashSet<UserPermission>();

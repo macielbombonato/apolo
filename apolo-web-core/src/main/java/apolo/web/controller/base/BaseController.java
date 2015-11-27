@@ -6,7 +6,6 @@ import apolo.common.util.MessageBundle;
 import apolo.data.model.Tenant;
 import apolo.data.model.User;
 import apolo.data.model.base.BaseEntity;
-import apolo.security.CurrentUser;
 import apolo.security.UserPermission;
 import com.google.gson.annotations.SerializedName;
 import net.sf.json.JSONException;
@@ -14,9 +13,6 @@ import net.sf.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -26,7 +22,6 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.Collection;
 
 public abstract class BaseController<E extends BaseEntity> {
 
@@ -41,9 +36,14 @@ public abstract class BaseController<E extends BaseEntity> {
     protected Tenant getDBTenant(String url) {
         Tenant tenant = null;
 
-        tenant = tenantService.getValidatedTenant(url);
-
         User user = userService.getAuthenticatedUser();
+
+        if (user != null
+                && user.getTenant().getUrl().equals(url)) {
+            tenant = user.getTenant();
+        } else {
+            tenant = tenantService.getValidatedTenant(url);
+        }
 
         if (user != null
                 && !user.getTenant().equals(tenant)) {
@@ -57,7 +57,7 @@ public abstract class BaseController<E extends BaseEntity> {
                 user.getDbTenant();
                 user.setTenant(tenant);
 
-                reconstructAuthenticatedUser(user);
+                userService.reconstructAuthenticatedUser(user);
             } else {
                 String message = MessageBundle.getMessageBundle("error.403.msg");
                 throw new AccessDeniedException(message);
@@ -65,23 +65,6 @@ public abstract class BaseController<E extends BaseEntity> {
         }
 
         return tenant;
-    }
-
-    protected void reconstructAuthenticatedUser(User user) {
-        Collection<GrantedAuthority> authorities =
-                userService.loadUserAuthorities(
-                        userService.getAuthenticatedUser()
-                );
-
-        Authentication newAuth = new CurrentUser(
-                user.getId(),
-                user.getEmail(),
-                user.getPassword(),
-                user,
-                authorities
-        );
-
-        SecurityContextHolder.getContext().setAuthentication(newAuth);
     }
 
     protected JSONObject jsonParser(Object obj) throws IllegalArgumentException, IllegalAccessException, JSONException {

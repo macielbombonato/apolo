@@ -15,29 +15,57 @@
                     <div class="well no-padding">
                         <form th:action="@{/web/login}" method="post" role="form" class="smart-form client-form">
                             <header>
-                                <a th:href="${#authorization.expression('@apoloSecurity.isAuthenticated()') == true} ? @{|/web/${#authentication.systemUser.tenant.url}/user|} : @{'/web/'}">
-                                    <h3 th:if="${tenant == null}">
-                                        <img th:if="${tenant == null or tenant.logo == null}"
-                                             th:src="@{'/resources/app/img/favicon.png'}"
-                                             width="25"
-                                             height="30"
-                                             style="width: 25px; height: 30px;"
-                                                />
-                                        <span th:text="#{app.title}"></span>
-                                    </h3>
-                                    <h3 th:if="${tenant != null}">
-                                        <img th:if="${tenant != null}
-                                        and ${tenant.logo != null}"
-                                             th:src="@{|/web/${tenant.url}/uploadedfiles/Tenant/${tenant.id}/${tenant.logo}|}"
-                                             th:width="${tenant.logoWidth} + ${'px'}"
-                                             th:height="${tenant.logoHeight} + ${'px'}"
-                                             th:style="${'width: '} + ${tenant.logoWidth} + ${'px; height: '} + ${tenant.logoHeight} + ${'px;'}"
-                                                />
-                                        <span th:if="${tenant.showName == true}"
-                                              th:text="${tenant.name}">
-                                            App Name
-                                        </span>
-                                    </h3>
+                                <a th:href="${#authorization.expression('@apoloSecurity.isAuthenticated()') == true} ? @{|/web/${#authentication.systemUser.tenant.url}/user|} : @{|/web/${tenant.url}|}">
+
+                                    <!-- logo for regular state and mobile devices -->
+                                    <span class="logo-lg">
+                                        <strong>
+                                            <img class="logo-opacity" th:if="${#authorization.expression('@apoloSecurity.isAuthenticated()') == true}
+                                                                    and ${#authentication.systemUser.tenant.logo != null}"
+                                                 th:src="@{|/web/${#authentication.systemUser.tenant.url}/uploadedfiles/Tenant/${#authentication.systemUser.tenant.id}/${#authentication.systemUser.tenant.logo}|}"
+                                                 th:width="${#authentication.systemUser.tenant.logoWidth} + ${'px'}"
+                                                 th:height="${#authentication.systemUser.tenant.logoHeight} + ${'px'}"
+                                                 th:style="${'width: '} + ${#authentication.systemUser.tenant.logoWidth} + ${'px; height: '} + ${#authentication.systemUser.tenant.logoHeight} + ${'px;'}"
+                                                    />
+
+                                            <img class="logo-opacity" th:if="${#authorization.expression('@apoloSecurity.isAuthenticated()') != true}
+                                                                    and ${tenant != null}
+                                                                    and ${tenant.logo != null}"
+                                                 th:src="@{|/web/${tenant.url}/uploadedfiles/Tenant/${tenant.id}/${tenant.logo}|}"
+                                                 th:width="${tenant.logoWidth} + ${'px'}"
+                                                 th:height="${tenant.logoHeight} + ${'px'}"
+                                                 th:style="${'width: '} + ${tenant.logoWidth} + ${'px; height: '} + ${tenant.logoHeight} + ${'px;'}"
+                                                    />
+
+                                            <span class="logo-opacity" th:if="${#authorization.expression('@apoloSecurity.isAuthenticated()') == true}
+                                                            and ${#authentication.systemUser.tenant != null}
+                                                            and ${#authentication.systemUser.tenant.showName == true}
+                                                            and ${#authentication.systemUser.tenant.name != null}"
+                                                  th:text="${#authentication.systemUser.tenant.name}">
+
+                                            </span>
+
+                                            <span class="logo-opacity" th:if="${#authorization.expression('@apoloSecurity.isAuthenticated()') != true}
+                                                            and ${tenant != null}
+                                                            and ${tenant.showName == true}
+                                                            and ${tenant.name != null}"
+                                                  th:text="${tenant.name}">
+
+                                            </span>
+
+                                            <img class="logo-opacity" th:if="${#authorization.expression('@apoloSecurity.isAuthenticated()') == false}
+                                                                            and ${tenant == null}"
+                                                 th:src="@{'/resources/app/img/favicon.png'}"
+                                                 width="12"
+                                                 height="15"
+                                                 style="width: 12px; height: 15px;"
+                                                    />
+                                            <span class="logo-opacity" th:if="${#authorization.expression('@apoloSecurity.isAuthenticated()') == false}
+                                                                            and ${tenant == null}"
+                                                  th:text="#{app.title}"
+                                                    />
+                                        </strong>
+                                    </span>
                                 </a>
                             </header>
 
@@ -48,11 +76,28 @@
                                 </section>
 
                                 <section>
+                                    <input type="hidden"
+                                           id="tenant"
+                                           name="tenant"
+                                           onchange="changeUsername()"
+                                           th:value="${tenant.url}"
+                                            />
+
+                                </section>
+
+                                <section>
                                     <label class="input">
                                         <i class="icon-append fa fa-user"></i>
 
                                         <input type="email"
                                                class="focus"
+                                               id="email"
+                                               name="email"
+                                               onchange="changeUsername()"
+                                               th:placeholder="#{user.name}"
+                                                />
+
+                                        <input type="hidden"
                                                id="username"
                                                name="username"
                                                th:placeholder="#{user.name}"
@@ -125,6 +170,10 @@
     <script type="text/javascript">
         runAllForms();
 
+        function changeUsername() {
+            $('#username').val($('#tenant').val() + "/" + $('#email').val())
+        }
+
         $(function() {
             // Validation
             $("#login-form").validate({
@@ -155,7 +204,10 @@
                     error.insertAfter(element.parent());
                 }
             });
+
         });
+
+        changeUsername();
     </script>
     </body>
 </html>

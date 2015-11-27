@@ -35,14 +35,9 @@ public class TenantServiceImpl extends BaseServiceImpl<Tenant> implements Tenant
 	private ApplicationProperties applicationProperties;
 
 	public List<Tenant> list() {
-		PageRequest request = new PageRequest(1, PAGE_SIZE, Sort.Direction.ASC, "name");
+		List<Tenant> result = tenantRepository.findByStatusNotOrderByNameAsc(Status.LOCKED);
 
-		Page<Tenant> result = tenantRepository.findByStatusOrderByNameAsc(
-				Status.LOCKED,
-				request
-		);
-
-		return result.getContent();
+		return result;
 	}
 
 	public Page<Tenant> list(Integer pageNumber) {

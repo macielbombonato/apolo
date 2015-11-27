@@ -9,31 +9,34 @@ import org.springframework.data.domain.Page;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Collection;
+import java.util.List;
 
 public interface UserService extends BaseService<User> {
 
 	final int PAGE_SIZE = 10;
 
-	User findByLogin(String login);
+	User findByLogin(Tenant tenant, String login);
+
+	List<User> findByLogin(String login);
 
 	User save(String serverUrl, User user, boolean changePassword, FileContent file);
-	
+
 	Page<User> search(Tenant tenant, Integer pageNumber, String param);
-	
+
 	User lock(User user);
-	
+
 	User unlock(User user);
-	
+
 	Page<User> listLocked(Tenant tenant, Integer pageNumber);
-	
+
 	User getSystemAdministrator();
-	
+
 	boolean systemSetup(String serverUrl, InstallFormModel formModel, FileContent file);
-	
+
 	Collection<GrantedAuthority> loadUserAuthorities(User user);
-	
-	User loadByUsernameAndPassword(String username, String password);
-	
+
+	User loadByUsernameAndPassword(Tenant tenant, String username, String password);
+
 	User find(Long id);
 
 	int increaseSignInCounter(User user, String userIPAddress);
@@ -47,4 +50,6 @@ public interface UserService extends BaseService<User> {
 	User findByToken(String token);
 
 	Page<User> listAll(Integer pageNumber);
+
+	void reconstructAuthenticatedUser(User user);
 }

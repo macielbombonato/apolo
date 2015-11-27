@@ -172,20 +172,8 @@ public class ApoloWebController extends BaseWebController<User> {
 	}
 
 	@PreAuthorize("permitAll")
-	@RequestMapping(value = "/index", method = RequestMethod.GET)
-	public ModelAndView index(HttpServletRequest request) {
-		ModelAndView mav = new ModelAndView(Navigation.INDEX.getPath());
-
-		Tenant tenant = getDBTenant(applicationProperties.getDefaultTenant());
-
-		mav.addObject("tenant", tenant);
-		mav.addObject("readOnly", true);
-		return mav;
-	}
-
-	@PreAuthorize("permitAll")
-	@RequestMapping(value = "/{tenant-url}", method = RequestMethod.GET)
-	public ModelAndView index(@PathVariable("tenant-url") String tenantUrl, HttpServletRequest request) {
+	@RequestMapping(value = "web/{tenant-url}", method = RequestMethod.GET)
+	public ModelAndView indexWebTenant(@PathVariable("tenant-url") String tenantUrl, HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView(Navigation.INDEX.getPath());
 
 		Tenant tenant = getDBTenant(tenantUrl);
@@ -211,10 +199,16 @@ public class ApoloWebController extends BaseWebController<User> {
 					request
 			);
 		} else {
-			mav = index(request);
+			mav = indexWebTenant(applicationProperties.getDefaultTenant(), request);
 		}
 
 		return mav;
+	}
+
+	@PreAuthorize("permitAll")
+	@RequestMapping(value = "web/", method = RequestMethod.GET)
+	public ModelAndView homeWeb(HttpServletRequest request) {
+		return home(request);
 	}
 
 	/**

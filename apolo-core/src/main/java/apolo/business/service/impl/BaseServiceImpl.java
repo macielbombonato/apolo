@@ -11,33 +11,35 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 @SuppressWarnings("rawtypes")
 public abstract class BaseServiceImpl<E extends BaseEntity> implements BaseService<E> {
-	
+
 	protected static final Logger LOG = LoggerFactory.getLogger(BaseService.class);
-	
+
 	public User getAuthenticatedUser() {
 		User user = null;
-		
+
 		CurrentUser currentUser = null;
-		
+
 		try {
-			if (SecurityContextHolder.getContext().getAuthentication() != null 
+			if (SecurityContextHolder.getContext() != null
+					&&SecurityContextHolder.getContext().getAuthentication() != null
 					&& SecurityContextHolder.getContext().getAuthentication() instanceof CurrentUser) {
-				currentUser = (CurrentUser)SecurityContextHolder.getContext().getAuthentication();				
+				currentUser = (CurrentUser)SecurityContextHolder.getContext().getAuthentication();
 			}
 		} catch(Throwable errorId) {
 			currentUser = null;
 			LOG.error(errorId.getMessage(), errorId);
 		}
-		
+
 		if (currentUser != null) {
 			user = currentUser.getSystemUser();
-			
-			if (user.getId() == null) {
+
+			if (user != null
+					&& user.getId() == null) {
 				user = null;
 			}
 		}
-		
+
 		return user;
 	}
-	
+
 }

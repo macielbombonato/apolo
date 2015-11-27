@@ -10,8 +10,9 @@
 
         <!-- title selection -->
         <title th:if="${#authorization.expression('@apoloSecurity.isAuthenticated()') == true}
-                        and ${#authentication.systemUser.tenant.name != null}"
-               th:text="${#authentication.systemUser.tenant.name}"
+                        and ${tenant != null}
+                        and ${tenant.name != null}"
+               th:text="${tenant.name}"
                 >
         </title>
         <title th:if="${#authorization.expression('@apoloSecurity.isAuthenticated()') == true}

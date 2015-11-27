@@ -6,13 +6,14 @@
     <body th:fragment="header">
 
     <!-- #HEADER -->
-    <header id="header">
+    <header id="header"
+            th:with="tenant=${#authorization.expression('@apoloSecurity.isAuthenticated()') == true ? #authentication.systemUser.tenant : session.tenant}">
         <div id="logo-group">
 
             <!-- PLACE YOUR LOGO HERE -->
             <center>
             <span id="logo">
-                <a th:href="${#authorization.expression('@apoloSecurity.isAuthenticated()') == true} ? @{|/web/${#authentication.systemUser.tenant.url}/user|} : @{'/'}">
+                <a th:href="${#authorization.expression('@apoloSecurity.isAuthenticated()') == true} ? @{|/web/${#authentication.systemUser.tenant.url}/user|} : @{|/web/${tenant.url}|}">
 
                     <!-- logo for regular state and mobile devices -->
                     <span class="logo-lg">
@@ -83,7 +84,7 @@
             <div id="login" class="btn-header transparent pull-right"
                  sec:authorize="!@apoloSecurity.isAuthenticated()">
                 <span>
-                    <a th:href='@{/web/login}'
+                    <a th:href='@{|/web/${tenant.url}/login|}'
                        th:title="#{user.login}"
                        data-action="userLogin">
                         <i class="fa fa-sign-in"></i>
@@ -96,7 +97,7 @@
             <div id="logout" class="btn-header transparent pull-right"
                  sec:authorize="@apoloSecurity.isAuthenticated()">
                 <span>
-                    <a th:href='@{/web/logout}'
+                    <a th:href='@{|/web/${tenant.url}/logout|}'
                        th:title="#{user.logout}"
                        data-action="userLogout"
                        th:attr="data-logout-msg=#{user.security.logout.message}"

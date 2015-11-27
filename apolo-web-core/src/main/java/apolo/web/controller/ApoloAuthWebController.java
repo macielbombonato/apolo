@@ -2,6 +2,7 @@ package apolo.web.controller;
 
 import apolo.business.service.UserService;
 import apolo.common.util.MessageBundle;
+import apolo.data.model.Tenant;
 import apolo.data.model.User;
 import apolo.web.controller.base.BaseWebController;
 import apolo.web.enums.Navigation;
@@ -26,15 +27,15 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 @RequestMapping(value = "/web")
 public class ApoloAuthWebController extends BaseWebController {
-	
+
 	private Facebook facebook;
 
 	@Autowired
 	private UserService userService;
-	
+
 	@Autowired
 	private UserWebController userController;
-	
+
 	@Autowired
 	private ApoloWebController apoloController;
 
@@ -44,10 +45,10 @@ public class ApoloAuthWebController extends BaseWebController {
 	}
 
 	@PreAuthorize("permitAll")
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public ModelAndView login(HttpServletRequest request) {
+	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	public ModelAndView login(HttpServletRequest request) {
 		return login(null, request);
-    }
+	}
 
 	@PreAuthorize("permitAll")
 	@RequestMapping(value = "/{tenant-url}/login", method = RequestMethod.GET)
@@ -63,9 +64,9 @@ public class ApoloAuthWebController extends BaseWebController {
 		// The session ID is stored in spring context to be used in services call
 		// don't remove this line. if do, the second factor will not work right 
 		ContextLoader.getCurrentWebApplicationContext().getServletContext().setAttribute(
-				"sessionId", 
+				"sessionId",
 				request.getSession().getId()
-			);
+		);
 
 		ContextLoader.getCurrentWebApplicationContext().getServletContext().setAttribute(
 				"tenant",
@@ -73,35 +74,35 @@ public class ApoloAuthWebController extends BaseWebController {
 		);
 
 		mav.addObject("tenant", getDBTenant(tenant));
-		
+
 		return mav;
 	}
 
 	@PreAuthorize("permitAll")
-    @RequestMapping(value = "/loginfailed", method = RequestMethod.GET)
-    public ModelAndView loginFailed(HttpServletRequest request, ModelMap model) {
-        return loginFailed(applicationProperties.getDefaultTenant(), request, model);
-    }
+	@RequestMapping(value = "/loginfailed", method = RequestMethod.GET)
+	public ModelAndView loginFailed(HttpServletRequest request, ModelMap model) {
+		return loginFailed(applicationProperties.getDefaultTenant(), request, model);
+	}
 
 	@PreAuthorize("permitAll")
 	@RequestMapping(value = "/{tenant-url}/loginfailed", method = RequestMethod.GET)
 	public ModelAndView loginFailed(
-            @PathVariable("tenant-url") String tenant,
-            HttpServletRequest request,
-            ModelMap model) {
+			@PathVariable("tenant-url") String tenant,
+			HttpServletRequest request,
+			ModelMap model) {
 		ModelAndView mav = new ModelAndView(Navigation.AUTH_LOGIN.getPath(), model);
-		
+
 		String message = MessageBundle.getMessageBundle("error.403.1");
-		
+
 		// If the tenant is locked, the system will throw an exception
 		Object object = request.getSession().getAttribute("SPRING_SECURITY_LAST_EXCEPTION");
-		
+
 		if (object != null) {
 			if (object instanceof BadCredentialsException) {
 				message = ((BadCredentialsException) object).getMessage();
 			}
 		}
-		
+
 		mav.addObject("error", true);
 		mav.addObject("message", message);
 		mav.addObject("tenant", getDBTenant(tenant));
@@ -116,18 +117,34 @@ public class ApoloAuthWebController extends BaseWebController {
 	}
 
 	@PreAuthorize("@apoloSecurity.isAuthenticated()")
-    @RequestMapping(value = "/{tenant-url}/logout", method = RequestMethod.GET)
-    public ModelAndView logout(
-            @PathVariable("tenant-url") String tenant,
-            HttpServletRequest request,
-            ModelMap model) {
-        ModelAndView mav = new ModelAndView(Navigation.AUTH_LOGIN.getPath(), model);
-		mav.addObject("tenant", getDBTenant(tenant));
+	@RequestMapping(value = "{tenant-url}/logout", method = RequestMethod.GET)
+	public ModelAndView logoutWithoutWeb(
+			@PathVariable("tenant-url") String tenant,
+			HttpServletRequest request,
+			ModelMap model) {
+		return logout(tenant, request, model);
+	}
+
+	@PreAuthorize("@apoloSecurity.isAuthenticated()")
+	@RequestMapping(value = "web/{tenant-url}/logout", method = RequestMethod.GET)
+	public ModelAndView logout(
+			@PathVariable("tenant-url") String tenantUrl,
+			HttpServletRequest request,
+			ModelMap model) {
+
+		ModelAndView mav = apoloController.indexWebTenant(tenantUrl, request);
+
+		Tenant tenant = getDBTenant(tenantUrl);
 
 		logout();
 
+		mav.setViewName("redirect:" + "/web/" + tenant.getUrl());
+
+		mav.addObject("tenant", tenant);
+		request.getSession().setAttribute("tenant", tenant);
+
 		return mav;
-    }
+	}
 
 	@PreAuthorize("permitAll")
 	@RequestMapping(value = "/forgot-password", method = RequestMethod.GET)
@@ -170,7 +187,7 @@ public class ApoloAuthWebController extends BaseWebController {
 				email
 		);
 
-		ModelAndView mav = apoloController.index(tenant, request);
+		ModelAndView mav = apoloController.indexWebTenant(tenant, request);
 
 		mav.addObject("warn", true);
 		mav.addObject("message", MessageBundle.getMessageBundle("user.forgot-password.msg"));
@@ -212,22 +229,22 @@ public class ApoloAuthWebController extends BaseWebController {
 					getServerUrl(
 							request,
 							user.getDbTenant().getUrl()
-						),
+					),
 					user,
 					true,
 					null
-				);
+			);
 		}
 
-		ModelAndView mav = apoloController.index(tenant, request);
+		ModelAndView mav = apoloController.indexWebTenant(tenant, request);
 
 		mav.addObject("msg", true);
 		mav.addObject("message", MessageBundle.getMessageBundle("user.reset-password.msg"));
 
 		return mav;
 	}
-	
-    private void logout() {
-    	SecurityContextHolder.getContext().setAuthentication(null);
-    }
+
+	private void logout() {
+		SecurityContextHolder.getContext().setAuthentication(null);
+	}
 }

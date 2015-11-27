@@ -28,8 +28,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -103,7 +105,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 
 		Page<User> result = userRepository.findAll(
 				request
-			);
+		);
 
 		return result;
 	}
@@ -168,35 +170,37 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 	public void generateResetPasswordToken(String serverUrl, String email) {
 		if (email != null
 				&& !"".equals(email)) {
-			User user = this.findByLogin(email);
+			List<User> userList = this.findByLogin(email);
 
-			if (user != null) {
-				try {
-					String token = apoloCrypt.encode(
-							user.getEmail(),
-							user.getDbTenant().getName() + user.getName(),
-							applicationProperties.getIvKey()
-					);
+			for(User user : userList) {
+				if (user != null) {
+					try {
+						String token = apoloCrypt.encode(
+								user.getEmail(),
+								user.getDbTenant().getName() + user.getName(),
+								applicationProperties.getIvKey()
+						);
 
-					user.setResetPasswordToken(token);
-					user.setResetPasswordSentAt(new Date());
+						user.setResetPasswordToken(token);
+						user.setResetPasswordSentAt(new Date());
 
-					user = this.save(user);
+						user = this.save(user);
 
-					emailService.sendAsync(
-							user.getDbTenant(),
-							user.getDbTenant().getName(),
-							user.getDbTenant().getEmailFrom(),
-							user.getName(),
-							user.getEmail(),
-							MessageBundle.getMessageBundle("user.forgot-password.email.subject"),
-							this.buildResetPasswordMessage(
-									serverUrl + "reset-password/",
-									user
-							).toString()
-					);
-				} catch (Exception e) {
-					log.error(e.getMessage(), e);
+						emailService.sendAsync(
+								user.getDbTenant(),
+								user.getDbTenant().getName(),
+								user.getDbTenant().getEmailFrom(),
+								user.getName(),
+								user.getEmail(),
+								MessageBundle.getMessageBundle("user.forgot-password.email.subject"),
+								this.buildResetPasswordMessage(
+										serverUrl + "reset-password/",
+										user
+								).toString()
+						);
+					} catch (Exception e) {
+						log.error(e.getMessage(), e);
+					}
 				}
 			}
 		}
@@ -236,14 +240,24 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 		return userRepository.findByTenantAndId(tenant, id);
 	}
 
-	public User findByLogin(String login) {
+	public User findByLogin(Tenant tenant, String login) {
+		return userRepository.findUserByTenantAndEmail(tenant, login);
+	}
+
+	public List<User> findByLogin(String login) {
 		return userRepository.findUserByEmail(login);
 	}
 
-	public User loadByUsernameAndPassword(String username, String password) {
+	public User loadByUsernameAndPassword(Tenant tenant, String username, String password) {
 		User user = null;
+
 		try {
-			user = userRepository.findByEmailAndPassword(
+			if (tenant == null) {
+				tenant = tenantService.getValidatedTenant(applicationProperties.getDefaultTenant());
+			}
+
+			user = userRepository.findByTenantAndEmailAndPassword(
+					tenant,
 					username,
 					apoloCrypt.encode(password)
 			);
@@ -531,8 +545,14 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 		if (formModel.getUser() != null) {
 			// Create system administrator
 			User dbUser = null;
-			if (formModel.getUser().getEmail() != null && !"".equals(formModel.getUser().getEmail())) {
-				dbUser = findByLogin(formModel.getUser().getEmail());
+			if (formModel.getUser().getEmail() != null
+					&& !"".equals(formModel.getUser().getEmail())) {
+				List<User> dbUserList = findByLogin(formModel.getUser().getEmail());
+
+				if (dbUserList != null
+						&& !dbUserList.isEmpty()){
+					dbUser = dbUserList.get(0);
+				}
 			}
 
 			if (dbUser == null) {
@@ -684,5 +704,33 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 		result.append("</html>");
 
 		return result;
+	}
+
+	public void reconstructAuthenticatedUser(User user) {
+		boolean isLoged = true;
+
+		if (user == null) {
+			user = new User();
+			isLoged = false;
+		}
+
+		Collection<GrantedAuthority> authorities =
+				loadUserAuthorities(
+						getAuthenticatedUser()
+				);
+
+		Authentication newAuth = new CurrentUser(
+				user.getId(),
+				user.getEmail(),
+				user.getPassword(),
+				user,
+				authorities
+		);
+
+		SecurityContextHolder.getContext().setAuthentication(newAuth);
+
+		if (!isLoged) {
+			SecurityContextHolder.getContext().getAuthentication().setAuthenticated(false);
+		}
 	}
 }

@@ -48,12 +48,29 @@ public class UserAuthenticationProvider implements AuthenticationProvider {
 	private EmailService emailService;
 
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-		User user = userService.loadByUsernameAndPassword(
-				authentication.getName(),
-				authentication.getCredentials().toString()
-		);
 
-		if (user != null) {
+		User user = null;
+		Tenant tenant = null;
+		String tenantUrl = null;
+
+		String[] userdata = authentication.getName().split("/");
+
+		if (userdata != null
+				&& userdata.length > 1) {
+
+			tenantUrl = userdata[0];
+
+			tenant = tenantService.getValidatedTenant(tenantUrl);
+
+			user = userService.loadByUsernameAndPassword(
+					tenant,
+					userdata[1],
+					authentication.getCredentials().toString()
+			);
+		}
+
+		if (user != null
+				&& user.getId() != null) {
 			if (UserStatus.LOCKED.equals(user.getStatus())) {
 				String message = MessageBundle.getMessageBundle("error.403.2");
 				throw new BadCredentialsException(message, new AccessDeniedException(0, message));
@@ -86,8 +103,6 @@ public class UserAuthenticationProvider implements AuthenticationProvider {
 
 			ThreadLocalContextUtil.setTenantId(user.getTenant().getUrl());
 
-			Tenant tenant = tenantService.getValidatedTenant(user.getTenant().getUrl());
-
 			if (Boolean.TRUE.equals(tenant.getSendAuthEmail())) {
 				try {
 					emailService.sendAsync(
@@ -104,8 +119,6 @@ public class UserAuthenticationProvider implements AuthenticationProvider {
 					log.error(e.getMessage(), e);
 				}
 			}
-
-			String tenantUrl = ThreadLocalContextUtil.getTenantId();
 
 			if (user.getDbTenant() != null
 					&& user.getDbTenant().getUrl() != null

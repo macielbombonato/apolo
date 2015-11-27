@@ -21,12 +21,12 @@ import javax.persistence.Table;
 import java.util.Date;
 
 public class AuditLogListener {
-	
+
 	protected static final Logger LOG = LoggerFactory.getLogger(AuditLogListener.class);
 
 	@Autowired
 	private AuditLogService auditLogService;
-	
+
 	@Autowired
 	private UserService userService;
 
@@ -54,7 +54,7 @@ public class AuditLogListener {
 
 			auditLogService = (AuditLogService) ctx.getBean("auditLogService");
 		}
-		
+
 		if (userService == null) {
 			ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
 
@@ -69,49 +69,45 @@ public class AuditLogListener {
 			executor = null;
 		}
 
-		Long defaultExecutorId = 1L;
-
-		if (executor == null && e != null && !defaultExecutorId.equals(e.getId())) {
-			executor = userService.find(defaultExecutorId);
-		}
-
-		AuditLog auditLog = new AuditLog();
-
-		/*
-		 * If class has Table annotation, the system will use this data, otherwise, we´ll use the class name.
-		 */
-		String entityName = e.getClass().getAnnotation(Table.class).name();
-		if (entityName == null || entityName.isEmpty()) {
-			entityName = e.getClass().getSimpleName();
-		}
-
 		if (executor != null) {
-			long userId = 0L;
-			long tenantId = 0L;
+			AuditLog auditLog = new AuditLog();
 
-			if (executor != null) {
-				if (executor.getId() != null) {
-					userId = executor.getId();
-				}
-
-				if (executor.getTenant() != null
-						&& executor.getTenant().getId() != null ) {
-					tenantId = executor.getTenant().getId();
-				}
+			/*
+			 * If class has Table annotation, the system will use this data, otherwise, we´ll use the class name.
+			 */
+			String entityName = e.getClass().getAnnotation(Table.class).name();
+			if (entityName == null || entityName.isEmpty()) {
+				entityName = e.getClass().getSimpleName();
 			}
 
-			auditLog.setTransactionType(transactionType);
-			auditLog.setTenantId(tenantId);
-			auditLog.setEntityName(entityName);
-			auditLog.setRegistryId(e.getId());
-			auditLog.setExecutedById(userId);
-			auditLog.setOperationDate(new Date());
-		}
+			if (executor != null) {
+				long userId = 0L;
+				long tenantId = 0L;
 
-		try {
-			auditLogService.save(executor.getTenant(), auditLog);
-		} catch (Throwable e1) {
-			LOG.error("===> Error on auditing log method.", e1);
+				if (executor != null) {
+					if (executor.getId() != null) {
+						userId = executor.getId();
+					}
+
+					if (executor.getTenant() != null
+							&& executor.getTenant().getId() != null ) {
+						tenantId = executor.getTenant().getId();
+					}
+				}
+
+				auditLog.setTransactionType(transactionType);
+				auditLog.setTenantId(tenantId);
+				auditLog.setEntityName(entityName);
+				auditLog.setRegistryId(e.getId());
+				auditLog.setExecutedById(userId);
+				auditLog.setOperationDate(new Date());
+			}
+
+			try {
+				auditLogService.save(executor.getTenant(), auditLog);
+			} catch (Throwable e1) {
+				LOG.error("===> Error on auditing log method.", e1);
+			}
 		}
 	}
 
