@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-    <head>
-    </head>
-    <body th:fragment="header">
+<head>
+</head>
+<body th:fragment="header">
 
-    <!-- #HEADER -->
-    <header id="header"
-            th:with="tenant=${#authorization.expression('@apoloSecurity.isAuthenticated()') == true ? #authentication.systemUser.tenant : session.tenant}">
-        <div id="logo-group">
+<!-- #HEADER -->
+<header id="header"
+        th:with="tenant=${#authorization.expression('@apoloSecurity.isAuthenticated()') == true ? #authentication.systemUser.tenant : session.tenant}">
+    <div id="logo-group">
 
-            <!-- PLACE YOUR LOGO HERE -->
-            <center>
+        <!-- PLACE YOUR LOGO HERE -->
+        <center>
             <span id="logo">
-                <a th:href="${#authorization.expression('@apoloSecurity.isAuthenticated()') == true} ? @{|/web/${#authentication.systemUser.tenant.url}/user|} : @{|/web/${tenant.url}|}">
+                <a th:href="${tenant != null and tenant.url != null} ? @{|/web/${tenant.url}/user|} : @{|/|} ">
 
                     <!-- logo for regular state and mobile devices -->
                     <span class="logo-lg">
@@ -66,36 +66,36 @@
                     </span>
                 </a>
             </span>
-            </center>
-            <!-- END LOGO PLACEHOLDER -->
+        </center>
+        <!-- END LOGO PLACEHOLDER -->
+    </div>
+
+    <!-- #TOGGLE LAYOUT BUTTONS -->
+    <!-- pulled right: nav area -->
+    <div class="pull-right">
+
+        <!-- collapse menu button -->
+        <div id="hide-menu" class="btn-header pull-right">
+            <span> <a href="javascript:void(0);" data-action="toggleMenu" title="Collapse Menu"><i class="fa fa-reorder"></i></a> </span>
         </div>
+        <!-- end collapse menu -->
 
-        <!-- #TOGGLE LAYOUT BUTTONS -->
-        <!-- pulled right: nav area -->
-        <div class="pull-right">
-
-            <!-- collapse menu button -->
-            <div id="hide-menu" class="btn-header pull-right">
-                <span> <a href="javascript:void(0);" data-action="toggleMenu" title="Collapse Menu"><i class="fa fa-reorder"></i></a> </span>
-            </div>
-            <!-- end collapse menu -->
-
-            <!-- login button -->
-            <div id="login" class="btn-header transparent pull-right"
-                 sec:authorize="!@apoloSecurity.isAuthenticated()">
+        <!-- login button -->
+        <div id="login" class="btn-header transparent pull-right"
+             sec:authorize="!@apoloSecurity.isAuthenticated()">
                 <span>
-                    <a th:href='@{|/web/${tenant.url}/login|}'
+                    <a th:href='${tenant != null and tenant.url != null} ? @{|/web/${tenant.url}/login|} : @{|/web/login|}'
                        th:title="#{user.login}"
                        data-action="userLogin">
                         <i class="fa fa-sign-in"></i>
                     </a>
                 </span>
-            </div>
-            <!-- end login button -->
+        </div>
+        <!-- end login button -->
 
-            <!-- logout button -->
-            <div id="logout" class="btn-header transparent pull-right"
-                 sec:authorize="@apoloSecurity.isAuthenticated()">
+        <!-- logout button -->
+        <div id="logout" class="btn-header transparent pull-right"
+             sec:authorize="@apoloSecurity.isAuthenticated()">
                 <span>
                     <a th:href='@{|/web/${tenant.url}/logout|}'
                        th:title="#{user.logout}"
@@ -105,24 +105,24 @@
                         <i class="fa fa-sign-out"></i>
                     </a>
                 </span>
-            </div>
-            <!-- end logout button -->
+        </div>
+        <!-- end logout button -->
 
-            <!-- fullscreen button -->
-            <div id="fullscreen" class="btn-header transparent pull-right">
+        <!-- fullscreen button -->
+        <div id="fullscreen" class="btn-header transparent pull-right">
                 <span>
                     <a href="javascript:void(0);" data-action="launchFullscreen" th:title="#{common.fullscreen}">
                         <i class="fa fa-arrows-alt"></i>
                     </a>
                 </span>
-            </div>
-            <!-- end fullscreen button -->
-
         </div>
-        <!-- end pulled right: nav area -->
+        <!-- end fullscreen button -->
 
-    </header>
-    <!-- END HEADER -->
+    </div>
+    <!-- end pulled right: nav area -->
 
-    </body>
+</header>
+<!-- END HEADER -->
+
+</body>
 </html>
