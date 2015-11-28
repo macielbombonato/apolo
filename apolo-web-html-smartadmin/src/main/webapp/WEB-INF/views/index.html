@@ -17,26 +17,33 @@
         </div>
     </div>
 
-    <div class="row"
+    <div id="page-header"
          th:if="${tenantList != null}">
-        <div class="col-sm-12">
-            <h1 th:text="#{tenant.choose}">
+        <!-- RIBBON -->
+        <div id="ribbon">
+            <ol class="breadcrumb">
+                <li th:text="#{tenant.choose}">
 
-            </h1>
+                </li>
+            </ol>
         </div>
+        <!-- END RIBBON -->
     </div>
 
     <div class="row"
          th:if="${tenantList != null}">
         <div th:each="tenant : ${tenantList}">
             <div class="col-sm-3">
-                <a th:href="@{|/web/${tenant.url}|}" th:title="${tenant.name}">
-                    <img th:src="@{|/web/${tenant.url}/uploadedfiles/Tenant/${tenant.id}/${tenant.logo}|}"
-                         th:width="${tenant.logoWidth * 4} + ${'px'}"
-                         th:height="${tenant.logoHeight * 4} + ${'px'}"
-                         th:style="${'width: '} + ${tenant.logoWidth * 4} + ${'px; height: '} + ${tenant.logoHeight * 4} + ${'px;'}"
-                            />
-                </a>
+                <center>
+                    <a th:href="@{|/web/${tenant.url}|}" th:title="${tenant.name}">
+                        <img class="img-responsive"
+                             th:src="@{|/web/${tenant.url}/uploadedfiles/Tenant/${tenant.id}/${tenant.logo}|}"
+                             th:width="${tenant.logoWidth * 4} + ${'px'}"
+                             th:height="${tenant.logoHeight * 4} + ${'px'}"
+                             th:style="${'width: '} + ${tenant.logoWidth * 4} + ${'px; height: '} + ${tenant.logoHeight * 4} + ${'px;'}"
+                                />
+                    </a>
+                </center>
             </div>
         </div>
 

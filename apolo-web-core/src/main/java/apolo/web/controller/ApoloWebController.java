@@ -180,6 +180,11 @@ public class ApoloWebController extends BaseWebController<User> {
 
 		if (tenantUrl == null) {
 			tenantList = tenantService.list();
+
+			if (tenantList != null
+					&& tenantList.size() == 1) {
+				tenantList = null;
+			}
 		}
 
 		Tenant tenant = getDBTenant(tenantUrl);
