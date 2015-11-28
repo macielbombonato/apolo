@@ -1,21 +1,46 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-      <head th:include="@{_fragment/_headTag} :: headTag">
-      </head>
-      <body>
-            <div th:remove="tag" th:include="@{_fragment/_apolo-template} :: apolo-template"></div>
+<head th:include="@{_fragment/_headTag} :: headTag">
+</head>
+<body>
+<div th:remove="tag" th:include="@{_fragment/_apolo-template} :: apolo-template"></div>
 
-            <div id="page-content">
-                <div class="row">
-                    <div class="col-sm-4">
-                        <img class="img-responsive" th:src="@{|/resources/app/img/favicon.png|}" />
-                    </div>
-                    <div class="col-sm-8" style="text-align: justify">
-                        <h4 class="media-heading" th:text="#{view.index.apolo.title}" />
-                        <p th:text="#{view.index.hello}" data-htmlEscape="false" />
-                    </div>
-                </div>
+<div id="page-content">
+    <div class="row" th:if="${tenantList == null}">
+        <div class="col-sm-4">
+            <img class="img-responsive" th:src="@{|/resources/app/img/favicon.png|}" />
+        </div>
+        <div class="col-sm-8" style="text-align: justify">
+            <h4 class="media-heading" th:text="#{view.index.apolo.title}" />
+            <p th:text="#{view.index.hello}" data-htmlEscape="false" />
+        </div>
+    </div>
+
+    <div class="row"
+         th:if="${tenantList != null}">
+        <div class="col-sm-12">
+            <h1 th:text="#{tenant.choose}">
+
+            </h1>
+        </div>
+    </div>
+
+    <div class="row"
+         th:if="${tenantList != null}">
+        <div th:each="tenant : ${tenantList}">
+            <div class="col-sm-3">
+                <a th:href="@{|/web/${tenant.url}|}" th:title="${tenant.name}">
+                    <img th:src="@{|/web/${tenant.url}/uploadedfiles/Tenant/${tenant.id}/${tenant.logo}|}"
+                         th:width="${tenant.logoWidth * 4} + ${'px'}"
+                         th:height="${tenant.logoHeight * 4} + ${'px'}"
+                         th:style="${'width: '} + ${tenant.logoWidth * 4} + ${'px; height: '} + ${tenant.logoHeight * 4} + ${'px;'}"
+                            />
+                </a>
             </div>
-      </body>
+        </div>
+
+    </div>
+</div>
+</body>
 </html>

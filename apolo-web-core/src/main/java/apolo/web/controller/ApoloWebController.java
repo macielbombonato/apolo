@@ -176,6 +176,12 @@ public class ApoloWebController extends BaseWebController<User> {
 	public ModelAndView indexWebTenant(@PathVariable("tenant-url") String tenantUrl, HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView(Navigation.INDEX.getPath());
 
+		List<Tenant> tenantList = null;
+
+		if (tenantUrl == null) {
+			tenantList = tenantService.list();
+		}
+
 		Tenant tenant = getDBTenant(tenantUrl);
 
 		if (tenant == null) {
@@ -184,6 +190,7 @@ public class ApoloWebController extends BaseWebController<User> {
 		}
 
 		mav.addObject("tenant", tenant);
+		mav.addObject("tenantList", tenantList);
 		mav.addObject("readOnly", true);
 		return mav;
 	}
@@ -199,7 +206,7 @@ public class ApoloWebController extends BaseWebController<User> {
 					request
 			);
 		} else {
-			mav = indexWebTenant(applicationProperties.getDefaultTenant(), request);
+			mav = indexWebTenant(null, request);
 		}
 
 		return mav;
