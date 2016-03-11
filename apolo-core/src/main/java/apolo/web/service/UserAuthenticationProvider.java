@@ -83,14 +83,16 @@ public class UserAuthenticationProvider implements AuthenticationProvider {
 			// Increase the access count
 			try {
 				WebAuthenticationDetails wad = null;
+				String sessionId             = null;
 				String userIPAddress         = null;
 				boolean isAuthenticatedByIP  = false;
 
 				// Get the IP address of the user tyring to use the site
 				wad = (WebAuthenticationDetails) authentication.getDetails();
+				sessionId = wad.getSessionId();
 				userIPAddress = wad.getRemoteAddress();
 
-				user.setSignInCount(userService.increaseSignInCounter(user, userIPAddress));
+				user.setSignInCount(userService.increaseSignInCounter(user, sessionId, userIPAddress));
 			} catch (Throwable e) {
 				log.error("********* => Error when try to count the login sequence");
 				log.error(e.getMessage(), e);

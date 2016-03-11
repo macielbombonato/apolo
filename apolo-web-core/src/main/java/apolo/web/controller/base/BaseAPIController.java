@@ -1,9 +1,9 @@
 package apolo.web.controller.base;
 
-import apolo.business.service.ApplicationService;
+import apolo.business.service.UserService;
 import apolo.common.exception.AccessDeniedException;
 import apolo.common.util.MessageBundle;
-import apolo.data.model.Application;
+import apolo.data.model.User;
 import apolo.data.model.base.BaseEntity;
 import apolo.security.ApoloSecurityService;
 import apolo.security.UserPermission;
@@ -32,17 +32,22 @@ public abstract class BaseAPIController<E extends BaseEntity> extends BaseContro
     private ApoloSecurityService apoloSecurity;
 
     @Inject
-    private ApplicationService applicationService;
+    private UserService userService;
 
-    protected boolean checkAccess(BaseAPIModel model, String tenant, HttpServletRequest request, UserPermission...userPermission) {
+    protected boolean checkAccess(
+            BaseAPIModel model,
+            String tenant,
+            HttpServletRequest request,
+            UserPermission...userPermission) {
+
         boolean hasAccess = false;
 
-        Application app = getApplication(request);
+        User user = getUserFromRequest(request);
 
-        if (app != null) {
+        if (user != null) {
 
-            if (app != null) {
-                if (apoloSecurity.hasPermission(app.getPermissions(), userPermission)) {
+            if (user != null) {
+                if (apoloSecurity.hasPermission(user.getPermissions(), userPermission)) {
                     hasAccess = true;
                 } else {
                     throw new AccessDeniedException(MessageBundle.getMessageBundle("error.403"));
@@ -50,11 +55,11 @@ public abstract class BaseAPIController<E extends BaseEntity> extends BaseContro
             }
 
             if (hasAccess) {
-                boolean isSameTenant = app.getTenant() != null && app.getTenant().getUrl().equals(tenant);
+                boolean isSameTenant = user.getTenant() != null && user.getTenant().getUrl().equals(tenant);
 
                 if (isSameTenant ||
                         (apoloSecurity.hasPermission(
-                                app.getPermissions(),
+                                user.getPermissions(),
                                 UserPermission.ADMIN,
                                 UserPermission.TENANT_MANAGER
                         ))
@@ -77,13 +82,13 @@ public abstract class BaseAPIController<E extends BaseEntity> extends BaseContro
         return hasAccess;
     }
 
-    protected Application getApplication(HttpServletRequest request) {
+    protected User getUserFromRequest(HttpServletRequest request) {
         String apiKey = request.getHeader("key");
 
-        Application result = null;
+        User result = null;
 
         if (apiKey != null) {
-            result = applicationService.find(apiKey);
+            result = userService.findByToken(apiKey);
         }
 
         return result;

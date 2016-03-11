@@ -39,7 +39,7 @@ public interface UserService extends BaseService<User> {
 
 	User find(Long id);
 
-	int increaseSignInCounter(User user, String userIPAddress);
+	int increaseSignInCounter(User user, String sessionId, String userIPAddress);
 
 	long count();
 
@@ -48,6 +48,8 @@ public interface UserService extends BaseService<User> {
 	void generateResetPasswordToken(String serverUrl, String email);
 
 	User findByToken(String token);
+
+	User findByResetToken(String token);
 
 	Page<User> listAll(Integer pageNumber);
 

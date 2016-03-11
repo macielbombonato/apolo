@@ -43,6 +43,12 @@ public class User extends AuditableBaseEntity {
 	@JsonIgnore
 	private String password;
 
+	@Column(name = "token", length = InputLength.LARGE, nullable = false)
+	private String token;
+
+	@Column(name = "session_id", length = InputLength.LARGE, nullable = false)
+	private String sessionId;
+
 	@Column(name = "mobile", unique = false, length = InputLength.NAME, nullable = true)
 	@Size(max = InputLength.NAME)
 	private String mobile;
@@ -392,5 +398,21 @@ public class User extends AuditableBaseEntity {
 
 	public void setLastSignInIp(String lastSignInIp) {
 		this.lastSignInIp = lastSignInIp;
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
+
+	public String getSessionId() {
+		return sessionId;
+	}
+
+	public void setSessionId(String sessionId) {
+		this.sessionId = sessionId;
 	}
 }

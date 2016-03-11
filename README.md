@@ -135,6 +135,20 @@ O primeiro passo é cadastrar sua aplicação dentro do Apolo no menu Aplicativo
 
 Abaixo as chamadas que o Apolo possui:
 
+### Login
+
+	POST /api/{tenant-url}/user/login
+	Content-Type: application/json
+
+**Exemplo de json para postar**
+
+	{
+		"username":"Nome do Usuário",
+		"password":"senha do usuário"
+	}
+
+Este serviço irá retornar o registro do usuário autenticado. É necessário recuperar o token deste retorno, ele será utilizado em todas as outras chamadas preenchendo o campo "key" do cabeçalho.
+
 ### Listar usuários
 
 	GET /api/{tenant-url}/user/list

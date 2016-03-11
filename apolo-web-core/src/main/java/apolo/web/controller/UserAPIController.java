@@ -1,34 +1,156 @@
 package apolo.web.controller;
 
+import apolo.business.service.EmailService;
 import apolo.business.service.UserGroupService;
+import apolo.business.service.UserService;
 import apolo.common.exception.AccessDeniedException;
 import apolo.common.util.MessageBundle;
+import apolo.data.enums.Status;
 import apolo.data.enums.UserStatus;
-import apolo.data.model.Application;
 import apolo.data.model.Tenant;
 import apolo.data.model.User;
 import apolo.data.model.UserGroup;
 import apolo.security.UserPermission;
+import apolo.web.apimodel.AuthUser;
 import apolo.web.apimodel.UserAPI;
 import apolo.web.apimodel.UserList;
 import apolo.web.controller.base.BaseAPIController;
 import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 
-@Controller
+@RestController
 @RequestMapping(value = "/api/{tenant-url}/user")
 public class UserAPIController extends BaseAPIController<User> {
 
     @Inject
+    private UserService userService;
+
+    @Inject
     private UserGroupService userGroupService;
+
+    @Inject
+    @Named("smtpEmailService")
+    private EmailService emailService;
+
+    @PreAuthorize("permitAll")
+    @RequestMapping(
+            produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            value = "login",
+            method = RequestMethod.POST
+    )
+    public @ResponseBody
+    UserAPI login(
+            @PathVariable("tenant-url") String tenantUrl,
+            @RequestBody AuthUser entity,
+            HttpServletRequest request,
+            HttpServletResponse response
+    ) {
+        try {
+            UserAPI result = new UserAPI();
+
+            User user = null;
+
+            if (entity != null
+                    && entity.getUsername() != null) {
+                Tenant tenant = tenantService.getValidatedTenant(tenantUrl);
+
+                user = userService.loadByUsernameAndPassword(
+                        tenant,
+                        entity.getUsername(),
+                        entity.getPassword()
+                );
+
+                if (UserStatus.LOCKED.equals(user.getStatus())) {
+                    result.setMessage(MessageBundle.getMessageBundle("error.403.2"));
+                    response.setStatus(403);
+                } else if (user.getTenant() != null
+                        && Status.LOCKED.equals(user.getTenant().getStatus())) {
+                    result.setMessage(MessageBundle.getMessageBundle("error.403.0"));
+                    response.setStatus(403);
+                } else {
+                    // Increase the access count
+                    try {
+                        String sessionId             = null;
+                        String userIPAddress         = null;
+
+                        // Get the IP address of the user tyring to use the site
+                        sessionId = request.getRequestedSessionId();
+                        userIPAddress = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest().getRemoteAddr();
+
+                        user.setSignInCount(userService.increaseSignInCounter(user, sessionId, userIPAddress));
+                    } catch (Throwable e) {
+                        log.error("********* => Error when try to count the login sequence");
+                        log.error(e.getMessage(), e);
+                    }
+
+                    if (Boolean.TRUE.equals(tenant.getSendAuthEmail())) {
+                        try {
+                            emailService.sendAsync(
+                                    tenant,
+                                    tenant.getName(),
+                                    tenant.getEmailFrom(),
+                                    user.getName(),
+                                    user.getEmail(),
+                                    user.getTenant().getName() + ": " + MessageBundle.getMessageBundle("mail.auth.subject"),
+                                    buildAuthenticationMessage(user).toString()
+                            );
+                        } catch (Throwable e) {
+                            log.error("********* => Error when try to send authentication email");
+                            log.error(e.getMessage(), e);
+                        }
+                    }
+
+                    result.setUser(user);
+                    response.setStatus(200);
+                }
+
+            } else {
+                result.setMessage(MessageBundle.getMessageBundle("error.403.1"));
+                response.setStatus(403);
+            }
+
+            return result;
+        } catch (Throwable th) {
+            log.error(th.getMessage(), th);
+
+            UserAPI result = new UserAPI();
+            result.setMessage(th.getMessage());
+
+            response.setStatus(500);
+            return result;
+        }
+    }
+
+    private StringBuilder buildAuthenticationMessage(User user) {
+        StringBuilder result = new StringBuilder();
+
+        result.append("<html>");
+        result.append("<body>");
+
+        result.append("<h1>");
+        result.append(user.getTenant().getName() + ": " + MessageBundle.getMessageBundle("mail.auth.subject"));
+        result.append("</h1>");
+
+        result.append("<p>");
+        result.append(MessageBundle.getMessageBundle("mail.auth.message", user.getName(), user.getSignInCount()));
+        result.append("</p>");
+
+        result.append("</body>");
+        result.append("</html>");
+
+        return result;
+    }
 
     @PreAuthorize("permitAll")
     @RequestMapping(
@@ -168,13 +290,13 @@ public class UserAPIController extends BaseAPIController<User> {
         UserAPI result = new UserAPI();
 
         if (checkAccess(result, tenant, request, UserPermission.ADMIN, UserPermission.USER_LIST)) {
-            Application app = getApplication(request);
+            User requestUser = getUserFromRequest(request);
 
             User user = null;
 
-            if (app.getPermissions().contains(UserPermission.ADMIN)) {
+            if (requestUser.getPermissions().contains(UserPermission.ADMIN)) {
                 user = userService.find(id);
-            } else if (app.getPermissions().contains(UserPermission.USER_LIST)) {
+            } else if (requestUser.getPermissions().contains(UserPermission.USER_LIST)) {
                 user = userService.find(getDBTenant(tenant), id);
             }
 
@@ -227,15 +349,15 @@ public class UserAPIController extends BaseAPIController<User> {
 
                 entity.setCreatedAt(new Date());
 
-                Application app = getApplication(request);
+                User requestUser = getUserFromRequest(request);
 
-                entity.setCreatedBy(app.getCreatedBy());
+                entity.setCreatedBy(requestUser.getCreatedBy());
 
                 entity.setStatus(UserStatus.ACTIVE);
                 entity.setEnabled(true);
 
                 if (entity.getPermissions().contains(UserPermission.ADMIN)) {
-                    if (!app.getPermissions().contains(UserPermission.ADMIN)) {
+                    if (!requestUser.getPermissions().contains(UserPermission.ADMIN)) {
                         throw new AccessDeniedException(8, MessageBundle.getMessageBundle("error.403.8"));
                     }
                 }
@@ -293,10 +415,10 @@ public class UserAPIController extends BaseAPIController<User> {
                     dbEntity.setName(entity.getName());
                     dbEntity.setEmail(entity.getEmail());
 
-                    Application app = getApplication(request);
+                    User requestUser = getUserFromRequest(request);
 
-                    if (app.getPermissions().contains(UserPermission.ADMIN)
-                            || app.getPermissions().contains(UserPermission.TENANT_MANAGER)) {
+                    if (requestUser.getPermissions().contains(UserPermission.ADMIN)
+                            || requestUser.getPermissions().contains(UserPermission.TENANT_MANAGER)) {
                         dbEntity.setTenant(entity.getTenant());
                     }
 
@@ -309,7 +431,7 @@ public class UserAPIController extends BaseAPIController<User> {
                     }
 
                     if (dbEntity.getPermissions().contains(UserPermission.ADMIN)) {
-                        if (!app.getPermissions().contains(UserPermission.ADMIN)) {
+                        if (!requestUser.getPermissions().contains(UserPermission.ADMIN)) {
                             throw new AccessDeniedException(8, MessageBundle.getMessageBundle("error.403.8"));
                         }
                     }
@@ -361,9 +483,9 @@ public class UserAPIController extends BaseAPIController<User> {
                 if (UserStatus.ADMIN.equals(user.getStatus())) {
                     throw new AccessDeniedException(9, MessageBundle.getMessageBundle("error.403.9"));
                 } else if (user.getPermissions().contains(UserPermission.ADMIN)) {
-                    Application app = getApplication(request);
+                    User requestUser = getUserFromRequest(request);
 
-                    if (!app.getPermissions().contains(UserPermission.ADMIN)) {
+                    if (!requestUser.getPermissions().contains(UserPermission.ADMIN)) {
                         throw new AccessDeniedException(10, MessageBundle.getMessageBundle("error.403.10"));
                     }
                 }

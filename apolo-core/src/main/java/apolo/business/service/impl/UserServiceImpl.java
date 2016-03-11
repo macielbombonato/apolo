@@ -115,7 +115,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 	}
 
 	@Override
-	public int increaseSignInCounter(User user, String userIPAddress) {
+	public int increaseSignInCounter(User user, String sessionId, String userIPAddress) {
 		int result = 0;
 
 		if (user != null) {
@@ -124,6 +124,21 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 			} else {
 				user.setSignInCount(1);
 			}
+
+			String token = null;
+
+			try {
+				token = apoloCrypt.encode(
+                        user.getEmail() + new Date().getTime(),
+                        user.getDbTenant().getName() + user.getName(),
+                        applicationProperties.getIvKey()
+                );
+			} catch (Exception e) {
+				log.error(e.getMessage(), e);
+			}
+
+			user.setToken(token);
+			user.setSessionId(sessionId);
 
 			user.setLastSignInAt(user.getCurrentSignInAt());
 			user.setLastSignInIp(user.getCurrentSignInIp());
@@ -207,7 +222,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 	}
 
 	@Override
-	public User findByToken(String token) {
+	public User findByResetToken(String token) {
 		User user = null;
 
 		user = userRepository.findByResetPasswordToken(token);
@@ -232,6 +247,15 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 		} else {
 			user = null;
 		}
+
+		return user;
+	}
+
+	@Override
+	public User findByToken(String token) {
+		User user = null;
+
+		user = userRepository.findByToken(token);
 
 		return user;
 	}
@@ -298,7 +322,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 		if (user.getId() == null) {
 			try {
 				String token = apoloCrypt.encode(
-						user.getEmail(),
+						user.getEmail() + new Date().getTime(),
 						user.getDbTenant().getName() + user.getName(),
 						applicationProperties.getIvKey()
 				);
