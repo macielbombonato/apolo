@@ -1,6 +1,5 @@
 package apolo.security;
 
-import apolo.business.enums.SocialMediaServiceType;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.social.security.SocialUser;
@@ -19,11 +18,9 @@ public class UserDetails extends SocialUser {
 
     private String lastName;
 
-    private UserPermission role;
+    private Permission role;
 
     private apolo.data.model.User systemUser;
-
-    private SocialMediaServiceType socialSignInProvider;
 
     public UserDetails(
             String username,
@@ -61,9 +58,7 @@ public class UserDetails extends SocialUser {
 
         private String password;
 
-        private UserPermission role;
-
-        private SocialMediaServiceType socialSignInProvider;
+        private Permission role;
 
         private Set<GrantedAuthority> authorities;
 
@@ -95,17 +90,12 @@ public class UserDetails extends SocialUser {
             return this;
         }
 
-        public Builder role(UserPermission role) {
+        public Builder role(Permission role) {
             this.role = role;
 
             SimpleGrantedAuthority authority = new SimpleGrantedAuthority(role.getCode());
             this.authorities.add(authority);
 
-            return this;
-        }
-
-        public Builder socialSignInProvider(SocialMediaServiceType socialSignInProvider) {
-            this.socialSignInProvider = socialSignInProvider;
             return this;
         }
 
@@ -121,7 +111,6 @@ public class UserDetails extends SocialUser {
             user.firstName = firstName;
             user.lastName = lastName;
             user.role = role;
-            user.socialSignInProvider = socialSignInProvider;
 
             return user;
         }

@@ -1,12 +1,12 @@
 package apolo.data.model;
 
 import apolo.business.service.TenantService;
-import apolo.business.service.UserGroupService;
+import apolo.business.service.PermissionGroupService;
 import apolo.data.entitylistener.AuditLogListener;
 import apolo.data.enums.UserStatus;
 import apolo.data.model.base.AuditableBaseEntity;
 import apolo.data.util.InputLength;
-import apolo.security.UserPermission;
+import apolo.security.Permission;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
@@ -34,7 +34,7 @@ public class User extends AuditableBaseEntity {
 	@Size(min = 1, max = InputLength.NAME)
 	private String name;
 
-	@Column(name = "email", unique = false, length = InputLength.NAME, nullable = false)
+	@Column(name = "email", unique = true, length = InputLength.NAME, nullable = false)
 	@NotNull
 	@Size(min = 1, max = InputLength.NAME)
 	private String email;
@@ -43,10 +43,10 @@ public class User extends AuditableBaseEntity {
 	@JsonIgnore
 	private String password;
 
-	@Column(name = "token", length = InputLength.LARGE, nullable = false)
+	@Column(name = "token", length = InputLength.LARGE, nullable = true)
 	private String token;
 
-	@Column(name = "session_id", length = InputLength.LARGE, nullable = false)
+	@Column(name = "session_id", length = InputLength.LARGE, nullable = true)
 	private String sessionId;
 
 	@Column(name = "mobile", unique = false, length = InputLength.NAME, nullable = true)
@@ -60,21 +60,18 @@ public class User extends AuditableBaseEntity {
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "users_in_groups",
 			joinColumns = { @JoinColumn(name = "user_id", referencedColumnName = "user_id") },
-			inverseJoinColumns = { @JoinColumn(name = "group_id", referencedColumnName = "user_group_id") })
+			inverseJoinColumns = { @JoinColumn(name = "group_id", referencedColumnName = "group_id") })
 	@NotNull
-	@JsonIgnore
-	private Set<UserGroup> groups;
+	private Set<PermissionGroup> groups;
 
 	@Transient
-	@JsonIgnore
-	private Set<UserPermission> permissions;
+	private Set<Permission> permissions;
 
 	@OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
-	@LazyCollection(LazyCollectionOption.FALSE)
+	@LazyCollection(LazyCollectionOption.TRUE)
 	private List<UserCustomFieldValue> customFields;
 
 	@ManyToOne
-	@JsonIgnore
 	private Tenant tenant;
 
 	@Column(name = "avatar_original_name", length = InputLength.MEDIUM, nullable = true)
@@ -165,7 +162,7 @@ public class User extends AuditableBaseEntity {
 
 			ids = new ArrayList<Long>();
 
-			for(UserGroup group : this.groups) {
+			for(PermissionGroup group : this.groups) {
 				ids.add(group.getId());
 			}
 		}
@@ -178,11 +175,11 @@ public class User extends AuditableBaseEntity {
 				&& ids != null
 				&& !ids.isEmpty()) {
 			ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
-			UserGroupService userGroupService = (UserGroupService) ctx.getBean("userGroupService");
+			PermissionGroupService permissionGroupService = (PermissionGroupService) ctx.getBean("permissionGroupService");
 
-			this.groups = new HashSet<UserGroup>();
+			this.groups = new HashSet<PermissionGroup>();
 			for (Long id : ids) {
-				this.groups.add(userGroupService.find(id));
+				this.groups.add(permissionGroupService.find(id));
 			}
 		}
 	}
@@ -200,10 +197,10 @@ public class User extends AuditableBaseEntity {
 		return result;
 	}
 
-	public Set<UserPermission> getPermissions() {
+	public Set<Permission> getPermissions() {
 		if ((permissions == null || permissions.isEmpty()) && groups != null) {
-			permissions = new HashSet<UserPermission>();
-			for (UserGroup ug : groups) {
+			permissions = new HashSet<Permission>();
+			for (PermissionGroup ug : groups) {
 				if (ug.getPermissions() != null && !ug.getPermissions().isEmpty()) {
 					permissions.addAll(ug.getPermissions());
 				}
@@ -252,11 +249,11 @@ public class User extends AuditableBaseEntity {
 		this.userStatus = userStatus;
 	}
 
-	public Set<UserGroup> getGroups() {
+	public Set<PermissionGroup> getGroups() {
 		return groups;
 	}
 
-	public void setGroups(Set<UserGroup> groups) {
+	public void setGroups(Set<PermissionGroup> groups) {
 		this.groups = groups;
 	}
 

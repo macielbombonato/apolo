@@ -1,6 +1,6 @@
 package apolo.common.util;
 
-import apolo.data.enums.Language;
+import apolo.common.config.enums.Language;
 
 import org.springframework.util.Assert;
 

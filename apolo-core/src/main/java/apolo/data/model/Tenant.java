@@ -2,7 +2,6 @@ package apolo.data.model;
 
 import apolo.common.config.model.ApplicationProperties;
 import apolo.data.entitylistener.AuditLogListener;
-import apolo.data.enums.Skin;
 import apolo.data.enums.Status;
 import apolo.data.model.base.AuditableBaseEntity;
 import apolo.data.util.InputLength;
@@ -51,11 +50,6 @@ public class Tenant extends AuditableBaseEntity {
 	@Max(40)
 	private Integer logoHeight;
 
-	@Column(name = "skin", nullable = false)
-	@Type(type = "apolo.data.enums.usertype.SkinUserType")
-	@NotNull
-	private Skin skin;
-
 	@Column(name = "status", nullable = false)
 	@Type(type = "apolo.data.enums.usertype.StatusUserType")
 	@NotNull
@@ -73,19 +67,24 @@ public class Tenant extends AuditableBaseEntity {
 	private String emailFrom;
 
 	@Column(name = "email_username", length = InputLength.NAME, nullable = true)
+	@JsonIgnore
 	private String emailUsername;
 
 	@Column(name = "email_password", length = InputLength.NAME, nullable = true)
+	@JsonIgnore
 	private String emailPassword;
 
 	@Column(name = "smtp_host", length = InputLength.NAME, nullable = true)
+	@JsonIgnore
 	private String smtpHost;
 
 	@Column(name = "smtp_port", length = InputLength.NAME, nullable = true)
+	@JsonIgnore
 	private String smtpPort;
 
 	@Column(name = "use_tls", nullable = true)
 	@Type(type="yes_no")
+	@JsonIgnore
 	private Boolean useTLS;
 
 	@Column(name = "auth_email", nullable = true)
@@ -94,6 +93,7 @@ public class Tenant extends AuditableBaseEntity {
 
 	@Column(name = "email_use_tenant_config", nullable = true)
 	@Type(type="yes_no")
+	@JsonIgnore
 	private Boolean emailUseTenantConfig;
 
 	@Transient
@@ -290,14 +290,6 @@ public class Tenant extends AuditableBaseEntity {
 
 	public void setEmailUsername(String emailUsername) {
 		this.emailUsername = emailUsername;
-	}
-
-	public Skin getSkin() {
-		return skin;
-	}
-
-	public void setSkin(Skin skin) {
-		this.skin = skin;
 	}
 
 	public Boolean getEmailUseTenantConfig() {

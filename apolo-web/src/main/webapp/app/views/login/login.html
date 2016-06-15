@@ -1,0 +1,73 @@
+<div ui-view="" autoscroll="false" class="ng-zoomBackDown ng-fluid"></div>
+<div class="block-center mt-xl wd-xl">
+   <!-- START panel-->
+   <div class="panel panel-dark panel-flat">
+      <div class="panel-heading text-center">
+         <a ui-sref="apolo.home" style="background-color: black;">
+            <img src="app/img/logo.png" alt="Image" class="block-center img-rounded" />
+         </a>
+      </div>
+      <div class="panel-body">
+         <form role="form"
+               ng-submit="login.login()"
+               name="login.loginForm"
+               novalidate=""
+               class="form-validate mb-lg">
+            <div class="form-group has-feedback">
+               <input id="exampleInputEmail1"
+                      type="email"
+                      name="account_email"
+                      placeholder="{{'login.email' | translate}}"
+                      autocomplete="off"
+                      ng-model="login.account.email"
+                      required=""
+                      class="form-control"
+                   />
+               <span class="fa fa-envelope form-control-feedback text-muted"></span>
+               <span ng-show="login.loginForm.account_email.$dirty &amp;&amp; login.loginForm.account_email.$error.required" class="text-danger">
+                  {{'message.required_field' | translate}}
+               </span>
+               <span ng-show="login.loginForm.account_email.$dirty &amp;&amp; login.loginForm.account_email.$error.email" class="text-danger">
+                  {{'login.valid_email' | translate}}
+               </span>
+            </div>
+            <div class="form-group has-feedback">
+               <input id="exampleInputPassword1"
+                      type="password"
+                      name="account_password"
+                      placeholder="{{'login.password' | translate}}"
+                      ng-model="login.account.password"
+                      required=""
+                      class="form-control"
+                   />
+               <span class="fa fa-lock form-control-feedback text-muted"></span>
+               <span ng-show="login.loginForm.account_password.$dirty &amp;&amp; login.loginForm.account_password.$error.required" class="text-danger">
+                  {{'message.required_field' | translate}}
+               </span>
+            </div>
+            <div class="clearfix">
+               <div class="pull-right">
+                  <a ui-sref="page.recover" class="text-muted">
+                     {{'login.forgot_password' | translate}}
+                  </a>
+               </div>
+            </div>
+            <button type="submit" class="btn btn-block btn-primary mt-lg">
+               {{'login.login' | translate}}
+            </button>
+         </form>
+         <div ng-show="login.authMsg" class="alert alert-danger text-center">
+            {{login.authMsg}}
+         </div>
+      </div>
+   </div>
+   <!-- END panel-->
+   <div class="p-lg text-center">
+      <span>&copy;</span>
+      <span ng-bind="app.year"></span>
+      <span>-</span>
+      <span ng-bind="app.name"></span>
+      <br/>
+      <span ng-bind="app.description"></span>
+   </div>
+</div>

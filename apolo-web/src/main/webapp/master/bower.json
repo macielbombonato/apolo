@@ -1,0 +1,54 @@
+{
+  "name": "Apolo",
+  "version": "5.0.0",
+  "authors": [
+    "Maciel Bombonato <maciel.bombonato@gmail.com>"
+  ],
+  "description": "Arquitetura base",
+  "main": "index.html",
+  "keywords": [
+    "bootstrap",
+    "angular",
+    "admin",
+    "theme",
+    "dashboard"
+  ],
+  "license": "http://www.apache.org/licenses/LICENSE-2.0",
+  "private": true,
+  "ignore": [
+    "**/.*"
+  ],
+  "dependencies": {
+    "angular-loading-bar": "0.8.0",
+    "angular-translate": "2.8.1",
+    "angular-ui-router": "0.2.15",
+    "angular": "1.4.7",
+    "angular-route": "1.4.7",
+    "angular-bootstrap": "0.14.3",
+    "angular-cookies": "1.4.7",
+    "angular-translate-loader-url": "2.8.1",
+    "angular-translate-loader-static-files": "2.8.1",
+    "angular-translate-storage-local": "2.8.1",
+    "angular-translate-storage-cookie": "2.8.1",
+    "angular-animate": "1.4.7",
+    "angular-ui-utils": "3.0.0",
+    "fontawesome": "4.4.0",
+    "oclazyload": "1.0.8",
+    "ngstorage": "0.3.9",
+    "jquery": "2.1.4",
+    "modernizr": "https://modernizr.com/download?backgroundsize-bgpositionshorthand-bgpositionxy-bgrepeatspace_bgrepeatround-bgsizecover-borderradius-cssanimations-csscalc-csstransforms-csstransforms3d-csstransitions-flexboxtweener-fontface-inlinesvg-localstorage-multiplebgs-preserve3d-sessionstorage-smil-svgclippaths-svgfilters-svgforeignobject-todataurljpeg_todataurlpng_todataurlwebp-setclasses&q=background.zip",
+    "angular-sanitize": "1.4.7",
+    "angular-resource": "1.4.7",
+    "simple-line-icons": "2.2.3",
+    "angular-touch": "1.4.7",
+    "jquery.browser": "master",
+    "ui-select": "angular-ui-select#^0.16.1",
+    "angular-file-upload": "2.2.0"
+  },
+  "resolutions": {
+    "angular": "1.4.7",
+    "angular-translate": "2.8.1",
+    "angular-translate-storage-cookie": "2.8.1",
+    "angular-cookies": "1.4.7"
+  }
+}

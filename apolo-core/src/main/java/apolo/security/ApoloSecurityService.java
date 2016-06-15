@@ -17,17 +17,17 @@ public class ApoloSecurityService {
     @Inject
     private UserService userService;
 
-    public boolean hasPermission(Set<UserPermission> permissionList, String...userPermissions) {
+    public boolean hasPermission(Set<Permission> permissionList, String...userPermissions) {
         boolean result = false;
 
         if (userPermissions != null && userPermissions.length > 0) {
             if (permissionList != null
-                    && permissionList.contains(UserPermission.ADMIN)) {
+                    && permissionList.contains(Permission.ADMIN)) {
                 result = true;
             } else {
                 for (String userPermission : userPermissions) {
                     try {
-                        UserPermission permission = UserPermission.fromCode(userPermission);
+                        Permission permission = Permission.fromCode(userPermission);
 
                         if (permissionList != null
                                 && permissionList.contains(permission)) {
@@ -44,18 +44,18 @@ public class ApoloSecurityService {
         return result;
     }
 
-    public boolean hasPermission(Set<UserPermission> permissionList, UserPermission...userPermissions) {
+    public boolean hasPermission(Set<Permission> permissionList, Permission... permissions) {
         boolean result = false;
 
-        if (userPermissions != null && userPermissions.length > 0) {
+        if (permissions != null && permissions.length > 0) {
             if (permissionList != null
-                    && permissionList.contains(UserPermission.ADMIN)) {
+                    && permissionList.contains(Permission.ADMIN)) {
                 result = true;
             } else {
-                for (UserPermission userPermission : userPermissions) {
+                for (Permission permission : permissions) {
                     try {
                         if (permissionList != null
-                                && permissionList.contains(userPermission)) {
+                                && permissionList.contains(permission)) {
                             result = true;
                             break;
                         }
@@ -83,8 +83,8 @@ public class ApoloSecurityService {
                     && user != null
                     && user.getPermissions() != null
                     && user.getTenant().equals(user.getDbTenant())
-                    && !user.getPermissions().contains(UserPermission.ADMIN)
-                    && !user.getPermissions().contains(UserPermission.TENANT_MANAGER)
+                    && !user.getPermissions().contains(Permission.ADMIN)
+                    && !user.getPermissions().contains(Permission.TENANT_MANAGER)
                     && !user.getTenant().equals(user.getDbTenant())) {
                 result = false;
             }
@@ -93,22 +93,22 @@ public class ApoloSecurityService {
         return result;
     }
 
-    public boolean hasPermission(UserPermission...userPermissions) {
+    public boolean hasPermission(Permission... permissions) {
         boolean result = false;
 
-        if (userPermissions != null && userPermissions.length > 0) {
+        if (permissions != null && permissions.length > 0) {
             User user = userService.getAuthenticatedUser();
 
             if (user != null) {
-                result = this.hasPermission(user.getPermissions(), userPermissions);
+                result = this.hasPermission(user.getPermissions(), permissions);
             }
 
             if (result
                     && user != null
                     && user.getPermissions() != null
                     && user.getTenant().equals(user.getDbTenant())
-                    && !user.getPermissions().contains(UserPermission.ADMIN)
-                    && !user.getPermissions().contains(UserPermission.TENANT_MANAGER)
+                    && !user.getPermissions().contains(Permission.ADMIN)
+                    && !user.getPermissions().contains(Permission.TENANT_MANAGER)
                     && !user.getTenant().equals(user.getDbTenant())) {
                 result = false;
             }

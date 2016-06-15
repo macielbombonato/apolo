@@ -10,7 +10,7 @@ import apolo.common.util.MessageBundle;
 import apolo.data.enums.Status;
 import apolo.data.model.Tenant;
 import apolo.data.repository.TenantRepository;
-import apolo.security.UserPermission;
+import apolo.security.Permission;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -55,8 +55,8 @@ public class TenantServiceImpl extends BaseServiceImpl<Tenant> implements Tenant
 
 		// Only users with permission can find anothers tenants, unless, they only can view your own tenant.
 		if (getAuthenticatedUser() != null) {
-			if (getAuthenticatedUser().getPermissions().contains(UserPermission.ADMIN)
-					|| getAuthenticatedUser().getPermissions().contains(UserPermission.TENANT_MANAGER)) {
+			if (getAuthenticatedUser().getPermissions().contains(Permission.ADMIN)
+					|| getAuthenticatedUser().getPermissions().contains(Permission.TENANT_MANAGER)) {
 				result = tenantRepository.findOne(id);
 			} else {
 				result = getAuthenticatedUser().getTenant();
@@ -244,7 +244,7 @@ public class TenantServiceImpl extends BaseServiceImpl<Tenant> implements Tenant
 	public long count() {
 		long result = 0L;
 		if (getAuthenticatedUser() != null
-				&& getAuthenticatedUser().getPermissions().contains(UserPermission.ADMIN)) {
+				&& getAuthenticatedUser().getPermissions().contains(Permission.ADMIN)) {
 			result = tenantRepository.count();
 		}
 

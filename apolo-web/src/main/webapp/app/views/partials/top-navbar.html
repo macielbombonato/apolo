@@ -1,0 +1,57 @@
+<!-- START Top Navbar-->
+<nav role="navigation" class="navbar topnavbar">
+   <!-- START navbar header-->
+   <div class="navbar-header">
+      <a href="#/" class="navbar-brand">
+         <div class="brand-logo">
+            <img src="app/img/logo.png" alt="App Logo" class="img-responsive" />
+         </div>
+         <div class="brand-logo-collapsed">
+            <img src="app/img/logo-single.png" alt="App Logo" class="img-responsive" />
+         </div>
+      </a>
+   </div>
+   <!-- END navbar header-->
+
+   <!-- START Nav wrapper-->
+   <div class="nav-wrapper">
+      <!-- START Left navbar-->
+      <ul class="nav navbar-nav">
+         <li>
+            <!-- Button used to collapse the left sidebar. Only visible on tablet and desktops-->
+            <a href="" trigger-resize="" ng-click="app.layout.isCollapsed = !app.layout.isCollapsed" class="hidden-xs">
+               <em class="fa fa-navicon"></em>
+            </a>
+            <!-- Button to show/hide the sidebar on mobile. Visible on mobile only.-->
+            <a href="" ng-click="app.asideToggled = !app.asideToggled" class="visible-xs sidebar-toggle">
+               <em class="fa fa-navicon"></em>
+            </a>
+         </li>
+      </ul>
+      <!-- END Left navbar-->
+      <!-- START Right Navbar-->
+      <ul class="nav navbar-nav navbar-right">
+         <li>
+            <div uib-dropdown="" is-open="language.listIsOpen" class="btn-group">
+
+               <a href="#" class="btn btn-xs btn-default" uib-dropdown-toggle="">
+                  <img ng-src="{{'app/img/flags/'}}{{language.selectedId}}{{'.png'}}" style="width: 18px;"/>
+                  <span class="caret"></span>
+               </a>
+               <ul role="menu" class="dropdown-menu dropdown-menu-right animated fadeInUpShort">
+                  <li ng-repeat="(localeId, langName) in language.available">
+                     <a ng-click="language.set(localeId, $event)">
+                        <img ng-src="{{'app/img/flags/'}}{{localeId}}{{'.png'}}" style="width: 18px;" /> &nbsp;
+                        {{langName}}
+                     </a>
+                  </li>
+               </ul>
+            </div>
+         </li>
+      </ul>
+      <!-- END Right Navbar-->
+   </div>
+   <!-- END Nav wrapper-->
+
+</nav>
+<!-- END Top Navbar-->

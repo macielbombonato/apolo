@@ -10,6 +10,8 @@ public class CurrentUser extends UsernamePasswordAuthenticationToken {
 	private static final long serialVersionUID = 8790909411747968450L;
 
 	private Long id;
+
+	private String name;
 	
 	private apolo.data.model.User systemUser;
 
@@ -23,6 +25,7 @@ public class CurrentUser extends UsernamePasswordAuthenticationToken {
 		
 		super(systemUser, password, authorities);
 		this.id = id;
+		this.name = username;
 		this.systemUser = systemUser;
 		super.setDetails(systemUser);
 	}
@@ -43,4 +46,12 @@ public class CurrentUser extends UsernamePasswordAuthenticationToken {
 		this.systemUser = systemUser;
 	}
 
+	@Override
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
 }

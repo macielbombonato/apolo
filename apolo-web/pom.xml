@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>apolo-web</artifactId>
+    <name>Apolo - WEB</name>
+    <groupId>apolo.web</groupId>
+    <packaging>war</packaging>
+
+    <url>http://dimeric.com.br</url>
+
+    <parent>
+        <groupId>apolo</groupId>
+        <artifactId>apolo</artifactId>
+        <version>5.0.0</version>
+    </parent>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.1.1</version>
+                <configuration>
+                    <warName>${project.artifactId}-${project.version}</warName>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <version>2.2</version>
+                <configuration>
+                    <path>/</path>
+                    <update>true</update>
+                    <url>${env.APOLO_PRODUCTION_DEPLOY_URL}</url>
+                    <username>${env.APOLO_PRODUCTION_DEPLOY_USERNAME}</username>
+                    <password>${env.APOLO_PRODUCTION_DEPLOY_PASSWORD}</password>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

@@ -1,0 +1,89 @@
+{
+  "app": {
+    "title": "Apolo",
+    "footer": "Apolo 2012 - 2016"
+  },
+
+  "common": {
+    "filter": "Filtrar esta página",
+    "create": "Incluir",
+    "edit": "Editar",
+    "delete": "Excluir",
+    "actions": "Ações",
+    "records": "Registros",
+    "save": "Salvar",
+    "cancel": "Cancelar",
+    "back": "Voltar",
+    "select": "Selecione"
+  },
+
+  "message": {
+    "required_field": "Este Campo é obrigatório",
+    "success": "Sucesso",
+    "success_edit": "Registro editado com sucesso",
+    "success_create": "Cadastro realizado com sucesso",
+    "success_remove": "Registro excluído com sucesso",
+    "save_error": "Erro ao tentar salvar o registro",
+    "no_data_found": "Sem dados para exibir",
+    "access_denied": "Acesso Negado"
+  },
+
+  "menu": {
+    "system": "Sistema",
+    "user": {
+      "name": "Usuário",
+      "list": "Listar Usuários",
+      "list-locked": "Listar Bloqueados",
+      "create": "Criar Usuário"
+    },
+    "tenant": {
+      "name": "Unidade",
+      "list": "Listar Unidades",
+      "create": "Criar Unidade"
+    },
+    "group-permission": {
+      "name": "Grupos de Permissão",
+      "list": "Listar Grupos",
+      "create": "Criar Grupo"
+    }
+  },
+
+  "login": {
+    "email": "E-mail",
+    "password": "Senha",
+    "login": "Login",
+    "access_button": "Acessar o Sistema",
+    "valid_email": "É necessário informar um endereço de email válido",
+    "forgot_password": "Esqueceu sua senha?",
+    "error_message": "Usuário e/ou senha inválidos"
+  },
+
+  "user": {
+    "name": "Nome",
+    "email": "E-mail",
+    "mobile": "Celular",
+    "password": "Senha",
+    "avatar": "Foto",
+    "permissionGroups": "Grupos de Permissão",
+    "list": {
+      "title": "Lista de Usuários",
+      "description": "Lista de usuários associados a esta unidade"
+    },
+    "create": {
+      "title": "Criar Usuário",
+      "description": "Incluir um novo usuário nesta unidade"
+    },
+    "edit": {
+      "title": "Editar Usuário",
+      "description": "Editar o usuário selecionado"
+    },
+    "view": {
+      "title": "Usuário",
+      "description": "Consulta de usuário desta unidade"
+    }
+  },
+
+  "permission-group": {
+
+  }
+}

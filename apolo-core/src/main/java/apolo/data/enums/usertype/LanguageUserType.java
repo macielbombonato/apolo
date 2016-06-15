@@ -1,6 +1,6 @@
 package apolo.data.enums.usertype;
 
-import apolo.data.enums.Language;
+import apolo.common.config.enums.Language;
 import br.com.insula.opes.hibernate.usertype.ImmutableUserType;
 
 import java.sql.PreparedStatement;

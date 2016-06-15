@@ -3,3 +3,4 @@
 /.settings/
 .project
 /bin
+/src/main/webapp/app/js

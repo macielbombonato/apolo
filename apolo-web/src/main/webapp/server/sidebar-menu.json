@@ -1,0 +1,109 @@
+[
+  {
+    "text": "System",
+    "translate": "menu.system",
+    "sref": "#",
+    "icon": "fa fa-cog",
+    "permissions": [
+      "USER_LIST",
+      "USER_CREATE",
+      "TENANT_LIST",
+      "TENANT_CREATE",
+      "GROUP_PERMISSION_LIST",
+      "GROUP_PERMISSION_CREATE"
+    ],
+    "submenu": [
+      {
+        "text": "User",
+        "translate": "menu.user.name",
+        "sref": "#",
+        "icon": "fa fa-users",
+        "permissions": [
+          "USER_LIST",
+          "USER_CREATE"
+        ],
+        "submenu": [
+          {
+            "text": "User List",
+            "translate": "menu.user.list",
+            "sref": "apolo.user.list",
+            "icon": "fa fa-list",
+            "permissions": [
+              "USER_LIST"
+            ]
+          },
+          {
+            "text": "User Create",
+            "translate": "menu.user.create",
+            "sref": "apolo.user.create",
+            "icon": "fa fa-user-plus",
+            "permissions": [
+              "USER_CREATE"
+            ]
+          }
+        ]
+      },
+      {
+        "text": "Tenant",
+        "translate": "menu.tenant.name",
+        "sref": "#",
+        "icon": "fa fa-ship",
+        "permissions": [
+          "TENANT_LIST",
+          "TENANT_CREATE"
+        ],
+        "submenu": [
+          {
+            "text": "Tenant List",
+            "translate": "menu.tenant.list",
+            "sref": "apolo.tenant.list",
+            "icon": "fa fa-list",
+            "permissions": [
+              "USER_LIST"
+            ]
+          },
+          {
+            "text": "Tenant Create",
+            "translate": "menu.tenant.create",
+            "sref": "apolo.tenant.create",
+            "icon": "fa fa-plus",
+            "permissions": [
+              "USER_CREATE"
+            ]
+          }
+        ]
+      },
+      {
+        "text": "Group Permission",
+        "translate": "menu.group-permission.name",
+        "sref": "#",
+        "icon": "fa fa-arrows-alt",
+        "permissions": [
+          "GROUP_PERMISSION_LIST",
+          "GROUP_PERMISSION_CREATE"
+        ],
+        "submenu": [
+          {
+            "text": "Group Permission List",
+            "translate": "menu.group-permission.list",
+            "sref": "apolo.group-permission.list",
+            "icon": "fa fa-list",
+            "permissions": [
+              "GROUP_PERMISSION_LIST"
+            ]
+          },
+          {
+            "text": "Group Permission Create",
+            "translate": "menu.group-permission.create",
+            "sref": "apolo.group-permission.create",
+            "icon": "fa fa-plus",
+            "permissions": [
+              "GROUP_PERMISSION_CREATE"
+            ]
+          }
+        ]
+      }
+    ]
+
+  }
+]

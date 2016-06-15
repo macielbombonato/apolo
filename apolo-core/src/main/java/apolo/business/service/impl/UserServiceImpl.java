@@ -1,27 +1,26 @@
 package apolo.business.service.impl;
 
 import apolo.business.model.FileContent;
-import apolo.business.model.InstallFormModel;
 import apolo.business.service.EmailService;
 import apolo.business.service.FileService;
 import apolo.business.service.TenantService;
 import apolo.business.service.UserService;
+import apolo.common.MessageBuilder;
 import apolo.common.config.model.ApplicationProperties;
 import apolo.common.exception.AccessDeniedException;
 import apolo.common.exception.BusinessException;
 import apolo.common.util.ApoloCrypt;
 import apolo.common.util.MessageBundle;
-import apolo.data.enums.Skin;
 import apolo.data.enums.Status;
 import apolo.data.enums.UserStatus;
+import apolo.data.model.PermissionGroup;
 import apolo.data.model.Tenant;
 import apolo.data.model.User;
 import apolo.data.model.UserCustomFieldValue;
-import apolo.data.model.UserGroup;
-import apolo.data.repository.UserGroupRepository;
+import apolo.data.repository.PermissionGroupRepository;
 import apolo.data.repository.UserRepository;
 import apolo.security.CurrentUser;
-import apolo.security.UserPermission;
+import apolo.security.Permission;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -50,7 +49,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 	private UserRepository userRepository;
 
 	@Inject
-	private UserGroupRepository userGroupRepository;
+	private PermissionGroupRepository permissionGroupRepository;
 
 	@Inject
 	private FileService<User> fileService;
@@ -68,6 +67,9 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 	@Named("smtpEmailService")
 	private EmailService emailService;
 
+	@Inject
+	private MessageBuilder messageBuilder;
+
 	public List<User> list(Tenant tenant) {
 		PageRequest request = new PageRequest(1, PAGE_SIZE, Sort.Direction.ASC, "name");
 
@@ -81,7 +83,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 	}
 
 	public Page<User> list(Tenant tenant, Integer pageNumber) {
-		if (pageNumber < 1) {
+		if (pageNumber == null || pageNumber < 1) {
 			pageNumber = 1;
 		}
 
@@ -97,7 +99,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 	}
 
 	public Page<User> listAll(Integer pageNumber) {
-		if (pageNumber < 1) {
+		if (pageNumber == null || pageNumber < 1) {
 			pageNumber = 1;
 		}
 
@@ -163,7 +165,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 	public long count() {
 		long result = 0L;
 		if (getAuthenticatedUser() != null
-				&& getAuthenticatedUser().getPermissions().contains(UserPermission.ADMIN)) {
+				&& getAuthenticatedUser().getPermissions().contains(Permission.ADMIN)) {
 			result = userRepository.count();
 		}
 
@@ -174,7 +176,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 	public long countByTenant(Tenant tenant) {
 		long result = 0L;
 		if (getAuthenticatedUser() != null
-				&& getAuthenticatedUser().getPermissions().contains(UserPermission.ADMIN)) {
+				&& getAuthenticatedUser().getPermissions().contains(Permission.ADMIN)) {
 			result = userRepository.countByTenant(tenant);
 		}
 
@@ -208,10 +210,13 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 								user.getName(),
 								user.getEmail(),
 								MessageBundle.getMessageBundle("user.forgot-password.email.subject"),
-								this.buildResetPasswordMessage(
+								messageBuilder.buildResetPasswordMessage(
 										serverUrl + "reset-password/",
-										user
-								).toString()
+										MessageBundle.getMessageBundle("user.forgot-password.email.subject"),
+										MessageBundle.getMessageBundle("user.forgot-password.email.message"),
+										user.getResetPasswordToken(),
+										MessageBundle.getMessageBundle("user.forgot-password.email.footer")
+								)
 						);
 					} catch (Exception e) {
 						log.error(e.getMessage(), e);
@@ -272,16 +277,11 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 		return userRepository.findUserByEmail(login);
 	}
 
-	public User loadByUsernameAndPassword(Tenant tenant, String username, String password) {
+	public User loadByUsernameAndPassword(String username, String password) {
 		User user = null;
 
 		try {
-			if (tenant == null) {
-				tenant = tenantService.getValidatedTenant(applicationProperties.getDefaultTenant());
-			}
-
-			user = userRepository.findByTenantAndEmailAndPassword(
-					tenant,
+			user = userRepository.findByEmailAndPassword(
 					username,
 					apoloCrypt.encode(password)
 			);
@@ -312,7 +312,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 	@Transactional
 	public User save(String serverUrl, User user, boolean changePassword, FileContent file) {
 		if (UserStatus.ADMIN.equals(user.getStatus())
-				&& !user.getPermissions().contains(UserPermission.ADMIN)) {
+				&& !user.getPermissions().contains(Permission.ADMIN)) {
 			String message = MessageBundle.getMessageBundle("user.edit.msg.error.admin.permission");
 			throw new BusinessException(message);
 		}
@@ -396,7 +396,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 			user.setEnabled(true);
 		}
 
-		user = userRepository.save(user);
+		user = userRepository.saveAndFlush(user);
 
 		if (sendEmail) {
 			try {
@@ -407,10 +407,13 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 						user.getName(),
 						user.getEmail(),
 						MessageBundle.getMessageBundle("user.new.email.subject"),
-						this.buildCreateUserMessage(
-								serverUrl + "reset-password/",
-								user
-						).toString()
+						messageBuilder.buildCreateUserMessage(
+								serverUrl,
+								MessageBundle.getMessageBundle("user.new.email.subject"),
+								MessageBundle.getMessageBundle("user.new.email.message", user.getName()),
+								user.getResetPasswordToken() + "reset-password/",
+								MessageBundle.getMessageBundle("user.new.email.footer")
+						)
 				);
 			} catch (Exception e) {
 				log.error(e.getMessage(), e);
@@ -436,12 +439,12 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 		if (user != null
 				&& user.getGroups() != null
 				&& !user.getGroups().isEmpty()) {
-			for (UserGroup group : user.getGroups()) {
+			for (PermissionGroup group : user.getGroups()) {
 				if (group != null
 						&& (group.getStatus().equals(UserStatus.ADMIN) || group.getStatus().equals(UserStatus.ACTIVE))
 						&& group.getPermissions() != null
 						&& !group.getPermissions().isEmpty()) {
-					for (UserPermission permission : group.getPermissions()) {
+					for (Permission permission : group.getPermissions()) {
 						result.add(new SimpleGrantedAuthority(permission.getAttribute()));
 					}
 				}
@@ -527,16 +530,16 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 	}
 
 	@Transactional
-	public boolean systemSetup(String serverUrl, InstallFormModel formModel, FileContent file) {
+	public boolean systemSetup(String serverUrl, User user) {
 		boolean result = false;
 
-		Collection<GrantedAuthority> authorities = loadUserAuthorities(formModel.getUser());
+		Collection<GrantedAuthority> authorities = loadUserAuthorities(user);
 
 		new CurrentUser(
 				1L,
-				formModel.getUser().getEmail(),
-				formModel.getUser().getPassword().toLowerCase(),
-				formModel.getUser(),
+				user.getEmail(),
+				user.getPassword(),
+				user,
 				authorities
 		);
 
@@ -551,8 +554,6 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 			tenant.setUrl(applicationProperties.getDefaultTenant());
 			tenant.setStatus(Status.ACTIVE);
 
-			tenant.setSkin(Skin.SKIN_DEFAULT);
-
 			tenant.setEmailFrom(applicationProperties.getEmailFrom());
 			tenant.setEmailUsername(applicationProperties.getEmailUsername());
 			tenant.setEmailPassword(applicationProperties.getEmailPassword());
@@ -560,18 +561,18 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 			tenant.setSmtpPort(applicationProperties.getSmtpPort());
 			tenant.setUseTLS(applicationProperties.getUseTLS());
 
-			formModel.getUser().setTenant(tenant);
+			user.setTenant(tenant);
 
 			tenantService.save(tenant);
 		}
 
 
-		if (formModel.getUser() != null) {
+		if (user != null) {
 			// Create system administrator
 			User dbUser = null;
-			if (formModel.getUser().getEmail() != null
-					&& !"".equals(formModel.getUser().getEmail())) {
-				List<User> dbUserList = findByLogin(formModel.getUser().getEmail());
+			if (user.getEmail() != null
+					&& !"".equals(user.getEmail())) {
+				List<User> dbUserList = findByLogin(user.getEmail());
 
 				if (dbUserList != null
 						&& !dbUserList.isEmpty()){
@@ -580,11 +581,11 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 			}
 
 			if (dbUser == null) {
-				UserGroup adminUserGroup = null;
+				PermissionGroup adminPermissionGroup = null;
 
 				// Create admin group
 				try {
-					adminUserGroup = userGroupRepository.findByName(MessageBundle.getMessageBundle("user.permission.ADMIN"));
+					adminPermissionGroup = permissionGroupRepository.findByName(MessageBundle.getMessageBundle("user.permission.ADMIN"));
 				} catch (Throwable e) {
 					/*
 					 * If is the really first time that you are using application, this line will throw a error
@@ -593,65 +594,64 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 					LOG.error(e.getMessage(), e);
 				}
 
-				if (adminUserGroup == null
-						|| (adminUserGroup.getPermissions() != null
-						&& !adminUserGroup.getPermissions().contains(UserPermission.ADMIN))
+				if (adminPermissionGroup == null
+						|| (adminPermissionGroup.getPermissions() != null
+						&& !adminPermissionGroup.getPermissions().contains(Permission.ADMIN))
 						) {
-					adminUserGroup = new UserGroup();
+					adminPermissionGroup = new PermissionGroup();
 
-					adminUserGroup.setName(MessageBundle.getMessageBundle("user.permission.ADMIN"));
-					adminUserGroup.setStatus(UserStatus.ADMIN);
+					adminPermissionGroup.setName(MessageBundle.getMessageBundle("user.permission.ADMIN"));
+					adminPermissionGroup.setStatus(UserStatus.ADMIN);
 
-					Set<UserPermission> perms = new HashSet<UserPermission>();
-					perms.add(UserPermission.ADMIN);
+					Set<Permission> perms = new HashSet<Permission>();
+					perms.add(Permission.ADMIN);
 
-					adminUserGroup.setPermissions(perms);
+					adminPermissionGroup.setPermissions(perms);
 
-					adminUserGroup.setCreatedBy(formModel.getUser());
-					adminUserGroup.setCreatedAt(new Date());
-					adminUserGroup.setTenant(tenant);
+					adminPermissionGroup.setCreatedBy(user);
+					adminPermissionGroup.setCreatedAt(new Date());
 
-					adminUserGroup = userGroupRepository.save(adminUserGroup);
+					adminPermissionGroup = permissionGroupRepository.save(adminPermissionGroup);
 				}
 
 				// Admin groups
-				Set<UserGroup> adminGroups = new HashSet<UserGroup>();
-				adminGroups.add(adminUserGroup);
+				Set<PermissionGroup> adminGroups = new HashSet<PermissionGroup>();
+				adminGroups.add(adminPermissionGroup);
 
-				formModel.getUser().setGroups(adminGroups);
+				user.setGroups(adminGroups);
 
-				formModel.getUser().setStatus(UserStatus.ADMIN);
-				formModel.getUser().setEnabled(true);
+				user.setStatus(UserStatus.ADMIN);
+				user.setEnabled(true);
 
-				formModel.getUser().setCreatedBy(formModel.getUser());
-				formModel.getUser().setCreatedAt(new Date());
-				
+				user.setCreatedBy(user);
+				user.setCreatedAt(new Date());
+
 				/*
 				 * Save system administrator and get your ID
 				 */
-				dbUser = this.save(serverUrl, formModel.getUser(), true, file);
-				
+				dbUser = this.save(serverUrl, user, true, null);
+
 				/*
 				 * Save again to tell to the system that the administrator create yourself
 				 */
-				formModel.getUser().setCreatedBy(dbUser);
+				user.setCreatedBy(dbUser);
 
-				formModel.getUser().setTenant(tenant);
+				user.setTenant(tenant);
 
 				this.save(serverUrl, dbUser, false, null);
-				
+
 				/*
-				 * Save the group again to associate administrator user as owner 
+				 * Save the group again to associate administrator user as owner
 				 */
-				adminUserGroup.setCreatedBy(dbUser);
-				userGroupRepository.save(adminUserGroup);
+				adminPermissionGroup.setCreatedBy(dbUser);
+				permissionGroupRepository.save(adminPermissionGroup);
 
 				result = true;
 			} else {
 				dbUser.setStatus(UserStatus.ADMIN);
-				dbUser.setPassword(formModel.getUser().getPassword());
+				dbUser.setPassword(user.getPassword());
 
-				this.save(serverUrl, dbUser, true, file);
+				this.save(serverUrl, dbUser, true, null);
 
 				result = true;
 			}
@@ -662,70 +662,6 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 
 			tenantService.save(tenant);
 		}
-
-		return result;
-	}
-
-	private StringBuilder buildResetPasswordMessage(String url, User user) {
-		StringBuilder result = new StringBuilder();
-
-		result.append("<html>");
-		result.append("<body>");
-
-		result.append("<h1>");
-		result.append(MessageBundle.getMessageBundle("user.forgot-password.email.subject"));
-		result.append("</h1>");
-
-		result.append("<p>");
-		result.append(MessageBundle.getMessageBundle("user.forgot-password.email.message"));
-		result.append("</p>");
-
-		result.append("<p>");
-
-		result.append("<a href=\"" + url + user.getResetPasswordToken() + "\" >");
-		result.append(url + user.getResetPasswordToken());
-		result.append("</a>");
-
-		result.append("</p>");
-
-		result.append("<p>");
-		result.append(MessageBundle.getMessageBundle("user.forgot-password.email.footer"));
-		result.append("</p>");
-
-		result.append("</body>");
-		result.append("</html>");
-
-		return result;
-	}
-
-	private StringBuilder buildCreateUserMessage(String url, User user) {
-		StringBuilder result = new StringBuilder();
-
-		result.append("<html>");
-		result.append("<body>");
-
-		result.append("<h1>");
-		result.append(MessageBundle.getMessageBundle("user.new.email.subject"));
-		result.append("</h1>");
-
-		result.append("<p>");
-		result.append(MessageBundle.getMessageBundle("user.new.email.message", user.getName()));
-		result.append("</p>");
-
-		result.append("<p>");
-
-		result.append("<a href=\"" + url + user.getResetPasswordToken() + "\" >");
-		result.append(url + user.getResetPasswordToken());
-		result.append("</a>");
-
-		result.append("</p>");
-
-		result.append("<p>");
-		result.append(MessageBundle.getMessageBundle("user.new.email.footer"));
-		result.append("</p>");
-
-		result.append("</body>");
-		result.append("</html>");
 
 		return result;
 	}

@@ -17,14 +17,13 @@
     </organization>
 
     <properties>
-		<java.version>1.6</java.version>
+		<java.version>1.8</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <org.springframework-version>4.0.3.RELEASE</org.springframework-version>
+        <org.springframework-version>4.2.5.RELEASE</org.springframework-version>
         <org.springframework.security-version>3.2.2.RELEASE</org.springframework.security-version>
         <org.aspectj-version>1.6.9</org.aspectj-version>
         <cglib-version>2.2.2</cglib-version>
         <org.slf4j-version>1.5.10</org.slf4j-version>
-        <postgresql-version>9.2-1002.jdbc4</postgresql-version>
 		<jackson.version>2.2.0</jackson.version>
 
 		<timestamp>${maven.build.timestamp}</timestamp>
@@ -34,78 +33,11 @@
     <modules>
     	<module>apolo-core-custom</module>
         <module>apolo-core</module>
-        <module>apolo-web-core</module>
-		<module>apolo-web-html-smartadmin</module>
+        <module>apolo-api</module>
+		<module>apolo-web</module>
     </modules>
 
     <repositories>
-        <repository>
-            <id>spring-releases</id>
-            <name>Spring Releases</name>
-            <url>http://repo.spring.io/libs-release</url>
-        </repository>
-
-		<repository>
-			<id>sonatype-forge</id>
-			<url>https://repository.sonatype.org/content/groups/forge/</url>
-		</repository>
-		<repository>
-			<id>java.net2</id>
-			<name>Repository hosting the jee6 artifacts</name>
-			<url>http://download.java.net/maven/2</url>
-		</repository>
-		<repository>
-			<id>spring-maven-release</id>
-			<name>Spring Maven Release Repository</name>
-			<url>http://maven.springframework.org/release</url>
-		</repository>
-		<repository>
-			<id>JBoss Repo</id>
-			<url>https://repository.jboss.org/nexus/content/repositories/releases</url>
-			<name>JBoss Repo</name>
-		</repository>
-		<repository>
-			<id>java.net - Maven 2</id>
-			<url>https://repository.jboss.org/nexus/content/repositories/java.net-m2</url>
-			<name>java.net - Maven 2</name>
-		</repository>
-		<repository>
-			<id>sonatype-oss-repository</id>
-			<url>https://oss.sonatype.org/content/groups/public/</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</repository>
-		<repository>
-			<id>central</id>
-			<url>http://repo1.maven.org/maven2/</url>
-		</repository>
-
-		<repository>
-			<id>maven2-repository.dev.java.net</id>
-			<name>Java.net Repository for Maven</name>
-			<url>http://download.java.net/maven/2/</url>
-			<layout>default</layout>
-		</repository>
-
-	  	<repository>
-	  		<id>Java.Net</id>
-	  		<url>http://download.java.net/maven/2/</url>
-	  	</repository>
-
-        <repository>
-            <id>spring-snapshots</id>
-            <url>http://repo.spring.io/snapshot</url>
-            <snapshots><enabled>true</enabled></snapshots>
-        </repository>
-        <repository>
-            <id>spring-milestones</id>
-            <url>http://repo.spring.io/milestone</url>
-        </repository>
-
 		<repository>
 			<id>maven-oss-insula</id>
 			<name>Insula Maven OSS Releases Repository</name>
@@ -141,15 +73,10 @@
 	        <dependency>
 	            <groupId>mysql</groupId>
 	            <artifactId>mysql-connector-java</artifactId>
-	            <version>5.1.21</version>
+	            <version>5.1.38</version>
 	        </dependency>
 
 	        <!-- Persistence -->
-	        <dependency>
-	            <groupId>org.eclipse.persistence</groupId>
-	            <artifactId>javax.persistence</artifactId>
-	            <version>2.0.0</version>
-	        </dependency>
 	        <dependency>
 	            <groupId>org.hibernate</groupId>
 	            <artifactId>hibernate-core</artifactId>
@@ -495,7 +422,7 @@
 	        <dependency>
 	            <groupId>commons-fileupload</groupId>
 	            <artifactId>commons-fileupload</artifactId>
-	            <version>1.2.2</version>
+	            <version>1.3.1</version>
 	        </dependency>
 	        <dependency>
 	            <groupId>org.apache.commons</groupId>
@@ -676,17 +603,6 @@
 				</plugin>
 
 				<plugin>
-					<groupId>org.eclipse.jetty</groupId>
-					<artifactId>jetty-maven-plugin</artifactId>
-					<configuration>
-						<scanIntervalSeconds>10</scanIntervalSeconds>
-						<webApp>
-							<contextPath>/apolo</contextPath>
-						</webApp>
-					</configuration>
-				</plugin>
-
-				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-dependency-plugin</artifactId>
 					<executions>
@@ -709,27 +625,6 @@
 					</configuration>
 				</plugin>
 
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-war-plugin</artifactId>
-					<version>2.1.1</version>
-					<configuration>
-						<warName>${project.artifactId}-${project.version}</warName>
-					</configuration>
-				</plugin>
-
-				<plugin>
-					<groupId>org.apache.tomcat.maven</groupId>
-					<artifactId>tomcat7-maven-plugin</artifactId>
-					<version>2.2</version>
-					<configuration>
-						<path>/</path>
-						<update>true</update>
-						<url>${env.APOLO_PRODUCTION_DEPLOY_URL}</url>
-						<username>${env.APOLO_PRODUCTION_DEPLOY_USERNAME}</username>
-						<password>${env.APOLO_PRODUCTION_DEPLOY_PASSWORD}</password>
-					</configuration>
-				</plugin>
 			</plugins>
 		</pluginManagement>
 	</build>

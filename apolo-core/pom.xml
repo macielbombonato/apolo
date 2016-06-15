@@ -14,7 +14,7 @@
     <parent>
         <groupId>apolo</groupId>
         <artifactId>apolo</artifactId>
-		<version>4.2.0</version>
+		<version>5.0.0</version>
     </parent>
     
 
@@ -27,19 +27,11 @@
 
 		<!-- Data base Driver -->
 		<dependency>
-			<groupId>postgresql</groupId>
-			<artifactId>postgresql</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 		</dependency>
 
 		<!-- Persistence -->
-		<dependency>
-			<groupId>org.eclipse.persistence</groupId>
-			<artifactId>javax.persistence</artifactId>
-		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>

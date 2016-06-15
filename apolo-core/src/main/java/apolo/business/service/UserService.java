@@ -1,7 +1,6 @@
 package apolo.business.service;
 
 import apolo.business.model.FileContent;
-import apolo.business.model.InstallFormModel;
 import apolo.business.service.base.BaseService;
 import apolo.data.model.Tenant;
 import apolo.data.model.User;
@@ -31,11 +30,11 @@ public interface UserService extends BaseService<User> {
 
 	User getSystemAdministrator();
 
-	boolean systemSetup(String serverUrl, InstallFormModel formModel, FileContent file);
+	boolean systemSetup(String serverUrl, User user);
 
 	Collection<GrantedAuthority> loadUserAuthorities(User user);
 
-	User loadByUsernameAndPassword(Tenant tenant, String username, String password);
+	User loadByUsernameAndPassword(String username, String password);
 
 	User find(Long id);
 
