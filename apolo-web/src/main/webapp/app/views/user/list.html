@@ -8,18 +8,18 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <div class="row">
-                        <div class="col-sm-10">
+                        <div class="col-sm-11">
                             <div class="input-group">
                                 <div class="input-group-addon"><i class="fa fa-search"></i></div>
                                 <input type="text" class="form-control" placeholder="{{'common.filter' | translate}}" ng-model="userFilter" />
                             </div>
                         </div>
-                        <div class="col-sm-2" ng-if="principal != null && principal.authenticated == true">
+                        <div class="col-sm-1" ng-if="principal != null && principal.authenticated == true">
                             <a class="btn btn-success pull-right"
                                ui-shref="apolo.user.create"
-                               translate="common.create"
                                     >
-                                Create User
+                                <i class="fa fa-plus"></i>
+                                {{'common.create' | translate}}
                             </a>
                         </div>
                     </div>

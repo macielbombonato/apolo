@@ -2,8 +2,8 @@
 <div class="block-center mt-xl wd-xl">
    <!-- START panel-->
    <div class="panel panel-dark panel-flat">
-      <div class="panel-heading text-center">
-         <a ui-sref="apolo.home" style="background-color: black;">
+      <div class="panel-heading text-center topnavbar">
+         <a ui-sref="apolo.home">
             <img src="app/img/logo.png" alt="Image" class="block-center img-rounded" />
          </a>
       </div>
@@ -13,34 +13,44 @@
                name="login.loginForm"
                novalidate=""
                class="form-validate mb-lg">
+
+             <div class="form-group has-feedback">
+                 <div class="input-group">
+                    <input id="exampleInputEmail1"
+                          type="email"
+                          name="account_email"
+                          placeholder="{{'login.email' | translate}}"
+                          autocomplete="off"
+                          ng-model="login.account.email"
+                          required=""
+                          class="form-control"
+                            />
+                     <span class="input-group-addon">
+                        <i class="fa fa-envelope"></i>
+                     </span>
+                 </div>
+                 <span ng-show="login.loginForm.account_email.$dirty &amp;&amp; login.loginForm.account_email.$error.required" class="text-danger">
+                     {{'message.required_field' | translate}}
+                 </span>
+                 <span ng-show="login.loginForm.account_email.$dirty &amp;&amp; login.loginForm.account_email.$error.email" class="text-danger">
+                     {{'login.valid_email' | translate}}
+                 </span>
+             </div>
+
             <div class="form-group has-feedback">
-               <input id="exampleInputEmail1"
-                      type="email"
-                      name="account_email"
-                      placeholder="{{'login.email' | translate}}"
-                      autocomplete="off"
-                      ng-model="login.account.email"
-                      required=""
-                      class="form-control"
-                   />
-               <span class="fa fa-envelope form-control-feedback text-muted"></span>
-               <span ng-show="login.loginForm.account_email.$dirty &amp;&amp; login.loginForm.account_email.$error.required" class="text-danger">
-                  {{'message.required_field' | translate}}
-               </span>
-               <span ng-show="login.loginForm.account_email.$dirty &amp;&amp; login.loginForm.account_email.$error.email" class="text-danger">
-                  {{'login.valid_email' | translate}}
-               </span>
-            </div>
-            <div class="form-group has-feedback">
-               <input id="exampleInputPassword1"
-                      type="password"
-                      name="account_password"
-                      placeholder="{{'login.password' | translate}}"
-                      ng-model="login.account.password"
-                      required=""
-                      class="form-control"
-                   />
-               <span class="fa fa-lock form-control-feedback text-muted"></span>
+                <div class="input-group">
+                   <input id="exampleInputPassword1"
+                          type="password"
+                          name="account_password"
+                          placeholder="{{'login.password' | translate}}"
+                          ng-model="login.account.password"
+                          required=""
+                          class="form-control"
+                       />
+                     <span class="input-group-addon">
+                        &nbsp;<i class="fa fa-lock"></i>
+                     </span>
+                </div>
                <span ng-show="login.loginForm.account_password.$dirty &amp;&amp; login.loginForm.account_password.$error.required" class="text-danger">
                   {{'message.required_field' | translate}}
                </span>

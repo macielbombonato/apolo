@@ -1473,12 +1473,12 @@ _:-ms-lang(x),
   left: 0;
   bottom: 0;
   right: 0;
-  width: 100px;
-  height: 30px;
+  width: 300px;
+  height: 150px;
   margin: auto;
   overflow: auto;
   background-image: url(../img/preloader/preloader.empty.png);
-  background-size: 100px 30px;
+  background-size: 300px 150px;
 }
 /*@noflip*/
 .preloader-progress-bar {
@@ -1488,7 +1488,7 @@ _:-ms-lang(x),
   bottom: 0;
   min-width: 10px;
   background-image: url(../img/preloader/preloader.full.png);
-  background-size: 100px 30px;
+  background-size: 300px 150px;
 }
 .preloader-hidden {
   display: none;
