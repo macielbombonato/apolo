@@ -1,7 +1,14 @@
 {
   "app": {
     "title": "Apolo",
-    "footer": "Apolo 2012 - 2016"
+    "footer": "Apolo 2012 - 2016",
+    "home": {
+      "title": "Home",
+      "description": "Apolo - Arquitetura Base",
+      "text1": "O objetivo do projeto Apolo é servir de base para a construção de aplicativos de multiplos propósitos, ou simplesmente como uma base de estudo trazendo exemplos de como fazer determinadas atividades.",
+      "text2": "O projeto sugere um modelo arquitetural e já traz pronta toda estrutura de gerenciamento de usuários, unidades, grupos de permissão de acesso, internacionalização, dentre outras funcionalidades.",
+      "text3": "Este projeto foi idealizado e desenvolvido por: "
+    }
   },
 
   "common": {

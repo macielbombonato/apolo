@@ -49,7 +49,7 @@
             .state('apolo.home', {
                 url: '/home',
                 title: 'Apolo',
-                templateUrl: helper.basepath('singleview.html')
+                templateUrl: helper.basepath('home.html')
             })
 
             // User
@@ -87,12 +87,12 @@
             .state('apolo.tenant.list', {
                 url: '/list',
                 title: 'Tenant List',
-                templateUrl: 'app/views/singleview.html'
+                templateUrl: 'app/views/home.html'
             })
             .state('apolo.tenant.create', {
                 url: '/create',
                 title: 'Tenant Create',
-                templateUrl: 'app/views/singleview.html'
+                templateUrl: 'app/views/home.html'
             })
 
             // Group Permission
@@ -103,12 +103,12 @@
             .state('app.group-permission.list', {
                 url: '/list',
                 title: 'Group Permission List',
-                templateUrl: 'app/views/singleview.html'
+                templateUrl: 'app/views/home.html'
             })
             .state('apolo.group-permission.create', {
                 url: '/create',
                 title: 'Group Permission Create',
-                templateUrl: 'app/views/singleview.html'
+                templateUrl: 'app/views/home.html'
             })
 
 
