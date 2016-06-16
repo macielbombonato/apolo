@@ -26,12 +26,16 @@
                 if (pageNumber != null && pageNumber != undefined) {
                     result = baseService.getWithKey('/'+ tenantUrl +'/user?pageNumber=' + pageNumber, apiToken).then(
                         function(response) {
+                            response = baseService.pagination(pageNumber, response, '#/user/list?pageNumber=');
+
                             return response;
                         }
                     );
                 } else {
                     result = baseService.getWithKey('/'+ tenantUrl +'/user', apiToken).then(
                         function(response) {
+                            response = baseService.pagination(pageNumber, response, '#/user/list?pageNumber=');
+
                             return response;
                         }
                     );

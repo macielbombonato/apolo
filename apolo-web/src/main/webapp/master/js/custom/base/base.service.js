@@ -20,6 +20,7 @@
         this.deleteWithKey = deleteWithKey;
 
         this.checkPermission = checkPermission;
+        this.pagination = pagination;
 
         ////////////////
 
@@ -42,6 +43,49 @@
             }
 
             return result;
+        }
+
+        function pagination(pageNumber, entity, url) {
+            if (pageNumber != undefined && pageNumber != null) {
+                entity.currentIndex = pageNumber;
+            } else {
+                entity.currentIndex = 1;
+            }
+
+            entity.firstUrl = url + 1;
+
+            var currentIndex = parseInt(entity.currentIndex);
+
+            if (currentIndex > 1) {
+                entity.prevUrl = url + (currentIndex - 1);
+            }
+
+            if (entity.currentIndex < entity.totalPages) {
+                entity.nextUrl = url + (currentIndex + 1);
+            }
+
+            entity.lastUrl = url + entity.totalPages;
+
+            entity.pages = [];
+            for (var i = 1; i <= entity.totalPages; i ++) {
+                var page = {};
+                page.index = i;
+                page.url = url + i;
+
+                entity.pages.push(page);
+            }
+
+            entity.pagination = {};
+            entity.pagination.currentIndex = entity.currentIndex;
+            entity.pagination.firstUrl = entity.firstUrl;
+            entity.pagination.prevUrl = entity.prevUrl;
+            entity.pagination.nextUrl = entity.nextUrl;
+            entity.pagination.lastUrl = entity.lastUrl;
+            entity.pagination.pages = entity.pages;
+            entity.pagination.totalElements = entity.totalElements;
+            entity.pagination.totalPages = entity.totalPages;
+
+            return entity;
         }
 
         function get(url) {

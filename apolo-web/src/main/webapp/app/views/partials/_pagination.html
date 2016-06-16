@@ -1,0 +1,90 @@
+<center>
+    <div ng-if="pagination.totalElements != null">
+        <div class="row">
+            <div class="col-sm-12">
+                <ul ng-if="pagination.totalPages != null"
+                    class="pagination pagination-sm">
+
+                    <!-- backward flags -->
+                    <li ng-if="pagination.currentIndex == 1"
+                        class="disabled">
+                        <a href="#">
+                            <i class="fa fa-fast-backward"></i>
+                        </a>
+                    </li>
+                    <li ng-if="pagination.currentIndex == 1"
+                        class="disabled">
+                        <a href="#">
+                            <i class="fa fa-step-backward"></i>
+                        </a>
+                    </li>
+
+                    <li ng-if="pagination.currentIndex != 1">
+                        <a href="{{pagination.firstUrl}}">
+                            <i class="fa fa-fast-backward"></i>
+                        </a>
+                    </li>
+                    <li ng-if="pagination.currentIndex != 1">
+                        <a href="{{pagination.prevUrl}}">
+                            <i class="fa fa-step-backward"></i>
+                        </a>
+                    </li>
+
+                    <!-- Page number of index -->
+                    <li ng-repeat="page in pagination.pages"
+                        class="{{page.index == pagination.currentIndex ? 'active' : ''}}">
+                        <a href="{{page.url}}">
+                            {{page.index}}
+                        </a>
+                    </li>
+
+                    <!-- forward flags -->
+                    <li ng-if="pagination.currentIndex == pagination.totalPages
+                                || pagination.totalPages == 0 "
+                        class="disabled">
+                        <a href="#">
+                            <i class="fa fa-step-forward"></i>
+                        </a>
+                    </li>
+                    <li ng-if="pagination.currentIndex == pagination.totalPages
+                                || pagination.totalPages == 0 "
+                        class="disabled">
+                        <a href="#">
+                            <i class="fa fa-fast-forward"></i>
+                        </a>
+                    </li>
+
+                    <li ng-if="pagination.totalPages > 0
+                                && pagination.currentIndex != pagination.totalPages"
+                            >
+                        <a href="{{pagination.nextUrl}}">
+                            <i class="fa fa-step-forward"></i>
+                        </a>
+                    </li>
+                    <li ng-if="pagination.totalPages > 0
+                                && pagination.currentIndex != pagination.totalPages"
+                            >
+                        <a href="{{pagination.lastUrl}}">
+                            <i class="fa fa-fast-forward"></i>
+                        </a>
+                    </li>
+                    <li class="disabled">
+                        <a href="#">
+                            <small>
+                                <strong>
+                                    <span translate="{{'common.records' | translate }}">
+                                      Total
+                                    </span>
+                                </strong>:
+                                <span>
+                                    {{pagination.totalElements}}
+                                </span>
+                            </small>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+</center>

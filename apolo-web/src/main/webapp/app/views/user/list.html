@@ -25,6 +25,8 @@
                                 </p>
                             </div>
 
+                            <div ng-include="'app/views/partials/_pagination.html'"></div>
+
                             <div class="table-responsive" ng-if="ctrl.users.userList">
                                 <table class="table table-bordered table-hover table-striped">
                                     <thead>
@@ -77,95 +79,7 @@
                                 </table>
                             </div>
 
-                            <center>
-                                <div ng-if="ctrl.users.totalElements != null">
-                                    <div class="row">
-                                        <div class="col-sm-12">
-                                            <ul ng-if="ctrl.users.totalPages != null"
-                                                class="pagination pagination-sm">
-
-                                                <!-- backward flags -->
-                                                <li ng-if="ctrl.users.currentIndex == 1"
-                                                    class="disabled">
-                                                    <a href="#">
-                                                        <i class="fa fa-fast-backward"></i>
-                                                    </a>
-                                                </li>
-                                                <li ng-if="ctrl.users.currentIndex == 1"
-                                                    class="disabled">
-                                                    <a href="#">
-                                                        <i class="fa fa-step-backward"></i>
-                                                    </a>
-                                                </li>
-
-                                                <li ng-if="ctrl.users.currentIndex != 1">
-                                                    <a href="{{pag.search.firstUrl}}" ng-click="ctrl.list()">
-                                                        <i class="fa fa-fast-backward"></i>
-                                                    </a>
-                                                </li>
-                                                <li ng-if="ctrl.users.currentIndex != 1">
-                                                    <a href="{{ctrl.users.prevUrl}}" onclick="ctrl.list()">
-                                                        <i class="fa fa-step-backward"></i>
-                                                    </a>
-                                                </li>
-
-                                                <!-- Page number of index -->
-                                                <li ng-repeat="page in ctrl.users.pages"
-                                                    class="{{page.index == ctrl.users.currentIndex ? 'active' : ''}}">
-                                                    <a href="{{page.url}}" ng-click="ctrl.list()">
-                                                        {{page.index}}
-                                                    </a>
-                                                </li>
-
-                                                <!-- forward flags -->
-                                                <li ng-if="ctrl.users.currentIndex == ctrl.users.totalPages
-                                || ctrl.users.totalPages == 0 "
-                                                    class="disabled">
-                                                    <a href="#">
-                                                        <i class="fa fa-step-forward"></i>
-                                                    </a>
-                                                </li>
-                                                <li ng-if="ctrl.users.currentIndex == ctrl.users.totalPages
-                                || ctrl.users.totalPages == 0 "
-                                                    class="disabled">
-                                                    <a href="#">
-                                                        <i class="fa fa-fast-forward"></i>
-                                                    </a>
-                                                </li>
-
-                                                <li ng-if="ctrl.users.totalPages > 0
-                                && ctrl.users.currentIndex != ctrl.users.totalPages"
-                                                        >
-                                                    <a href="{{ctrl.users.nextUrl}}" ng-click="ctrl.list()">
-                                                        <i class="fa fa-step-forward"></i>
-                                                    </a>
-                                                </li>
-                                                <li ng-if="ctrl.users.totalPages > 0
-                                && ctrl.users.currentIndex != ctrl.users.totalPages"
-                                                        >
-                                                    <a href="{{ctrl.users.lastUrl}}" ng-click="ctrl.list()">
-                                                        <i class="fa fa-fast-forward"></i>
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-sm-12">
-                                            <strong>
-                    <span translate="{{'common.records' | translate }}">
-                      Total
-                    </span>
-                                            </strong>:
-                  <span>
-                    {{ctrl.users.totalElements}}
-                  </span>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </center>
+                            <div ng-include="'app/views/partials/_pagination.html'"></div>
 
                         </div>
                     </div>

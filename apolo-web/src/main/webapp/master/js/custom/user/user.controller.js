@@ -55,35 +55,7 @@
                             pageNumber).then(
                         function(response) {
                             vm.users = response;
-
-                            if (pageNumber != undefined && pageNumber != null) {
-                                vm.users.currentIndex = pageNumber;
-                            } else {
-                                vm.users.currentIndex = 1;
-                            }
-
-                            vm.users.firstUrl = '#/user/list?pageNumber=1';
-
-                            var currentIndex = parseInt(vm.users.currentIndex);
-
-                            if (currentIndex > 1) {
-                                vm.users.prevUrl = '#/user/list?pageNumber=' + (currentIndex - 1);
-                            }
-
-                            if (vm.users.currentIndex < vm.users.totalPages) {
-                                vm.users.nextUrl = '#/user/list?pageNumber=' + (currentIndex + 1);
-                            }
-
-                            vm.users.lastUrl = '#/user/list?pageNumber=' + vm.users.totalPages;
-
-                            vm.users.pages = [];
-                            for (var i = 1; i <= vm.users.totalPages; i ++) {
-                                var page = {};
-                                page.index = i;
-                                page.url = '#/user/list?pageNumber=' + i;
-
-                                vm.users.pages.push(page);
-                            }
+                            $scope.pagination = vm.users.pagination;
                         }
                     );
                 } else {
