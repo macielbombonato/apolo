@@ -60,7 +60,8 @@
     "email": "E-mail",
     "password": "Senha",
     "login": "Login",
-    "access_button": "Acessar o Sistema",
+    "logout": "Sair",
+    "access_button": "Entrar",
     "valid_email": "É necessário informar um endereço de email válido",
     "forgot_password": "Esqueceu sua senha?",
     "error_message": "Usuário e/ou senha inválidos"

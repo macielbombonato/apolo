@@ -2,7 +2,7 @@
 <div class="block-center mt-xl wd-xl">
    <!-- START panel-->
    <div class="panel panel-dark panel-flat">
-      <div class="panel-heading text-center topnavbar">
+      <div class="panel-heading text-center" style="background-color: #024561;">
          <a ui-sref="apolo.home">
             <img src="app/img/logo.png" alt="Image" class="block-center img-rounded" />
          </a>
@@ -15,20 +15,15 @@
                class="form-validate mb-lg">
 
              <div class="form-group has-feedback">
-                 <div class="input-group">
-                    <input id="exampleInputEmail1"
-                          type="email"
-                          name="account_email"
-                          placeholder="{{'login.email' | translate}}"
-                          autocomplete="off"
-                          ng-model="login.account.email"
-                          required=""
-                          class="form-control"
-                            />
-                     <span class="input-group-addon">
-                        <i class="fa fa-envelope"></i>
-                     </span>
-                 </div>
+                <input id="exampleInputEmail1"
+                      type="email"
+                      name="account_email"
+                      placeholder="{{'login.email' | translate}}"
+                      autocomplete="off"
+                      ng-model="login.account.email"
+                      required=""
+                      class="form-control"
+                        />
                  <span ng-show="login.loginForm.account_email.$dirty &amp;&amp; login.loginForm.account_email.$error.required" class="text-danger">
                      {{'message.required_field' | translate}}
                  </span>
@@ -38,19 +33,14 @@
              </div>
 
             <div class="form-group has-feedback">
-                <div class="input-group">
-                   <input id="exampleInputPassword1"
-                          type="password"
-                          name="account_password"
-                          placeholder="{{'login.password' | translate}}"
-                          ng-model="login.account.password"
-                          required=""
-                          class="form-control"
-                       />
-                     <span class="input-group-addon">
-                        &nbsp;<i class="fa fa-lock"></i>
-                     </span>
-                </div>
+               <input id="exampleInputPassword1"
+                      type="password"
+                      name="account_password"
+                      placeholder="{{'login.password' | translate}}"
+                      ng-model="login.account.password"
+                      required=""
+                      class="form-control"
+                   />
                <span ng-show="login.loginForm.account_password.$dirty &amp;&amp; login.loginForm.account_password.$error.required" class="text-danger">
                   {{'message.required_field' | translate}}
                </span>

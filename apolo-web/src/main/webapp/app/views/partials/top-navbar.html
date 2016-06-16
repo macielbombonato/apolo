@@ -31,22 +31,34 @@
       <!-- END Left navbar-->
       <!-- START Right Navbar-->
       <ul class="nav navbar-nav navbar-right">
-         <li>
-            <div uib-dropdown="" is-open="language.listIsOpen" class="btn-group">
+         <li uib-dropdown="" class="dropdown dropdown-list">
 
-               <a href="#" class="btn btn-xs btn-default" uib-dropdown-toggle="">
-                  <img ng-src="{{'app/img/flags/'}}{{language.selectedId}}{{'.png'}}" style="width: 18px;"/>
-                  <span class="caret"></span>
-               </a>
-               <ul role="menu" class="dropdown-menu dropdown-menu-right animated fadeInUpShort">
-                  <li ng-repeat="(localeId, langName) in language.available">
-                     <a ng-click="language.set(localeId, $event)">
-                        <img ng-src="{{'app/img/flags/'}}{{localeId}}{{'.png'}}" style="width: 18px;" /> &nbsp;
-                        {{langName}}
-                     </a>
-                  </li>
-               </ul>
-            </div>
+            <a uib-dropdown-toggle="">
+               <img ng-src="{{'app/img/flags/'}}{{language.selectedId}}{{'.png'}}" style="width: 18px;"/>
+               <span class="caret"></span>
+            </a>
+
+            <ul role="menu" class="dropdown-menu animated flipInX">
+               <li ng-repeat="(localeId, langName) in language.available">
+                  <a ng-click="language.set(localeId, $event)">
+                     <img ng-src="{{'app/img/flags/'}}{{localeId}}{{'.png'}}" style="width: 18px;" /> &nbsp;
+                     {{langName}}
+                  </a>
+               </li>
+            </ul>
+         </li>
+
+         <li ng-show="principal == null">
+            <a href="#/login" >
+               <i class="fa fa-sign-in"></i>
+               {{'login.access_button' | translate}}
+            </a>
+         </li>
+         <li ng-show="principal != null">
+            <a href="#/logout" >
+               <i class="fa fa-power-off"></i>
+               {{'login.logout' | translate}}
+            </a>
          </li>
       </ul>
       <!-- END Right Navbar-->
