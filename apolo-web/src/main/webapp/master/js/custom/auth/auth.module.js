@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('apolo.login', [
+        .module('apolo.auth', [
             'apolo.baseService'
         ]);
 })();

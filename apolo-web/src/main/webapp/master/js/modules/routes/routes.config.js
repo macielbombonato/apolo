@@ -35,9 +35,15 @@
             .state('login', {
                 url: '/login',
                 title: 'Login',
-                templateUrl: helper.basepath('login/login.html'),
-                controller: 'LoginController',
-                controllerAs: 'login'
+                templateUrl: helper.basepath('auth/login.html'),
+                controller: 'AuthController',
+                controllerAs: 'auth'
+            })
+
+            .state('logout', {
+                url: '/logout',
+                title: 'Logout',
+                templateUrl: helper.basepath('auth/logout.html')
             })
 
             .state('apolo', {

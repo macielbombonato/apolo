@@ -2,11 +2,11 @@
     'use strict';
 
     angular
-        .module('apolo.login')
-        .service('LoginService', LoginService);
+        .module('apolo.auth')
+        .service('AuthService', AuthService);
 
-    LoginService.$inject = ['BaseService'];
-    function LoginService(baseService) {
+    AuthService.$inject = ['BaseService'];
+    function AuthService(baseService) {
         this.login = login;
 
         ////////////////

@@ -2,16 +2,16 @@
     'use strict';
 
     angular
-        .module('apolo.login')
-        .controller('LoginController', LoginController);
+        .module('apolo.auth')
+        .controller('AuthController', AuthController);
 
-    LoginController.$inject = [
+    AuthController.$inject = [
         '$state',
         '$rootScope',
         '$translate',
-        'LoginService'
+        'AuthService'
     ];
-    function LoginController($state, $rootScope, $translate, loginService) {
+    function AuthController($state, $rootScope, $translate, authService) {
         var vm = this;
 
         activate();
@@ -29,11 +29,9 @@
 
                 if (vm.loginForm.$valid) {
 
-                    loginService.login({username: vm.account.email, password: vm.account.password}).then(
+                    authService.login({username: vm.account.email, password: vm.account.password}).then(
                         function (response) {
                             if (response.user != undefined && response.user != null) {
-                                console.log(response.user);
-
                                 $rootScope.principal = response.user;
                                 $rootScope.principal.authenticated = true;
 
@@ -42,7 +40,7 @@
                                 $rootScope.userBlockVisible = true;
                                 $rootScope.$broadcast('toggleUserBlock');
                             } else {
-                                vm.authMsg = $translate.instant('login.error_message');
+                                vm.authMsg = $translate.instant('auth.error_message');
                             }
                         }
                     );
@@ -55,6 +53,12 @@
                 }
 
             };
+
+            vm.logout = function() {
+                $rootScope.principal = null;
+
+                $state.go('login');
+            }
         }
     }
 })();

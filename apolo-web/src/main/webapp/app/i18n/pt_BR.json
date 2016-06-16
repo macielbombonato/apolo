@@ -56,7 +56,7 @@
     }
   },
 
-  "login": {
+  "auth": {
     "email": "E-mail",
     "password": "Senha",
     "login": "Login",

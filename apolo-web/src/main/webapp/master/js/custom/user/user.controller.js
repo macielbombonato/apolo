@@ -2,7 +2,7 @@
     'use strict';
 
     var app = angular
-        .module('apolo.login')
+        .module('apolo.user')
         .controller('UserController', UserController)
 
     ;

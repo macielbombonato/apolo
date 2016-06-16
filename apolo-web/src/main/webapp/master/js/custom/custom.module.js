@@ -7,7 +7,7 @@
             'apolo',
             'apolo.baseService',
             /*...*/
-            'apolo.login',
+            'apolo.auth',
             'apolo.user',
             'apolo.permissionGroup'
         ]);

@@ -8,9 +8,12 @@
          </a>
       </div>
       <div class="panel-body">
+         <div ng-show="auth.authMsg" class="alert alert-danger text-center">
+             {{auth.authMsg}}
+         </div>
          <form role="form"
-               ng-submit="login.login()"
-               name="login.loginForm"
+               ng-submit="auth.login()"
+               name="auth.loginForm"
                novalidate=""
                class="form-validate mb-lg">
 
@@ -18,17 +21,17 @@
                 <input id="exampleInputEmail1"
                       type="email"
                       name="account_email"
-                      placeholder="{{'login.email' | translate}}"
+                      placeholder="{{'auth.email' | translate}}"
                       autocomplete="off"
-                      ng-model="login.account.email"
+                      ng-model="auth.account.email"
                       required=""
                       class="form-control"
                         />
-                 <span ng-show="login.loginForm.account_email.$dirty &amp;&amp; login.loginForm.account_email.$error.required" class="text-danger">
+                 <span ng-show="auth.loginForm.account_email.$dirty &amp;&amp; auth.loginForm.account_email.$error.required" class="text-danger">
                      {{'message.required_field' | translate}}
                  </span>
-                 <span ng-show="login.loginForm.account_email.$dirty &amp;&amp; login.loginForm.account_email.$error.email" class="text-danger">
-                     {{'login.valid_email' | translate}}
+                 <span ng-show="auth.loginForm.account_email.$dirty &amp;&amp; auth.loginForm.account_email.$error.email" class="text-danger">
+                     {{'auth.valid_email' | translate}}
                  </span>
              </div>
 
@@ -36,29 +39,26 @@
                <input id="exampleInputPassword1"
                       type="password"
                       name="account_password"
-                      placeholder="{{'login.password' | translate}}"
-                      ng-model="login.account.password"
+                      placeholder="{{'auth.password' | translate}}"
+                      ng-model="auth.account.password"
                       required=""
                       class="form-control"
                    />
-               <span ng-show="login.loginForm.account_password.$dirty &amp;&amp; login.loginForm.account_password.$error.required" class="text-danger">
+               <span ng-show="auth.loginForm.account_password.$dirty &amp;&amp; auth.loginForm.account_password.$error.required" class="text-danger">
                   {{'message.required_field' | translate}}
                </span>
             </div>
             <div class="clearfix">
                <div class="pull-right">
                   <a ui-sref="page.recover" class="text-muted">
-                     {{'login.forgot_password' | translate}}
+                     {{'auth.forgot_password' | translate}}
                   </a>
                </div>
             </div>
             <button type="submit" class="btn btn-block btn-primary mt-lg">
-               {{'login.login' | translate}}
+               {{'auth.login' | translate}}
             </button>
          </form>
-         <div ng-show="login.authMsg" class="alert alert-danger text-center">
-            {{login.authMsg}}
-         </div>
       </div>
    </div>
    <!-- END panel-->
