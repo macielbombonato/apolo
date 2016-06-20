@@ -73,7 +73,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 	public List<User> list(Tenant tenant) {
 		PageRequest request = new PageRequest(1, PAGE_SIZE, Sort.Direction.ASC, "name");
 
-		Page<User> result = userRepository.findByTenantAndUserStatusNotOrderByNameAsc(
+		Page<User> result = userRepository.findByTenantAndStatusNotOrderByNameAsc(
 				tenant,
 				UserStatus.LOCKED,
 				request
@@ -89,7 +89,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 
 		PageRequest request = new PageRequest(pageNumber - 1, PAGE_SIZE, Sort.Direction.ASC, "name");
 
-		Page<User> result = userRepository.findByTenantAndUserStatusNotOrderByNameAsc(
+		Page<User> result = userRepository.findByTenantAndStatusNotOrderByNameAsc(
 				tenant,
 				UserStatus.LOCKED,
 				request
@@ -132,7 +132,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 			try {
 				token = apoloCrypt.encode(
                         user.getEmail() + new Date().getTime(),
-                        user.getDbTenant().getName() + user.getName(),
+                        user.getTenant().getName() + user.getName(),
                         applicationProperties.getIvKey()
                 );
 			} catch (Exception e) {
@@ -194,7 +194,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 					try {
 						String token = apoloCrypt.encode(
 								user.getEmail(),
-								user.getDbTenant().getName() + user.getName(),
+								user.getTenant().getName() + user.getName(),
 								applicationProperties.getIvKey()
 						);
 
@@ -204,9 +204,9 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 						user = this.save(user);
 
 						emailService.sendAsync(
-								user.getDbTenant(),
-								user.getDbTenant().getName(),
-								user.getDbTenant().getEmailFrom(),
+								user.getTenant(),
+								user.getTenant().getName(),
+								user.getTenant().getEmailFrom(),
 								user.getName(),
 								user.getEmail(),
 								MessageBundle.getMessageBundle("user.forgot-password.email.subject"),
@@ -323,7 +323,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 			try {
 				String token = apoloCrypt.encode(
 						user.getEmail() + new Date().getTime(),
-						user.getDbTenant().getName() + user.getName(),
+						user.getTenant().getName() + user.getName(),
 						applicationProperties.getIvKey()
 				);
 
@@ -401,9 +401,9 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 		if (sendEmail) {
 			try {
 				emailService.sendAsync(
-						user.getDbTenant(),
-						user.getDbTenant().getName(),
-						user.getDbTenant().getEmailFrom(),
+						user.getTenant(),
+						user.getTenant().getName(),
+						user.getTenant().getEmailFrom(),
 						user.getName(),
 						user.getEmail(),
 						MessageBundle.getMessageBundle("user.new.email.subject"),
@@ -514,13 +514,13 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 
 		PageRequest request = new PageRequest(pageNumber - 1, PAGE_SIZE, Sort.Direction.ASC, "name");
 
-		return userRepository.findByTenantAndUserStatus(tenant, UserStatus.LOCKED, request);
+		return userRepository.findByTenantAndStatus(tenant, UserStatus.LOCKED, request);
 	}
 
 	public User getSystemAdministrator() {
 		User user = null;
 
-		List<User> userList = userRepository.findByUserStatus(UserStatus.ADMIN);
+		List<User> userList = userRepository.findByStatus(UserStatus.ADMIN);
 
 		if (userList != null && !userList.isEmpty()) {
 			user = userList.get(0);

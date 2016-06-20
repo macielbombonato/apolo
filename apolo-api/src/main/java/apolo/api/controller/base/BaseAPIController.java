@@ -40,6 +40,33 @@ public abstract class BaseAPIController<E extends BaseEntity> extends BaseContro
     @Inject
     private UserService userService;
 
+    protected boolean isAutheticated(
+            BaseAPIModel model,
+            String tenantUrl,
+            HttpServletRequest request
+    ) {
+        boolean isAuthenticated = false;
+
+        User user = getUserFromRequest(request);
+
+        if (user != null) {
+
+            if (user != null) {
+                isAuthenticated = true;
+            } else {
+                throw new AccessDeniedException(MessageBundle.getMessageBundle("error.403"));
+            }
+        }
+
+        if (!isAuthenticated) {
+            model.setMessage(MessageBundle.getMessageBundle("error.403"));
+
+            throw new AccessDeniedException(MessageBundle.getMessageBundle("error.403"));
+        }
+
+        return isAuthenticated;
+    }
+
     protected boolean checkAccess(
             BaseAPIModel model,
             String tenantUrl,

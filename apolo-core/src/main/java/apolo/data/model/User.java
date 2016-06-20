@@ -55,7 +55,7 @@ public class User extends AuditableBaseEntity {
 
 	@Column(name = "status", nullable = false)
 	@Type(type = "apolo.data.enums.usertype.UserStatusUserType")
-	private UserStatus userStatus;
+	private UserStatus status;
 
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "users_in_groups",
@@ -97,10 +97,6 @@ public class User extends AuditableBaseEntity {
 	@Transient
 	@JsonIgnore
 	private List<MultipartFile> picturefiles;
-
-	@Transient
-	@JsonIgnore
-	private Tenant dbTenant;
 
 	@Column(name = "reset_password_token", length = InputLength.MEDIUM, nullable = true)
 	@JsonIgnore
@@ -184,19 +180,6 @@ public class User extends AuditableBaseEntity {
 		}
 	}
 
-	public Tenant getDbTenant() {
-		Tenant result = null;
-
-		if (this.dbTenant != null) {
-			result = this.dbTenant;
-		} else {
-			this.dbTenant = this.tenant;
-			result = this.tenant;
-		}
-
-		return result;
-	}
-
 	public Set<Permission> getPermissions() {
 		if ((permissions == null || permissions.isEmpty()) && groups != null) {
 			permissions = new HashSet<Permission>();
@@ -242,11 +225,11 @@ public class User extends AuditableBaseEntity {
 	}
 
 	public UserStatus getStatus() {
-		return userStatus;
+		return status;
 	}
 
-	public void setStatus(UserStatus userStatus) {
-		this.userStatus = userStatus;
+	public void setStatus(UserStatus status) {
+		this.status = status;
 	}
 
 	public Set<PermissionGroup> getGroups() {
@@ -383,10 +366,6 @@ public class User extends AuditableBaseEntity {
 
 	public void setCurrentSignInIp(String currentSignInIp) {
 		this.currentSignInIp = currentSignInIp;
-	}
-
-	public void setDbTenant(Tenant dbTenant) {
-		this.dbTenant = dbTenant;
 	}
 
 	public String getLastSignInIp() {

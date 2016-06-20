@@ -1,13 +1,14 @@
 package apolo.api.controller;
 
 import apolo.api.apimodel.AuthUser;
-import apolo.api.apimodel.UserAPI;
+import apolo.api.apimodel.UserDTO;
 import apolo.api.controller.base.BaseAPIController;
+import apolo.api.helper.ApoloHelper;
+import apolo.api.service.UserAuthenticationProvider;
 import apolo.business.service.UserService;
 import apolo.common.config.model.ApplicationProperties;
 import apolo.data.enums.UserStatus;
 import apolo.data.model.User;
-import apolo.api.service.UserAuthenticationProvider;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,6 +29,9 @@ public class InstallController extends BaseAPIController<User> {
     @Inject
     private UserAuthenticationProvider userAuthenticationProvider;
 
+    @Inject
+    private ApoloHelper<User, UserDTO> userHelper;
+
     @CrossOrigin(origins = "*")
     @RequestMapping(
             produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
@@ -36,13 +40,13 @@ public class InstallController extends BaseAPIController<User> {
             method = RequestMethod.POST
     )
     public @ResponseBody
-    UserAPI login(
+    UserDTO login(
             @RequestBody AuthUser entity,
             HttpServletRequest request,
             HttpServletResponse response
     ) {
         try {
-            UserAPI result = new UserAPI();
+            UserDTO result = new UserDTO();
 
             User user = null;
 
@@ -59,6 +63,9 @@ public class InstallController extends BaseAPIController<User> {
 
                 userService.systemSetup(getServerUrl(request), user);
 
+                result.setMessage("Success");
+                response.setStatus(200);
+
             } else {
                 result.setMessage("Username can't be null.");
                 response.setStatus(403);
@@ -68,7 +75,7 @@ public class InstallController extends BaseAPIController<User> {
         } catch (Throwable th) {
             log.error(th.getMessage(), th);
 
-            UserAPI result = new UserAPI();
+            UserDTO result = new UserDTO();
             result.setMessage(th.getMessage());
 
             response.setStatus(500);

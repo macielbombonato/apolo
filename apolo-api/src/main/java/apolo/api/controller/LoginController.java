@@ -1,12 +1,13 @@
 package apolo.api.controller;
 
 import apolo.api.apimodel.AuthUser;
-import apolo.api.apimodel.UserAPI;
+import apolo.api.apimodel.UserDTO;
 import apolo.api.controller.base.BaseAPIController;
+import apolo.api.helper.ApoloHelper;
+import apolo.api.service.UserAuthenticationProvider;
 import apolo.business.service.UserService;
 import apolo.data.model.User;
 import apolo.security.CurrentUser;
-import apolo.api.service.UserAuthenticationProvider;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +26,9 @@ public class LoginController extends BaseAPIController<User> {
     @Inject
     private UserAuthenticationProvider userAuthenticationProvider;
 
+    @Inject
+    private ApoloHelper<User, UserDTO> userHelper;
+
     @CrossOrigin(origins = "*")
     @RequestMapping(
             produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
@@ -33,13 +37,13 @@ public class LoginController extends BaseAPIController<User> {
             method = RequestMethod.POST
     )
     public @ResponseBody
-    UserAPI login(
+    UserDTO login(
             @RequestBody AuthUser entity,
             HttpServletRequest request,
             HttpServletResponse response
     ) {
         try {
-            UserAPI result = new UserAPI();
+            UserDTO result = new UserDTO();
 
             User user = null;
 
@@ -73,7 +77,10 @@ public class LoginController extends BaseAPIController<User> {
                 if (authentication != null) {
                     user = (User) authentication.getPrincipal();
 
-                    result.setUser(user);
+                    result = userHelper.toDTO(user);
+
+                    result.setToken(user.getToken());
+
                     response.setStatus(200);
                 } else {
                     response.setStatus(204);
@@ -87,7 +94,7 @@ public class LoginController extends BaseAPIController<User> {
         } catch (Throwable th) {
             log.error(th.getMessage(), th);
 
-            UserAPI result = new UserAPI();
+            UserDTO result = new UserDTO();
             result.setMessage(th.getMessage());
 
             response.setStatus(500);

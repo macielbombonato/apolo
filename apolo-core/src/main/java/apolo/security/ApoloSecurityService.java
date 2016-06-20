@@ -82,10 +82,8 @@ public class ApoloSecurityService {
             if (result
                     && user != null
                     && user.getPermissions() != null
-                    && user.getTenant().equals(user.getDbTenant())
                     && !user.getPermissions().contains(Permission.ADMIN)
-                    && !user.getPermissions().contains(Permission.TENANT_MANAGER)
-                    && !user.getTenant().equals(user.getDbTenant())) {
+                    && !user.getPermissions().contains(Permission.TENANT_MANAGER)) {
                 result = false;
             }
         }
@@ -106,10 +104,8 @@ public class ApoloSecurityService {
             if (result
                     && user != null
                     && user.getPermissions() != null
-                    && user.getTenant().equals(user.getDbTenant())
                     && !user.getPermissions().contains(Permission.ADMIN)
-                    && !user.getPermissions().contains(Permission.TENANT_MANAGER)
-                    && !user.getTenant().equals(user.getDbTenant())) {
+                    && !user.getPermissions().contains(Permission.TENANT_MANAGER)) {
                 result = false;
             }
         }

@@ -53,7 +53,7 @@
             if (baseService.checkPermission(['USER_LIST'])) {
                 result = baseService.getWithKey('/'+ tenantUrl +'/user/' + id, apiToken).then(
                     function(response) {
-                        return response.user;
+                        return response;
                     }
                 );
             } else {

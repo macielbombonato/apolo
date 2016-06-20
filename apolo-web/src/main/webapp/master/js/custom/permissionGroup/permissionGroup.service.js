@@ -38,7 +38,7 @@
             if (baseService.checkPermission(['PERMISSION_GROUP_LIST', 'PERMISSION_GROUP_VIEW'])) {
                 result = baseService.getWithKey('/'+ tenantUrl +'/user/' + id, apiToken).then(
                     function(response) {
-                        return response.user;
+                        return response;
                     }
                 );
             } else {

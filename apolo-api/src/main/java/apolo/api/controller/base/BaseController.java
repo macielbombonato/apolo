@@ -54,7 +54,6 @@ public abstract class BaseController<E extends BaseEntity> {
                     user.getPermissions().contains(Permission.ADMIN)
                             || user.getPermissions().contains(Permission.TENANT_MANAGER)
             )) {
-                user.getDbTenant();
                 user.setTenant(tenant);
 
                 userService.reconstructAuthenticatedUser(user);

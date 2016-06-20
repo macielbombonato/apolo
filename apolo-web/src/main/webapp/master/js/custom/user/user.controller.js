@@ -149,8 +149,8 @@
                         vm.user).then(
 
                         function(response) {
-                            if (response.user != undefined && response.user.id != undefined) {
-                                vm.user = response.user;
+                            if (response != undefined && response.id != undefined) {
+                                vm.user = response;
 
                                 vm.message = $translate.instant('message.success_create');
                                 vm.messageType = "alert text-center alert-success";
@@ -225,8 +225,8 @@
                         vm.user).then(
 
                         function(response) {
-                            if (response.user != undefined && response.user.id != undefined) {
-                                vm.user = response.user;
+                            if (response != undefined && response.id != undefined) {
+                                vm.user = response;
 
                                 vm.message = $translate.instant('message.success_edit');
                                 vm.messageType = "alert text-center alert-success";

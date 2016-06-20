@@ -18,9 +18,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 	User findUserByTenantAndEmail(Tenant tenant, String email);
 
-	Page<User> findByTenantAndUserStatusNotOrderByNameAsc(
+	Page<User> findByTenantAndStatusNotOrderByNameAsc(
 			@Param("tenant") Tenant tenant,
-			@Param("status") UserStatus userStatus,
+			@Param("status") UserStatus status,
 			Pageable page
 	);
 
@@ -32,30 +32,30 @@ public interface UserRepository extends JpaRepository<User, Long> {
 			Pageable page
 	);
 
-	Page<User> findByTenantAndNameLikeOrEmailLikeAndUserStatusOrderByNameAsc(
+	Page<User> findByTenantAndNameLikeOrEmailLikeAndStatusOrderByNameAsc(
 			@Param("tenant") Tenant tenant,
 			@Param("name") String name,
 			@Param("email") String email,
-			@Param("status") UserStatus userStatus,
+			@Param("status") UserStatus status,
 			Pageable page
 	);
 
-	Page<User> findByTenantAndNameLikeOrEmailLikeAndUserStatusNotOrderByNameAsc(
+	Page<User> findByTenantAndNameLikeOrEmailLikeAndStatusNotOrderByNameAsc(
 			@Param("tenant") Tenant tenant,
 			@Param("name") String name,
 			@Param("email") String email,
-			@Param("status") UserStatus userStatus,
+			@Param("status") UserStatus status,
 			Pageable page
 	);
 
-	Page<User> findByTenantAndUserStatus(
+	Page<User> findByTenantAndStatus(
 			Tenant tenant,
-			UserStatus userStatus,
+			UserStatus status,
 			Pageable page
 	);
 
-	Page<User> findByUserStatusNot(
-			UserStatus userStatus,
+	Page<User> findByStatusNot(
+			UserStatus status,
 			Pageable page
 	);
 
@@ -63,7 +63,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 			Pageable page
 	);
 
-	List<User> findByUserStatus(UserStatus userStatus);
+	List<User> findByStatus(UserStatus status);
 
 	User findByEmailAndPassword(String email, String password);
 

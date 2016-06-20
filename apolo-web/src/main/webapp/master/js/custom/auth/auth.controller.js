@@ -31,8 +31,8 @@
 
                     authService.login({username: vm.account.email, password: vm.account.password}).then(
                         function (response) {
-                            if (response.user != undefined && response.user != null) {
-                                $rootScope.principal = response.user;
+                            if (response != undefined && response.id != null) {
+                                $rootScope.principal = response;
                                 $rootScope.principal.authenticated = true;
 
                                 $state.go('apolo.home');

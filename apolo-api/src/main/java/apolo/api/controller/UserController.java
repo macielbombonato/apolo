@@ -1,9 +1,9 @@
 package apolo.api.controller;
 
-import apolo.api.apimodel.UserAPI;
-import apolo.api.apimodel.UserFormModel;
+import apolo.api.apimodel.UserDTO;
 import apolo.api.apimodel.UserList;
 import apolo.api.controller.base.BaseAPIController;
+import apolo.api.helper.ApoloHelper;
 import apolo.business.service.PermissionGroupService;
 import apolo.business.service.UserService;
 import apolo.common.exception.AccessDeniedException;
@@ -33,6 +33,9 @@ public class UserController extends BaseAPIController<User> {
     @Inject
     private PermissionGroupService permissionGroupService;
 
+    @Inject
+    private ApoloHelper<User, UserDTO> userHelper;
+
     @CrossOrigin(origins = "*")
     @PreAuthorize("permitAll")
     @RequestMapping(
@@ -58,7 +61,7 @@ public class UserController extends BaseAPIController<User> {
 
                 if (page.getContent() != null
                         && !page.getContent().isEmpty()) {
-                    result.setUserList(page.getContent());
+                    result.setUserList(userHelper.toDTOList(page.getContent()));
 
                     response.setStatus(200);
                 } else {
@@ -97,7 +100,7 @@ public class UserController extends BaseAPIController<User> {
 
                 if (page.getContent() != null
                         && !page.getContent().isEmpty()) {
-                    result.setUserList(page.getContent());
+                    result.setUserList(userHelper.toDTOList(page.getContent()));
 
                     response.setStatus(200);
                 } else {
@@ -119,13 +122,13 @@ public class UserController extends BaseAPIController<User> {
             method = RequestMethod.GET
     )
     public @ResponseBody
-    UserAPI find(
+    UserDTO find(
             @PathVariable("tenant-url") String tenantUrl,
             @PathVariable Long id,
             HttpServletRequest request,
             HttpServletResponse response
     ) {
-        UserAPI result = new UserAPI();
+        UserDTO result = new UserDTO();
 
         if (checkAccess(result, tenantUrl, request, Permission.ADMIN, Permission.USER_LIST)) {
             User requestUser = getUserFromRequest(request);
@@ -139,7 +142,7 @@ public class UserController extends BaseAPIController<User> {
             }
 
             if (user != null) {
-                result.setUser(user);
+                result = userHelper.toDTO(user);
 
                 response.setStatus(200);
             } else {
@@ -161,18 +164,19 @@ public class UserController extends BaseAPIController<User> {
             method = RequestMethod.POST
     )
     public @ResponseBody
-    UserAPI create(
+    UserDTO create(
             @PathVariable("tenant-url") String tenantUrl,
-            @RequestBody UserFormModel entity,
+            @RequestBody UserDTO dto,
             HttpServletRequest request,
             HttpServletResponse response
     ) {
-        UserAPI result = new UserAPI();
+
+        UserDTO result = new UserDTO();
 
         if (checkAccess(result, tenantUrl, request, Permission.USER_CREATE)) {
-            if (entity != null
-                    && entity.getEmail() != null) {
-                User user = userService.findByLogin(getDBTenant(tenantUrl), entity.getEmail());
+            if (dto != null
+                    && dto.getEmail() != null) {
+                User user = userService.findByLogin(getDBTenant(tenantUrl), dto.getEmail());
 
                 User requestUser = getUserFromRequest(request);
 
@@ -181,13 +185,7 @@ public class UserController extends BaseAPIController<User> {
 
                     response.setStatus(403);
                 } else {
-                    user = new User();
-                    user.setName(entity.getName());
-                    user.setEmail(entity.getEmail());
-                    user.setMobile(entity.getMobile());
-                    user.setPassword(entity.getPassword());
-
-                    user.setGroupIds(entity.getGroupIds());
+                    user = userHelper.toEntity(dto);
 
                     user.setStatus(UserStatus.ACTIVE);
                     user.setCreatedAt(new Date());
@@ -195,8 +193,8 @@ public class UserController extends BaseAPIController<User> {
                     user.setCreatedBy(requestUser);
                     user.setEnabled(true);
 
-                    if (entity.getPassword() == null
-                            || "".equals(entity.getPassword())) {
+                    if (dto.getPassword() == null
+                            || "".equals(dto.getPassword())) {
                         user.setPassword("newUser-this-password-need-to-be-changed-!!!!!");
                     }
 
@@ -217,7 +215,7 @@ public class UserController extends BaseAPIController<User> {
                             null
                     );
 
-                    result.setUser(user);
+                    result = userHelper.toDTO(user);
                     response.setStatus(201);
                 }
 
@@ -241,39 +239,33 @@ public class UserController extends BaseAPIController<User> {
             method = RequestMethod.PUT
     )
     public @ResponseBody
-    UserAPI update(
+    UserDTO update(
             @PathVariable("tenant-url") String tenantUrl,
-            @RequestBody UserFormModel entity,
+            @RequestBody UserDTO dto,
             HttpServletRequest request,
             HttpServletResponse response
     ) {
-        UserAPI result = new UserAPI();
+        UserDTO result = new UserDTO();
 
         if (checkAccess(result, tenantUrl, request, Permission.USER_EDIT)) {
             Tenant tenant = getDBTenant(tenantUrl);
 
             boolean hasChangePassword = false;
 
-            if (entity.getPassword() != null
-                    && !"".equals(entity.getPassword())) {
+            if (dto.getPassword() != null
+                    && !"".equals(dto.getPassword())) {
                 hasChangePassword = true;
             }
 
-            if (entity != null
-                    && entity.getId() != null) {
-                User dbEntity = userService.find(entity.getId());
+            if (dto != null
+                    && dto.getId() != null) {
+                User dbEntity = userService.find(dto.getId());
 
                 if (dbEntity != null) {
-                    dbEntity.setName(entity.getName());
-                    dbEntity.setEmail(entity.getEmail());
-
-                    if (entity.getMobile() != null
-                            && !"".equals(entity.getMobile())) {
-                        dbEntity.setMobile(entity.getMobile());
-                    }
+                    dbEntity = userHelper.toEntity(dto);
 
                     if (hasChangePassword) {
-                        dbEntity.setPassword(entity.getPassword());
+                        dbEntity.setPassword(dto.getPassword());
                     }
 
                     User requestUser = getUserFromRequest(request);
@@ -283,9 +275,9 @@ public class UserController extends BaseAPIController<User> {
                         dbEntity.setTenant(tenant);
                     }
 
-                    if (entity.getGroupIds() != null
-                            && !entity.getGroupIds().isEmpty()) {
-                        for (Long groupId : entity.getGroupIds()) {
+                    if (dto.getGroupIds() != null
+                            && !dto.getGroupIds().isEmpty()) {
+                        for (Long groupId : dto.getGroupIds()) {
                             if (!dbEntity.getGroupIds().contains(groupId)) {
                                 PermissionGroup permissionGroup = permissionGroupService.find(groupId);
 
@@ -308,7 +300,7 @@ public class UserController extends BaseAPIController<User> {
                     );
 
                     if (dbEntity != null) {
-                        result.setUser(dbEntity);
+                        result = userHelper.toDTO(dbEntity);
 
                         response.setStatus(200);
                     } else {
@@ -335,13 +327,13 @@ public class UserController extends BaseAPIController<User> {
             method = RequestMethod.DELETE
     )
     public @ResponseBody
-    UserAPI delete(
+    UserDTO delete(
             @PathVariable("tenant-url") String tenantUrl,
             @PathVariable Long id,
             HttpServletRequest request,
             HttpServletResponse response
     ) {
-        UserAPI result = new UserAPI();
+        UserDTO result = new UserDTO();
 
         if (checkAccess(result, tenantUrl, request, Permission.USER_REMOVE)) {
             User user = userService.find(id);
@@ -359,7 +351,7 @@ public class UserController extends BaseAPIController<User> {
 
                 userService.remove(user);
 
-                result.setUser(null);
+                result = null;
 
                 response.setStatus(200);
             } else {
@@ -381,13 +373,13 @@ public class UserController extends BaseAPIController<User> {
             method = RequestMethod.PATCH
     )
     public @ResponseBody
-    UserAPI lock(
+    UserDTO lock(
             @PathVariable("tenant-url") String tenantUrl,
             @PathVariable Long id,
             HttpServletRequest request,
             HttpServletResponse response
     ) {
-        UserAPI result = new UserAPI();
+        UserDTO result = new UserDTO();
 
         if (checkAccess(result, tenantUrl, request, Permission.USER_MANAGER)) {
             User requestUser = getUserFromRequest(request);
@@ -403,7 +395,7 @@ public class UserController extends BaseAPIController<User> {
             if (user != null) {
                 user = userService.lock(user);
 
-                result.setUser(user);
+                result = userHelper.toDTO(user);
                 response.setStatus(200);
             } else {
                 response.setStatus(404);
@@ -424,13 +416,13 @@ public class UserController extends BaseAPIController<User> {
             method = RequestMethod.PATCH
     )
     public @ResponseBody
-    UserAPI unlock(
+    UserDTO unlock(
             @PathVariable("tenant-url") String tenantUrl,
             @PathVariable Long id,
             HttpServletRequest request,
             HttpServletResponse response
     ) {
-        UserAPI result = new UserAPI();
+        UserDTO result = new UserDTO();
 
         if (checkAccess(result, tenantUrl, request, Permission.USER_MANAGER)) {
             User requestUser = getUserFromRequest(request);
@@ -446,7 +438,7 @@ public class UserController extends BaseAPIController<User> {
             if (user != null) {
                 user = userService.unlock(user);
 
-                result.setUser(user);
+                result = userHelper.toDTO(user);
                 response.setStatus(200);
             } else {
                 response.setStatus(404);
