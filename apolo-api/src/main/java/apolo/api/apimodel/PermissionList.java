@@ -1,39 +1,19 @@
 package apolo.api.apimodel;
 
 import apolo.api.apimodel.base.BaseAPIModel;
-import apolo.data.model.PermissionGroup;
+import apolo.security.Permission;
 
 import java.util.List;
 
 public class PermissionList extends BaseAPIModel {
 
-    private long totalPages;
+    private List<Permission> permissions;
 
-    private long totalElements;
-
-    private List<PermissionGroup> groupList;
-
-    public long getTotalPages() {
-        return totalPages;
+    public List<Permission> getPermissions() {
+        return permissions;
     }
 
-    public void setTotalPages(long totalPages) {
-        this.totalPages = totalPages;
-    }
-
-    public long getTotalElements() {
-        return totalElements;
-    }
-
-    public void setTotalElements(long totalElements) {
-        this.totalElements = totalElements;
-    }
-
-    public List<PermissionGroup> getGroupList() {
-        return groupList;
-    }
-
-    public void setGroupList(List<PermissionGroup> groupList) {
-        this.groupList = groupList;
+    public void setPermissions(List<Permission> permissions) {
+        this.permissions = permissions;
     }
 }
