@@ -118,6 +118,18 @@
     "list": {
       "title": "Listar Grupos de Permissões",
       "description": "Lista de grupos de permissões de acesso do sistema"
+    },
+    "view": {
+      "title": "Grupo de Permissões",
+      "description": "Grupo de permissões de acesso"
+    },
+    "edit": {
+      "title": "Editar Grupo de Permissões",
+      "description": "Editar Grupo de permissões de acesso."
+    },
+    "create": {
+      "title": "Criar Grupo de Permissões",
+      "description": "Criar Grupo de permissões de acesso."
     }
   }
 }

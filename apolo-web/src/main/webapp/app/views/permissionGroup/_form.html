@@ -9,14 +9,14 @@
 <div class="row">
 
     <div class="form-group has-feedback col-md-12 col-sm-12">
-        <label for="name" translate="user.name">
+        <label for="name" translate="permissionGroup.name">
           Name
         </label>
         <input type="text"
                 id="name"
                 name="name"
-                placeholder="{{'user.name' | translate}}"
-                ng-model="ctrl.user.name"
+                placeholder="{{'permissionGroup.name' | translate}}"
+                ng-model="ctrl.group.name"
                 required="required"
                 class="form-control"
                 ng-readonly="isReadonly"
@@ -24,67 +24,26 @@
     </div>
 
     <div class="form-group has-feedback col-md-12 col-sm-12">
-        <label for="email" translate="user.email">
-          E-mail
-        </label>
-        <input type="text"
-                id="email"
-                name="email"
-                placeholder="{{'user.email' | translate}}"
-                ng-model="ctrl.user.email"
-                required="required"
-                class="form-control"
-                ng-readonly="isReadonly"
-            />
-    </div>
-
-    <div class="form-group has-feedback col-md-12 col-sm-12">
-        <label for="mobile" translate="user.mobile">
-          Mobile
-        </label>
-        <input type="text"
-                id="mobile"
-                name="mobile"
-                placeholder="{{'user.mobile' | translate}}"
-                ng-model="ctrl.user.mobile"
-                class="form-control"
-                ng-readonly="isReadonly"
-            />
-    </div>
-
-    <div class="form-group has-feedback col-md-12 col-sm-12">
-        <label for="password" translate="user.password">
-          Password
-        </label>
-        <input type="password"
-                id="password"
-                name="password"
-                placeholder="{{'user.password' | translate}}"
-                ng-model="ctrl.user.password"
-                class="form-control"
-                ng-show="!isReadonly"
-            />
-    </div>
-
-    <div class="form-group has-feedback col-md-12 col-sm-12">
-        <label translate="user.permissionGroups">
+        <label translate="permissionGroup.permissions">
             Groups
         </label>
 
         <ui-select multiple
-                   ng-model="ctrl.user.groupIds"
+                   ng-model="ctrl.group.permissions"
                    theme="bootstrap"
                    ng-disabled="isReadonly"
                    close-on-select="true"
                 >
 
-            <ui-select-match placeholder="{{'common.select' | translate }}">
-                {{$item.name}}
-            </ui-select-match>
-
-            <ui-select-choices repeat="group.id as group in ctrl.groups | orderBy: group.name | filter:$select.search ">
-                <div ng-bind-html="group.name"></div>
+            <ui-select-choices repeat="permission in ctrl.permissions | orderBy: permission ">
+                <div>
+                    {{'permission.'+ permission | translate}}
+                </div>
             </ui-select-choices>
+
+            <ui-select-match placeholder="{{'common.select' | translate }}">
+                {{'permission.'+$item | translate}}
+            </ui-select-match>
         </ui-select>
     </div>
 

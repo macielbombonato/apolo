@@ -14,7 +14,8 @@
         '$translate',
         '$stateParams',
         '$location',
-        'PermissionGroupService'
+        'PermissionGroupService',
+        'StaticService'
     ];
     function PermissionGroupController(
             $state,
@@ -23,7 +24,8 @@
             $translate,
             $stateParams,
             $location,
-            permissionGroupService
+            permissionGroupService,
+            staticService
     ) {
         var vm = this;
 
@@ -35,6 +37,9 @@
 
             vm.message = null;
             vm.messageType = null;
+
+            vm.permissions = [];
+            vm.group = {};
 
             vm.list = function() {
                 if ($rootScope.principal != undefined
@@ -91,11 +96,11 @@
                 if ($rootScope.principal != undefined
                     && $rootScope.principal != null) {
 
-                    permissionGroupService.list(
+                    staticService.permissions(
                         $rootScope.principal.token).then(
 
                         function(response) {
-                            vm.permissions = response.groupList;
+                            vm.permissions = response.permissions;
                             vm.group = {};
                         }
                     );
@@ -106,26 +111,18 @@
                 $scope.isReadonly = false;
             };
 
-            $scope.uploadFile = function(files) {
-                var fd = new FormData();
-
-                fd.append('pictureFile', files[0]);
-
-                vm.user.pictureFile = fd;
-            };
-
             vm.create = function() {
 
                 if ($rootScope.principal != undefined
                     && $rootScope.principal != null) {
 
-                    userService.create(
+                    permissionGroupService.create(
                         $rootScope.principal.token,
-                        vm.user).then(
+                        vm.group).then(
 
                         function(response) {
                             if (response != undefined && response.id != undefined) {
-                                vm.user = response;
+                                vm.group = response;
 
                                 vm.message = $translate.instant('message.success_create');
                                 vm.messageType = "alert text-center alert-success";
@@ -154,19 +151,19 @@
                     if ($stateParams != undefined
                         && $stateParams.id != undefined) {
 
-                        userService.get(
+                        permissionGroupService.get(
                             $rootScope.principal.token,
                             $stateParams.id).then(
 
-                            function(userResponse) {
-                                if (userResponse != undefined) {
-                                    permissionGroupService.list(
+                            function(groupResponse) {
+                                if (groupResponse != undefined) {
+                                    staticService.permissions(
                                         $rootScope.principal.token).then(
 
-                                        function(groupResponse) {
-                                            vm.groups = groupResponse.groupList;
+                                        function(staticResponse) {
+                                            vm.group = groupResponse;
 
-                                            vm.user = userResponse;
+                                            vm.permissions = staticResponse.permissions;
                                         }
                                     );
 
@@ -192,13 +189,13 @@
                 if ($rootScope.principal != undefined
                     && $rootScope.principal != null) {
 
-                    userService.edit(
+                    permissionGroupService.edit(
                         $rootScope.principal.token,
-                        vm.user).then(
+                        vm.group).then(
 
                         function(response) {
                             if (response != undefined && response.id != undefined) {
-                                vm.user = response;
+                                vm.group = response;
 
                                 vm.message = $translate.instant('message.success_edit');
                                 vm.messageType = "alert text-center alert-success";
