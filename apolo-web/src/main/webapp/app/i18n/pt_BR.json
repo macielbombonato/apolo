@@ -49,11 +49,31 @@
       "list": "Listar Unidades",
       "create": "Criar Unidade"
     },
-    "group-permission": {
+    "permission-group": {
       "name": "Grupos de Permissão",
       "list": "Listar Grupos",
       "create": "Criar Grupo"
     }
+  },
+
+  "permission": {
+    "ADMIN": "Administrar o Sistema",
+    "TENANT_CREATE": "Unidade - Criar",
+    "TENANT_EDIT": "Unidade - Editar",
+    "TENANT_REMOVE": "Unidade - Remover",
+    "TENANT_LIST": "Unidade - Listar",
+    "TENANT_MANAGER": "Unidade - Gerenciar",
+    "USER_CREATE": "Usuário - Criar",
+    "USER_EDIT": "Usuário - Editar",
+    "USER_REMOVE": "Usuário - Remover",
+    "USER_LIST": "Usuário - Listar",
+    "USER_MANAGER": "Usuário - Gerenciar",
+    "USER_VIEW_ALL_DATA": "Usuário - Visualizar tudo",
+    "PERMISSION_GROUP_LIST": "Grupos de Permissão - Listar",
+    "PERMISSION_GROUP_VIEW": "Grupos de Permissão - Visualizar",
+    "PERMISSION_GROUP_CREATE": "Grupos de Permissão - Criar",
+    "PERMISSION_GROUP_EDIT": "Grupos de Permissão - Editar",
+    "PERMISSION_GROUP_REMOVE": "Grupos de Permissão - Remover"
   },
 
   "auth": {
@@ -92,7 +112,12 @@
     }
   },
 
-  "permission-group": {
-
+  "permissionGroup": {
+    "name": "Nome",
+    "permissions": "Permissões",
+    "list": {
+      "title": "Listar Grupos de Permissões",
+      "description": "Lista de grupos de permissões de acesso do sistema"
+    }
   }
 }

@@ -75,7 +75,7 @@
       },
       {
         "text": "Group Permission",
-        "translate": "menu.group-permission.name",
+        "translate": "menu.permission-group.name",
         "sref": "#",
         "icon": "fa fa-arrows-alt",
         "permissions": [
@@ -85,8 +85,8 @@
         "submenu": [
           {
             "text": "Group Permission List",
-            "translate": "menu.group-permission.list",
-            "sref": "apolo.group-permission.list",
+            "translate": "menu.permission-group.list",
+            "sref": "apolo.permission-group.list",
             "icon": "fa fa-list",
             "permissions": [
               "GROUP_PERMISSION_LIST"
@@ -94,8 +94,8 @@
           },
           {
             "text": "Group Permission Create",
-            "translate": "menu.group-permission.create",
-            "sref": "apolo.group-permission.create",
+            "translate": "menu.permission-group.create",
+            "sref": "apolo.permission-group.create",
             "icon": "fa fa-plus",
             "permissions": [
               "GROUP_PERMISSION_CREATE"

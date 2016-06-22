@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 
 @RestController
-@RequestMapping(value = "/{tenant-url}/static")
+@RequestMapping(value = "/static")
 public class StaticController extends BaseAPIController<User> {
 
     @Inject
@@ -34,13 +34,12 @@ public class StaticController extends BaseAPIController<User> {
     )
     public @ResponseBody
     PermissionList permissions(
-            @PathVariable("tenant-url") String tenantUrl,
             HttpServletRequest request,
             HttpServletResponse response
     ) {
         PermissionList result = new PermissionList();
 
-        if (isAutheticated(result, tenantUrl, request)) {
+        if (isAutheticated(result, request)) {
             result.setPermissions(new ArrayList<Permission>());
             for(Permission permission : Permission.values()) {
                 if (permission.isListable()) {
@@ -66,13 +65,12 @@ public class StaticController extends BaseAPIController<User> {
     )
     public @ResponseBody
     UserStatusList userStatus(
-            @PathVariable("tenant-url") String tenantUrl,
             HttpServletRequest request,
             HttpServletResponse response
     ) {
         UserStatusList result = new UserStatusList();
 
-        if (isAutheticated(result, tenantUrl, request)) {
+        if (isAutheticated(result, request)) {
             result.setStatuses(new ArrayList<UserStatus>());
             for(UserStatus status : UserStatus.values()) {
                 result.getStatuses().add(status);
@@ -96,13 +94,12 @@ public class StaticController extends BaseAPIController<User> {
     )
     public @ResponseBody
     StatusList status(
-            @PathVariable("tenant-url") String tenantUrl,
             HttpServletRequest request,
             HttpServletResponse response
     ) {
         StatusList result = new StatusList();
 
-        if (isAutheticated(result, tenantUrl, request)) {
+        if (isAutheticated(result, request)) {
             result.setStatuses(new ArrayList<Status>());
             for(Status status : Status.values()) {
                 result.getStatuses().add(status);

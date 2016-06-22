@@ -2,29 +2,27 @@
     'use strict';
 
     var app = angular
-        .module('apolo.user')
-        .controller('UserController', UserController)
+        .module('apolo.permissionGroup')
+        .controller('PermissionGroupController', PermissionGroupController)
 
     ;
 
-    UserController.$inject = [
+    PermissionGroupController.$inject = [
         '$state',
         '$rootScope',
         '$scope',
         '$translate',
         '$stateParams',
         '$location',
-        'UserService',
         'PermissionGroupService'
     ];
-    function UserController(
+    function PermissionGroupController(
             $state,
             $rootScope,
             $scope,
             $translate,
             $stateParams,
             $location,
-            userService,
             permissionGroupService
     ) {
         var vm = this;
@@ -42,20 +40,10 @@
                 if ($rootScope.principal != undefined
                     && $rootScope.principal != null) {
 
-                    var pageNumber = $location.search().pageNumber;
-
-                    if (pageNumber == undefined) {
-                        $location.$$path = "/user/list?pageNumber=1";
-                        pageNumber = 1;
-                    }
-
-                    userService.list(
-                            $rootScope.principal.tenant.url,
-                            $rootScope.principal.token,
-                            pageNumber).then(
+                    permissionGroupService.list(
+                            $rootScope.principal.token).then(
                         function(response) {
-                            vm.users = response;
-                            $scope.pagination = vm.users.pagination;
+                            vm.groups = response;
                         }
                     );
                 } else {
@@ -72,23 +60,13 @@
                     if ($stateParams != undefined
                         && $stateParams.id != undefined) {
 
-                        userService.get(
-                                $rootScope.principal.tenant.url,
+                        permissionGroupService.get(
                                 $rootScope.principal.token,
                                 $stateParams.id).then(
 
-                            function(userResponse) {
-                                if (userResponse != undefined) {
-                                    permissionGroupService.list(
-                                        $rootScope.principal.token).then(
-
-                                        function(groupResponse) {
-                                            vm.groups = groupResponse.groupList;
-
-                                            vm.user = userResponse;
-                                        }
-                                    );
-
+                            function(response) {
+                                if (response != undefined) {
+                                    vm.group = response;
                                 } else {
                                     vm.message = $translate.instant('message.no_data_found');
                                     vm.messageType = "alert text-center alert-info";
@@ -97,7 +75,7 @@
                             }
                         );
                     } else {
-                        $state.go("apolo.user.list");
+                        $state.go("apolo.permission-group.list");
                     }
                 } else {
                     $state.go('login');
@@ -117,8 +95,8 @@
                         $rootScope.principal.token).then(
 
                         function(response) {
-                            vm.groups = response.groupList;
-                            vm.user = {};
+                            vm.permissions = response.groupList;
+                            vm.group = {};
                         }
                     );
                 } else {
@@ -142,7 +120,6 @@
                     && $rootScope.principal != null) {
 
                     userService.create(
-                        $rootScope.principal.tenant.url,
                         $rootScope.principal.token,
                         vm.user).then(
 
@@ -178,7 +155,6 @@
                         && $stateParams.id != undefined) {
 
                         userService.get(
-                            $rootScope.principal.tenant.url,
                             $rootScope.principal.token,
                             $stateParams.id).then(
 
@@ -202,7 +178,7 @@
                             }
                         );
                     } else {
-                        $state.go("apolo.user.list");
+                        $state.go("apolo.permission-group.list");
                     }
 
                 } else {
@@ -217,7 +193,6 @@
                     && $rootScope.principal != null) {
 
                     userService.edit(
-                        $rootScope.principal.tenant.url,
                         $rootScope.principal.token,
                         vm.user).then(
 

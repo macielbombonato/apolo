@@ -78,14 +78,13 @@
                    close-on-select="true"
                 >
 
-            <ui-select-choices repeat="group.id as group in ctrl.groups | orderBy: group.name | filter:$select.search ">
-                <div ng-bind-html="group.name"></div>
-            </ui-select-choices>
-
             <ui-select-match placeholder="{{'common.select' | translate }}">
                 {{$item.name}}
             </ui-select-match>
 
+            <ui-select-choices repeat="group.id as group in ctrl.groups | orderBy: group.name | filter:$select.search ">
+                <div ng-bind-html="group.name"></div>
+            </ui-select-choices>
         </ui-select>
     </div>
 

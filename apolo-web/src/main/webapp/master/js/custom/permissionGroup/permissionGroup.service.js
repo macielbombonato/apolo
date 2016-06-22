@@ -16,13 +16,15 @@
 
         ////////////////
 
-        function list(tenantUrl, apiToken) {
+        function list(apiToken) {
             var result = null;
 
             if (baseService.checkPermission(['USER_LIST', 'PERMISSION_GROUP_LIST', 'PERMISSION_GROUP_VIEW'])) {
-                result = baseService.getWithKey('/'+ tenantUrl +'/permission-group', apiToken).then(
+                result = baseService.getWithKey('/permission-group', apiToken).then(
                     function(response) {
-                        return response;
+                        var groups = response;
+
+                        return groups;
                     }
                 );
             } else {
@@ -32,13 +34,15 @@
             return result;
         }
 
-        function get(tenantUrl, apiToken, id) {
+        function get(apiToken, id) {
             var result = null;
 
             if (baseService.checkPermission(['PERMISSION_GROUP_LIST', 'PERMISSION_GROUP_VIEW'])) {
-                result = baseService.getWithKey('/'+ tenantUrl +'/user/' + id, apiToken).then(
+                result = baseService.getWithKey('/permission-group/' + id, apiToken).then(
                     function(response) {
-                        return response;
+                        var group = response;
+
+                        return group;
                     }
                 );
             } else {
@@ -48,11 +52,11 @@
             return result;
         }
 
-        function create(tenantUrl, apiToken, entity) {
+        function create(apiToken, entity) {
             var result = null;
 
             if (baseService.checkPermission(['PERMISSION_GROUP_CREATE'])) {
-                result = baseService.postWithKey('/'+ tenantUrl +'/user', entity, apiToken);
+                result = baseService.postWithKey('/permission-group', entity, apiToken);
             } else {
                 result = $translate.instant('message.access_denied');
             }
@@ -60,11 +64,11 @@
             return result;
         }
 
-        function edit(tenantUrl, apiToken, entity) {
+        function edit(apiToken, entity) {
             var result = null;
 
             if (baseService.checkPermission(['PERMISSION_GROUP_EDIT'])) {
-                result = baseService.putWithKey('/'+ tenantUrl +'user', entity, apiToken);
+                result = baseService.putWithKey('/permission-group', entity, apiToken);
             } else {
                 result = $translate.instant('message.access_denied');
             }
@@ -72,11 +76,11 @@
             return result;
         }
 
-        function remove(tenantUrl, apiToken, id) {
+        function remove(apiToken, id) {
             var result = null;
 
             if (baseService.checkPermission(['PERMISSION_GROUP_REMOVE'])) {
-                result = baseService.deleteWithKey('/'+ tenantUrl +'/user/' + id, apiToken);
+                result = baseService.deleteWithKey('/permission-group/' + id, apiToken);
             } else {
                 result = $translate.instant('message.access_denied');
             }

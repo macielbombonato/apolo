@@ -61,7 +61,7 @@
             // User
             .state('apolo.user', {
                 url: '/user',
-                templateUrl: helper.basepath('user/_base.html'),
+                templateUrl: helper.basepath('partials/_base.html'),
                 abstract: true
             })
             .state('apolo.user.list', {
@@ -88,52 +88,47 @@
             // Tenant
             .state('apolo.tenant', {
                 url: '/tenant',
+                templateUrl: helper.basepath('partials/_base.html'),
                 abstract: true
             })
             .state('apolo.tenant.list', {
                 url: '/list',
                 title: 'Tenant List',
-                templateUrl: 'app/views/home.html'
+                templateUrl: helper.basepath('tenant/undercontruction.html')
             })
             .state('apolo.tenant.create', {
                 url: '/create',
                 title: 'Tenant Create',
-                templateUrl: 'app/views/home.html'
+                templateUrl: helper.basepath('tenant/undercontruction.html')
             })
 
             // Group Permission
-            .state('apolo.group-permission', {
+            .state('apolo.permission-group', {
                 url: '/group',
+                templateUrl: helper.basepath('partials/_base.html'),
                 abstract: true
             })
-            .state('app.group-permission.list', {
+            .state('apolo.permission-group.list', {
                 url: '/list',
                 title: 'Group Permission List',
-                templateUrl: 'app/views/home.html'
+                templateUrl: helper.basepath('permissionGroup/list.html')
             })
-            .state('apolo.group-permission.create', {
+            .state('apolo.permission-group.view', {
+                url: '/:id/view',
+                title: 'Group Permission View',
+                templateUrl: helper.basepath('permissionGroup/view.html')
+            })
+            .state('apolo.permission-group.create', {
                 url: '/create',
                 title: 'Group Permission Create',
-                templateUrl: 'app/views/home.html'
+                templateUrl: helper.basepath('permissionGroup/create.html')
+            })
+            .state('apolo.permission-group.edit', {
+                url: '/:id/edit',
+                title: 'Group Permission Edit',
+                templateUrl: helper.basepath('permissionGroup/edit.html')
             })
 
-
-          // 
-          // CUSTOM RESOLVES
-          //   Add your own resolves properties
-          //   following this object extend
-          //   method
-          // ----------------------------------- 
-          // .state('app.someroute', {
-          //   url: '/some_url',
-          //   templateUrl: 'path_to_template.html',
-          //   controller: 'someController',
-          //   resolve: angular.extend(
-          //     helper.resolveFor(), {
-          //     // YOUR RESOLVES GO HERE
-          //     }
-          //   )
-          // })
           ;
 
     } // routesConfig

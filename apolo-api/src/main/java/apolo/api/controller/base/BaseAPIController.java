@@ -42,7 +42,6 @@ public abstract class BaseAPIController<E extends BaseEntity> extends BaseContro
 
     protected boolean isAutheticated(
             BaseAPIModel model,
-            String tenantUrl,
             HttpServletRequest request
     ) {
         boolean isAuthenticated = false;
@@ -88,7 +87,7 @@ public abstract class BaseAPIController<E extends BaseEntity> extends BaseContro
             }
 
             if (hasAccess) {
-                boolean isSameTenant = user.getTenant() != null && user.getTenant().getUrl().equals(tenantUrl);
+                boolean isSameTenant = (tenantUrl == null) || (user.getTenant() != null && user.getTenant().getUrl().equals(tenantUrl));
 
                 if (isSameTenant ||
                         (apoloSecurity.hasPermission(

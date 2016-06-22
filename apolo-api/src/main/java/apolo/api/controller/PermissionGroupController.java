@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/{tenant-url}/permission-group")
+@RequestMapping(value = "/permission-group")
 public class PermissionGroupController extends BaseAPIController<User> {
 
     @Inject
@@ -39,13 +39,12 @@ public class PermissionGroupController extends BaseAPIController<User> {
     )
     public @ResponseBody
     PermissionGroupList list(
-            @PathVariable("tenant-url") String tenantUrl,
             HttpServletRequest request,
             HttpServletResponse response
     ) {
         PermissionGroupList result = new PermissionGroupList();
 
-        if (checkAccess(result, tenantUrl, request, Permission.PERMISSION_GROUP_LIST)) {
+        if (checkAccess(result, null, request, Permission.PERMISSION_GROUP_LIST)) {
             List<PermissionGroup> entities = permissionGroupService.list();
 
             if (entities != null
@@ -73,7 +72,6 @@ public class PermissionGroupController extends BaseAPIController<User> {
     )
     public @ResponseBody
     PermissionGroupDTO find(
-            @PathVariable("tenant-url") String tenantUrl,
             @PathVariable Long id,
             HttpServletRequest request,
             HttpServletResponse response
@@ -82,7 +80,7 @@ public class PermissionGroupController extends BaseAPIController<User> {
 
         if (checkAccess(
                 result,
-                tenantUrl,
+                null,
                 request,
                 Permission.ADMIN,
                 Permission.PERMISSION_GROUP_LIST,
@@ -116,7 +114,6 @@ public class PermissionGroupController extends BaseAPIController<User> {
     )
     public @ResponseBody
     PermissionGroupDTO create(
-            @PathVariable("tenant-url") String tenantUrl,
             @RequestBody PermissionGroupDTO dto,
             HttpServletRequest request,
             HttpServletResponse response
@@ -126,7 +123,7 @@ public class PermissionGroupController extends BaseAPIController<User> {
 
         if (checkAccess(
                 result,
-                tenantUrl,
+                null,
                 request,
                 Permission.PERMISSION_GROUP_CREATE)
                 ) {
@@ -159,7 +156,6 @@ public class PermissionGroupController extends BaseAPIController<User> {
     )
     public @ResponseBody
     PermissionGroupDTO update(
-            @PathVariable("tenant-url") String tenantUrl,
             @RequestBody PermissionGroupDTO dto,
             HttpServletRequest request,
             HttpServletResponse response
@@ -169,7 +165,7 @@ public class PermissionGroupController extends BaseAPIController<User> {
 
         if (checkAccess(
                 result,
-                tenantUrl,
+                null,
                 request,
                 Permission.PERMISSION_GROUP_EDIT)
                 ) {
