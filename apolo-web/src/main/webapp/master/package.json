@@ -42,6 +42,6 @@
   "scripts": {
     "prestart": "bower install",
     "start": "npm install",
-    "poststart": "gulp"
+    "poststart": "gulp --usesass"
   }
 }
