@@ -1,0 +1,78 @@
+<h3>
+    {{'tenant.list.title' | translate}}
+    <small>{{ 'tenant.list.description' | translate }}</small>
+</h3>
+<div class="row">
+    <div class="col-xs-12">
+        <div ng-controller="TenantController as ctrl" data-ng-init="ctrl.list()">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="input-group">
+                                <div class="input-group-addon"><i class="fa fa-search"></i></div>
+                                <input type="text" class="form-control" placeholder="{{'common.filter' | translate}}" ng-model="userFilter" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="alert alert-info" ng-if="ctrl.tenants.tenants == null">
+                                <p>
+                                    {{'message.no_data_found' | translate}}
+                                </p>
+                            </div>
+
+                            <div class="table-responsive" ng-if="ctrl.tenants.tenants">
+                                <table class="table table-bordered table-hover table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th translate="tenant.name">
+                                            Name
+                                        </th>
+                                        <th translate="tenant.url">
+                                            URL
+                                        </th>
+                                        <th translate="common.status">
+                                            Status
+                                        </th>
+                                        <th translate="common.actions">
+                                            Actions
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr data-ng-repeat="tenant in ctrl.tenants.tenants | orderBy: 'name' | filter:userFilter ">
+                                        <td>
+                                            <a href='#/tenant/{{tenant.id}}/view'>
+                                                {{tenant.name}}
+                                            </a>
+                                        </td>
+                                        <td>
+                                            {{tenant.url}}
+                                        </td>
+                                        <td>
+                                            {{'status.' + tenant.status | translate}}
+                                        </td>
+                                        <td>
+                                            <a href='#/tenant/{{tenant.id}}/edit'
+                                               class="btn btn-default"
+                                               data-toggle="tooltip"
+                                               title="{{'common.edit' | translate}}">
+                                                <i class="fa fa-pencil-square-o"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

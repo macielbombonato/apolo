@@ -59,7 +59,7 @@
             "sref": "apolo.tenant.list",
             "icon": "fa fa-list",
             "permissions": [
-              "USER_LIST"
+              "TENANT_LIST"
             ]
           },
           {
@@ -68,7 +68,7 @@
             "sref": "apolo.tenant.create",
             "icon": "fa fa-plus",
             "permissions": [
-              "USER_CREATE"
+              "TENANT_CREATE"
             ]
           }
         ]
@@ -79,8 +79,8 @@
         "sref": "#",
         "icon": "fa fa-arrows-alt",
         "permissions": [
-          "GROUP_PERMISSION_LIST",
-          "GROUP_PERMISSION_CREATE"
+          "PERMISSION_GROUP_LIST",
+          "PERMISSION_GROUP_CREATE"
         ],
         "submenu": [
           {
@@ -89,7 +89,7 @@
             "sref": "apolo.permission-group.list",
             "icon": "fa fa-list",
             "permissions": [
-              "GROUP_PERMISSION_LIST"
+              "PERMISSION_GROUP_LIST"
             ]
           },
           {
@@ -98,7 +98,7 @@
             "sref": "apolo.permission-group.create",
             "icon": "fa fa-plus",
             "permissions": [
-              "GROUP_PERMISSION_CREATE"
+              "PERMISSION_GROUP_CREATE"
             ]
           }
         ]

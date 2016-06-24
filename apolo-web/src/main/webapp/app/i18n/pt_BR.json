@@ -12,6 +12,37 @@
     }
   },
 
+  "permission": {
+    "ADMIN": "Administrar o Sistema",
+    "TENANT_CREATE": "Unidade - Criar",
+    "TENANT_EDIT": "Unidade - Editar",
+    "TENANT_REMOVE": "Unidade - Remover",
+    "TENANT_LIST": "Unidade - Listar",
+    "TENANT_MANAGER": "Unidade - Gerenciar",
+    "USER_CREATE": "Usuário - Criar",
+    "USER_EDIT": "Usuário - Editar",
+    "USER_REMOVE": "Usuário - Remover",
+    "USER_LIST": "Usuário - Listar",
+    "USER_MANAGER": "Usuário - Gerenciar",
+    "USER_VIEW_ALL_DATA": "Usuário - Visualizar tudo",
+    "PERMISSION_GROUP_LIST": "Grupos de Permissão - Listar",
+    "PERMISSION_GROUP_VIEW": "Grupos de Permissão - Visualizar",
+    "PERMISSION_GROUP_CREATE": "Grupos de Permissão - Criar",
+    "PERMISSION_GROUP_EDIT": "Grupos de Permissão - Editar",
+    "PERMISSION_GROUP_REMOVE": "Grupos de Permissão - Remover"
+  },
+
+  "status": {
+    "ACTIVE": "Ativo",
+    "LOCKED": "Bloqueado"
+  },
+
+  "user-status": {
+    "ADMIN": "Admin",
+    "ACTIVE": "Ativo",
+    "LOCKED": "Bloqueado"
+  },
+
   "common": {
     "filter": "Filtrar esta página",
     "create": "Incluir",
@@ -22,7 +53,8 @@
     "save": "Salvar",
     "cancel": "Cancelar",
     "back": "Voltar",
-    "select": "Selecione"
+    "select": "Selecione",
+    "status": "Status"
   },
 
   "message": {
@@ -54,26 +86,6 @@
       "list": "Listar Grupos",
       "create": "Criar Grupo"
     }
-  },
-
-  "permission": {
-    "ADMIN": "Administrar o Sistema",
-    "TENANT_CREATE": "Unidade - Criar",
-    "TENANT_EDIT": "Unidade - Editar",
-    "TENANT_REMOVE": "Unidade - Remover",
-    "TENANT_LIST": "Unidade - Listar",
-    "TENANT_MANAGER": "Unidade - Gerenciar",
-    "USER_CREATE": "Usuário - Criar",
-    "USER_EDIT": "Usuário - Editar",
-    "USER_REMOVE": "Usuário - Remover",
-    "USER_LIST": "Usuário - Listar",
-    "USER_MANAGER": "Usuário - Gerenciar",
-    "USER_VIEW_ALL_DATA": "Usuário - Visualizar tudo",
-    "PERMISSION_GROUP_LIST": "Grupos de Permissão - Listar",
-    "PERMISSION_GROUP_VIEW": "Grupos de Permissão - Visualizar",
-    "PERMISSION_GROUP_CREATE": "Grupos de Permissão - Criar",
-    "PERMISSION_GROUP_EDIT": "Grupos de Permissão - Editar",
-    "PERMISSION_GROUP_REMOVE": "Grupos de Permissão - Remover"
   },
 
   "auth": {
@@ -116,7 +128,7 @@
     "name": "Nome",
     "permissions": "Permissões",
     "list": {
-      "title": "Listar Grupos de Permissões",
+      "title": "Lista de Grupos de Permissões",
       "description": "Lista de grupos de permissões de acesso do sistema"
     },
     "view": {
@@ -130,6 +142,35 @@
     "create": {
       "title": "Criar Grupo de Permissões",
       "description": "Criar Grupo de permissões de acesso."
+    }
+  },
+
+  "tenant": {
+    "name": "Nome",
+    "url": "URL",
+    "logo": "Logo",
+    "icon": "Ícone",
+    "logoWidth": "Largura do logo",
+    "logoHeight": "Altura do logo",
+    "showName": "Exibir nome no logo?",
+    "showAdds": "Exibir anúncios?",
+    "status": "Status",
+
+    "list": {
+      "title": "Lista de Unidades",
+      "description": "Lista de unidades participantes no sistema"
+    },
+    "view": {
+      "title": "Unidade",
+      "description": "Unidade participante"
+    },
+    "edit": {
+      "title": "Editar Unidade",
+      "description": "Editar Unidade"
+    },
+    "create": {
+      "title": "Criar Unidade",
+      "description": "Cadastrar uma nova unidade no sistema"
     }
   }
 }

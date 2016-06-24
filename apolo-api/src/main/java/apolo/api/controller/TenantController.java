@@ -1,16 +1,14 @@
 package apolo.api.controller;
 
-import apolo.api.apimodel.PermissionGroupDTO;
-import apolo.api.apimodel.PermissionGroupList;
+import apolo.api.apimodel.TenantDTO;
+import apolo.api.apimodel.TenantList;
 import apolo.api.controller.base.BaseAPIController;
 import apolo.api.helper.ApoloHelper;
-import apolo.business.service.PermissionGroupService;
-import apolo.common.exception.AccessDeniedException;
-import apolo.common.util.MessageBundle;
-import apolo.data.enums.UserStatus;
-import apolo.data.model.PermissionGroup;
+import apolo.business.service.TenantService;
+import apolo.data.model.Tenant;
 import apolo.data.model.User;
 import apolo.security.Permission;
+import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -18,17 +16,16 @@ import org.springframework.web.bind.annotation.*;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
 
 @RestController
-@RequestMapping(value = "/permission-group")
-public class PermissionGroupController extends BaseAPIController<PermissionGroup> {
+@RequestMapping(value = "/tenant")
+public class TenantController extends BaseAPIController<Tenant> {
 
     @Inject
-    private PermissionGroupService permissionGroupService;
+    private TenantService tenantService;
 
     @Inject
-    private ApoloHelper<PermissionGroup, PermissionGroupDTO> permissionGroupHelper;
+    private ApoloHelper<Tenant, TenantDTO> tenantHelper;
 
     @CrossOrigin(origins = "*")
     @PreAuthorize("permitAll")
@@ -38,23 +35,28 @@ public class PermissionGroupController extends BaseAPIController<PermissionGroup
             method = RequestMethod.GET
     )
     public @ResponseBody
-    PermissionGroupList list(
+    TenantList list(
+            @RequestParam(required = false) Integer pageNumber,
             HttpServletRequest request,
             HttpServletResponse response
     ) {
-        PermissionGroupList result = new PermissionGroupList();
+        TenantList result = new TenantList();
 
-        if (checkAccess(result, null, request, Permission.PERMISSION_GROUP_LIST)) {
-            List<PermissionGroup> entities = permissionGroupService.list();
+        if (checkAccess(result, null, request, Permission.TENANT_LIST)) {
+            Page<Tenant> page = tenantService.list(pageNumber);
 
-            if (entities != null
-                    && entities.size() > 0) {
-                result.setGroupList(permissionGroupHelper.toDTOList(entities));
+            if (page != null) {
+                result.setTotalPages(page.getTotalPages());
+                result.setTotalElements(page.getTotalElements());
 
-                response.setStatus(200);
+                if (page.getContent() != null
+                        && !page.getContent().isEmpty()) {
+                    result.setTenants(tenantHelper.toDTOList(page.getContent()));
 
-            } else {
-                response.setStatus(404);
+                    response.setStatus(200);
+                } else {
+                    response.setStatus(404);
+                }
             }
         } else {
             response.setStatus(401);
@@ -71,27 +73,26 @@ public class PermissionGroupController extends BaseAPIController<PermissionGroup
             method = RequestMethod.GET
     )
     public @ResponseBody
-    PermissionGroupDTO find(
+    TenantDTO find(
             @PathVariable Long id,
             HttpServletRequest request,
             HttpServletResponse response
     ) {
-        PermissionGroupDTO result = null;
+        TenantDTO result = null;
 
         if (checkAccess(
                 result,
                 null,
                 request,
                 Permission.ADMIN,
-                Permission.PERMISSION_GROUP_LIST,
-                Permission.PERMISSION_GROUP_VIEW)
+                Permission.TENANT_LIST)
                 ) {
             User requestUser = getUserFromRequest(request);
 
-            PermissionGroup entity = permissionGroupService.find(id);
+            Tenant entity = tenantService.find(id);
 
             if (entity != null) {
-                result = permissionGroupHelper.toDTO(entity);
+                result = tenantHelper.toDTO(entity);
 
                 response.setStatus(200);
             } else {
@@ -113,26 +114,26 @@ public class PermissionGroupController extends BaseAPIController<PermissionGroup
             method = RequestMethod.POST
     )
     public @ResponseBody
-    PermissionGroupDTO create(
-            @RequestBody PermissionGroupDTO dto,
+    TenantDTO create(
+            @RequestBody TenantDTO dto,
             HttpServletRequest request,
             HttpServletResponse response
     ) {
 
-        PermissionGroupDTO result = null;
+        TenantDTO result = null;
 
         if (checkAccess(
                 result,
                 null,
                 request,
-                Permission.PERMISSION_GROUP_CREATE)
+                Permission.TENANT_CREATE)
                 ) {
             if (dto != null) {
-                PermissionGroup entity = permissionGroupHelper.toEntity(dto);
+                Tenant entity = tenantHelper.toEntity(dto);
 
-                entity = permissionGroupService.save(entity);
+                entity = tenantService.save(entity);
 
-                result = permissionGroupHelper.toDTO(entity);
+                result = tenantHelper.toDTO(entity);
 
                 response.setStatus(201);
 
@@ -155,33 +156,29 @@ public class PermissionGroupController extends BaseAPIController<PermissionGroup
             method = RequestMethod.PUT
     )
     public @ResponseBody
-    PermissionGroupDTO update(
-            @RequestBody PermissionGroupDTO dto,
+    TenantDTO update(
+            @RequestBody TenantDTO dto,
             HttpServletRequest request,
             HttpServletResponse response
     ) {
 
-        PermissionGroupDTO result = null;
+        TenantDTO result = null;
 
         if (checkAccess(
                 result,
                 null,
                 request,
-                Permission.PERMISSION_GROUP_EDIT)
+                Permission.TENANT_EDIT)
                 ) {
             if (dto != null) {
-                PermissionGroup permission = permissionGroupService.find(dto.getId());
+                Tenant entity = tenantService.find(dto.getId());
 
-                if (permission != null) {
-                    if (UserStatus.ADMIN.equals(permission.getStatus())) {
-                        throw new AccessDeniedException(8, MessageBundle.getMessageBundle("error.403.8"));
-                    } else {
-                        permission = permissionGroupService.save(permissionGroupHelper.toEntity(dto));
+                if (entity != null) {
+                    entity = tenantService.save(tenantHelper.toEntity(dto));
 
-                        result = permissionGroupHelper.toDTO(permission);
+                    result = tenantHelper.toDTO(entity);
 
-                        response.setStatus(200);
-                    }
+                    response.setStatus(200);
                 } else {
                     response.setStatus(404);
                 }

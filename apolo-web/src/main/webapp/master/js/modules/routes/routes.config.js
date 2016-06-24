@@ -92,14 +92,24 @@
                 abstract: true
             })
             .state('apolo.tenant.list', {
-                url: '/list',
+                url: '/list?pageNumber=:number',
                 title: 'Tenant List',
-                templateUrl: helper.basepath('tenant/undercontruction.html')
+                templateUrl: helper.basepath('tenant/list.html')
+            })
+            .state('apolo.tenant.view', {
+                url: '/:id/view',
+                title: 'Tenant View',
+                templateUrl: helper.basepath('tenant/view.html')
             })
             .state('apolo.tenant.create', {
                 url: '/create',
                 title: 'Tenant Create',
-                templateUrl: helper.basepath('tenant/undercontruction.html')
+                templateUrl: helper.basepath('tenant/create.html')
+            })
+            .state('apolo.tenant.edit', {
+                url: '/:id/edit',
+                title: 'Tenant Edit',
+                templateUrl: helper.basepath('tenant/edit.html')
             })
 
             // Group Permission

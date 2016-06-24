@@ -2,11 +2,11 @@
     'use strict';
 
     angular
-        .module('apolo.permissionGroup')
-        .service('PermissionGroupService', PermissionGroupService);
+        .module('apolo.tenant')
+        .service('TenantService', TenantService);
 
-    PermissionGroupService.$inject = ['BaseService'];
-    function PermissionGroupService(baseService) {
+    TenantService.$inject = ['BaseService'];
+    function TenantService(baseService) {
 
         this.list = list;
         this.get = get;
@@ -16,15 +16,15 @@
 
         ////////////////
 
-        function list(apiToken) {
+        function list(apiToken, pageNumber) {
             var result = null;
 
-            if (baseService.checkPermission(['PERMISSION_GROUP_LIST', 'PERMISSION_GROUP_VIEW'])) {
-                result = baseService.getWithKey('/permission-group', apiToken).then(
+            if (baseService.checkPermission(['TENANT_LIST', 'TENANT_VIEW'])) {
+                result = baseService.getWithKey('/tenant?pageNumber=' + pageNumber, apiToken).then(
                     function(response) {
-                        var groups = response;
+                        response = baseService.pagination(pageNumber, response, '#/tenant/list?pageNumber=');
 
-                        return groups;
+                        return response;
                     }
                 );
             } else {
@@ -37,12 +37,12 @@
         function get(apiToken, id) {
             var result = null;
 
-            if (baseService.checkPermission(['PERMISSION_GROUP_LIST', 'PERMISSION_GROUP_VIEW'])) {
-                result = baseService.getWithKey('/permission-group/' + id, apiToken).then(
+            if (baseService.checkPermission(['TENANT_LIST', 'TENANT_VIEW'])) {
+                result = baseService.getWithKey('/tenant/' + id, apiToken).then(
                     function(response) {
-                        var group = response;
+                        var tenant = response;
 
-                        return group;
+                        return tenant;
                     }
                 );
             } else {
@@ -55,8 +55,8 @@
         function create(apiToken, entity) {
             var result = null;
 
-            if (baseService.checkPermission(['PERMISSION_GROUP_CREATE'])) {
-                result = baseService.postWithKey('/permission-group', entity, apiToken);
+            if (baseService.checkPermission(['TENANT_CREATE'])) {
+                result = baseService.postWithKey('/tenant', entity, apiToken);
             } else {
                 result = $translate.instant('message.access_denied');
             }
@@ -67,8 +67,8 @@
         function edit(apiToken, entity) {
             var result = null;
 
-            if (baseService.checkPermission(['PERMISSION_GROUP_EDIT'])) {
-                result = baseService.putWithKey('/permission-group', entity, apiToken);
+            if (baseService.checkPermission(['TENANT_EDIT'])) {
+                result = baseService.putWithKey('/tenant', entity, apiToken);
             } else {
                 result = $translate.instant('message.access_denied');
             }
@@ -79,8 +79,8 @@
         function remove(apiToken, id) {
             var result = null;
 
-            if (baseService.checkPermission(['PERMISSION_GROUP_REMOVE'])) {
-                result = baseService.deleteWithKey('/permission-group/' + id, apiToken);
+            if (baseService.checkPermission(['TENANT_REMOVE'])) {
+                result = baseService.deleteWithKey('/tenant/' + id, apiToken);
             } else {
                 result = $translate.instant('message.access_denied');
             }

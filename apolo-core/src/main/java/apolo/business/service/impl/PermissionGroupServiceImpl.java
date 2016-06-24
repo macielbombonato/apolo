@@ -53,7 +53,7 @@ public class PermissionGroupServiceImpl extends BaseServiceImpl<PermissionGroup>
 	}
 
 	public Page<PermissionGroup> list(Tenant tenant, Integer pageNumber) {
-		if (pageNumber < 1) {
+		if (pageNumber == null || pageNumber < 1) {
 			pageNumber = 1;
 		}
 

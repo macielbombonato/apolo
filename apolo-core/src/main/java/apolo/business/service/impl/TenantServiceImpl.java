@@ -41,7 +41,7 @@ public class TenantServiceImpl extends BaseServiceImpl<Tenant> implements Tenant
 	}
 
 	public Page<Tenant> list(Integer pageNumber) {
-		if (pageNumber < 1) {
+		if (pageNumber == null || pageNumber < 1) {
 			pageNumber = 1;
 		}
 
@@ -146,6 +146,10 @@ public class TenantServiceImpl extends BaseServiceImpl<Tenant> implements Tenant
 		try {
 			tenant.setUpdatedBy(getAuthenticatedUser());
 			tenant.setUpdatedAt(new Date());
+
+			if (tenant.getId() == null) {
+				tenant.setStatus(Status.ACTIVE);
+			}
 
 			result = tenantRepository.saveAndFlush(tenant);
 		} catch (Throwable e) {

@@ -9,6 +9,7 @@
             /*...*/
             'apolo.static',
             'apolo.auth',
+            'apolo.tenant',
             'apolo.user',
             'apolo.permissionGroup'
         ]);
