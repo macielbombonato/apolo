@@ -14,8 +14,12 @@ html(lang="en", data-ng-app="apolo")
     // Application styles
     link(rel='stylesheet', href='app/css/app.css', data-ng-if="!app.layout.isRTL")
     link(rel='stylesheet', href='app/css/app-rtl.css', data-ng-if="app.layout.isRTL")
+
+    link(rel='stylesheet', href='app/css/apolo.css', data-ng-if="!app.layout.isRTL")
+    link(rel='stylesheet', href='app/css/apolo-rtl.css', data-ng-if="app.layout.isRTL")
+
     // Themes
-    link(rel='stylesheet', ng-href='{{app.layout.theme}}', data-ng-if="app.layout.theme")
+    link(rel='stylesheet', ng-href='{{"app/css/" + app.layout.theme + ".css"}}', data-ng-if="app.layout.theme")
 
     // Other styles
     link(rel='stylesheet', href='vendor/fontawesome/css/font-awesome.min.css')
