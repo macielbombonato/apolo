@@ -1,1 +1,16 @@
-<span>&copy; {{ app.name }} - {{app.year}}</span>
+<span class="col-xs-6">
+    &copy; {{ app.name }} - {{app.year}}
+    <span data-ng-if="tenant.name">
+        [{{'common.unity' | translate}}: {{tenant.name}}]
+    </span>
+</span>
+
+<span class="col-xs-6 text-right">
+    <strong>
+        {{'app.developed' | translate}}
+    </strong>
+    :&nbsp;
+    <a href="{{app.author_url}}" target="_blank">
+        {{app.author}}
+    </a>
+</span>

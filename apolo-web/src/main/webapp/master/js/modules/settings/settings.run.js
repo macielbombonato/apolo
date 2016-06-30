@@ -15,6 +15,8 @@
         name: 'Apolo',
         description: 'Arquitetura Base',
         year: ((new Date()).getFullYear()),
+        author: "Maciel Escudero Bombonato",
+        author_url: "https://br.linkedin.com/in/macielbombonato",
         layout: {
           isFixed: true,
           isCollapsed: false,

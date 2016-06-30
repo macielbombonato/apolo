@@ -2,6 +2,7 @@
   "app": {
     "title": "Apolo",
     "footer": "Apolo 2012 - 2016",
+    "developed": "Desenvolvido por",
     "home": {
       "title": "Home",
       "description": "Apolo - Arquitetura Base",
@@ -54,7 +55,8 @@
     "cancel": "Cancelar",
     "back": "Voltar",
     "select": "Selecione",
-    "status": "Status"
+    "status": "Status",
+    "unity": "Unidade"
   },
 
   "message": {
