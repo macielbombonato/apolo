@@ -1,6 +1,5 @@
 package apolo.business.service.impl;
 
-import apolo.business.model.FileContent;
 import apolo.business.service.FileService;
 import apolo.business.service.TenantService;
 import apolo.common.config.model.ApplicationProperties;
@@ -18,7 +17,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
@@ -72,86 +70,30 @@ public class TenantServiceImpl extends BaseServiceImpl<Tenant> implements Tenant
 
 	@Transactional
 	public Tenant save(Tenant entity) {
-		return save(entity, null, null);
-	}
+		if (entity != null
+				&& entity.getId() == null) {
+			entity.setCreatedBy(getAuthenticatedUser());
+			entity.setCreatedAt(new Date());
+		} else if (entity != null
+				&& entity.getId() != null
+				&& (entity.getEmailPassword() == null
+				|| "".equals(entity.getEmailPassword()))) {
+			Tenant dbTenant = this.find(entity.getId());
 
-	@Transactional
-	public Tenant save(Tenant tenant, FileContent logo, FileContent icon) {
-
-		if (tenant != null
-				&& tenant.getId() == null) {
-			tenant.setCreatedBy(getAuthenticatedUser());
-			tenant.setCreatedAt(new Date());
-		} else if (tenant != null
-				&& tenant.getId() != null
-				&& (tenant.getEmailPassword() == null
-				|| "".equals(tenant.getEmailPassword()))) {
-			Tenant dbTenant = this.find(tenant.getId());
-
-			tenant.setEmailPassword(dbTenant.getEmailPassword());
-		}
-
-		if (logo != null
-				&& logo.getFile() != null
-				&& logo.getFile().getOriginalFilename() != null
-				&& !logo.getFile().getOriginalFilename().isEmpty()) {
-
-			if (tenant.getId() == null) {
-				tenantRepository.saveAndFlush(tenant);
-			}
-
-			try {
-				tenant.setLogo(
-						fileService.uploadFile(
-								tenant,
-								tenant,
-								logo,
-								"logo",
-								logo.getFile().getInputStream()
-						)
-				);
-			} catch (IOException e) {
-				String message = MessageBundle.getMessageBundle("error.500.5");
-				throw new BusinessException(5, message);
-			}
-		}
-
-		if (icon != null
-				&& icon.getFile() != null
-				&& icon.getFile().getOriginalFilename() != null
-				&& !icon.getFile().getOriginalFilename().isEmpty()) {
-
-			if (tenant.getId() == null) {
-				tenantRepository.saveAndFlush(tenant);
-			}
-
-			try {
-				tenant.setIcon(
-						fileService.uploadFile(
-								tenant,
-								tenant,
-								icon,
-								"icon",
-								icon.getFile().getInputStream()
-						)
-				);
-			} catch (IOException e) {
-				String message = MessageBundle.getMessageBundle("error.500.5");
-				throw new BusinessException(5, message);
-			}
+			entity.setEmailPassword(dbTenant.getEmailPassword());
 		}
 
 		Tenant result = null;
 
 		try {
-			tenant.setUpdatedBy(getAuthenticatedUser());
-			tenant.setUpdatedAt(new Date());
+			entity.setUpdatedBy(getAuthenticatedUser());
+			entity.setUpdatedAt(new Date());
 
-			if (tenant.getId() == null) {
-				tenant.setStatus(Status.ACTIVE);
+			if (entity.getId() == null) {
+				entity.setStatus(Status.ACTIVE);
 			}
 
-			result = tenantRepository.saveAndFlush(tenant);
+			result = tenantRepository.saveAndFlush(entity);
 		} catch (Throwable e) {
 			LOG.error(e.getMessage(), e);
 

@@ -148,11 +148,7 @@
   "tenant": {
     "name": "Nome",
     "url": "URL",
-    "logo": "Logo",
-    "icon": "Ícone",
-    "logoWidth": "Largura do logo",
-    "logoHeight": "Altura do logo",
-    "showName": "Exibir nome no logo?",
+    "theme": "Tema",
     "showAdds": "Exibir anúncios?",
     "status": "Status",
 

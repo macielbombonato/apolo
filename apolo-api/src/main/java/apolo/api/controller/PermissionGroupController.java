@@ -1,7 +1,7 @@
 package apolo.api.controller;
 
+import apolo.api.apimodel.ModelList;
 import apolo.api.apimodel.PermissionGroupDTO;
-import apolo.api.apimodel.PermissionGroupList;
 import apolo.api.controller.base.BaseAPIController;
 import apolo.api.helper.ApoloHelper;
 import apolo.business.service.PermissionGroupService;
@@ -38,18 +38,18 @@ public class PermissionGroupController extends BaseAPIController<PermissionGroup
             method = RequestMethod.GET
     )
     public @ResponseBody
-    PermissionGroupList list(
+    ModelList<PermissionGroupDTO> list(
             HttpServletRequest request,
             HttpServletResponse response
     ) {
-        PermissionGroupList result = new PermissionGroupList();
+        ModelList<PermissionGroupDTO> result = new ModelList<PermissionGroupDTO>();
 
         if (checkAccess(result, null, request, Permission.PERMISSION_GROUP_LIST)) {
             List<PermissionGroup> entities = permissionGroupService.list();
 
             if (entities != null
                     && entities.size() > 0) {
-                result.setGroupList(permissionGroupHelper.toDTOList(entities));
+                result.setList(permissionGroupHelper.toDTOList(entities));
 
                 response.setStatus(200);
 

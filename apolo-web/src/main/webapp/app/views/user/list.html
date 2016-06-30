@@ -19,7 +19,7 @@
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-sm-12">
-                            <div class="alert alert-info" ng-if="ctrl.users.userList == null">
+                            <div class="alert alert-info" ng-if="ctrl.users.list == null">
                                 <p>
                                     {{'message.no_data_found' | translate}}
                                 </p>
@@ -27,7 +27,7 @@
 
                             <div ng-include="'app/views/partials/_pagination.html'"></div>
 
-                            <div class="table-responsive" ng-if="ctrl.users.userList">
+                            <div class="table-responsive" ng-if="ctrl.users.list">
                                 <table class="table table-bordered table-hover table-striped">
                                     <thead>
                                     <tr>
@@ -46,7 +46,7 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr data-ng-repeat="user in ctrl.users.userList | orderBy: 'name' | filter:userFilter ">
+                                    <tr data-ng-repeat="user in ctrl.users.list | orderBy: 'name' | filter:userFilter ">
                                         <td>
                                             <a href='#/user/{{user.id}}/view'>
                                                 {{user.name}}

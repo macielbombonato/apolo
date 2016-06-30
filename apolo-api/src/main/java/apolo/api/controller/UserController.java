@@ -1,7 +1,7 @@
 package apolo.api.controller;
 
+import apolo.api.apimodel.ModelList;
 import apolo.api.apimodel.UserDTO;
-import apolo.api.apimodel.UserList;
 import apolo.api.controller.base.BaseAPIController;
 import apolo.api.helper.ApoloHelper;
 import apolo.business.service.PermissionGroupService;
@@ -44,13 +44,13 @@ public class UserController extends BaseAPIController<User> {
             method = RequestMethod.GET
     )
     public @ResponseBody
-    UserList list(
+    ModelList<UserDTO> list(
             @PathVariable("tenant-url") String tenantUrl,
             @RequestParam(required = false) Integer pageNumber,
             HttpServletRequest request,
             HttpServletResponse response
     ) {
-        UserList result = new UserList();
+        ModelList<UserDTO> result = new ModelList<UserDTO>();
 
         if (checkAccess(result, tenantUrl, request, Permission.USER_LIST)) {
             Page<User> page = userService.list(getDBTenant(tenantUrl), pageNumber);
@@ -61,7 +61,7 @@ public class UserController extends BaseAPIController<User> {
 
                 if (page.getContent() != null
                         && !page.getContent().isEmpty()) {
-                    result.setUserList(userHelper.toDTOList(page.getContent()));
+                    result.setList(userHelper.toDTOList(page.getContent()));
 
                     response.setStatus(200);
                 } else {
@@ -83,13 +83,13 @@ public class UserController extends BaseAPIController<User> {
             method = RequestMethod.GET
     )
     public @ResponseBody
-    UserList listFromAllTenants(
+    ModelList<UserDTO> listFromAllTenants(
             @PathVariable("tenant-url") String tenantUrl,
             @RequestParam(required = false) Integer pageNumber,
             HttpServletRequest request,
             HttpServletResponse response
     ) {
-        UserList result = new UserList();
+        ModelList<UserDTO> result = new ModelList<UserDTO>();
 
         if (checkAccess(result, tenantUrl, request, Permission.ADMIN)) {
             Page<User> page = userService.listAll(pageNumber);
@@ -100,7 +100,7 @@ public class UserController extends BaseAPIController<User> {
 
                 if (page.getContent() != null
                         && !page.getContent().isEmpty()) {
-                    result.setUserList(userHelper.toDTOList(page.getContent()));
+                    result.setList(userHelper.toDTOList(page.getContent()));
 
                     response.setStatus(200);
                 } else {

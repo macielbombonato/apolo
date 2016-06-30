@@ -1,8 +1,6 @@
 package apolo.api.controller;
 
-import apolo.api.apimodel.PermissionList;
-import apolo.api.apimodel.StatusList;
-import apolo.api.apimodel.UserStatusList;
+import apolo.api.apimodel.ModelList;
 import apolo.api.controller.base.BaseAPIController;
 import apolo.business.service.PermissionGroupService;
 import apolo.data.enums.Status;
@@ -33,17 +31,17 @@ public class StaticController extends BaseAPIController<User> {
             method = RequestMethod.GET
     )
     public @ResponseBody
-    PermissionList permissions(
+    ModelList<Permission> permissions(
             HttpServletRequest request,
             HttpServletResponse response
     ) {
-        PermissionList result = new PermissionList();
+        ModelList<Permission> result = new ModelList<Permission>();
 
         if (isAutheticated(result, request)) {
-            result.setPermissions(new ArrayList<Permission>());
+            result.setList(new ArrayList<Permission>());
             for(Permission permission : Permission.values()) {
                 if (permission.isListable()) {
-                    result.getPermissions().add(permission);
+                    result.getList().add(permission);
                 }
             }
 
@@ -64,16 +62,16 @@ public class StaticController extends BaseAPIController<User> {
             method = RequestMethod.GET
     )
     public @ResponseBody
-    UserStatusList userStatus(
+    ModelList<UserStatus> userStatus(
             HttpServletRequest request,
             HttpServletResponse response
     ) {
-        UserStatusList result = new UserStatusList();
+        ModelList<UserStatus> result = new ModelList<UserStatus>();
 
         if (isAutheticated(result, request)) {
-            result.setStatuses(new ArrayList<UserStatus>());
+            result.setList(new ArrayList<UserStatus>());
             for(UserStatus status : UserStatus.values()) {
-                result.getStatuses().add(status);
+                result.getList().add(status);
             }
 
             response.setStatus(200);
@@ -93,16 +91,16 @@ public class StaticController extends BaseAPIController<User> {
             method = RequestMethod.GET
     )
     public @ResponseBody
-    StatusList status(
+    ModelList<Status> status(
             HttpServletRequest request,
             HttpServletResponse response
     ) {
-        StatusList result = new StatusList();
+        ModelList<Status> result = new ModelList<Status>();
 
         if (isAutheticated(result, request)) {
-            result.setStatuses(new ArrayList<Status>());
+            result.setList(new ArrayList<Status>());
             for(Status status : Status.values()) {
-                result.getStatuses().add(status);
+                result.getList().add(status);
             }
 
             response.setStatus(200);

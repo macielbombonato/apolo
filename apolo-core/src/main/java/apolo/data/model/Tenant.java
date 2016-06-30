@@ -9,14 +9,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Type;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.inject.Inject;
 import javax.persistence.*;
-import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.List;
 
 @Entity
 @EntityListeners(value = AuditLogListener.class)
@@ -36,28 +33,13 @@ public class Tenant extends AuditableBaseEntity {
 	@Size(min = 1, max = InputLength.NAME)
 	private String name;
 
-	@Column(name = "logo", length = InputLength.MEDIUM, nullable = true)
-	private String logo;
-
-	@Column(name = "icon", length = InputLength.MEDIUM, nullable = true)
-	private String icon;
-
-	@Column(name = "logo_width", nullable = true)
-	@Max(160)
-	private Integer logoWidth;
-
-	@Column(name = "logo_height", nullable = true)
-	@Max(40)
-	private Integer logoHeight;
+	@Column(name = "theme", length = InputLength.MEDIUM, nullable = true)
+	private String theme;
 
 	@Column(name = "status", nullable = false)
 	@Type(type = "apolo.data.enums.usertype.StatusUserType")
 	@NotNull
 	private Status status;
-
-	@Column(name = "has_show_name", nullable = true)
-	@Type(type="yes_no")
-	private Boolean showName;
 
 	@Column(name = "has_show_adds", nullable = true)
 	@Type(type="yes_no")
@@ -95,12 +77,6 @@ public class Tenant extends AuditableBaseEntity {
 	@Type(type="yes_no")
 	@JsonIgnore
 	private Boolean emailUseTenantConfig;
-
-	@Transient
-	private List<MultipartFile> logoFile;
-
-	@Transient
-	private List<MultipartFile> iconFile;
 
 	@Transient
 	@Inject
@@ -212,68 +188,12 @@ public class Tenant extends AuditableBaseEntity {
 		this.status = status;
 	}
 
-	public String getLogo() {
-		return this.logo;
-	}
-
-	public void setLogo(String logo) {
-		this.logo = logo;
-	}
-
-	public Integer getLogoWidth() {
-		return this.logoWidth;
-	}
-
-	public void setLogoWidth(Integer logoWidth) {
-		this.logoWidth = logoWidth;
-	}
-
-	public Integer getLogoHeight() {
-		return this.logoHeight;
-	}
-
-	public void setLogoHeight(Integer logoHeight) {
-		this.logoHeight = logoHeight;
-	}
-
-	public List<MultipartFile> getLogoFile() {
-		return this.logoFile;
-	}
-
-	public void setLogoFile(List<MultipartFile> logoFile) {
-		this.logoFile = logoFile;
-	}
-
-	public Boolean getShowName() {
-		return this.showName;
-	}
-
-	public void setShowName(Boolean showName) {
-		this.showName = showName;
-	}
-
 	public Boolean getShowAdds() {
 		return this.showAdds;
 	}
 
 	public void setShowAdds(Boolean showAdds) {
 		this.showAdds = showAdds;
-	}
-
-	public String getIcon() {
-		return icon;
-	}
-
-	public void setIcon(String icon) {
-		this.icon = icon;
-	}
-
-	public List<MultipartFile> getIconFile() {
-		return iconFile;
-	}
-
-	public void setIconFile(List<MultipartFile> iconFile) {
-		this.iconFile = iconFile;
 	}
 
 	public Boolean getSendAuthEmail() {
@@ -298,5 +218,13 @@ public class Tenant extends AuditableBaseEntity {
 
 	public void setEmailUseTenantConfig(Boolean emailUseTenantConfig) {
 		this.emailUseTenantConfig = emailUseTenantConfig;
+	}
+
+	public String getTheme() {
+		return theme;
+	}
+
+	public void setTheme(String theme) {
+		this.theme = theme;
 	}
 }

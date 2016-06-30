@@ -19,13 +19,13 @@
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-sm-12">
-                            <div class="alert alert-info" ng-if="ctrl.groups.groupList == null">
+                            <div class="alert alert-info" ng-if="ctrl.groups.list == null">
                                 <p>
                                     {{'message.no_data_found' | translate}}
                                 </p>
                             </div>
 
-                            <div class="table-responsive" ng-if="ctrl.groups.groupList">
+                            <div class="table-responsive" ng-if="ctrl.groups.list">
                                 <table class="table table-bordered table-hover table-striped">
                                     <thead>
                                     <tr>
@@ -41,7 +41,7 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr data-ng-repeat="group in ctrl.groups.groupList | orderBy: 'name' | filter:userFilter ">
+                                    <tr data-ng-repeat="group in ctrl.groups.list | orderBy: 'name' | filter:userFilter ">
                                         <td>
                                             <a href='#/group/{{group.id}}/view'>
                                                 {{group.name}}

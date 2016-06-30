@@ -1,7 +1,7 @@
 package apolo.api.controller;
 
+import apolo.api.apimodel.ModelList;
 import apolo.api.apimodel.TenantDTO;
-import apolo.api.apimodel.TenantList;
 import apolo.api.controller.base.BaseAPIController;
 import apolo.api.helper.ApoloHelper;
 import apolo.business.service.TenantService;
@@ -35,12 +35,12 @@ public class TenantController extends BaseAPIController<Tenant> {
             method = RequestMethod.GET
     )
     public @ResponseBody
-    TenantList list(
+    ModelList<TenantDTO> list(
             @RequestParam(required = false) Integer pageNumber,
             HttpServletRequest request,
             HttpServletResponse response
     ) {
-        TenantList result = new TenantList();
+        ModelList<TenantDTO> result = new ModelList<TenantDTO>();
 
         if (checkAccess(result, null, request, Permission.TENANT_LIST)) {
             Page<Tenant> page = tenantService.list(pageNumber);
@@ -51,7 +51,7 @@ public class TenantController extends BaseAPIController<Tenant> {
 
                 if (page.getContent() != null
                         && !page.getContent().isEmpty()) {
-                    result.setTenants(tenantHelper.toDTOList(page.getContent()));
+                    result.setList(tenantHelper.toDTOList(page.getContent()));
 
                     response.setStatus(200);
                 } else {

@@ -8,13 +8,8 @@ public class TenantDTO extends BaseAPIModel {
     private Long id;
     private String name;
     private String url;
-    private String logo;
-    private String icon;
-    private Integer logoWidth;
-    private Integer logoHeight;
-
+    private String theme;
     private Status status;
-    private Boolean showName;
     private Boolean showAdds;
 
     public Long getId() {
@@ -41,36 +36,12 @@ public class TenantDTO extends BaseAPIModel {
         this.url = url;
     }
 
-    public String getLogo() {
-        return logo;
+    public String getTheme() {
+        return theme;
     }
 
-    public void setLogo(String logo) {
-        this.logo = logo;
-    }
-
-    public String getIcon() {
-        return icon;
-    }
-
-    public void setIcon(String icon) {
-        this.icon = icon;
-    }
-
-    public Integer getLogoWidth() {
-        return logoWidth;
-    }
-
-    public void setLogoWidth(Integer logoWidth) {
-        this.logoWidth = logoWidth;
-    }
-
-    public Integer getLogoHeight() {
-        return logoHeight;
-    }
-
-    public void setLogoHeight(Integer logoHeight) {
-        this.logoHeight = logoHeight;
+    public void setTheme(String theme) {
+        this.theme = theme;
     }
 
     public Status getStatus() {
@@ -79,14 +50,6 @@ public class TenantDTO extends BaseAPIModel {
 
     public void setStatus(Status status) {
         this.status = status;
-    }
-
-    public Boolean getShowName() {
-        return showName;
-    }
-
-    public void setShowName(Boolean showName) {
-        this.showName = showName;
     }
 
     public Boolean getShowAdds() {
