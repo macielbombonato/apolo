@@ -35,6 +35,16 @@
                                 $rootScope.principal = response;
                                 $rootScope.principal.authenticated = true;
 
+                                if ($rootScope.principal.tenant != undefined
+                                    && $rootScope.principal.tenant != null) {
+                                    $rootScope.tenant = $rootScope.principal.tenant;
+                                }
+
+                                if ($rootScope.tenant.theme != undefined
+                                    && $rootScope.tenant.theme != null) {
+                                    $rootScope.app.layout.theme = $rootScope.tenant.theme;
+                                }
+
                                 $state.go('apolo.home');
 
                                 $rootScope.userBlockVisible = true;

@@ -194,4 +194,44 @@ public class TenantController extends BaseAPIController<Tenant> {
     }
 
 
+    @CrossOrigin(origins = "*")
+    @PreAuthorize("permitAll")
+    @RequestMapping(
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            value = "changeTenant/{id}",
+            method = RequestMethod.GET
+    )
+    public @ResponseBody
+    TenantDTO changeTenant(
+            @PathVariable Long id,
+            HttpServletRequest request,
+            HttpServletResponse response
+    ) {
+        TenantDTO result = null;
+
+        if (checkAccess(
+                result,
+                null,
+                request,
+                Permission.ADMIN,
+                Permission.TENANT_MANAGER)
+                ) {
+            User requestUser = getUserFromRequest(request);
+
+            Tenant entity = tenantService.find(id);
+
+            if (entity != null) {
+                result = tenantHelper.toDTO(entity);
+
+                response.setStatus(200);
+            } else {
+                response.setStatus(404);
+            }
+        } else {
+            response.setStatus(401);
+        }
+
+        return result;
+    }
+
 }

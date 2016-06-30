@@ -111,6 +111,12 @@
                 title: 'Tenant Edit',
                 templateUrl: helper.basepath('tenant/edit.html')
             })
+            .state('apolo.tenant.changeTenant', {
+                url: '/:id/changeTenant',
+                title: 'Tenant Change',
+                templateUrl: helper.basepath('tenant/list.html'),
+                controller: "TenantChangeController"
+            })
 
             // Group Permission
             .state('apolo.permission-group', {

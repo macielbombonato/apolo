@@ -50,7 +50,7 @@
                     }
 
                     userService.list(
-                            $rootScope.principal.tenant.url,
+                            $rootScope.tenant.url,
                             $rootScope.principal.token,
                             pageNumber).then(
                         function(response) {
@@ -73,7 +73,7 @@
                         && $stateParams.id != undefined) {
 
                         userService.get(
-                                $rootScope.principal.tenant.url,
+                                $rootScope.tenant.url,
                                 $rootScope.principal.token,
                                 $stateParams.id).then(
 
@@ -142,7 +142,7 @@
                     && $rootScope.principal != null) {
 
                     userService.create(
-                        $rootScope.principal.tenant.url,
+                        $rootScope.tenant.url,
                         $rootScope.principal.token,
                         vm.user).then(
 
@@ -178,7 +178,7 @@
                         && $stateParams.id != undefined) {
 
                         userService.get(
-                            $rootScope.principal.tenant.url,
+                            $rootScope.tenant.url,
                             $rootScope.principal.token,
                             $stateParams.id).then(
 
@@ -217,7 +217,7 @@
                     && $rootScope.principal != null) {
 
                     userService.edit(
-                        $rootScope.principal.tenant.url,
+                        $rootScope.tenant.url,
                         $rootScope.principal.token,
                         vm.user).then(
 

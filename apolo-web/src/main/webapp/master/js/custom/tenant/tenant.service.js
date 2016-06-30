@@ -13,8 +13,27 @@
         this.create = create;
         this.edit = edit;
         this.remove = remove;
+        this.changeTenant = changeTenant;
 
         ////////////////
+
+        function changeTenant(apiToken, id) {
+            var result = null;
+
+            if (baseService.checkPermission(['TENANT_MANAGER'])) {
+                result = baseService.getWithKey('/tenant/changeTenant/' + id, apiToken).then(
+                    function(response) {
+                        var tenant = response;
+
+                        return tenant;
+                    }
+                );
+            } else {
+                result = $translate.instant('message.access_denied');
+            }
+
+            return result;
+        }
 
         function list(apiToken, pageNumber) {
             var result = null;
