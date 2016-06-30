@@ -100,7 +100,7 @@
                         $rootScope.principal.token).then(
 
                         function(response) {
-                            vm.permissions = response.permissions;
+                            vm.permissions = response.list;
                             vm.group = {};
                         }
                     );
@@ -163,7 +163,7 @@
                                         function(staticResponse) {
                                             vm.group = groupResponse;
 
-                                            vm.permissions = staticResponse.permissions;
+                                            vm.permissions = staticResponse.list;
                                         }
                                     );
 

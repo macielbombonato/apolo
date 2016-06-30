@@ -83,7 +83,7 @@
                                         $rootScope.principal.token).then(
 
                                         function(groupResponse) {
-                                            vm.groups = groupResponse.groupList;
+                                            vm.groups = groupResponse.list;
 
                                             vm.user = userResponse;
                                         }
@@ -117,7 +117,7 @@
                         $rootScope.principal.token).then(
 
                         function(response) {
-                            vm.groups = response.groupList;
+                            vm.groups = response.list;
                             vm.user = {};
                         }
                     );
@@ -188,7 +188,7 @@
                                         $rootScope.principal.token).then(
 
                                         function(groupResponse) {
-                                            vm.groups = groupResponse.groupList;
+                                            vm.groups = groupResponse.list;
 
                                             vm.user = userResponse;
                                         }
