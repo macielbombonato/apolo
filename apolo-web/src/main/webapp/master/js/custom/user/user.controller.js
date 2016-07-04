@@ -216,10 +216,12 @@
                 if ($rootScope.principal != undefined
                     && $rootScope.principal != null) {
 
-                    if (vm.user.id == $rootScope.principal.id
-                        && $rootScope.principal.tenant.id != $rootScope.tenant.id) {
+                    if (vm.user.id == $rootScope.principal.id) {
                         $rootScope.tenant = $rootScope.principal.tenant;
                         $rootScope.app.layout.theme = $rootScope.tenant.theme;
+
+                        vm.user.token = $rootScope.principal.token;
+                        vm.user.authenticated = $rootScope.principal.authenticated;
 
                         $rootScope.principal = vm.user;
                     }

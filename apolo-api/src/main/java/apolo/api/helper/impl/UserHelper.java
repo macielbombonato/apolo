@@ -62,6 +62,8 @@ public class UserHelper implements ApoloHelper<User, UserDTO> {
             to.setMobile(from.getMobile());
             to.setStatus(from.getStatus());
 
+            to.setToken(from.getToken());
+
             to.setTenant(tenantHelper.toEntity(from.getTenant()));
         }
 

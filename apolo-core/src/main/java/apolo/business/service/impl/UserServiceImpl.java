@@ -301,16 +301,16 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 
 	@Transactional
 	public User save(User entity) {
-		if (entity != null) {
-			entity.setUpdatedBy(getAuthenticatedUser());
-			entity.setUpdatedAt(new Date());
-		}
-
 		return save(null, entity, false, null);
 	}
 
 	@Transactional
 	public User save(String serverUrl, User user, boolean changePassword, FileContent file) {
+		if (user != null) {
+			user.setUpdatedBy(getAuthenticatedUser());
+			user.setUpdatedAt(new Date());
+		}
+
 		if (UserStatus.ADMIN.equals(user.getStatus())
 				&& !user.getPermissions().contains(Permission.ADMIN)) {
 			String message = MessageBundle.getMessageBundle("user.edit.msg.error.admin.permission");
