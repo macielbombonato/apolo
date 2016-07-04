@@ -216,6 +216,14 @@
                 if ($rootScope.principal != undefined
                     && $rootScope.principal != null) {
 
+                    if (vm.user.id == $rootScope.principal.id
+                        && $rootScope.principal.tenant.id != $rootScope.tenant.id) {
+                        $rootScope.tenant = $rootScope.principal.tenant;
+                        $rootScope.app.layout.theme = $rootScope.tenant.theme;
+
+                        $rootScope.principal = vm.user;
+                    }
+
                     userService.edit(
                         $rootScope.tenant.url,
                         $rootScope.principal.token,
@@ -240,6 +248,37 @@
                 }
 
                 $scope.isReadonly = false;
+            };
+
+            vm.me = function() {
+                if ($rootScope.principal != undefined
+                    && $rootScope.principal != null) {
+
+                    permissionGroupService.list(
+                        $rootScope.principal.token).then(
+
+                        function(groupResponse) {
+                            vm.groups = groupResponse.list;
+
+                            vm.user = $rootScope.principal;
+
+                            if ($rootScope.principal.tenant != null
+                                && $rootScope.principal.tenant != undefined) {
+                                $rootScope.tenant = $rootScope.principal.tenant;
+                            }
+
+                            if ($rootScope.tenant.theme != undefined
+                                && $rootScope.tenant.theme != null) {
+                                $rootScope.app.layout.theme = $rootScope.tenant.theme;
+                            }
+                        }
+                    );
+
+                } else {
+                    $state.go('login');
+                }
+
+                $scope.isReadonly = true;
             };
 
         }

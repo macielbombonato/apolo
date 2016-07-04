@@ -43,7 +43,8 @@
     "angular-touch": "1.4.7",
     "jquery.browser": "master",
     "ui-select": "angular-ui-select#^0.16.1",
-    "angular-file-upload": "2.2.0"
+    "angular-file-upload": "2.2.0",
+    "jquery-mask-library": "^0.0.1"
   },
   "resolutions": {
     "angular": "1.4.7",

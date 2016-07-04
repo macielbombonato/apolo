@@ -9,31 +9,33 @@
       <ul class="nav">
          <!-- START user info-->
          <li class="has-user-block" ng-if="principal != null && principal.authenticated == true">
-            <center>
-               <div>
-                  <div class="item user-block">
-                     <!-- User picture-->
-                     <div class="user-block-picture">
-                        <div class="user-block-status">
-                           <i ng-if="principal == null || principal.avatarFileName == null"
-                                   class="fa fa-user fa-4x">
-                           </i>
-                           <img ng-if="principal != null && principal.avatarFileName != null"
+            <a href="#/me">
+               <center>
+                  <div>
+                     <div class="item user-block">
+                        <!-- User picture-->
+                        <div class="user-block-picture">
+                           <div class="user-block-status">
+                              <i ng-if="principal == null || principal.avatarFileName == null"
+                                 class="fa fa-user fa-4x">
+                              </i>
+                              <img ng-if="principal != null && principal.avatarFileName != null"
                                    ng-src="{{user.picture}}"
                                    alt="Avatar"
                                    class="img-thumbnail img-circle" />
-                           <div class="circle circle-success circle-lg"></div>
+                              <div class="circle circle-success circle-lg"></div>
+                           </div>
+                        </div>
+                        <!-- Name and Job-->
+                        <div class="user-block-info">
+                           <span class="user-block-name">{{principal.name}}</span>
+                           <br />
+                           <small class="user-block-role">{{principal.email}}</small>
                         </div>
                      </div>
-                     <!-- Name and Job-->
-                     <div class="user-block-info">
-                        <span class="user-block-name">{{principal.name}}</span>
-                        <br />
-                        <small class="user-block-role">{{principal.email}}</small>
-                     </div>
                   </div>
-               </div>
-            </center>
+               </center>
+            </a>
          </li>
          <!-- END user info-->
 

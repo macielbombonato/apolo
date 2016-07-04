@@ -85,6 +85,12 @@
                 templateUrl: helper.basepath('user/edit.html')
             })
 
+            .state('apolo.me', {
+                url: '/me',
+                title: 'Me',
+                templateUrl: helper.basepath('user/me.html')
+            })
+
             // Tenant
             .state('apolo.tenant', {
                 url: '/tenant',
