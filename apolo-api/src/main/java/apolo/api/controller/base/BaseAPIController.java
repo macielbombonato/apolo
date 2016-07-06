@@ -41,7 +41,6 @@ public abstract class BaseAPIController<E extends BaseEntity> extends BaseContro
     private UserService userService;
 
     protected boolean isAutheticated(
-            BaseAPIModel model,
             HttpServletRequest request
     ) {
         boolean isAuthenticated = false;
@@ -55,12 +54,6 @@ public abstract class BaseAPIController<E extends BaseEntity> extends BaseContro
             } else {
                 throw new AccessDeniedException(MessageBundle.getMessageBundle("error.403"));
             }
-        }
-
-        if (!isAuthenticated) {
-            model.setMessage(MessageBundle.getMessageBundle("error.403"));
-
-            throw new AccessDeniedException(MessageBundle.getMessageBundle("error.403"));
         }
 
         return isAuthenticated;

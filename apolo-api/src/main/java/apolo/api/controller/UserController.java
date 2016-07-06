@@ -144,6 +144,8 @@ public class UserController extends BaseAPIController<User> {
             if (user != null) {
                 result = userHelper.toDTO(user);
 
+                result.setFilesURL(getServerUrl(request) + "file/");
+
                 response.setStatus(200);
             } else {
                 response.setStatus(404);
@@ -216,6 +218,9 @@ public class UserController extends BaseAPIController<User> {
                     );
 
                     result = userHelper.toDTO(user);
+
+                    result.setFilesURL(getServerUrl(request) + "file/");
+
                     response.setStatus(201);
                 }
 
@@ -301,6 +306,8 @@ public class UserController extends BaseAPIController<User> {
 
                     if (dbEntity != null) {
                         result = userHelper.toDTO(dbEntity);
+
+                        result.setFilesURL(getServerUrl(request) + "file/");
 
                         response.setStatus(200);
                     } else {
@@ -396,6 +403,9 @@ public class UserController extends BaseAPIController<User> {
                 user = userService.lock(user);
 
                 result = userHelper.toDTO(user);
+
+                result.setFilesURL(getServerUrl(request) + "file/");
+
                 response.setStatus(200);
             } else {
                 response.setStatus(404);
@@ -439,6 +449,9 @@ public class UserController extends BaseAPIController<User> {
                 user = userService.unlock(user);
 
                 result = userHelper.toDTO(user);
+
+                result.setFilesURL(getServerUrl(request) + "file/");
+
                 response.setStatus(200);
             } else {
                 response.setStatus(404);

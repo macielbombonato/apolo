@@ -37,7 +37,7 @@ public class StaticController extends BaseAPIController<User> {
     ) {
         ModelList<Permission> result = new ModelList<Permission>();
 
-        if (isAutheticated(result, request)) {
+        if (isAutheticated(request)) {
             result.setList(new ArrayList<Permission>());
             for(Permission permission : Permission.values()) {
                 if (permission.isListable()) {
@@ -68,7 +68,7 @@ public class StaticController extends BaseAPIController<User> {
     ) {
         ModelList<UserStatus> result = new ModelList<UserStatus>();
 
-        if (isAutheticated(result, request)) {
+        if (isAutheticated(request)) {
             result.setList(new ArrayList<UserStatus>());
             for(UserStatus status : UserStatus.values()) {
                 result.getList().add(status);
@@ -97,7 +97,7 @@ public class StaticController extends BaseAPIController<User> {
     ) {
         ModelList<Status> result = new ModelList<Status>();
 
-        if (isAutheticated(result, request)) {
+        if (isAutheticated(request)) {
             result.setList(new ArrayList<Status>());
             for(Status status : Status.values()) {
                 result.getList().add(status);

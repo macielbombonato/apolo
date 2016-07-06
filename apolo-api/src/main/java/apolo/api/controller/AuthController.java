@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping(value = "/login")
-public class LoginController extends BaseAPIController<User> {
+public class AuthController extends BaseAPIController<User> {
 
     @Inject
     private UserService userService;
@@ -80,6 +80,8 @@ public class LoginController extends BaseAPIController<User> {
                     result = userHelper.toDTO(user);
 
                     result.setToken(user.getToken());
+
+                    result.setFilesURL(getServerUrl(request) + "file/");
 
                     response.setStatus(200);
                 } else {

@@ -130,7 +130,7 @@ public abstract class BaseController<E extends BaseEntity> {
             String query = (String) request.getAttribute("javax.servlet.forward.query_string");
             URI uri = new URI(scheme,userInfo,host,port,path,query,null);
 
-            serverUrl = uri.toString() + "/";
+            serverUrl = uri.toString() + "/api/";
 
         } catch (MalformedURLException e) {
             log.error(e.getMessage(), e);
