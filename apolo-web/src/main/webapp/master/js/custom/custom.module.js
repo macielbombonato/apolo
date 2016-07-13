@@ -11,6 +11,7 @@
             'apolo.auth',
             'apolo.tenant',
             'apolo.user',
-            'apolo.permissionGroup'
+            'apolo.permissionGroup',
+            'apolo.file'
         ]);
 })();

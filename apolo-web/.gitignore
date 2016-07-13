@@ -6,3 +6,5 @@
 /src/main/webapp/app/js
 /src/main/webapp/app/css
 /src/main/webapp/.sass-cache
+/src/main/webapp/vendor
+/src/main/webapp/index.html
