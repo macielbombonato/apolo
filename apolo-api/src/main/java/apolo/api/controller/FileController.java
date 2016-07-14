@@ -4,8 +4,10 @@ import apolo.api.apimodel.FileDTO;
 import apolo.api.controller.base.BaseAPIController;
 import apolo.common.config.model.ApplicationProperties;
 import apolo.common.exception.AccessDeniedException;
+import apolo.common.exception.BusinessException;
 import apolo.common.util.MessageBundle;
 import apolo.data.model.base.BaseEntity;
+import com.google.common.io.ByteStreams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpStatus;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
+import java.io.IOException;
 
 @Controller
 @RequestMapping(value = "/file")
@@ -29,10 +32,9 @@ public class FileController extends BaseAPIController<BaseEntity> {
 	ApplicationProperties applicationProperties;
 
 	@CrossOrigin(origins = "*")
-	@SuppressWarnings("rawtypes")
 	@PreAuthorize("permitAll")
 	@RequestMapping(value = "/{tenant}/{entity}/{id}/{fileName}.{extension}" , method = RequestMethod.GET)
-    public ResponseEntity<FileSystemResource> getFile(
+    public ResponseEntity<byte[]> getFile(
     		@PathVariable("tenant") String tenant,
     		@PathVariable("entity") String entity,
     		@PathVariable("id") String id,
@@ -42,7 +44,7 @@ public class FileController extends BaseAPIController<BaseEntity> {
 			HttpServletResponse response
     		) {
 
-//		if (isAutheticated(request)) {
+		if (getUserFromRequestBySession(request) != null) {
 			String filePath =
 					applicationProperties.getUploadedFilesPath() +
 							tenant +
@@ -53,24 +55,27 @@ public class FileController extends BaseAPIController<BaseEntity> {
 
 			FileSystemResource resource = new FileSystemResource(new File(filePath, fileName + "." + extension));
 
-			@SuppressWarnings("unchecked")
-			ResponseEntity<FileSystemResource> responseEntity = new ResponseEntity(resource, HttpStatus.OK);
-			return responseEntity;
-//		} else {
-//			response.setStatus(403);
-//			throw new AccessDeniedException(MessageBundle.getMessageBundle("error.403"));
-//		}
+			byte[] fileBytes = null;
+			try {
+				fileBytes = ByteStreams.toByteArray(resource.getInputStream());
+			} catch (IOException e) {
+				throw new BusinessException(MessageBundle.getMessageBundle("error.500"));
+			}
 
+			ResponseEntity<byte[]> responseEntity = new ResponseEntity<byte[]>(fileBytes, HttpStatus.OK);
+
+			return responseEntity;
+		} else {
+			response.setStatus(403);
+			throw new AccessDeniedException(MessageBundle.getMessageBundle("error.403"));
+		}
     }
 
 	@CrossOrigin(origins = "*")
 	@SuppressWarnings("rawtypes")
 	@PreAuthorize("permitAll")
-	@RequestMapping(value = "/{tenant}/{entity}/{id}" , method = RequestMethod.POST)
+	@RequestMapping(value = "" , method = RequestMethod.POST)
 	public ResponseEntity<FileSystemResource> putFile(
-			@PathVariable("tenant") String tenant,
-			@PathVariable("entity") String entity,
-			@PathVariable("id") String id,
 			FileDTO file,
 			HttpServletRequest request,
 			HttpServletResponse response

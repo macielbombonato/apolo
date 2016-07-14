@@ -110,7 +110,8 @@
     "load-google-maps": "https://gist.github.com/8613939.git",
     "sparkline": "http://omnipotent.net/jquery.sparkline/2.1.2/jquery.sparkline.js",
     "ui-select": "angular-ui-select#^0.16.1",
-    "jquery-mask-library": "^0.0.1"
+    "jquery-mask-library": "^0.0.1",
+    "angular-img-http-src": "^1.0.1"
   },
   "resolutions": {
     "angular": "1.4.7",

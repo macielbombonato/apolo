@@ -4,6 +4,9 @@
     angular
         .module('custom', [
             // request the the entire framework
+            /* vendor */
+            'angularFileUpload',
+            /* Apolo */
             'apolo',
             'apolo.baseService',
             /*...*/

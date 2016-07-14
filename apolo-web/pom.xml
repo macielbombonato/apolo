@@ -25,6 +25,8 @@
                 <version>2.1.1</version>
                 <configuration>
                     <warName>${project.artifactId}-${project.version}</warName>
+                    <warSourceExcludes>.sass-cache/**</warSourceExcludes>
+                    <warSourceExcludes>master/**</warSourceExcludes>
                 </configuration>
             </plugin>
 

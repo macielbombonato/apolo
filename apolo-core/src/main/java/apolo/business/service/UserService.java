@@ -46,7 +46,16 @@ public interface UserService extends BaseService<User> {
 
 	void generateResetPasswordToken(String serverUrl, String email);
 
-	User findByToken(String token);
+	User findByToken(
+			String token,
+			String sessionId,
+			String lastSignInIp
+	);
+
+	User findBySession(
+			String sessionId,
+			String lastSignInIp
+	);
 
 	User findByResetToken(String token);
 

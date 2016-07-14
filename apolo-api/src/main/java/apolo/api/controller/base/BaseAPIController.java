@@ -109,11 +109,43 @@ public abstract class BaseAPIController<E extends BaseEntity> extends BaseContro
 
     protected User getUserFromRequest(HttpServletRequest request) {
         String apiKey = request.getHeader("key");
+        String sessionId = request.getSession().getId();
+        String lastSignInIp = request.getRemoteAddr();
 
         User result = null;
 
         if (apiKey != null) {
-            result = userService.findByToken(apiKey);
+            result = userService.findByToken(apiKey, sessionId, lastSignInIp);
+
+            if (result != null) {
+                // Set permission to see only the code screen.
+                Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+
+                authorities = userService.loadUserAuthorities(result);
+
+                Authentication authentication = new CurrentUser(
+                        result.getId(),
+                        result.getEmail(),
+                        result.getPassword().toLowerCase(),
+                        result,
+                        authorities
+                );
+
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            }
+        }
+
+        return result;
+    }
+
+    protected User getUserFromRequestBySession(HttpServletRequest request) {
+        String sessionId = request.getSession().getId();
+        String lastSignInIp = request.getRemoteAddr();
+
+        User result = null;
+
+        if (sessionId != null) {
+            result = userService.findBySession(sessionId, lastSignInIp);
 
             if (result != null) {
                 // Set permission to see only the code screen.

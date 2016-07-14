@@ -257,10 +257,26 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 	}
 
 	@Override
-	public User findByToken(String token) {
+	public User findByToken(
+			String token,
+			String sessionId,
+			String lastSignInIp
+	) {
 		User user = null;
 
-		user = userRepository.findByToken(token);
+		user = userRepository.findByTokenAndSessionIdAndLastSignInIp(token, sessionId, lastSignInIp);
+
+		return user;
+	}
+
+	@Override
+	public User findBySession(
+			String sessionId,
+			String lastSignInIp
+	) {
+		User user = null;
+
+		user = userRepository.findBySessionIdAndLastSignInIp(sessionId, lastSignInIp);
 
 		return user;
 	}

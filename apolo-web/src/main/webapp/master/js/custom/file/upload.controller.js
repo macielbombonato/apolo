@@ -1,7 +1,3 @@
-/**=========================================================
- * Module: upload.js
- =========================================================*/
-
 (function() {
     'use strict';
 
@@ -9,8 +5,17 @@
         .module('apolo.file')
         .controller('FileUploadController', FileUploadController);
 
-    FileUploadController.$inject = ['FileUploader'];
-    function FileUploadController(FileUploader) {
+    FileUploadController.$inject = [
+        '$rootScope',
+        'FileUploader',
+        'FILE_URL'
+
+    ];
+    function FileUploadController(
+        $rootScope,
+        FileUploader,
+        FILE_URL
+    ) {
         var vm = this;
 
         activate();
@@ -19,7 +24,11 @@
 
         function activate() {
           var uploader = vm.uploader = new FileUploader({
-              url: 'server/upload.php'
+              url: FILE_URL,
+              'headers': {
+                  'Access-Control-Allow-Origin': '*',
+                  'key': $rootScope.principal.token
+              }
           });
 
           // FILTERS
