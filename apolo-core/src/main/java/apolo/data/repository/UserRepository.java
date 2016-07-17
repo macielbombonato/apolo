@@ -73,7 +73,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 	User findByTokenAndSessionIdAndLastSignInIp(String token, String sessionId, String lastSignInIp);
 
-	User findBySessionIdAndLastSignInIp(String sessionId, String lastSignInIp);
+	User findBySessionId(String sessionId);
 
 	User findByTenantAndId(Tenant tenant, Long id);
 

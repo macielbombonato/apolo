@@ -15,7 +15,9 @@
         '$stateParams',
         '$location',
         'UserService',
-        'PermissionGroupService'
+        'PermissionGroupService',
+        'FileUploader',
+        'BASE_URL'
     ];
     function UserController(
             $state,
@@ -25,9 +27,13 @@
             $stateParams,
             $location,
             userService,
-            permissionGroupService
+            permissionGroupService,
+            FileUploader,
+            BASE_URL
     ) {
         var vm = this;
+
+        vm.user = {};
 
         activate();
 
@@ -191,6 +197,8 @@
                                             vm.groups = groupResponse.list;
 
                                             vm.user = userResponse;
+
+                                            vm.createUploader();
                                         }
                                     );
 
@@ -235,6 +243,8 @@
                             if (response != undefined && response.id != undefined) {
                                 vm.user = response;
 
+                                vm.createUploader();
+
                                 vm.message = $translate.instant('message.success_edit');
                                 vm.messageType = "alert text-center alert-success";
 
@@ -264,15 +274,7 @@
 
                             vm.user = $rootScope.principal;
 
-                            if ($rootScope.principal.tenant != null
-                                && $rootScope.principal.tenant != undefined) {
-                                $rootScope.tenant = $rootScope.principal.tenant;
-                            }
-
-                            if ($rootScope.tenant.theme != undefined
-                                && $rootScope.tenant.theme != null) {
-                                $rootScope.app.layout.theme = $rootScope.tenant.theme;
-                            }
+                            vm.createUploader();
                         }
                     );
 
@@ -282,6 +284,66 @@
 
                 $scope.isReadonly = true;
             };
+
+            vm.createUploader = function() {
+
+                var uploader = vm.uploader = new FileUploader({
+                    url: BASE_URL + '/' + $rootScope.tenant.url + '/' + 'user' + '/' + vm.user.id + '/picture',
+                    'headers': {
+                        'Access-Control-Allow-Origin': '*',
+                        'key': $rootScope.principal.token
+                    }
+                });
+
+                // FILTERS
+
+                vm.uploader.filters.push({
+                    name: 'customFilter',
+                    fn: function(/*item, options*/) {
+                        return this.queue.length < 10;
+                    }
+                });
+
+                // CALLBACKS
+
+                vm.uploader.onWhenAddingFileFailed = function(item /*{File|FileLikeObject}*/, filter, options) {
+                    console.info('onWhenAddingFileFailed', item, filter, options);
+                };
+                vm.uploader.onAfterAddingFile = function(fileItem) {
+                    console.info('onAfterAddingFile', fileItem);
+                };
+                vm.uploader.onAfterAddingAll = function(addedFileItems) {
+                    console.info('onAfterAddingAll', addedFileItems);
+                };
+                vm.uploader.onBeforeUploadItem = function(item) {
+                    console.info('onBeforeUploadItem', item);
+                };
+                vm.uploader.onProgressItem = function(fileItem, progress) {
+                    console.info('onProgressItem', fileItem, progress);
+                };
+                vm.uploader.onProgressAll = function(progress) {
+                    console.info('onProgressAll', progress);
+                };
+                vm.uploader.onSuccessItem = function(fileItem, response, status, headers) {
+                    console.info('onSuccessItem', fileItem, response, status, headers);
+                };
+                vm.uploader.onErrorItem = function(fileItem, response, status, headers) {
+                    console.info('onErrorItem', fileItem, response, status, headers);
+                };
+                vm.uploader.onCancelItem = function(fileItem, response, status, headers) {
+                    console.info('onCancelItem', fileItem, response, status, headers);
+                };
+                vm.uploader.onCompleteItem = function(fileItem, response, status, headers) {
+                    console.info('onCompleteItem', fileItem, response, status, headers);
+                };
+                vm.uploader.onCompleteAll = function() {
+                    console.info('onCompleteAll');
+                };
+
+                console.info('uploader', vm.uploader);
+            }
+
+            vm.uploader = null;
 
         }
     }

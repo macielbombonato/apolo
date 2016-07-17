@@ -130,4 +130,5 @@ public class UserDTO extends BaseAPIModel {
     public void setFilesURL(String filesURL) {
         this.filesURL = filesURL;
     }
+
 }

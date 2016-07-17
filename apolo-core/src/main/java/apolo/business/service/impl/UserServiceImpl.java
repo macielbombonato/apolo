@@ -1,6 +1,5 @@
 package apolo.business.service.impl;
 
-import apolo.business.model.FileContent;
 import apolo.business.service.EmailService;
 import apolo.business.service.FileService;
 import apolo.business.service.TenantService;
@@ -37,7 +36,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.io.IOException;
 import java.util.*;
 
 @Service("userService")
@@ -271,12 +269,11 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 
 	@Override
 	public User findBySession(
-			String sessionId,
-			String lastSignInIp
+			String sessionId
 	) {
 		User user = null;
 
-		user = userRepository.findBySessionIdAndLastSignInIp(sessionId, lastSignInIp);
+		user = userRepository.findBySessionId(sessionId);
 
 		return user;
 	}
@@ -317,11 +314,11 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 
 	@Transactional
 	public User save(User entity) {
-		return save(null, entity, false, null);
+		return save(null, entity, false);
 	}
 
 	@Transactional
-	public User save(String serverUrl, User user, boolean changePassword, FileContent file) {
+	public User save(String serverUrl, User user, boolean changePassword) {
 		if (user != null) {
 			user.setUpdatedBy(getAuthenticatedUser());
 			user.setUpdatedAt(new Date());
@@ -366,38 +363,6 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 		} else {
 			User dbUser = this.find(user.getId());
 			user.setPassword(dbUser.getPassword());
-		}
-
-		if (file != null) {
-			if (file != null
-					&& file.getFile() != null
-					&& file.getFile().getOriginalFilename() != null
-					&& !file.getFile().getOriginalFilename().isEmpty()) {
-
-				if (user.getId() == null) {
-					userRepository.saveAndFlush(user);
-				}
-
-				user.setAvatarOriginalName(file.getFile().getOriginalFilename());
-				try {
-					user.setAvatarFileName(
-							fileService.uploadFile(
-									user.getTenant(),
-									user,
-									file,
-									"picture",
-									file.getFile().getInputStream()
-							)
-					);
-
-					user.setAvatarFileSize(file.getFile().getSize());
-					user.setAvatarContentType(file.getFile().getContentType());
-					user.setAvatarUpdatedAt(new Date());
-				} catch (IOException e) {
-					String message = MessageBundle.getMessageBundle("commons.errorUploadingFile");
-					throw new BusinessException(message);
-				}
-			}
 		}
 
 		if (user.getCustomFields() != null && !user.getCustomFields().isEmpty()) {
@@ -643,7 +608,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 				/*
 				 * Save system administrator and get your ID
 				 */
-				dbUser = this.save(serverUrl, user, true, null);
+				dbUser = this.save(serverUrl, user, true);
 
 				/*
 				 * Save again to tell to the system that the administrator create yourself
@@ -652,7 +617,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 
 				user.setTenant(tenant);
 
-				this.save(serverUrl, dbUser, false, null);
+				this.save(serverUrl, dbUser, false);
 
 				/*
 				 * Save the group again to associate administrator user as owner
@@ -665,7 +630,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 				dbUser.setStatus(UserStatus.ADMIN);
 				dbUser.setPassword(user.getPassword());
 
-				this.save(serverUrl, dbUser, true, null);
+				this.save(serverUrl, dbUser, true);
 
 				result = true;
 			}

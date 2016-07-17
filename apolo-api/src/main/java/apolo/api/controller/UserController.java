@@ -1,9 +1,12 @@
 package apolo.api.controller;
 
+import apolo.api.apimodel.FileDTO;
 import apolo.api.apimodel.ModelList;
 import apolo.api.apimodel.UserDTO;
 import apolo.api.controller.base.BaseAPIController;
 import apolo.api.helper.ApoloHelper;
+import apolo.business.model.FileContent;
+import apolo.business.service.FileService;
 import apolo.business.service.PermissionGroupService;
 import apolo.business.service.UserService;
 import apolo.common.exception.AccessDeniedException;
@@ -13,14 +16,17 @@ import apolo.data.model.PermissionGroup;
 import apolo.data.model.Tenant;
 import apolo.data.model.User;
 import apolo.security.Permission;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.Date;
 
 @RestController
@@ -35,6 +41,9 @@ public class UserController extends BaseAPIController<User> {
 
     @Inject
     private ApoloHelper<User, UserDTO> userHelper;
+
+    @Inject
+    private FileService<User> fileService;
 
     @CrossOrigin(origins = "*")
     @PreAuthorize("permitAll")
@@ -213,8 +222,7 @@ public class UserController extends BaseAPIController<User> {
                     user = userService.save(
                             getServerUrl(request),
                             user,
-                            true,
-                            null
+                            true
                     );
 
                     result = userHelper.toDTO(user);
@@ -300,8 +308,7 @@ public class UserController extends BaseAPIController<User> {
                     dbEntity = userService.save(
                             getServerUrl(request, tenantUrl),
                             dbEntity,
-                            hasChangePassword,
-                            null
+                            hasChangePassword
                     );
 
                     if (dbEntity != null) {
@@ -461,6 +468,69 @@ public class UserController extends BaseAPIController<User> {
         }
 
         return result;
+    }
+
+    @CrossOrigin(origins = "*")
+    @SuppressWarnings("rawtypes")
+    @PreAuthorize("permitAll")
+    @RequestMapping(value = "{id}/picture" , method = RequestMethod.POST)
+    public ResponseEntity<FileSystemResource> putFile(
+            @PathVariable("tenant-url") String tenantUrl,
+            @PathVariable Long id,
+            FileDTO dto,
+            HttpServletRequest request,
+            HttpServletResponse response
+    ) {
+
+        if (isAutheticated(request)) {
+
+            User entity = userService.find(id);
+
+            if (entity != null
+                    && dto != null
+                    && dto.getFile() != null) {
+                try {
+                    FileContent file = null;
+
+                    if (dto != null
+                            && dto.getFile() != null) {
+                        file = new FileContent();
+                        file.setFile(dto.getFile());
+                    }
+
+                    String fileName = fileService.uploadFile(
+                        getDBTenant(tenantUrl),
+                        entity,
+                        file,
+                        "picture",
+                        file.getFile().getInputStream()
+                    );
+
+                    if (dto.getFile() != null
+                            && dto.getFile().getOriginalFilename() != null
+                            && !dto.getFile().getOriginalFilename().isEmpty()) {
+                        entity.setAvatarFileName(fileName);
+                        entity.setAvatarContentType(file.getFile().getContentType());
+                        entity.setAvatarOriginalName(file.getName());
+                        entity.setAvatarFileSize(file.getFile().getSize());
+                        entity.setAvatarUpdatedAt(new Date());
+
+                        userService.save(entity);
+                    }
+
+                    response.setStatus(200);
+                } catch (IOException e) {
+                    log.error(e.getMessage(), e);
+                }
+            }
+
+
+            return null;
+        } else {
+            response.setStatus(403);
+            throw new AccessDeniedException(MessageBundle.getMessageBundle("error.403"));
+        }
+
     }
 
 }

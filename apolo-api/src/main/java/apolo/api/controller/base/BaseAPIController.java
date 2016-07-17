@@ -140,12 +140,11 @@ public abstract class BaseAPIController<E extends BaseEntity> extends BaseContro
 
     protected User getUserFromRequestBySession(HttpServletRequest request) {
         String sessionId = request.getSession().getId();
-        String lastSignInIp = request.getRemoteAddr();
 
         User result = null;
 
         if (sessionId != null) {
-            result = userService.findBySession(sessionId, lastSignInIp);
+            result = userService.findBySession(sessionId);
 
             if (result != null) {
                 // Set permission to see only the code screen.

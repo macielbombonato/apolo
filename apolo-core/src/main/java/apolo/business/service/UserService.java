@@ -1,6 +1,5 @@
 package apolo.business.service;
 
-import apolo.business.model.FileContent;
 import apolo.business.service.base.BaseService;
 import apolo.data.model.Tenant;
 import apolo.data.model.User;
@@ -18,7 +17,7 @@ public interface UserService extends BaseService<User> {
 
 	List<User> findByLogin(String login);
 
-	User save(String serverUrl, User user, boolean changePassword, FileContent file);
+	User save(String serverUrl, User user, boolean changePassword);
 
 	Page<User> search(Tenant tenant, Integer pageNumber, String param);
 
@@ -53,8 +52,7 @@ public interface UserService extends BaseService<User> {
 	);
 
 	User findBySession(
-			String sessionId,
-			String lastSignInIp
+			String sessionId
 	);
 
 	User findByResetToken(String token);

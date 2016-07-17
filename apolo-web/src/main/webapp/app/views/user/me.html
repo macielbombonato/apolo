@@ -8,48 +8,24 @@
         <div class="col-xs-12">
             <div ng-controller="UserController as ctrl" data-ng-init="ctrl.me()" class="content animate-panel">
 
-                <form role="form"
-                      novalidate=""
-                      class="form-validate mb-lg">
+                <div ng-include="'app/views/user/_form.html'"></div>
 
-                    <div class="row">
-                        <div class="col-sm-3">
-                            <center>
-                                <div class="user-block-status">
-                                    <i ng-if="principal == null || principal.avatarFileName == null"
-                                       class="fa fa-user fa-5x">
-                                    </i>
-                                    <img ng-if="principal != null && principal.avatarFileName != null"
-                                         src="{{ctrl.user.filesURL + ctrl.user.tenant.url + '/User/' + ctrl.user.id + '/' + ctrl.user.avatarFileName}}"
-                                         alt="Avatar"
-                                         class="img-thumbnail img-circle" />
-                                    <div class="circle circle-success circle-lg"></div>
-                                </div>
-                            </center>
-                        </div>
-                        <div class="col-sm-9">
-                            <div ng-include="'app/views/user/_form.html'"></div>
-                        </div>
-                    </div>
+                <div class="form-group">
+                    <br />
+                    <a class="btn btn-default"
+                       href="#/home">
+                        <i class="fa fa-home"></i>
+                        {{'common.home' | translate}}
+                    </a>
 
-                    <div class="form-group">
-                        <br />
-                        <a class="btn btn-default"
-                           href="#/home">
-                            <i class="fa fa-home"></i>
-                            {{'common.home' | translate}}
-                        </a>
+                    <a class="btn btn-default"
+                       href="#/user/{{ctrl.user.id}}/edit"
+                            data-ng-if="ctrl.user.id == principal.id && principal.tenant.id == tenant.id">
+                        <i class="fa fa-pencil-square-o"></i>
+                        {{'common.edit' | translate}}
+                    </a>
 
-                        <a class="btn btn-default"
-                           href="#/user/{{ctrl.user.id}}/edit"
-                                data-ng-if="ctrl.user.id == principal.id && principal.tenant.id == tenant.id">
-                            <i class="fa fa-pencil-square-o"></i>
-                            {{'common.edit' | translate}}
-                        </a>
-
-                    </div>
-                </form>
-
+                </div>
             </div>
         </div>
     </div>
