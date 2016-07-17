@@ -18,7 +18,7 @@
                            class="fa fa-user fa-5x">
                         </i>
                         <img id="picture" data-ng-if="ctrl.user != null && ctrl.user.avatarFileName != null"
-                             src="{{ctrl.user.filesURL + ctrl.user.tenant.url + '/' + 'User' + '/' + ctrl.user.id + '/' + ctrl.user.avatarFileName}}"
+                             src="{{fileURL + '/' + ctrl.user.tenant.url + '/' + 'User' + '/' + ctrl.user.id + '/' + ctrl.user.avatarFileName}}"
                              alt="Avatar"
                              class="img-thumbnail img-circle" />
                         <div class="circle circle-success circle-lg"></div>

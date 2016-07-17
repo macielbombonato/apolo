@@ -20,7 +20,7 @@
                                  class="fa fa-user fa-4x">
                               </i>
                               <img ng-if="principal != null && principal.avatarFileName != null"
-                                   src="{{principal.filesURL + principal.tenant.url + '/User/' + principal.id + '/' + principal.avatarFileName}}"
+                                   src="{{fileURL + '/' + principal.tenant.url + '/User/' + principal.id + '/' + principal.avatarFileName}}"
                                    alt="Avatar"
                                    class="img-thumbnail img-circle" />
                               <div class="circle circle-success circle-lg"></div>

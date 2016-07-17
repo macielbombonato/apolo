@@ -25,8 +25,6 @@ public class UserDTO extends BaseAPIModel {
     private String avatarFileName;
     private String avatarContentType;
 
-    private String filesURL;
-
     public Long getId() {
         return id;
     }
@@ -121,14 +119,6 @@ public class UserDTO extends BaseAPIModel {
 
     public void setPermissions(Set<Permission> permissions) {
         this.permissions = permissions;
-    }
-
-    public String getFilesURL() {
-        return filesURL;
-    }
-
-    public void setFilesURL(String filesURL) {
-        this.filesURL = filesURL;
     }
 
 }

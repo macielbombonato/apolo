@@ -71,7 +71,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 	User findByResetPasswordToken(String token);
 
-	User findByTokenAndSessionIdAndLastSignInIp(String token, String sessionId, String lastSignInIp);
+	User findByTokenAndSessionId(String token, String sessionId);
 
 	User findBySessionId(String sessionId);
 

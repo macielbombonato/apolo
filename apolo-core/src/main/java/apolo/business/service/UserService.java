@@ -47,8 +47,7 @@ public interface UserService extends BaseService<User> {
 
 	User findByToken(
 			String token,
-			String sessionId,
-			String lastSignInIp
+			String sessionId
 	);
 
 	User findBySession(
