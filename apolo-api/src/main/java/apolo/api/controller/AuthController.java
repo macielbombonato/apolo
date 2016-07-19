@@ -81,8 +81,6 @@ public class AuthController extends BaseAPIController<User> {
 
                     result.setToken(user.getToken());
 
-                    result.setFilesURL(getServerUrl(request) + "file/");
-
                     response.setStatus(200);
                 } else {
                     response.setStatus(204);

@@ -18,91 +18,52 @@
                            class="fa fa-user fa-5x">
                         </i>
                         <img id="picture" data-ng-if="ctrl.user != null && ctrl.user.avatarFileName != null"
-                             src="{{fileURL + '/' + ctrl.user.tenant.url + '/' + 'User' + '/' + ctrl.user.id + '/' + ctrl.user.avatarFileName}}"
+                             ng-src="{{fileURL + '/' + ctrl.user.tenant.url + '/' + 'User' + '/' + ctrl.user.id + '/' + ctrl.user.avatarFileName}}"
                              alt="Avatar"
                              class="img-thumbnail img-circle" />
                         <div class="circle circle-success circle-lg"></div>
                     </div>
                 </center>
 
-                <div ng-if="ctrl.uploader != null">
-                    <input filestyle=""
-                           type="file"
-                           data-button-text="Single"
-                           data-class-button="btn btn-default"
-                           data-classinput="form-control inline"
-                           nv-file-select=""
-                           uploader="ctrl.uploader"
-                           class="form-control"
-                            />
-
-                    <div class="panel">
-                        <div class="panel-body">
-                            <p ng-if="ctrl.uploader.queue.length" class="pull-right label label-info">Queue length: {{ ctrl.uploader.queue.length }}</p>
-                            <h4 class="page-header mt0">Upload queue</h4>
-                            <p ng-if="!ctrl.uploader.queue.length" class="lead text-center">No files in queue. Start adding some..</p>
-                            <div ng-if="ctrl.uploader.queue.length">
-                                <table ng-if="ctrl.uploader.queue.length" class="table">
-                                    <thead>
-                                    <tr>
-                                        <th width="50%">Name</th>
-                                        <th ng-show="ctrl.uploader.isHTML5">Size</th>
-                                        <th ng-show="ctrl.uploader.isHTML5">Progress</th>
-                                        <th>Status</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr ng-repeat="item in ctrl.uploader.queue">
-                                        <td>
-                                            <strong>{{ item.file.name }}</strong>
-                                        </td>
-                                        <td ng-show="ctrl.uploader.isHTML5" nowrap="">{{ item.file.size/1024/1024|number:2 }} MB</td>
-                                        <td ng-show="ctrl.uploader.isHTML5">
-                                            <div style="margin-bottom: 0;" class="progress progress-xs">
-                                                <div role="progressbar" ng-style="{ 'width': item.progress + '%' }" class="progress-bar"></div>
-                                            </div>
-                                        </td>
-                                        <td class="text-center">
-                                 <span ng-show="item.isSuccess">
-                                    <em class="fa fa-check fa-fw"></em>
-                                 </span>
-                                 <span ng-show="item.isCancel">
-                                    <em class="fa fa-ban-circle fa-fw"></em>
-                                 </span>
-                                 <span ng-show="item.isError">
-                                    <em class="fa fa-times fa-fw"></em>
-                                 </span>
-                                        </td>
-                                        <td nowrap="">
-                                            <button
-                                                    type="button"
-                                                    ng-click="item.upload()"
-                                                    class="btn btn-info btn-xs">
-                                                <span class="icon-cloud-upload mr"></span>
-                                                Upload
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
+                <div ng-if="ctrl.uploader != null && ctrl.user.id == principal.id && isReadonly">
                     <div class="panel">
                         <div class="panel-body">
                             <div>
-                                <div style="" class="progress progress-xs">
-                                    <div role="progressbar" ng-style="{ 'width': ctrl.uploader.progress + '%' }" class="progress-bar"></div>
+                                <label for="name" translate="user.update_picture">
+                                    Name
+                                </label>
+                                
+                                <input filestyle=""
+                                       type="file"
+                                       data-button-text="Single"
+                                       data-class-button="btn btn-default"
+                                       data-classinput="form-control inline"
+                                       nv-file-select=""
+                                       uploader="ctrl.uploader"
+                                       class="form-control"
+                                        />
+                            </div>
+                            <div ng-repeat="item in ctrl.uploader.queue">
+                                <div class="row">
+                                    <div class="col-xs-5">
+                                        {{ item.file.size/1024/1024|number:2 }} MB
+                                    </div>
+                                    <div style="margin-bottom: 0;" class="col-xs-5 progress progress-xs">
+                                        <div role="progressbar" ng-style="{ 'width': item.progress + '%' }" class="progress-bar"></div>
+                                    </div>
+                                    <div class="col-xs-2">
+                                        <span ng-show="item.isSuccess">
+                                            <em class="fa fa-check fa-fw"></em>
+                                        </span>
+                                        <span ng-show="item.isCancel">
+                                            <em class="fa fa-ban-circle fa-fw"></em>
+                                        </span>
+                                        <span ng-show="item.isError">
+                                            <em class="fa fa-times fa-fw"></em>
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
-                            <button type="button"
-                                    ng-click="ctrl.uploader.uploadAll()"
-                                    ng-disabled="!ctrl.uploader.getNotUploadedItems().length"
-                                    class="btn btn-info btn-s">
-                                <span class="icon-cloud-upload mr"></span>
-                                Upload all
-                            </button>
                         </div>
                     </div>
                 </div>

@@ -57,7 +57,8 @@
     "select": "Selecione",
     "status": "Status",
     "tenant": "Unidade",
-    "home": "Home"
+    "home": "Home",
+    "upload": "Upload"
   },
 
   "message": {
@@ -109,6 +110,7 @@
     "password": "Senha",
     "avatar": "Foto",
     "permissionGroups": "Grupos de Permissão",
+    "update_picture": "Atualizar foto",
     "list": {
       "title": "Lista de Usuários",
       "description": "Lista de usuários associados a esta unidade"
