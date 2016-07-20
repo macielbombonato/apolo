@@ -5,8 +5,14 @@
         .module('apolo.permissionGroup')
         .service('PermissionGroupService', PermissionGroupService);
 
-    PermissionGroupService.$inject = ['BaseService'];
-    function PermissionGroupService(baseService) {
+    PermissionGroupService.$inject = [
+        '$translate',
+        'BaseService'
+    ];
+    function PermissionGroupService(
+        $translate,
+        baseService
+    ) {
 
         this.list = list;
         this.get = get;
@@ -86,13 +92,6 @@
             }
 
             return result;
-        }
-
-
-        function dataServiceError(errorResponse) {
-            $log.error('XHR Failed for ShowService');
-            $log.error(errorResponse);
-            return errorResponse;
         }
     }
 

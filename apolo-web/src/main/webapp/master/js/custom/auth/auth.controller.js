@@ -11,7 +11,13 @@
         '$translate',
         'AuthService'
     ];
-    function AuthController($state, $rootScope, $translate, authService) {
+    function AuthController(
+        $state,
+        $rootScope,
+        $translate,
+        authService
+    ) {
+
         var vm = this;
 
         activate();
@@ -22,10 +28,10 @@
             // bind here all data from the form
             vm.account = {};
             // place the message if something goes wrong
-            vm.authMsg = '';
+            vm.message = '';
 
             vm.login = function () {
-                vm.authMsg = '';
+                vm.message = '';
 
                 if (vm.loginForm.$valid) {
 
@@ -50,7 +56,7 @@
                                 $rootScope.userBlockVisible = true;
                                 $rootScope.$broadcast('toggleUserBlock');
                             } else {
-                                vm.authMsg = $translate.instant('auth.error_message');
+                                vm.message = $translate.instant('auth.error_message');
                             }
                         }
                     );

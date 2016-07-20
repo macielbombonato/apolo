@@ -137,35 +137,6 @@ public abstract class BaseAPIController<E extends BaseEntity> extends BaseContro
         return result;
     }
 
-    protected User getUserFromRequestBySession(HttpServletRequest request) {
-        String sessionId = request.getSession().getId();
-
-        User result = null;
-
-        if (sessionId != null) {
-            result = userService.findBySession(sessionId);
-
-            if (result != null) {
-                // Set permission to see only the code screen.
-                Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-
-                authorities = userService.loadUserAuthorities(result);
-
-                Authentication authentication = new CurrentUser(
-                        result.getId(),
-                        result.getEmail(),
-                        result.getPassword().toLowerCase(),
-                        result,
-                        authorities
-                );
-
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-            }
-        }
-
-        return result;
-    }
-
     @ExceptionHandler(Exception.class)
     public @ResponseBody
     BaseAPIModel handleException(

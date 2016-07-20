@@ -7,9 +7,11 @@
 
     UserService.$inject = [
         '$translate',
-        'BaseService'
+        'BaseService',
+        '$state',
+        '$rootScope'
     ];
-    function UserService($translate, baseService) {
+    function UserService($translate, baseService, $state, $rootScope) {
 
         this.list = list;
         this.get = get;
@@ -101,8 +103,15 @@
 
 
         function dataServiceError(errorResponse) {
-            $log.error('XHR Failed for ShowService');
-            $log.error(errorResponse);
+            if (errorResponse != undefined
+                && errorResponse.status == 403) {
+                $rootScope.principal = null;
+                $rootScope.tenant = null;
+                $state.go('login');
+            } else {
+                console.error(errorResponse);
+            }
+
             return errorResponse;
         }
     }

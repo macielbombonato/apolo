@@ -58,6 +58,24 @@
                 templateUrl: helper.basepath('home.html')
             })
 
+            .state('apolo.error_403', {
+                url: '/403',
+                title: 'Apolo',
+                templateUrl: helper.basepath('partials/error/403.html')
+            })
+
+            .state('apolo.error_404', {
+                url: '/404',
+                title: 'Apolo',
+                templateUrl: helper.basepath('partials/error/404.html')
+            })
+
+            .state('apolo.error_500', {
+                url: '/500',
+                title: 'Apolo',
+                templateUrl: helper.basepath('partials/error/500.html')
+            })
+
             // User
             .state('apolo.user', {
                 url: '/user',

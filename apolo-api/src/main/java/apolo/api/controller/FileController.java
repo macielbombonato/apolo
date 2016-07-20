@@ -1,6 +1,5 @@
 package apolo.api.controller;
 
-import apolo.api.apimodel.FileDTO;
 import apolo.api.controller.base.BaseAPIController;
 import apolo.common.config.model.ApplicationProperties;
 import apolo.common.exception.AccessDeniedException;
@@ -37,14 +36,20 @@ public class FileController extends BaseAPIController<BaseEntity> {
     public ResponseEntity<byte[]> getFile(
     		@PathVariable("tenant") String tenant,
     		@PathVariable("entity") String entity,
-    		@PathVariable("id") String id,
+    		@PathVariable("id") Long id,
     		@PathVariable("fileName") String fileName,
     		@PathVariable("extension") String extension,
 			HttpServletRequest request,
 			HttpServletResponse response
     		) {
 
-		if (getUserFromRequestBySession(request) != null) {
+		boolean authorized = true;
+
+		if (request.getUserPrincipal() == null) {
+			authorized = false;
+		}
+
+		if (authorized) {
 			String filePath =
 					applicationProperties.getUploadedFilesPath() +
 							tenant +
@@ -70,24 +75,4 @@ public class FileController extends BaseAPIController<BaseEntity> {
 			throw new AccessDeniedException(MessageBundle.getMessageBundle("error.403"));
 		}
     }
-
-	@CrossOrigin(origins = "*")
-	@SuppressWarnings("rawtypes")
-	@PreAuthorize("permitAll")
-	@RequestMapping(value = "" , method = RequestMethod.POST)
-	public ResponseEntity<FileSystemResource> putFile(
-			FileDTO file,
-			HttpServletRequest request,
-			HttpServletResponse response
-	) {
-
-		if (isAutheticated(request)) {
-
-			return null;
-		} else {
-			response.setStatus(403);
-			throw new AccessDeniedException(MessageBundle.getMessageBundle("error.403"));
-		}
-
-	}
 }

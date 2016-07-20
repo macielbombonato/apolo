@@ -50,10 +50,6 @@ public interface UserService extends BaseService<User> {
 			String sessionId
 	);
 
-	User findBySession(
-			String sessionId
-	);
-
 	User findByResetToken(String token);
 
 	Page<User> listAll(Integer pageNumber);

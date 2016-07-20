@@ -25,13 +25,6 @@
 
             return result;
         }
-
-
-        function dataServiceError(errorResponse) {
-            $log.error('XHR Failed for ShowService');
-            $log.error(errorResponse);
-            return errorResponse;
-        }
     }
 
 })();

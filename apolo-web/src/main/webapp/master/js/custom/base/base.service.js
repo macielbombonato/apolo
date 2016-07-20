@@ -8,10 +8,11 @@
     BaseService.$inject = [
         'BASE_URL',
         '$http',
-        '$log',
-        '$rootScope'
+        '$state',
+        '$rootScope',
+        '$translate'
     ];
-    function BaseService(BASE_URL, $http, $log, $rootScope) {
+    function BaseService(BASE_URL, $http, $state, $rootScope, $translate) {
         this.get = get;
         this.getWithKey = getWithKey;
         this.post = post;
@@ -40,6 +41,11 @@
                         }
                     }
                 }
+            }
+
+            if (!result) {
+                $rootScope.error_message = $translate.instant('error.you_cant_access_resource');
+                $state.go('apolo.error_403');
             }
 
             return result;
@@ -192,8 +198,18 @@
         }
 
         function dataServiceError(errorResponse) {
-            $log.error('XHR Failed for BaseService');
-            $log.error(errorResponse);
+            if (errorResponse != undefined) {
+                if (errorResponse.status == 403) {
+                    $state.go('apolo.error_403');
+                } else if (errorResponse.status == 404) {
+                    $state.go('apolo.error_404');
+                } else if (errorResponse.status == 500) {
+                    $state.go('apolo.error_500');
+                } else {
+                    console.error(errorResponse);
+                }
+            }
+
             return errorResponse;
         }
     }

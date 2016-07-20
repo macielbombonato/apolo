@@ -5,8 +5,14 @@
         .module('apolo.tenant')
         .service('TenantService', TenantService);
 
-    TenantService.$inject = ['BaseService'];
-    function TenantService(baseService) {
+    TenantService.$inject = [
+        '$translate',
+        'BaseService'
+    ];
+    function TenantService(
+        $translate,
+        baseService
+    ) {
 
         this.list = list;
         this.get = get;
@@ -107,12 +113,6 @@
             return result;
         }
 
-
-        function dataServiceError(errorResponse) {
-            $log.error('XHR Failed for ShowService');
-            $log.error(errorResponse);
-            return errorResponse;
-        }
     }
 
 })();

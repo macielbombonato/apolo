@@ -13,6 +13,16 @@
     }
   },
 
+  "error": {
+    "title": "Erro",
+    "description": "Informe os dados do erro abaixo ao administrador do sistema",
+    "403": "Acesso negado",
+    "404": "Página não encontrada",
+    "500": "Erro interno no servidor",
+
+    "you_cant_access_resource": "Você não pode acessar este recurso, caso precise deste acesso, por favor, contate o administrador do sistema"
+  },
+
   "permission": {
     "ADMIN": "Administrar o Sistema",
     "TENANT_CREATE": "Unidade - Criar",

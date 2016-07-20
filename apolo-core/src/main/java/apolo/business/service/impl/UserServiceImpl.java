@@ -266,17 +266,6 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 		return user;
 	}
 
-	@Override
-	public User findBySession(
-			String sessionId
-	) {
-		User user = null;
-
-		user = userRepository.findBySessionId(sessionId);
-
-		return user;
-	}
-
 	public User find(Tenant tenant, Long id) {
 		return userRepository.findByTenantAndId(tenant, id);
 	}
