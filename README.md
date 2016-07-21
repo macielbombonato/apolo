@@ -4,7 +4,7 @@
 
 Este projeto é uma iniciativa open source para que os desenvolvedores ganhem tempo no startup de seus sistemas, tendo uma base consistente e de fácil expansão.
 
-Basicamente, imagene que em todo projeto que iniciamos, temos que definir a arquitetura, que componentes iremos utilizar, e contruir um utilitário ou outro para isso ou aquilo.
+Basicamente, imagine que em todo projeto que iniciamos, temos que definir a arquitetura, que componentes iremos utilizar, e contruir um utilitário ou outro para isso ou aquilo.
 
 O Apolo tem alguns recursos desses já construidos, por exemplo:
 
@@ -16,25 +16,24 @@ O Apolo tem alguns recursos desses já construidos, por exemplo:
 - Controle de upload de arquivos;
 - Interface administrativa responsiva;
 - Sistema de auditoria de dados (trilha de auditoria);
-- Dentre outros que já existem e virão em breve;
+- e assim por diante;
 
-Basicamente, a ideia é ajudar e agilizar a vida dos programadores que utilizarem este projeto, onde, fazendo um fork deste, já é possível iniciar o seu projeto.
+A ideia é ajudar e agilizar a vida dos programadores que utilizarem este projeto, onde, fazendo um fork deste, já é possível iniciar o seu projeto focando apenas nas regras de negócio específicas do sistema.
 
 
-## Faça sua cópia
+## Versões do sistema
 
-O Apolo é versionado com git, portanto, para fazer sua cópia do código e controlá-la, será necessário ter o git em sua
-máquina.
+Normalmente tento deixar a última versão do Apolo [neste endereço](http://dimeric.com.br).
 
-Há algum tempo eu fiz um "tutorialzinho" de alguns comandos git e para que eles servem:
-[http://macielbombonato.blogspot.com.br/2012/02/utilizando-git-versionador-local.html](http://macielbombonato.blogspot.com.br/2012/02/utilizando-git-versionador-local.html),
-Este tutorial deve ajudar um pouco para realizar operações via linha de comando.
+Como se trata de um servidor meu para testes de aplicativos que estou atuando em regime de free lancer ou algo parecido, é bem possível de vez em quando encontrar outro sistema nesse endereço e não o Apolo.
 
-## Crie seu Fork deste projeto
+Na versão 5.0 aconteceu uma grande mudança arquitetural no sistema onde a aplicação de servidor é inteiramente uma API e a aplicação de cliente é AngularJS.
 
-Caso queira montar um projeto a partir deste e queira deixá-lo versionado aqui no bitbucket, use a opção "Fork" que encontra-se no topo da tela. O processo é rápido e o passo a passo é bem simples.
+Irei documentar todas essas alterações assim que deixar ele mais redondo e com poucas coisas a fazer.
 
-Espero que este projeto lhe seja útil e tendo sugestões ou encontrando problemas, por favor, entre em contato ou abra uma issue aqui no bitbucket.
+Caso você que está lendo, ache a ideia do Apolo interessante mas encontre problemas de código ou até mesmo conceituais, me ajude a deixar este sistema que serve (a principio) apenas para estudo, uma plataforma mais forte e coesa, envie sugestões para meu [e-mail](mailto:maciel.bombonato@gmail.com).
+
+OBS.: Como se trata de um projeto pessoal, os pontos que preciso desenvolver dele são basicamente ideias que tendo registrar sempre que possível na lista de incidentes no [Bitbucket](https://bitbucket.org/macielbombonato/apolo/issues), mas muita coisa que é feita não está lá e isso pode ser visto nos comentários de commit que quando são feitos por conta de uma issue, possuem referência a mesma.
 
 ## Configurações de ambiente
 
@@ -77,8 +76,6 @@ Abaixo estão as variáveis de ambiente que devem ser configuradas em seu servid
 	export APOLO_DATASOURCE_PASSWORD="pass"
 	export APOLO_HIBERNATE_SHOW_AND_FORMAT_SQL="true"
 
-	export APOLO_FACEBOOK_APP_ID="YOURAPPID"
-	export APOLO_FACEBOOK_APP_SECRET="YOURAPPSECRET"
 
 ## Primeiros passos
 
@@ -115,15 +112,19 @@ Abaixo segue um exemplo de URL para deploy remoto:
 
 	http://endereco_do_seu_servidor:8080/manager/text
 
-Tudo certinho? execute o seguinte comando no diretório da aplicação:
+Tudo certinho? execute o seguinte comando no diretório da aplicação api ou web:
 
 	$ mvn clean install tomcat7:redeploy
 
 No final do processo, o maven irá fazer o deploy automaticamente.
 
+Quando o deploy for feito na API a URL de acesso no servidor terminará com /api e a camada web é instalada no root do servidor.
+
 ## Licença
 
-Apolo é um software de código aberto, você pode redistribuí-lo e/ou modificá-lo conforme a licença Apache versão 2.0. Veja o arquivo LICENSE-Apache.txt
+Apolo API é um software de código aberto, você pode redistribuí-lo e/ou modificá-lo conforme a licença Apache versão 2.0. Veja o arquivo LICENSE-Apache.txt.
+
+**A versão WEB** utiliza o template **[Angle](https://wrapbootstrap.com/theme/angle-bootstrap-admin-template-WB04HF123)**, então, antes de utilizá-la, você precisa comprar sua cópia através do link informado anteriormente.
 
 ## API
 
