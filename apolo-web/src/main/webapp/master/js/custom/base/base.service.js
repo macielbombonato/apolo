@@ -198,15 +198,15 @@
         }
 
         function dataServiceError(errorResponse) {
+            console.error(errorResponse);
+
             if (errorResponse != undefined) {
-                if (errorResponse.status == 403) {
-                    $state.go('apolo.error_403');
-                } else if (errorResponse.status == 404) {
-                    $state.go('apolo.error_404');
-                } else if (errorResponse.status == 500) {
-                    $state.go('apolo.error_500');
+                var route = 'apolo.error_' + errorResponse.status;
+
+                if (errorResponse.status == 401) {
+                    $state.go('login');
                 } else {
-                    console.error(errorResponse);
+                    $state.go(route);
                 }
             }
 

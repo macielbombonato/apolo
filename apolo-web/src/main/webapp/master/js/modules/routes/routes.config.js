@@ -58,6 +58,12 @@
                 templateUrl: helper.basepath('home.html')
             })
 
+            .state('apolo.error_401', {
+                url: '/401',
+                title: 'Apolo',
+                templateUrl: helper.basepath('partials/error/401.html')
+            })
+
             .state('apolo.error_403', {
                 url: '/403',
                 title: 'Apolo',

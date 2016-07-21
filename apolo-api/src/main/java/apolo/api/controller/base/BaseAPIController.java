@@ -60,14 +60,12 @@ public abstract class BaseAPIController<E extends BaseEntity> extends BaseContro
     }
 
     protected boolean checkAccess(
-            BaseAPIModel model,
+            User user,
             String tenantUrl,
             HttpServletRequest request,
             Permission... permission) {
 
         boolean hasAccess = false;
-
-        User user = getUserFromRequest(request);
 
         if (user != null) {
 
@@ -97,6 +95,26 @@ public abstract class BaseAPIController<E extends BaseEntity> extends BaseContro
                 }
             }
         }
+
+        return hasAccess;
+    }
+
+    protected boolean checkAccess(
+            BaseAPIModel model,
+            String tenantUrl,
+            HttpServletRequest request,
+            Permission... permission) {
+
+        boolean hasAccess = false;
+
+        User user = getUserFromRequest(request);
+
+        hasAccess = checkAccess(
+                user,
+                tenantUrl,
+                request,
+                permission
+        );
 
         if (!hasAccess) {
             model.setMessage(MessageBundle.getMessageBundle("error.403"));
