@@ -15,6 +15,7 @@
     ) {
 
         this.list = list;
+        this.listAll = listAll;
         this.get = get;
         this.create = create;
         this.edit = edit;
@@ -36,6 +37,20 @@
             } else {
                 result = $translate.instant('message.access_denied');
             }
+
+            return result;
+        }
+
+        function listAll() {
+            var result = null;
+
+            result = baseService.get('/permission-group/list').then(
+                function(response) {
+                    var groups = response;
+
+                    return groups;
+                }
+            );
 
             return result;
         }

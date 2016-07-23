@@ -85,8 +85,7 @@
 
                             function(userResponse) {
                                 if (userResponse != undefined) {
-                                    permissionGroupService.list(
-                                        $rootScope.principal.token).then(
+                                    permissionGroupService.listAll().then(
 
                                         function(groupResponse) {
                                             vm.groups = groupResponse.list;
@@ -119,8 +118,7 @@
                 if ($rootScope.principal != undefined
                     && $rootScope.principal != null) {
 
-                    permissionGroupService.list(
-                        $rootScope.principal.token).then(
+                    permissionGroupService.listAll().then(
 
                         function(response) {
                             vm.groups = response.list;
@@ -190,8 +188,7 @@
 
                             function(userResponse) {
                                 if (userResponse != undefined) {
-                                    permissionGroupService.list(
-                                        $rootScope.principal.token).then(
+                                    permissionGroupService.listAll().then(
 
                                         function(groupResponse) {
                                             vm.groups = groupResponse.list;
@@ -266,8 +263,7 @@
                 if ($rootScope.principal != undefined
                     && $rootScope.principal != null) {
 
-                    permissionGroupService.list(
-                        $rootScope.principal.token).then(
+                    permissionGroupService.listAll().then(
 
                         function(groupResponse) {
                             vm.groups = groupResponse.list;

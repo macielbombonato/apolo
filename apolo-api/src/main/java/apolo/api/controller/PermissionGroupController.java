@@ -57,6 +57,39 @@ public class PermissionGroupController extends BaseAPIController<PermissionGroup
                 response.setStatus(404);
             }
         } else {
+            response.setStatus(403);
+        }
+
+        return result;
+    }
+
+    @CrossOrigin(origins = "*")
+    @PreAuthorize("permitAll")
+    @RequestMapping(
+            value = "list",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            method = RequestMethod.GET
+    )
+    public @ResponseBody
+    ModelList<PermissionGroupDTO> listAll(
+            HttpServletRequest request,
+            HttpServletResponse response
+    ) {
+        ModelList<PermissionGroupDTO> result = new ModelList<PermissionGroupDTO>();
+
+        if (request.getUserPrincipal() != null) {
+            List<PermissionGroup> entities = permissionGroupService.list();
+
+            if (entities != null
+                    && entities.size() > 0) {
+                result.setList(permissionGroupHelper.toDTOList(entities));
+
+                response.setStatus(200);
+
+            } else {
+                response.setStatus(404);
+            }
+        } else {
             response.setStatus(401);
         }
 
