@@ -158,6 +158,8 @@
                 if ($rootScope.principal != undefined
                     && $rootScope.principal != null) {
 
+                    $('.container-form').addClass('whirl line back-and-forth grow');
+
                     if ($stateParams != undefined
                         && $stateParams.id != undefined) {
 
@@ -175,6 +177,7 @@
                                     vm.messageType = "alert text-center alert-info";
                                 }
 
+                                $('.container-form').removeClass('whirl line back-and-forth grow');
                             }
                         );
                     } else {
