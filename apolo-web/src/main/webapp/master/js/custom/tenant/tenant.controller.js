@@ -41,6 +41,8 @@
                 if ($rootScope.principal != undefined
                     && $rootScope.principal != null) {
 
+                    $('.container-list').addClass('whirl line back-and-forth grow');
+
                     var pageNumber = $location.search().pageNumber;
 
                     if (pageNumber == undefined) {
@@ -54,6 +56,8 @@
                         function(response) {
                             vm.tenants = response;
                             $scope.pagination = vm.tenants.pagination;
+
+                            $('.container-list').removeClass('whirl line back-and-forth grow');
                         }
                     );
                 } else {
@@ -66,6 +70,8 @@
             vm.view = function() {
                 if ($rootScope.principal != undefined
                     && $rootScope.principal != null) {
+
+                    $('.container-form').addClass('whirl line back-and-forth grow');
 
                     if ($stateParams != undefined
                         && $stateParams.id != undefined) {
@@ -82,6 +88,7 @@
                                     vm.messageType = "alert text-center alert-info";
                                 }
 
+                                $('.container-form').removeClass('whirl line back-and-forth grow');
                             }
                         );
                     } else {
@@ -115,6 +122,8 @@
                 if ($rootScope.principal != undefined
                     && $rootScope.principal != null) {
 
+                    $('.container-form').addClass('whirl line back-and-forth grow');
+
                     tenantService.create(
                         $rootScope.principal.token,
                         vm.tenant).then(
@@ -131,6 +140,8 @@
                                 vm.message = $translate.instant('message.save_error');
                                 vm.messageType = "alert text-center alert-danger";
                             }
+
+                            $('.container-form').removeClass('whirl line back-and-forth grow');
                         }
                     );
                 } else {
@@ -181,6 +192,8 @@
                 if ($rootScope.principal != undefined
                     && $rootScope.principal != null) {
 
+                    $('.container-form').addClass('whirl line back-and-forth grow');
+
                     tenantService.edit(
                         $rootScope.principal.token,
                         vm.tenant).then(
@@ -197,6 +210,8 @@
                                 vm.message = $translate.instant('message.save_error');
                                 vm.messageType = "alert text-center alert-danger";
                             }
+
+                            $('.container-form').removeClass('whirl line back-and-forth grow');
                         }
                     );
                 } else {

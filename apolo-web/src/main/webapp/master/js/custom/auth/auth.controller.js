@@ -35,6 +35,8 @@
 
                 if (vm.loginForm.$valid) {
 
+                    $('.container-auth').addClass('whirl line back-and-forth grow');
+
                     authService.login({username: vm.account.email, password: vm.account.password}).then(
                         function (response) {
                             if (response != undefined && response.id != null) {
@@ -55,8 +57,12 @@
 
                                 $rootScope.userBlockVisible = true;
                                 $rootScope.$broadcast('toggleUserBlock');
+
+                                $('.container-auth').removeClass('whirl line back-and-forth grow');
                             } else {
                                 vm.message = $translate.instant('auth.error_message');
+
+                                $('.container-auth').removeClass('whirl line back-and-forth grow');
                             }
                         }
                     );
