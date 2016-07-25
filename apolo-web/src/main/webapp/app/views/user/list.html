@@ -43,7 +43,8 @@
                                         <th translate="user.mobile">
                                             Mobile
                                         </th>
-                                        <th translate="common.actions">
+                                        <th translate="common.actions"
+                                            apolo-permission="USER_EDIT, USER_REMOVE">
                                             Actions
                                         </th>
                                     </tr>
@@ -61,11 +62,13 @@
                                         <td>
                                             {{user.mobile}}
                                         </td>
-                                        <td>
+                                        <td apolo-permission="USER_EDIT, USER_REMOVE">
                                             <a href='#/user/{{user.id}}/edit'
                                                class="btn btn-default"
                                                data-toggle="tooltip"
-                                               title="{{'common.edit' | translate}}">
+                                               title="{{'common.edit' | translate}}"
+                                               apolo-permission="USER_EDIT"
+                                               >
                                                 <i class="fa fa-pencil-square-o"></i>
                                             </a>
                                         </td>

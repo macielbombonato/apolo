@@ -8,7 +8,7 @@
             'angularFileUpload',
             /* Apolo */
             'apolo',
-            'apolo.baseService',
+            'apolo.base',
             /*...*/
             'apolo.static',
             'apolo.auth',

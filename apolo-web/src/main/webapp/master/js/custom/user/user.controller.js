@@ -207,7 +207,6 @@
                             $rootScope.tenant.url,
                             $rootScope.principal.token,
                             $stateParams.id).then(
-
                             function(userResponse) {
                                 vm.user = userResponse;
 

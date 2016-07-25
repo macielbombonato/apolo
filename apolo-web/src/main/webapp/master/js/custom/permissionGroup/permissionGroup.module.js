@@ -3,6 +3,6 @@
 
     angular
         .module('apolo.permissionGroup', [
-            'apolo.baseService'
+            'apolo.base'
         ]);
 })();

@@ -2,5 +2,5 @@
     'use strict';
 
     angular
-        .module('apolo.baseService', []);
+        .module('apolo.base', []);
 })();

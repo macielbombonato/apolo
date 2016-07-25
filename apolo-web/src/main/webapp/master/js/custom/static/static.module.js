@@ -3,6 +3,6 @@
 
     angular
         .module('apolo.static', [
-            'apolo.baseService'
+            'apolo.base'
         ]);
 })();

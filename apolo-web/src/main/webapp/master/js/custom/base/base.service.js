@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('apolo.baseService')
+        .module('apolo.base')
         .service('BaseService', BaseService);
 
     BaseService.$inject = [
@@ -41,11 +41,6 @@
                         }
                     }
                 }
-            }
-
-            if (!result) {
-                $rootScope.error_message = $translate.instant('error.you_cant_access_resource');
-                $state.go('apolo.error_403');
             }
 
             return result;
