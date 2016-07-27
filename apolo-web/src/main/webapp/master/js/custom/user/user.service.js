@@ -80,7 +80,8 @@
         function edit(tenantUrl, apiToken, entity) {
             var result = null;
 
-            if (baseService.checkPermission(['USER_EDIT'])) {
+            if (entity.id == $rootScope.principal.id
+                || baseService.checkPermission(['USER_EDIT'])) {
                 result = baseService.putWithKey('/'+ tenantUrl +'/user', entity, apiToken);
             } else {
                 result = $translate.instant('message.access_denied');

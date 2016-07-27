@@ -203,34 +203,54 @@
                     if ($stateParams != undefined
                         && $stateParams.id != undefined) {
 
-                        userService.get(
-                            $rootScope.tenant.url,
-                            $rootScope.principal.token,
-                            $stateParams.id).then(
-                            function(userResponse) {
-                                vm.user = userResponse;
+                        if ($stateParams.id == $rootScope.principal.id) {
 
-                                vm.createUploader();
+                            vm.user = $rootScope.principal;
 
-                                if (userResponse != undefined) {
-                                    $('.permission-list').addClass('whirl line back-and-forth grow');
+                            vm.createUploader();
 
-                                    permissionGroupService.listAll().then(
-                                        function(groupResponse) {
-                                            vm.groups = groupResponse.list;
+                            $('.permission-list').addClass('whirl line back-and-forth grow');
 
-                                            $('.permission-list').removeClass('whirl line back-and-forth grow');
-                                        }
-                                    );
+                            permissionGroupService.listAll().then(
+                                function(groupResponse) {
+                                    vm.groups = groupResponse.list;
 
-                                } else {
-                                    vm.message = $translate.instant('message.no_data_found');
-                                    vm.messageType = "alert text-center alert-info";
+                                    $('.permission-list').removeClass('whirl line back-and-forth grow');
                                 }
+                            );
 
-                                $('.container-form').removeClass('whirl line back-and-forth grow');
-                            }
-                        );
+                            $('.container-form').removeClass('whirl line back-and-forth grow');
+
+                        } else {
+                            userService.get(
+                                $rootScope.tenant.url,
+                                $rootScope.principal.token,
+                                $stateParams.id).then(
+                                function(userResponse) {
+                                    vm.user = userResponse;
+
+                                    vm.createUploader();
+
+                                    if (userResponse != undefined) {
+                                        $('.permission-list').addClass('whirl line back-and-forth grow');
+
+                                        permissionGroupService.listAll().then(
+                                            function(groupResponse) {
+                                                vm.groups = groupResponse.list;
+
+                                                $('.permission-list').removeClass('whirl line back-and-forth grow');
+                                            }
+                                        );
+
+                                    } else {
+                                        vm.message = $translate.instant('message.no_data_found');
+                                        vm.messageType = "alert text-center alert-info";
+                                    }
+
+                                    $('.container-form').removeClass('whirl line back-and-forth grow');
+                                }
+                            );
+                        }
                     } else {
                         $state.go("apolo.user.list");
                     }
@@ -292,16 +312,16 @@
                 if ($rootScope.principal != undefined
                     && $rootScope.principal != null) {
 
+                    vm.user = $rootScope.principal;
+
+                    vm.createUploader();
+
                     $('.container-form').addClass('whirl line back-and-forth grow');
 
                     permissionGroupService.listAll().then(
 
                         function(groupResponse) {
                             vm.groups = groupResponse.list;
-
-                            vm.user = $rootScope.principal;
-
-                            vm.createUploader();
 
                             $('.container-form').removeClass('whirl line back-and-forth grow');
                         }

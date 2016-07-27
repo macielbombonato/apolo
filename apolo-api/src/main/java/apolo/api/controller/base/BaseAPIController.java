@@ -129,27 +129,31 @@ public abstract class BaseAPIController<E extends BaseEntity> extends BaseContro
         String apiKey = request.getHeader("key");
         String sessionId = request.getSession().getId();
 
+        String username = request.getUserPrincipal() != null ? request.getUserPrincipal().getName() : null;
+
         User result = null;
 
         if (apiKey != null) {
             result = userService.findByToken(apiKey, sessionId);
+        } else if (username != null && !"".equals(username)) {
+            result = userService.findByLogin(username);
+        }
 
-            if (result != null) {
-                // Set permission to see only the code screen.
-                Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+        if (result != null) {
+            // Set permission to see only the code screen.
+            Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
 
-                authorities = userService.loadUserAuthorities(result);
+            authorities = userService.loadUserAuthorities(result);
 
-                Authentication authentication = new CurrentUser(
-                        result.getId(),
-                        result.getEmail(),
-                        result.getPassword().toLowerCase(),
-                        result,
-                        authorities
-                );
+            Authentication authentication = new CurrentUser(
+                    result.getId(),
+                    result.getEmail(),
+                    result.getPassword().toLowerCase(),
+                    result,
+                    authorities
+            );
 
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-            }
+            SecurityContextHolder.getContext().setAuthentication(authentication);
         }
 
         return result;

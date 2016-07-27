@@ -26,7 +26,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
 @Controller
 @RequestMapping(value = "/file")
@@ -59,15 +58,13 @@ public class FileController extends BaseAPIController<BaseEntity> {
 			response.setStatus(401);
 			throw new AccessDeniedException(MessageBundle.getMessageBundle("error.401"));
 		} else {
-			List<User> users = userService.findByLogin(request.getUserPrincipal().getName());
+			User user = userService.findByLogin(request.getUserPrincipal().getName());
 
-			if (users != null
-					&& !users.isEmpty()
-					&& users.size() > 0) {
-				Tenant tenant = users.get(0).getTenant();
+			if (user != null) {
+				Tenant tenant = user.getTenant();
 
 				if (!tenantUrl.equals(tenant.getUrl())
-						&& !checkAccess(users.get(0), tenantUrl, request, Permission.TENANT_MANAGER)) {
+						&& !checkAccess(user, tenantUrl, request, Permission.TENANT_MANAGER)) {
 					authorized = false;
 				}
 			}

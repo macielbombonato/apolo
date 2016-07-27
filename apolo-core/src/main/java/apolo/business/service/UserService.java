@@ -7,7 +7,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Collection;
-import java.util.List;
 
 public interface UserService extends BaseService<User> {
 
@@ -15,7 +14,7 @@ public interface UserService extends BaseService<User> {
 
 	User findByLogin(Tenant tenant, String login);
 
-	List<User> findByLogin(String login);
+	User findByLogin(String login);
 
 	User save(String serverUrl, User user, boolean changePassword);
 

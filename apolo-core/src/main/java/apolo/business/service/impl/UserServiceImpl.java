@@ -185,40 +185,38 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 	public void generateResetPasswordToken(String serverUrl, String email) {
 		if (email != null
 				&& !"".equals(email)) {
-			List<User> userList = this.findByLogin(email);
+			User user = this.findByLogin(email);
 
-			for(User user : userList) {
-				if (user != null) {
-					try {
-						String token = apoloCrypt.encode(
-								user.getEmail(),
-								user.getTenant().getName() + user.getName(),
-								applicationProperties.getIvKey()
-						);
+			if (user != null) {
+				try {
+					String token = apoloCrypt.encode(
+							user.getEmail(),
+							user.getTenant().getName() + user.getName(),
+							applicationProperties.getIvKey()
+					);
 
-						user.setResetPasswordToken(token);
-						user.setResetPasswordSentAt(new Date());
+					user.setResetPasswordToken(token);
+					user.setResetPasswordSentAt(new Date());
 
-						user = this.save(user);
+					user = this.save(user);
 
-						emailService.sendAsync(
-								user.getTenant(),
-								user.getTenant().getName(),
-								user.getTenant().getEmailFrom(),
-								user.getName(),
-								user.getEmail(),
-								MessageBundle.getMessageBundle("user.forgot-password.email.subject"),
-								messageBuilder.buildResetPasswordMessage(
-										serverUrl + "reset-password/",
-										MessageBundle.getMessageBundle("user.forgot-password.email.subject"),
-										MessageBundle.getMessageBundle("user.forgot-password.email.message"),
-										user.getResetPasswordToken(),
-										MessageBundle.getMessageBundle("user.forgot-password.email.footer")
-								)
-						);
-					} catch (Exception e) {
-						log.error(e.getMessage(), e);
-					}
+					emailService.sendAsync(
+							user.getTenant(),
+							user.getTenant().getName(),
+							user.getTenant().getEmailFrom(),
+							user.getName(),
+							user.getEmail(),
+							MessageBundle.getMessageBundle("user.forgot-password.email.subject"),
+							messageBuilder.buildResetPasswordMessage(
+									serverUrl + "reset-password/",
+									MessageBundle.getMessageBundle("user.forgot-password.email.subject"),
+									MessageBundle.getMessageBundle("user.forgot-password.email.message"),
+									user.getResetPasswordToken(),
+									MessageBundle.getMessageBundle("user.forgot-password.email.footer")
+							)
+					);
+				} catch (Exception e) {
+					log.error(e.getMessage(), e);
 				}
 			}
 		}
@@ -274,7 +272,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 		return userRepository.findUserByTenantAndEmail(tenant, login);
 	}
 
-	public List<User> findByLogin(String login) {
+	public User findByLogin(String login) {
 		return userRepository.findUserByEmail(login);
 	}
 
@@ -539,12 +537,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 			User dbUser = null;
 			if (user.getEmail() != null
 					&& !"".equals(user.getEmail())) {
-				List<User> dbUserList = findByLogin(user.getEmail());
-
-				if (dbUserList != null
-						&& !dbUserList.isEmpty()){
-					dbUser = dbUserList.get(0);
-				}
+				dbUser = findByLogin(user.getEmail());
 			}
 
 			if (dbUser == null) {

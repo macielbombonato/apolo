@@ -45,7 +45,9 @@ public class PermissionGroupController extends BaseAPIController<PermissionGroup
         ModelList<PermissionGroupDTO> result = new ModelList<PermissionGroupDTO>();
 
         if (checkAccess(result, null, request, Permission.PERMISSION_GROUP_LIST)) {
-            List<PermissionGroup> entities = permissionGroupService.list();
+            User user = getUserFromRequest(request);
+
+            List<PermissionGroup> entities = permissionGroupService.list(user);
 
             if (entities != null
                     && entities.size() > 0) {
@@ -78,7 +80,9 @@ public class PermissionGroupController extends BaseAPIController<PermissionGroup
         ModelList<PermissionGroupDTO> result = new ModelList<PermissionGroupDTO>();
 
         if (request.getUserPrincipal() != null) {
-            List<PermissionGroup> entities = permissionGroupService.list();
+            User user = getUserFromRequest(request);
+
+            List<PermissionGroup> entities = permissionGroupService.list(user);
 
             if (entities != null
                     && entities.size() > 0) {

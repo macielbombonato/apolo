@@ -14,7 +14,7 @@ import org.springframework.data.repository.query.Param;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 
-	List<User> findUserByEmail(String email);
+	User findUserByEmail(String email);
 
 	User findUserByTenantAndEmail(Tenant tenant, String email);
 

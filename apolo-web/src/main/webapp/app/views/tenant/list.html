@@ -40,7 +40,7 @@
                                         <th translate="common.status">
                                             Status
                                         </th>
-                                        <th translate="common.actions">
+                                        <th translate="common.actions" apolo-permission="TENANT_EDIT, TENANT_REMOVE, TENANT_MANAGER">
                                             Actions
                                         </th>
                                     </tr>
@@ -58,18 +58,20 @@
                                         <td>
                                             {{'status.' + tenant.status | translate}}
                                         </td>
-                                        <td>
+                                        <td apolo-permission="TENANT_EDIT, TENANT_REMOVE, TENANT_MANAGER">
                                             <a href='#/tenant/{{tenant.id}}/edit'
                                                class="btn btn-default"
                                                data-toggle="tooltip"
-                                               title="{{'common.edit' | translate}}">
+                                               title="{{'common.edit' | translate}}"
+                                               apolo-permission="TENANT_EDIT">
                                                 <i class="fa fa-pencil-square-o"></i>
                                             </a>
 
                                             <a href='#/tenant/{{tenant.id}}/changeTenant'
                                                class="btn btn-danger"
                                                data-toggle="tooltip"
-                                               title="{{'tenant.change' | translate}}">
+                                               title="{{'tenant.change' | translate}}"
+                                               apolo-permission="TENANT_MANAGER">
                                                 <i class="fa fa-exchange"></i>
                                             </a>
                                         </td>

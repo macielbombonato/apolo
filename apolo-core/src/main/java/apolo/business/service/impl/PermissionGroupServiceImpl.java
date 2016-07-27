@@ -33,20 +33,39 @@ public class PermissionGroupServiceImpl extends BaseServiceImpl<PermissionGroup>
 	}
 
 	@Override
-	public List<PermissionGroup> list() {
+	public List<PermissionGroup> list(User user) {
 		Sort request = new Sort(new Sort.Order(Sort.Direction.ASC, "name"));
 
 		List<PermissionGroup> result = null;
 
-		if (getAuthenticatedUser().getPermissions().contains(Permission.ADMIN)) {
-			result = permissionGroupRepository.findAll(
-					request
-			);
-		} else {
-			result = permissionGroupRepository.findByNameNot(
-					MessageBundle.getMessageBundle("user.permission.ADMIN"),
-					request
-			);
+		if (user != null) {
+			if (user.getPermissions().contains(Permission.ADMIN)) {
+				result = permissionGroupRepository.findAll(
+						request
+				);
+			} else {
+				result = permissionGroupRepository.findByNameNot(
+						MessageBundle.getMessageBundle("user.permission.ADMIN"),
+						request
+				);
+
+				// A user only can see permissions that he has, otherwise, he can improve your own access
+				List<PermissionGroup> permissionToRemove = new ArrayList<PermissionGroup>();
+
+				for(PermissionGroup permGroup : result) {
+					for(Permission perm : permGroup.getPermissions()) {
+						if (!user.getPermissions().contains(perm)) {
+							permissionToRemove.add(permGroup);
+						}
+					}
+				}
+
+				if (!permissionToRemove.isEmpty()) {
+					for (PermissionGroup perm : permissionToRemove) {
+						result.remove(perm);
+					}
+				}
+			}
 		}
 
 		return result;
