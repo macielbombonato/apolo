@@ -256,7 +256,10 @@ public class UserController extends BaseAPIController<User> {
     ) {
         UserDTO result = new UserDTO();
 
-        if (checkAccess(result, tenantUrl, request, Permission.USER_EDIT)) {
+        User user = getUserFromRequest(request);
+
+        if ((user != null && user.getId().equals(dto.getId())) ||
+                checkAccess(result, tenantUrl, request, Permission.USER_EDIT)) {
             Tenant tenant = getDBTenant(tenantUrl);
 
             boolean hasChangePassword = false;
