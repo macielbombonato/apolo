@@ -10,7 +10,7 @@ public class TenantDTO extends BaseAPIModel {
     private String url;
     private String theme;
     private Status status;
-    private Boolean showAdds;
+    private Boolean showAds;
 
     public Long getId() {
         return id;
@@ -52,11 +52,11 @@ public class TenantDTO extends BaseAPIModel {
         this.status = status;
     }
 
-    public Boolean getShowAdds() {
-        return showAdds;
+    public Boolean getShowAds() {
+        return showAds;
     }
 
-    public void setShowAdds(Boolean showAdds) {
-        this.showAdds = showAdds;
+    public void setShowAds(Boolean showAds) {
+        this.showAds = showAds;
     }
 }

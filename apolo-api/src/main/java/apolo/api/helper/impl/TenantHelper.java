@@ -18,7 +18,7 @@ public class TenantHelper implements ApoloHelper<Tenant, TenantDTO> {
             to.setId(from.getId());
             to.setName(from.getName());
             to.setUrl(from.getUrl());
-            to.setShowAdds(from.getShowAdds());
+            to.setShowAds(from.getShowAds());
             to.setStatus(from.getStatus());
             to.setTheme(from.getTheme());
         }
@@ -45,7 +45,7 @@ public class TenantHelper implements ApoloHelper<Tenant, TenantDTO> {
             to.setId(from.getId());
             to.setName(from.getName());
             to.setUrl(from.getUrl());
-            to.setShowAdds(from.getShowAdds());
+            to.setShowAds(from.getShowAds());
             to.setStatus(from.getStatus());
             to.setTheme(from.getTheme());
         }

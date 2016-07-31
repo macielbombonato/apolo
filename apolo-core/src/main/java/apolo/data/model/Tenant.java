@@ -41,9 +41,9 @@ public class Tenant extends AuditableBaseEntity {
 	@NotNull
 	private Status status;
 
-	@Column(name = "has_show_adds", nullable = true)
+	@Column(name = "has_show_ads", nullable = true)
 	@Type(type="yes_no")
-	private Boolean showAdds;
+	private Boolean showAds;
 
 	@Column(name = "email_from", length = InputLength.NAME, nullable = true)
 	private String emailFrom;
@@ -188,12 +188,12 @@ public class Tenant extends AuditableBaseEntity {
 		this.status = status;
 	}
 
-	public Boolean getShowAdds() {
-		return this.showAdds;
+	public Boolean getShowAds() {
+		return showAds;
 	}
 
-	public void setShowAdds(Boolean showAdds) {
-		this.showAdds = showAdds;
+	public void setShowAds(Boolean showAds) {
+		this.showAds = showAds;
 	}
 
 	public Boolean getSendAuthEmail() {

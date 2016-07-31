@@ -30,7 +30,6 @@ var ignored_files = '!'+hidden_files;
 // MAIN PATHS
 var paths = {
   app:     '../app/',
-  markup:  'jade/',
   styles:  'less/',
   scripts: 'js/'
 }
@@ -231,20 +230,6 @@ gulp.task('styles:themes', function() {
         .pipe(gulp.dest(build.styles));
 });
 
-// JADE
-gulp.task('templates:index', function() {
-    log('Building index..');
-
-    var tplscript = gulp.src(build.templates.cache, {read: false});
-    return gulp.src(source.templates.index)
-        .pipe( $.if(useCache, $.inject(tplscript, injectOptions)) ) // inject the templates.js into index
-        .pipe( $.jade() )
-        .on('error', handleError)
-        .pipe($.htmlPrettify( prettifyOpts ))
-        .pipe(gulp.dest(build.templates.index))
-        ;
-});
-
 //---------------
 // WATCH
 //---------------
@@ -258,7 +243,6 @@ gulp.task('watch', function() {
   gulp.watch(source.scripts,         ['scripts:app']);
   gulp.watch(source.styles.watch,    ['styles:app', 'styles:app:rtl']);
   gulp.watch(source.styles.themes,   ['styles:themes']);
-  gulp.watch(source.templates.index, ['templates:index']);
 
   // a delay before triggering browser reload to ensure everything is compiled
   var livereloadDelay = 1500;
@@ -343,8 +327,7 @@ gulp.task('assets',[
           'scripts:app',
           'styles:app',
           'styles:app:rtl',
-          'styles:themes',
-          'templates:index'
+          'styles:themes'
         ]);
 
 
