@@ -3,9 +3,9 @@
 
     angular
         .module('apolo.base')
-        .directive('apoloGoogleAnalytics', adSense);
+        .directive('apoloGoogleAnalytics', analytics);
 
-    adSense.$inject = [
+    analytics.$inject = [
         '$state',
         '$rootScope',
         '$translate',
@@ -13,7 +13,7 @@
         '$compile',
         'BaseService'
     ];
-    function adSense(
+    function analytics(
         $state,
         $rootScope,
         $translate,
@@ -33,11 +33,6 @@
 
         analyticsTpl = analyticsTpl + 'ga("create", "' + $rootScope.googleAnalyticsUserAccount + '", "auto");';
 
-        if ($rootScope.principal != undefined && $rootScope.principal != null && $rootScope.principal.email != null) {
-            analyticsTpl = analyticsTpl + 'ga("set", "userId", "' + $rootScope.principal.email + '"';
-        }
-
-        analyticsTpl = analyticsTpl + 'ga("send", "pageview");';
         analyticsTpl = analyticsTpl + '</script>';
         analyticsTpl = analyticsTpl + '</div>';
 

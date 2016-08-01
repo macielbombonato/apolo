@@ -26,6 +26,24 @@
         $rootScope.googleAdClient = GOOGLE_AD_CLIENT;
         $rootScope.googleAdSlot = GOOGLE_AD_SLOT;
 
+        $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
+            try {
+                ga('set', 'title', toState.title);
+                ga('set', 'location', toState.url);
+
+                if ($rootScope.principal != undefined
+                    && $rootScope.principal != null
+                    && $rootScope.principal.email != null) {
+                    ga("set", "userId", $rootScope.principal.email);
+                }
+
+                ga('send', 'pageview');
+            }
+            catch(err) {
+                console.error(err.message);
+            }
+        });
+
     }
 
 })();
