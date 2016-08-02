@@ -169,6 +169,8 @@
     "showAds": "Exibir anúncios?",
     "status": "Status",
 
+    "change": "Utilizar Unidade",
+
     "list": {
       "title": "Lista de Unidades",
       "description": "Lista de unidades participantes no sistema"

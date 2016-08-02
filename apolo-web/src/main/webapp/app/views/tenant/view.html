@@ -10,12 +10,20 @@
 
         <div class="form-group">
           <br />
-          <a class="btn btn-default"
-             href="#/tenant/list"
-             translate="common.back"
-                  >
-            Cancel
-          </a>
+            <a class="btn btn-default"
+                 href="#/tenant/list"
+                 translate="common.back"
+                      >
+                Cancel
+            </a>
+
+            <a href='#/tenant/{{ctrl.tenant.id}}/changeTenant'
+                class="btn btn-danger"
+                data-toggle="tooltip"
+                apolo-permission="TENANT_MANAGER">
+                <i class="fa fa-exchange"></i>
+                {{'tenant.change' | translate}}
+            </a>
 
         </div>
       </form>
