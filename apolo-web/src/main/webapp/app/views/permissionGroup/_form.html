@@ -35,7 +35,7 @@
                    close-on-select="true"
                 >
 
-            <ui-select-choices repeat="permission in ctrl.permissions | orderBy: permission ">
+            <ui-select-choices repeat="permission in ctrl.permissions | orderBy: permission | filter:$select.search ">
                 <div>
                     {{'permission.'+ permission | translate}}
                 </div>
@@ -45,6 +45,7 @@
                 {{'permission.'+$item | translate}}
             </ui-select-match>
         </ui-select>
+
     </div>
 
 
