@@ -72,6 +72,8 @@
                     /*jshint -W106*/
                     vm.loginForm.account_email.$dirty = true;
                     vm.loginForm.account_password.$dirty = true;
+
+                    $('.container-auth').removeClass('whirl line back-and-forth grow');
                 }
 
             };
