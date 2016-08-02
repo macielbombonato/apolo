@@ -10,6 +10,7 @@
             'apolo',
             'apolo.base',
             /*...*/
+            'apolo.home',
             'apolo.static',
             'apolo.auth',
             'apolo.tenant',

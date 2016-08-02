@@ -38,6 +38,10 @@
             vm.tenant = {};
 
             vm.list = function() {
+
+                $rootScope.pageTitle = $translate.instant('tenant.list.title');
+                $rootScope.pageDescription = $translate.instant('tenant.list.description');
+
                 if ($rootScope.principal != undefined
                     && $rootScope.principal != null) {
 
@@ -68,6 +72,10 @@
             };
 
             vm.view = function() {
+
+                $rootScope.pageTitle = $translate.instant('tenant.view.title');
+                $rootScope.pageDescription = $translate.instant('tenant.view.description');
+
                 if ($rootScope.principal != undefined
                     && $rootScope.principal != null) {
 
@@ -102,6 +110,10 @@
             };
 
             vm.createForm = function() {
+
+                $rootScope.pageTitle = $translate.instant('tenant.create.title');
+                $rootScope.pageDescription = $translate.instant('tenant.create.description');
+
                 vm.message = null;
                 vm.messageType = null;
 
@@ -118,6 +130,9 @@
             };
 
             vm.create = function() {
+
+                $rootScope.pageTitle = $translate.instant('tenant.create.title');
+                $rootScope.pageDescription = $translate.instant('tenant.create.description');
 
                 if ($rootScope.principal != undefined
                     && $rootScope.principal != null) {
@@ -152,6 +167,10 @@
             };
 
             vm.editForm = function() {
+
+                $rootScope.pageTitle = $translate.instant('tenant.edit.title');
+                $rootScope.pageDescription = $translate.instant('tenant.edit.description');
+
                 vm.message = null;
                 vm.messageType = null;
 
@@ -192,6 +211,10 @@
             };
 
             vm.edit = function() {
+
+                $rootScope.pageTitle = $translate.instant('tenant.edit.title');
+                $rootScope.pageDescription = $translate.instant('tenant.edit.description');
+
                 if ($rootScope.principal != undefined
                     && $rootScope.principal != null) {
 

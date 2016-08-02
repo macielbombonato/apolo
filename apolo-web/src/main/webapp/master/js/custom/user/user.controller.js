@@ -45,6 +45,10 @@
             vm.messageType = null;
 
             vm.list = function() {
+
+                $rootScope.pageTitle = $translate.instant('user.list.title');
+                $rootScope.pageDescription = $translate.instant('user.list.description');
+
                 if ($rootScope.principal != undefined
                     && $rootScope.principal != null) {
 
@@ -76,6 +80,10 @@
             };
 
             vm.view = function() {
+
+                $rootScope.pageTitle = $translate.instant('user.view.title');
+                $rootScope.pageDescription = $translate.instant('user.view.description');
+
                 if ($rootScope.principal != undefined
                     && $rootScope.principal != null) {
 
@@ -124,6 +132,10 @@
             };
 
             vm.createForm = function() {
+
+                $rootScope.pageTitle = $translate.instant('user.create.title');
+                $rootScope.pageDescription = $translate.instant('user.create.description');
+
                 vm.message = null;
                 vm.messageType = null;
 
@@ -157,6 +169,9 @@
             };
 
             vm.create = function() {
+
+                $rootScope.pageTitle = $translate.instant('user.create.title');
+                $rootScope.pageDescription = $translate.instant('user.create.description');
 
                 if ($rootScope.principal != undefined
                     && $rootScope.principal != null) {
@@ -192,6 +207,10 @@
             };
 
             vm.editForm = function() {
+
+                $rootScope.pageTitle = $translate.instant('user.edit.title');
+                $rootScope.pageDescription = $translate.instant('user.edit.description');
+
                 vm.message = null;
                 vm.messageType = null;
 
@@ -263,6 +282,10 @@
             };
 
             vm.edit = function() {
+
+                $rootScope.pageTitle = $translate.instant('user.edit.title');
+                $rootScope.pageDescription = $translate.instant('user.edit.description');
+
                 if ($rootScope.principal != undefined
                     && $rootScope.principal != null) {
 
@@ -309,6 +332,10 @@
             };
 
             vm.me = function() {
+
+                $rootScope.pageTitle = $translate.instant('user.view.title');
+                $rootScope.pageDescription = $translate.instant('user.view.description_me');
+
                 if ($rootScope.principal != undefined
                     && $rootScope.principal != null) {
 

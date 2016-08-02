@@ -42,6 +42,10 @@
             vm.group = {};
 
             vm.list = function() {
+
+                $rootScope.pageTitle = $translate.instant('permissionGroup.list.title');
+                $rootScope.pageDescription = $translate.instant('permissionGroup.list.description');
+
                 if ($rootScope.principal != undefined
                     && $rootScope.principal != null) {
 
@@ -63,6 +67,10 @@
             };
 
             vm.view = function() {
+
+                $rootScope.pageTitle = $translate.instant('permissionGroup.view.title');
+                $rootScope.pageDescription = $translate.instant('permissionGroup.view.description');
+
                 if ($rootScope.principal != undefined
                     && $rootScope.principal != null) {
 
@@ -97,6 +105,10 @@
             };
 
             vm.createForm = function() {
+
+                $rootScope.pageTitle = $translate.instant('permissionGroup.create.title');
+                $rootScope.pageDescription = $translate.instant('permissionGroup.create.description');
+
                 vm.message = null;
                 vm.messageType = null;
 
@@ -124,6 +136,9 @@
             };
 
             vm.create = function() {
+
+                $rootScope.pageTitle = $translate.instant('permissionGroup.create.title');
+                $rootScope.pageDescription = $translate.instant('permissionGroup.create.description');
 
                 if ($rootScope.principal != undefined
                     && $rootScope.principal != null) {
@@ -158,6 +173,10 @@
             };
 
             vm.editForm = function() {
+
+                $rootScope.pageTitle = $translate.instant('permissionGroup.edit.title');
+                $rootScope.pageDescription = $translate.instant('permissionGroup.edit.description');
+
                 vm.message = null;
                 vm.messageType = null;
 
@@ -210,6 +229,10 @@
             };
 
             vm.edit = function() {
+
+                $rootScope.pageTitle = $translate.instant('permissionGroup.edit.title');
+                $rootScope.pageDescription = $translate.instant('permissionGroup.edit.description');
+
                 if ($rootScope.principal != undefined
                     && $rootScope.principal != null) {
 

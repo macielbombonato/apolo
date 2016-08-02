@@ -55,7 +55,8 @@
             .state('apolo.home', {
                 url: '/home',
                 title: 'Apolo',
-                templateUrl: helper.basepath('home.html')
+                templateUrl: helper.basepath('home.html'),
+                controller: 'HomeController'
             })
 
             .state('apolo.error_401', {
@@ -83,28 +84,23 @@
             })
 
             // User
-            .state('apolo.user', {
-                url: '/user',
-                templateUrl: helper.basepath('partials/_base.html'),
-                abstract: true
-            })
-            .state('apolo.user.list', {
-                url: '/list?pageNumber=:number',
+            .state('apolo.user_list', {
+                url: '/user/list?pageNumber=:number',
                 title: 'User List',
                 templateUrl: helper.basepath('user/list.html')
             })
-            .state('apolo.user.view', {
-                url: '/:id/view',
+            .state('apolo.user_view', {
+                url: '/user/:id/view',
                 title: 'User View',
                 templateUrl: helper.basepath('user/view.html')
             })
-            .state('apolo.user.create', {
-                url: '/create',
+            .state('apolo.user_create', {
+                url: '/user/create',
                 title: 'User Create',
                 templateUrl: helper.basepath('user/create.html')
             })
-            .state('apolo.user.edit', {
-                url: '/:id/edit',
+            .state('apolo.user_edit', {
+                url: '/user/:id/edit',
                 title: 'User Edit',
                 templateUrl: helper.basepath('user/edit.html')
             })
@@ -116,61 +112,51 @@
             })
 
             // Tenant
-            .state('apolo.tenant', {
-                url: '/tenant',
-                templateUrl: helper.basepath('partials/_base.html'),
-                abstract: true
-            })
-            .state('apolo.tenant.list', {
-                url: '/list?pageNumber=:number',
+            .state('apolo.tenant_list', {
+                url: '/tenant/list?pageNumber=:number',
                 title: 'Tenant List',
                 templateUrl: helper.basepath('tenant/list.html')
             })
-            .state('apolo.tenant.view', {
-                url: '/:id/view',
+            .state('apolo.tenant_view', {
+                url: '/tenant/:id/view',
                 title: 'Tenant View',
                 templateUrl: helper.basepath('tenant/view.html')
             })
-            .state('apolo.tenant.create', {
-                url: '/create',
+            .state('apolo.tenant_create', {
+                url: '/tenant/create',
                 title: 'Tenant Create',
                 templateUrl: helper.basepath('tenant/create.html')
             })
-            .state('apolo.tenant.edit', {
-                url: '/:id/edit',
+            .state('apolo.tenant_edit', {
+                url: '/tenant/:id/edit',
                 title: 'Tenant Edit',
                 templateUrl: helper.basepath('tenant/edit.html')
             })
-            .state('apolo.tenant.changeTenant', {
-                url: '/:id/changeTenant',
+            .state('apolo.tenant_changeTenant', {
+                url: '/tenant/:id/changeTenant',
                 title: 'Tenant Change',
                 templateUrl: helper.basepath('tenant/list.html'),
                 controller: "TenantChangeController"
             })
 
             // Group Permission
-            .state('apolo.permission-group', {
-                url: '/group',
-                templateUrl: helper.basepath('partials/_base.html'),
-                abstract: true
-            })
-            .state('apolo.permission-group.list', {
-                url: '/list',
+            .state('apolo.permission-group_list', {
+                url: '/group/list',
                 title: 'Group Permission List',
                 templateUrl: helper.basepath('permissionGroup/list.html')
             })
-            .state('apolo.permission-group.view', {
-                url: '/:id/view',
+            .state('apolo.permission-group_view', {
+                url: '/group/:id/view',
                 title: 'Group Permission View',
                 templateUrl: helper.basepath('permissionGroup/view.html')
             })
-            .state('apolo.permission-group.create', {
-                url: '/create',
+            .state('apolo.permission-group_create', {
+                url: '/group/create',
                 title: 'Group Permission Create',
                 templateUrl: helper.basepath('permissionGroup/create.html')
             })
-            .state('apolo.permission-group.edit', {
-                url: '/:id/edit',
+            .state('apolo.permission-group_edit', {
+                url: '/group/:id/edit',
                 title: 'Group Permission Edit',
                 templateUrl: helper.basepath('permissionGroup/edit.html')
             })

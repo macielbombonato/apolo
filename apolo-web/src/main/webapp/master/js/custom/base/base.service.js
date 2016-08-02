@@ -195,6 +195,9 @@
         function dataServiceError(errorResponse) {
             console.error(errorResponse);
 
+            $rootScope.pageTitle = $translate.instant('message.error.title');
+            $rootScope.pageDescription = $translate.instant('message.error.description');
+
             if (errorResponse != undefined) {
                 var route = 'apolo.error_' + errorResponse.status;
 

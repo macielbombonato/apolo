@@ -1,24 +1,16 @@
-<!-- Page content-->
-<div ui-view="" autoscroll="false" ng-class="app.viewAnimation" class="content-wrapper">
-    <h3>
-        {{'message.error.title' | translate}}
-        <small>{{'message.error.description' | translate}}</small>
-    </h3>
+<div class="row">
+    <div class="col-xs-12">
+        <h4>
+            <strong>
+                500
+            </strong>
+        </h4>
+        <p>
+            {{'message.error.500' | translate}}
+        </p>
 
-    <div class="row">
-        <div class="col-xs-12">
-            <h4>
-                <strong>
-                    500
-                </strong>
-            </h4>
-            <p>
-                {{'message.error.500' | translate}}
-            </p>
-
-            <p ng-show="error_message">
-                {{error_message}}
-            </p>
-        </div>
+        <p ng-show="error_message">
+            {{error_message}}
+        </p>
     </div>
 </div>

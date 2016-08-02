@@ -26,7 +26,7 @@
           {
             "text": "User List",
             "translate": "menu.user.list",
-            "sref": "apolo.user.list",
+            "sref": "apolo.user_list",
             "icon": "fa fa-list",
             "permissions": [
               "USER_LIST"
@@ -35,7 +35,7 @@
           {
             "text": "User Create",
             "translate": "menu.user.create",
-            "sref": "apolo.user.create",
+            "sref": "apolo.user_create",
             "icon": "fa fa-user-plus",
             "permissions": [
               "USER_CREATE"
@@ -56,7 +56,7 @@
           {
             "text": "Tenant List",
             "translate": "menu.tenant.list",
-            "sref": "apolo.tenant.list",
+            "sref": "apolo.tenant_list",
             "icon": "fa fa-list",
             "permissions": [
               "TENANT_LIST"
@@ -65,7 +65,7 @@
           {
             "text": "Tenant Create",
             "translate": "menu.tenant.create",
-            "sref": "apolo.tenant.create",
+            "sref": "apolo.tenant_create",
             "icon": "fa fa-plus",
             "permissions": [
               "TENANT_CREATE"
@@ -86,7 +86,7 @@
           {
             "text": "Group Permission List",
             "translate": "menu.permission-group.list",
-            "sref": "apolo.permission-group.list",
+            "sref": "apolo.permission-group_list",
             "icon": "fa fa-list",
             "permissions": [
               "PERMISSION_GROUP_LIST"
@@ -95,7 +95,7 @@
           {
             "text": "Group Permission Create",
             "translate": "menu.permission-group.create",
-            "sref": "apolo.permission-group.create",
+            "sref": "apolo.permission-group_create",
             "icon": "fa fa-plus",
             "permissions": [
               "PERMISSION_GROUP_CREATE"

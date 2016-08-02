@@ -4,7 +4,24 @@
 <aside ng-include="'app/views/partials/sidebar.html'" ng-controller="SidebarController" class="aside"></aside>
 <!-- Main section-->
 <!-- Page content-->
-<section ui-view="">
+<section  autoscroll="false" class="content-wrapper">
+
+    <h3>
+        {{pageTitle}}
+        <small>{{pageDescription}}</small>
+    </h3>
+
+    <div ui-view="" ng-class="app.viewAnimation">
+    </div>
+
+    <br />
+    <br />
+
+    <div class="row">
+        <div class="col-xs-12">
+            <div apolo-google-adsense></div>
+        </div>
+    </div>
 </section>
 
 <!-- Page footer-->
