@@ -304,6 +304,11 @@ public class UserController extends BaseAPIController<User> {
                         }
                     }
 
+                    if (dbEntity != null
+                            && dbEntity.getId().equals(dto.getId())) {
+                        dbEntity.setSessionId(request.getSession().getId());
+                    }
+
                     dbEntity = userService.save(
                             getServerUrl(request, tenantUrl),
                             dbEntity,
