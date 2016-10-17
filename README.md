@@ -40,13 +40,14 @@ OBS.: Como se trata de um projeto pessoal, os pontos que preciso desenvolver del
 ### Necessário instalar em sua máquina
 
 	- docker
-	- java (apt-get install openjdk-8-jre-headless);
+	- java ([Clique Aqui](https://www.digitalocean.com/community/tutorials/how-to-install-java-with-apt-get-on-ubuntu-16-04));
 	- maven (apt-get install maven);
 	- ruby (apt-get install ruby);
 	- ruby-compass (apt-get install ruby-compass);
 	- node (apt-get install nodejs nodejs-legacy);
 	- npm (apt-get install npm);
-	- bower (npm install bower -g);
+	- bower (npm install --save bower -g);
+	- gulp (npm install --save gulp -g)
 
 ### Documentação antiga
 
