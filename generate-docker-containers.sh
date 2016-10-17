@@ -19,10 +19,12 @@ cd ..
 mvn clean install
 
 cd apolo-web
+mvn clean install
 docker build -t macielbombonato/apolo-web .
 cd ..
 
 cd apolo-api
+mvn clean install 
 docker build -t macielbombonato/apolo-api .
 cd ..
 
