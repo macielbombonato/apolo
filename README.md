@@ -44,7 +44,9 @@ OBS.: Como se trata de um projeto pessoal, os pontos que preciso desenvolver del
 	- maven (apt-get install maven);
 	- ruby (apt-get install ruby);
 	- ruby-compass (apt-get install ruby-compass);
-	- node (apt-get install nodejs);
+	- node (apt-get install nodejs nodejs-legacy);
+	- npm (apt-get install npm);
+	- bower (npm install bower -g);
 
 ### Documentação antiga
 

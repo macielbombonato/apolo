@@ -6,7 +6,9 @@ cd src
 cd main
 cd webapp
 cd master
-npm run
+bower install --allow-root
+npm install
+gulp --usesass
 
 cd ..
 cd ..
