@@ -37,6 +37,17 @@ OBS.: Como se trata de um projeto pessoal, os pontos que preciso desenvolver del
 
 ## Configurações de ambiente
 
+### Necessário instalar em sua máquina
+
+	- docker
+	- java (apt-get install openjdk-8-jre-headless);
+	- maven (apt-get install maven);
+	- ruby (apt-get install ruby);
+	- ruby-compass (apt-get install ruby-compass);
+	- node (apt-get install nodejs);
+
+### Documentação antiga
+
 A partir da versão 3.1.0 o Apolo passou a utilizar variáveis de ambiente para configurações, assim, fica mais fácil de configurar o servidor de aplicação e de colocar a aplicação no ar.
 
 Abaixo estão as variáveis de ambiente que devem ser configuradas em seu servidor.
@@ -106,7 +117,7 @@ Vá até a instalação do tomcat e na pasta de configuração dele abra o arqui
 
 Estando tudo certo neste arquivo, verifique se na pasta webapps vc possui o projeto manager, caso sim, a estrutura está OK e pronta para o deploy remoto.
 
-Voltando a máquina local, é necessário conferir se a variável de ambiente **APOLO_PRODUCTION_DEPLOY_URL** está apontando para o servidor corretamente e se as variáveis **APOLO_PRODUCTION_DEPLOY_USERNAME** e **APOLO_PRODUCTION_DEPLOY_PASSWORD** estão com os valores corretos no arquivo de configuração do Tomcat de produção. 
+Voltando a máquina local, é necessário conferir se a variável de ambiente **APOLO_PRODUCTION_DEPLOY_URL** está apontando para o servidor corretamente e se as variáveis **APOLO_PRODUCTION_DEPLOY_USERNAME** e **APOLO_PRODUCTION_DEPLOY_PASSWORD** estão com os valores corretos no arquivo de configuração do Tomcat de produção.
 
 Abaixo segue um exemplo de URL para deploy remoto:
 
@@ -199,4 +210,3 @@ Este recurso é também a única maneira de alterar o Tenant de um usuário, por
 ### Excluir usuário
 
 	DELETE /api/{tenant-url}/user/{id}
-

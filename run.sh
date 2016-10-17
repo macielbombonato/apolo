@@ -34,5 +34,5 @@ docker run -d \
 
 docker run -d \
     --name apolo-web \
-    -p 8081:80 \
+    -p 80:80 \
     macielbombonato/apolo-web
