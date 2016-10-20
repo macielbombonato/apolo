@@ -1,16 +1,36 @@
 #./generate-docker-containers.sh
-echo '#############################'
-echo '# Executando Banco de dados #'
-echo '#############################'
+echo '####################################'
+echo '# Parando container Banco de dados #'
+echo '####################################'
+docker stop $(docker ps -a | grep mysql | cut -c1-15)
+
+echo '######################################'
+echo '# Removendo container Banco de dados #'
+echo '######################################'
+docker rm $(docker ps -a | grep mysql | cut -c1-15)
+
+echo '#######################################'
+echo '# Executando container Banco de dados #'
+echo '#######################################'
 docker run -d \
     -e MYSQL_ROOT_PASSWORD=root \
     --name mysql \
     -v ~/files/apolo/mysql:/var/lib/mysql \
     mysql
 
-echo '##################'
-echo '# Executando API #'
-echo '##################'
+echo '###############################'
+echo '# Parando container APOLO API #'
+echo '###############################'
+docker stop $(docker ps -a | grep apolo-api | cut -c1-15)
+
+echo '#################################'
+echo '# Removendo container APOLO API #'
+echo '#################################'
+docker rm $(docker ps -a | grep apolo-api | cut -c1-15)
+
+echo '##################################'
+echo '# Executando container APOLO API #'
+echo '##################################'
 docker run -d \
     -e APOLO_SECRET_KEY="1234567890ABCDEF" \
     -e APOLO_IV_KEY="1234567890ABCDEF" \
@@ -38,10 +58,20 @@ docker run -d \
     -p 8080:8080 \
     macielbombonato/apolo-api
 
-echo '############################'
-echo '# Executando aplicacao WEB #'
-echo '############################'
+echo '###############################'
+echo '# Parando container APOLO WEB #'
+echo '###############################'
+docker stop $(docker ps -a | grep apolo-web | cut -c1-15)
+
+echo '#################################'
+echo '# Removendo container APOLO WEB #'
+echo '#################################'
+docker rm $(docker ps -a | grep apolo-web | cut -c1-15)
+
+echo '##################################'
+echo '# Executando container APOLO WEB #'
+echo '##################################'
 docker run -d \
     --name apolo-web \
-    -p 8081:80 \
+    -p 80:80 \
     macielbombonato/apolo-web
