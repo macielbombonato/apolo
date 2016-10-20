@@ -1,10 +1,16 @@
 #./generate-docker-containers.sh
+echo '#############################'
+echo '# Executando Banco de dados #'
+echo '#############################'
 docker run -d \
     -e MYSQL_ROOT_PASSWORD=root \
     --name mysql \
     -v ~/files/apolo/mysql:/var/lib/mysql \
     mysql
 
+echo '##################'
+echo '# Executando API #'
+echo '##################'
 docker run -d \
     -e APOLO_SECRET_KEY="1234567890ABCDEF" \
     -e APOLO_IV_KEY="1234567890ABCDEF" \
@@ -32,7 +38,10 @@ docker run -d \
     -p 8080:8080 \
     macielbombonato/apolo-api
 
+echo '############################'
+echo '# Executando aplicacao WEB #'
+echo '############################'
 docker run -d \
     --name apolo-web \
-    -p 80:80 \
+    -p 8081:80 \
     macielbombonato/apolo-web
