@@ -1,5 +1,11 @@
 # APOLO
 ---------
+
+[![Build status](https://travis-ci.org/macielbombonato/apolo.svg?branch=master)](https://travis-ci.org/macielbombonato/apolo.svg?branch=master) 
+
+[![Quality Gate](https://sonarqube.com/api/badges/gate?key=apolo)](https://sonarqube.com/dashboard/index/apolo)
+
+
 ## O Projeto Apolo
 
 Este projeto é uma iniciativa open source para que os desenvolvedores ganhem tempo no startup de seus sistemas, tendo uma base consistente e de fácil expansão.
