@@ -6,6 +6,9 @@
 [![Quality Gate](https://sonarqube.com/api/badges/gate?key=apolo)](https://sonarqube.com/dashboard/index/apolo)
 
 
+[![Quality Gate](https://sonarcloud.io/api/badges/gate?key=apolo:apolo)](https://sonarcloud.io/dashboard/index/apolo:apolo)
+
+
 ## O Projeto Apolo
 
 Este projeto é uma iniciativa open source para que os desenvolvedores ganhem tempo no startup de seus sistemas, tendo uma base consistente e de fácil expansão.
