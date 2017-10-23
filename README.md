@@ -1,12 +1,7 @@
 # APOLO
 ---------
 
-[![Build status](https://travis-ci.org/macielbombonato/apolo.svg?branch=master)](https://travis-ci.org/macielbombonato/apolo.svg?branch=master) 
-
-[![Quality Gate](https://sonarqube.com/api/badges/gate?key=apolo)](https://sonarqube.com/dashboard/index/apolo)
-
-
-[![Quality Gate](https://sonarcloud.io/api/badges/gate?key=apolo:apolo)](https://sonarcloud.io/dashboard/index/apolo:apolo)
+[![Build status](https://travis-ci.org/macielbombonato/apolo.svg?branch=master)](https://travis-ci.org/macielbombonato/apolo.svg?branch=master) [![Quality Gate](https://sonarcloud.io/api/badges/gate?key=apolo:apolo)](https://sonarcloud.io/dashboard/index/apolo:apolo)
 
 
 ## O Projeto Apolo
