@@ -28,6 +28,12 @@
 
 		<timestamp>${maven.build.timestamp}</timestamp>
 		<maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
+	    
+        <sonar.sources>src/main</sonar.sources>
+        <sonar.tests>src/test</sonar.tests>
+        <sonar.junit.reportsPath>reports/java/surefire-reports</sonar.junit.reportsPath>
+        <sonar.jacoco.reportPath>reports/java/jacoco.exec</sonar.jacoco.reportPath>
+        <sonar.javascript.lcov.reportPath>reports/js/lcov.dat</sonar.javascript.lcov.reportPath>
     </properties>
 
     <modules>
