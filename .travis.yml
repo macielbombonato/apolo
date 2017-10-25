@@ -8,8 +8,13 @@ addons:
       secure: "94dab22c83c533a9ccd751e9646708e6d1117a00"
 jdk:
   - oraclejdk8
+  
+before_script:
+  - chmod +x travis.sh
+  
 script:
   - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar
+  
 cache:
   directories:
     - '$HOME/.m2/repository'
