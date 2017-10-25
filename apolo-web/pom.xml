@@ -18,7 +18,11 @@
     </parent>
     
     <properties>
-        <sonar.exclusions>**/target/*, **/bower_components/*, **/node_modules/*</sonar.exclusions>
+        <sonar.exclusions>
+            **/target/**/*, 
+            **/bower_components/**/*, 
+            **/node_modules/**/*
+        </sonar.exclusions>
     </properties>
 
     <build>
