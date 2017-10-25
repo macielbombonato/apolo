@@ -16,6 +16,10 @@
         <artifactId>apolo</artifactId>
         <version>5.0.0</version>
     </parent>
+    
+    <properties>
+        <sonar.exclusions>**/target/*, **/bower_components/*, **/node_modules/*</sonar.exclusions>
+    </properties>
 
     <build>
         <plugins>
